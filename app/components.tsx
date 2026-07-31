@@ -318,7 +318,7 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
       : min < 60 ? `${min} mins` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60} mins` : ""}`;
   return (
     <a
-      href={`/strecken/${slug}`}
+      href={`/${slug}`}
       className="group relative flex min-h-[240px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
       style={{
         backgroundColor: C.pine,

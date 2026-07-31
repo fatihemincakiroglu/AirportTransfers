@@ -2,13 +2,13 @@
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../../config";
-import { t } from "../../i18n";
-import { useLang } from "../../providers";
+import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../config";
+import { t } from "../i18n";
+import { useLang } from "../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   mailHref, localName, inputCls, labelCls,
-} from "../../components";
+} from "../components";
 
 export default function RouteDetail() {
   const { lang } = useLang();
