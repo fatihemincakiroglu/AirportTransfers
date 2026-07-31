@@ -184,9 +184,14 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {L.reviewsSec.list.map((r, i) => (
-              <div key={i} className="relative flex flex-col rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
+          {/* İki satırlık akan yorum şeridi */}
+          {(() => {
+            type Review = { text: string; name: string; route: string; flag: string };
+            const list: Review[] = [...L.reviewsSec.list];
+            const rowTop = list;                       // üst satır → sağa kayar
+            const rowBottom = [...list].reverse();     // alt satır → sola kayar
+            const Card = ({ r }: { r: Review }) => (
+              <div className="relative flex w-[320px] shrink-0 flex-col rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur sm:w-[360px]">
                 <span className="font-display absolute right-4 top-2 text-5xl text-white/10">”</span>
                 <span className="text-sm" style={{ color: C.gold }}>★★★★★</span>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-white/85">{r.text}</p>
@@ -200,8 +205,24 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+            const Row = ({ items, dir }: { items: Review[]; dir: "left" | "right" }) => (
+              <div className="marquee-row relative overflow-hidden">
+                {/* Kenar solmaları */}
+                <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 md:w-28" style={{ background: `linear-gradient(90deg, ${C.pine}, transparent)` }} />
+                <span aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 md:w-28" style={{ background: `linear-gradient(270deg, ${C.pine}, transparent)` }} />
+                <div className={`marquee-track ${dir === "left" ? "marquee-left" : "marquee-right"}`}>
+                  {[...items, ...items].map((r, i) => <Card key={i} r={r} />)}
+                </div>
+              </div>
+            );
+            return (
+              <div className="mt-10 space-y-4">
+                <Row items={rowTop} dir="right" />
+                <Row items={rowBottom} dir="left" />
+              </div>
+            );
+          })()}
         </div>
       </section>
 
