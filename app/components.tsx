@@ -489,7 +489,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
   );
 }
 
-// ── Yüzen yan butonlar (buzlu cam dock + ikonlar) ─────────────
+// ── Yüzen butonlar: masaüstünde yan dock, mobilde alt çubuk ───
 export function FloatingButtons() {
   const { lang } = useLang();
   const btn =
@@ -499,26 +499,69 @@ export function FloatingButtons() {
     "pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs font-bold text-white opacity-0 shadow-lg transition-all duration-300 group-hover:opacity-100";
 
   const labels = lang === "de"
-    ? { wa: "WhatsApp", call: "Anrufen", book: "Jetzt buchen" }
-    : { wa: "WhatsApp", call: "Call us", book: "Book now" };
+    ? { wa: "WhatsApp", call: "Anrufen", book: "Buchen" }
+    : { wa: "WhatsApp", call: "Call", book: "Book" };
 
   return (
-    <div className="fixed right-4 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur">
-      <a href={waHref()} target="_blank" rel="noopener noreferrer" aria-label={labels.wa} className={btn}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/icons/whatsapp.png" alt="" className={icon} />
-        <span className={tip} style={{ background: C.pine }}>{labels.wa}</span>
-      </a>
-      <a href={`tel:+${WHATSAPP_NUMBER}`} aria-label={labels.call} className={btn}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/icons/phone.png" alt="" className={icon} />
-        <span className={tip} style={{ background: C.pine }}>{labels.call}</span>
-      </a>
-      <a href="/#buchen" aria-label={labels.book} className={btn}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/icons/booking.png" alt="" className={icon} />
-        <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
-      </a>
-    </div>
+    <>
+      {/* Masaüstü: sağda buzlu cam dock */}
+      <div className="fixed right-4 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur md:flex">
+        <a href={waHref()} target="_blank" rel="noopener noreferrer" aria-label={labels.wa} className={btn}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/whatsapp.png" alt="" className={icon} />
+          <span className={tip} style={{ background: C.pine }}>{labels.wa}</span>
+        </a>
+        <a href={`tel:+${WHATSAPP_NUMBER}`} aria-label={labels.call} className={btn}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/phone.png" alt="" className={icon} />
+          <span className={tip} style={{ background: C.pine }}>{labels.call}</span>
+        </a>
+        <a href="/#buchen" aria-label={labels.book} className={btn}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/icons/booking.png" alt="" className={icon} />
+          <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
+        </a>
+      </div>
+
+      {/* Mobil: içerik alt çubuğun arkasında kalmasın diye boşluk */}
+      <div aria-hidden className="h-[76px] md:hidden" />
+
+      {/* Mobil: altta sabit eylem çubuğu */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur md:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
+        <div className="grid grid-cols-3 gap-2 p-2.5">
+          <a
+            href={waHref()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-2 py-3 text-sm font-bold text-white shadow-sm active:scale-95"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/whatsapp.png" alt="" className="h-5 w-5 rounded-full bg-white object-contain" />
+            {labels.wa}
+          </a>
+          <a
+            href={`tel:+${WHATSAPP_NUMBER}`}
+            className="flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-sm font-bold shadow-sm active:scale-95"
+            style={{ background: C.gold, color: C.pine }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/phone.png" alt="" className="h-5 w-5 object-contain" />
+            {labels.call}
+          </a>
+          <a
+            href="/#buchen"
+            className="flex items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
+            style={{ borderColor: C.pine, color: C.pine }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/booking.png" alt="" className="h-5 w-5 object-contain" />
+            {labels.book}
+          </a>
+        </div>
+      </div>
+    </>
   );
 }
