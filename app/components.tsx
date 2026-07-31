@@ -368,41 +368,33 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
   const L = t[lang];
   const n = localName(name, lang);
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl">
-      <div
-        className="relative flex h-40 items-end p-4 text-white"
-        style={{
-          backgroundColor: C.pine,
-          backgroundImage: `linear-gradient(180deg, rgba(8,33,27,0.1) 0%, rgba(8,33,27,0.8) 90%), url(${img})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+    <div className="flex flex-col rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl">
+      <h3 className="font-display text-xl font-semibold" style={{ color: C.pine }}>{car}</h3>
+      <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{n}</p>
+      <div className="my-4 flex h-36 items-center justify-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={img} alt={`${car} – ${n}`} className="max-h-full w-auto max-w-full object-contain" />
+      </div>
+      <div className="flex gap-4 border-t border-stone-100 pt-3 text-sm">
+        <span>👥 <b>{pax}</b> <span className="text-stone-500">{L.fleetSec.pax}</span></span>
+        <span>🧳 <b>{bags}</b> <span className="text-stone-500">{L.fleetSec.bags}</span></span>
+      </div>
+      {showFeatures && (
+        <ul className="mt-3 space-y-1 border-t border-stone-100 pt-3 text-sm text-stone-600">
+          {L.fleetSec.features.map((f, i) => (
+            <li key={i}>✓ {f}</li>
+          ))}
+        </ul>
+      )}
+      <a
+        href={waHref(`${L.msg.title}\n\n${n} – ${car}`)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 block rounded-full px-4 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5"
+        style={{ background: C.pine }}
       >
-        <h3 className="font-display text-xl font-semibold">{n}</h3>
-      </div>
-      <div className="p-4">
-        <p className="text-sm text-stone-500">{car}</p>
-        <div className="mt-3 flex gap-4 text-sm">
-          <span>👥 <b>{pax}</b> <span className="text-stone-500">{L.fleetSec.pax}</span></span>
-          <span>🧳 <b>{bags}</b> <span className="text-stone-500">{L.fleetSec.bags}</span></span>
-        </div>
-        {showFeatures && (
-          <ul className="mt-3 space-y-1 border-t border-stone-100 pt-3 text-sm text-stone-600">
-            {L.fleetSec.features.map((f, i) => (
-              <li key={i}>✓ {f}</li>
-            ))}
-          </ul>
-        )}
-        <a
-          href={waHref(`${L.msg.title}\n\n${n} – ${car}`)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 block rounded-full px-4 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5"
-          style={{ background: C.pine }}
-        >
-          {L.fleetSec.cta} →
-        </a>
-      </div>
+        {L.fleetSec.cta} →
+      </a>
     </div>
   );
 }
