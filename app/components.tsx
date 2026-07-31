@@ -489,13 +489,36 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
   );
 }
 
-// ── Yüzen yan butonlar ────────────────────────────────────────
+// ── Yüzen yan butonlar (buzlu cam dock + ikonlar) ─────────────
 export function FloatingButtons() {
+  const { lang } = useLang();
+  const btn =
+    "group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 hover:scale-110 hover:bg-stone-100";
+  const icon = "h-7 w-7 object-contain drop-shadow-sm";
+  const tip =
+    "pointer-events-none absolute right-full mr-3 whitespace-nowrap rounded-lg px-2.5 py-1 text-xs font-bold text-white opacity-0 shadow-lg transition-all duration-300 group-hover:opacity-100";
+
+  const labels = lang === "de"
+    ? { wa: "WhatsApp", call: "Anrufen", book: "Jetzt buchen" }
+    : { wa: "WhatsApp", call: "Call us", book: "Book now" };
+
   return (
-    <div className="fixed right-4 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-2">
-      <a href={waHref()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-500 text-lg text-white shadow-lg transition-transform hover:scale-110">💬</a>
-      <a href={`tel:+${WHATSAPP_NUMBER}`} aria-label="Call" className="flex h-11 w-11 items-center justify-center rounded-xl text-lg shadow-lg transition-transform hover:scale-110" style={{ background: C.gold, color: C.pine }}>📞</a>
-      <a href="/#buchen" aria-label="Book" className="flex h-11 w-11 items-center justify-center rounded-xl bg-white text-lg shadow-lg ring-1 ring-black/10 transition-transform hover:scale-110">📅</a>
+    <div className="fixed right-4 top-1/2 z-50 flex -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur">
+      <a href={waHref()} target="_blank" rel="noopener noreferrer" aria-label={labels.wa} className={btn}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/whatsapp.png" alt="" className={icon} />
+        <span className={tip} style={{ background: C.pine }}>{labels.wa}</span>
+      </a>
+      <a href={`tel:+${WHATSAPP_NUMBER}`} aria-label={labels.call} className={btn}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/phone.png" alt="" className={icon} />
+        <span className={tip} style={{ background: C.pine }}>{labels.call}</span>
+      </a>
+      <a href="/#buchen" aria-label={labels.book} className={btn}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/icons/booking.png" alt="" className={icon} />
+        <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
+      </a>
     </div>
   );
 }
