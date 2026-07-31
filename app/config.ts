@@ -54,5 +54,5 @@ export const fleet: { name: LocalName; car: string; pax: number; bags: number; i
 // Formlardaki maksimum yolcu sayısı (en büyük araca göre)
 export const MAX_PAX = 7;
 
-// Galeri — public/gallery/1.jpg ... 12.jpg (opsiyonel)
-export const gallery = Array.from({ length: 12 }, (_, i) => `/gallery/${i + 1}.jpg`);
+// Galeri — public/gallery/1.jpg ... 20.jpg (pakette hazır)
+export const gallery = Array.from({ length: 20 }, (_, i) => `/gallery/${i + 1}.jpg`);

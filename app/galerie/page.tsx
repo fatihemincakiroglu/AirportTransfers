@@ -36,8 +36,8 @@ export default function Galerie() {
         </div>
         <p className="mt-6 text-sm text-stone-500">
           {lang === "de"
-            ? "Tipp: Legen Sie Ihre Fotos als 1.jpg bis 12.jpg im Ordner public/gallery ab."
-            : "Tip: place your photos as 1.jpg to 12.jpg inside the public/gallery folder."}
+            ? "Eigene Fotos? Ersetzen Sie einfach die Dateien 1.jpg bis 20.jpg im Ordner public/gallery."
+            : "Your own photos? Simply replace the files 1.jpg to 20.jpg inside the public/gallery folder."}
         </p>
       </section>
 
