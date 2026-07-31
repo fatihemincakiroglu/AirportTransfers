@@ -308,10 +308,14 @@ export function BookingCard() {
 }
 
 // ── Kartlar ───────────────────────────────────────────────────
-export function RouteCard({ to, km, price, img }: { to: LocalName; km: number; price: number; img: string }) {
+export function RouteCard({ to, km, min, price, img }: { to: LocalName; km: number; min: number; price: number; img: string }) {
   const { lang } = useLang();
   const L = t[lang];
   const n = localName(to, lang);
+  const dur =
+    lang === "de"
+      ? min < 60 ? `${min} Min.` : `${Math.floor(min / 60)} Std.${min % 60 ? ` ${min % 60} Min.` : ""}`
+      : min < 60 ? `${min} mins` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60} mins` : ""}`;
   return (
     <a
       href={waHref(`${L.msg.title}\n\n${L.msg.from}: ${L.routesSec.origin}\n${L.msg.to}: ${n}`)}
@@ -326,13 +330,16 @@ export function RouteCard({ to, km, price, img }: { to: LocalName; km: number; p
       }}
     >
       <span className="absolute right-4 top-4 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wide" style={{ background: C.gold, color: C.pine }}>
-        {L.routesSec.from} CHF {price}
+        {L.routesSec.from} CHF {price.toFixed(2)}
       </span>
       <span className="mb-2 h-0.5 w-8" style={{ background: C.gold }} />
       <h3 className="font-display text-xl font-semibold leading-snug">Flughafen Zürich (ZRH) → {n}</h3>
       <div className="mt-3 flex items-center justify-between text-sm text-white/85">
-        <span>🛣 {km} km</span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 backdrop-blur transition-colors group-hover:bg-white group-hover:text-[#0C2E25]">↗</span>
+        <span className="flex flex-wrap gap-x-3 gap-y-1">
+          <span>🛣 {km} km</span>
+          <span>🕐 {dur}</span>
+        </span>
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur transition-colors group-hover:bg-white group-hover:text-[#0C2E25]">↗</span>
       </div>
     </a>
   );

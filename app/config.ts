@@ -26,21 +26,34 @@ export const C = {
 
 export type LocalName = string | { de: string; en: string };
 
-// Güzergâhlar — fiyatları kendi fiyatlarınla güncelle.
-// Görseller opsiyonel: public/routes/ klasörüne aynı isimle koyarsan görünür.
-export const routes: { to: LocalName; km: number; price: number; img: string }[] = [
-  { to: "Zürich City", km: 12, price: 69, img: "/routes/zuerich.jpg" },
-  { to: "Winterthur", km: 22, price: 89, img: "/routes/winterthur.jpg" },
-  { to: "Zug", km: 46, price: 139, img: "/routes/zug.jpg" },
-  { to: { de: "Luzern", en: "Lucerne" }, km: 63, price: 189, img: "/routes/luzern.jpg" },
-  { to: "Basel", km: 86, price: 249, img: "/routes/basel.jpg" },
-  { to: "Interlaken", km: 125, price: 379, img: "/routes/interlaken.jpg" },
-  { to: "Bern", km: 118, price: 299, img: "/routes/bern.jpg" },
-  { to: "St. Gallen", km: 85, price: 239, img: "/routes/st-gallen.jpg" },
-  { to: "Schaffhausen", km: 50, price: 149, img: "/routes/schaffhausen.jpg" },
-  { to: "Davos", km: 150, price: 449, img: "/routes/davos.jpg" },
-  { to: "St. Moritz", km: 200, price: 590, img: "/routes/st-moritz.jpg" },
-  { to: { de: "Genf", en: "Geneva" }, km: 280, price: 790, img: "/routes/genf.jpg" },
+// Güzergâhlar — zurichairport-taxi.ch'deki verilerle birebir aynı
+// (km, dakika, Business Class fiyatı CHF). Sıralama: sitedeki sıra.
+export const routes: { to: LocalName; km: number; min: number; price: number; img: string }[] = [
+  { to: "Zug", km: 46.2, min: 55, price: 138.69, img: "/routes/zug.jpg" },
+  { to: { de: "Luzern", en: "Lucerne" }, km: 63.3, min: 76, price: 189.75, img: "/routes/luzern.jpg" },
+  { to: "Basel", km: 86.2, min: 103, price: 258.5, img: "/routes/basel.jpg" },
+  { to: { de: "Genf", en: "Geneva" }, km: 266.2, min: 319, price: 798.5, img: "/routes/genf.jpg" },
+  { to: "Bern", km: 117.5, min: 141, price: 352.5, img: "/routes/bern.jpg" },
+  { to: "Interlaken", km: 125.2, min: 150, price: 375.63, img: "/gallery/11.jpg" },
+  { to: "St. Moritz", km: 212.7, min: 255, price: 638, img: "/gallery/3.jpg" },
+  { to: "Zermatt", km: 237.0, min: 284, price: 711, img: "/gallery/4.jpg" },
+  { to: "Davos", km: 161.5, min: 194, price: 484.5, img: "/gallery/10.jpg" },
+  { to: "Lausanne", km: 215.5, min: 259, price: 646.5, img: "/routes/lausanne.jpg" },
+  { to: "Montreux", km: 243.5, min: 292, price: 730.5, img: "/routes/montreux.jpg" },
+  { to: "Lugano", km: 210.2, min: 252, price: 630.5, img: "/routes/lugano.jpg" },
+  { to: "Grindelwald", km: 141.7, min: 170, price: 425, img: "/gallery/8.jpg" },
+  { to: "Verbier", km: 269.8, min: 324, price: 809.5, img: "/routes/verbier.jpg" },
+  { to: "Wengen", km: 133.5, min: 160, price: 400.5, img: "/gallery/6.jpg" },
+  { to: "St. Gallen", km: 81.2, min: 97, price: 243.5, img: "/routes/st-gallen.jpg" },
+  { to: "Chur", km: 135.5, min: 163, price: 406.5, img: "/routes/chur.jpg" },
+  { to: "Winterthur", km: 29.6, min: 36, price: 88.9, img: "/routes/winterthur.jpg" },
+  { to: "Locarno", km: 201.3, min: 242, price: 604, img: "/routes/locarno.jpg" },
+  { to: "Thun", km: 141.7, min: 170, price: 425, img: "/routes/thun.jpg" },
+  { to: "Sion", km: 270.7, min: 325, price: 812, img: "/routes/sion.jpg" },
+  { to: "Bellinzona", km: 182.7, min: 219, price: 548, img: "/routes/bellinzona.jpg" },
+  { to: "Fribourg", km: 154.7, min: 186, price: 464, img: "/routes/fribourg.jpg" },
+  { to: "Schaffhausen", km: 49.5, min: 59, price: 148.5, img: "/routes/schaffhausen.jpg" },
+  { to: "Engelberg", km: 94.2, min: 113, price: 282.5, img: "/gallery/19.jpg" },
 ];
 
 // Filo — gerçek araçlar. Görseller opsiyonel: public/fleet/
