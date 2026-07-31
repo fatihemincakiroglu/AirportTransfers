@@ -2,12 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { C, routes, fleet, WHATSAPP_NUMBER } from "../../config";
+import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  waHref, mailHref, localName, inputCls, labelCls,
+  mailHref, localName, inputCls, labelCls,
 } from "../../components";
 
 export default function RouteDetail() {
@@ -320,7 +320,7 @@ export default function RouteDetail() {
                     ← {D.back}
                   </button>
                   <a
-                    href={ready ? waHref(message()) : undefined}
+                    href={ready ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(message())}` : undefined}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-disabled={!ready}

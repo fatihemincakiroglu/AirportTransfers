@@ -2,6 +2,8 @@
 //  TEK AYAR DOSYASI — iletişim bilgilerini sadece burada değiştir
 // ─────────────────────────────────────────────────────────────
 export const WHATSAPP_NUMBER = "41763020326"; // + ve boşluk olmadan
+// Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
+export const BOOKING_WHATSAPP_NUMBER = "905325766383"; // +90 532 576 63 83
 export const PHONE_DISPLAY = "+41 76 302 03 26";
 export const CONTACT_EMAIL = "info@airporttransfers.ch"; // kendi e-postanı yaz
 export const COMPANY_NAME = "Kula-ZATK";
