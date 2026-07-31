@@ -40,13 +40,16 @@ export const routes: { to: LocalName; km: number; price: number; img: string }[]
   { to: { de: "Genf", en: "Geneva" }, km: 280, price: 790, img: "/routes/genf.jpg" },
 ];
 
-// Filo — görseller opsiyonel: public/fleet/
+// Filo — gerçek araçlar. Görseller opsiyonel: public/fleet/
 export const fleet: { name: LocalName; car: string; pax: number; bags: number; img: string }[] = [
-  { name: "Business Class", car: "Mercedes-Benz E-Class", pax: 3, bags: 3, img: "/fleet/e-class.jpg" },
   { name: "Premium Class", car: "Mercedes-Benz S-Class", pax: 3, bags: 3, img: "/fleet/s-class.jpg" },
-  { name: { de: "Business & Familie", en: "Business & Family" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.jpg" },
-  { name: "VIP Sprinter", car: "Mercedes-Benz Sprinter", pax: 14, bags: 14, img: "/fleet/sprinter.jpg" },
+  { name: "Business Class", car: "Mercedes-Benz E-Class", pax: 2, bags: 2, img: "/fleet/e-class.jpg" },
+  { name: { de: "Business & Family Class", en: "Business & Family Class" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.jpg" },
+  { name: "VIP Ultra Comfort", car: "Mercedes-Benz V300 Maybach", pax: 5, bags: 5, img: "/fleet/v300-maybach.jpg" },
 ];
+
+// Formlardaki maksimum yolcu sayısı (en büyük araca göre)
+export const MAX_PAX = 7;
 
 // Galeri — public/gallery/1.jpg ... 12.jpg (opsiyonel)
 export const gallery = Array.from({ length: 12 }, (_, i) => `/gallery/${i + 1}.jpg`);

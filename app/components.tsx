@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import {
-  C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL,
+  C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
   COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName,
 } from "./config";
 import { t, Lang } from "./i18n";
@@ -206,7 +206,7 @@ export function BookingBar() {
         <div>
           <label className={lbl} style={{ color: C.gold }}>👥 {L.form.pax}</label>
           <select className={inp} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-            {Array.from({ length: 14 }, (_, i) => i + 1).map((n) => (
+            {Array.from({ length: MAX_PAX }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>{n}</option>
             ))}
           </select>
@@ -271,7 +271,7 @@ export function BookingCard() {
           <div>
             <label className={labelCls}>👥 {L.form.pax}</label>
             <select className={inputCls} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-              {Array.from({ length: 14 }, (_, i) => i + 1).map((n) => (
+              {Array.from({ length: MAX_PAX }, (_, i) => i + 1).map((n) => (
                 <option key={n} value={n}>{n}</option>
               ))}
             </select>
