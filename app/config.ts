@@ -12,6 +12,9 @@ export const COMPANY_ADDRESS = "Industristrasse 14, 8302 Kloten, Switzerland";
 export const HERO_IMAGES = ["/hero/hero-1.jpg", "/hero/hero-2.jpg", "/hero/hero-3.jpg"];
 export const SLIDE_MS = 6000;
 
+// Footer arka plan görseli (slider görsellerinden biri — istediğinle değiştir)
+export const FOOTER_IMAGE = "/hero/hero-2.jpg";
+
 // Renk paleti: koyu çam yeşili + şampanya altını
 export const C = {
   pine: "#0C2E25",

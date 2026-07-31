@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
-  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName,
+  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE,
 } from "./config";
 import { t, Lang } from "./i18n";
 import { useLang } from "./providers";
@@ -416,10 +416,16 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
   }
 
   return (
-    <footer id="kontakt-footer" className="relative overflow-hidden text-white/70" style={{ background: C.pineDeep }}>
-      <span aria-hidden className="font-display pointer-events-none absolute -bottom-14 left-0 select-none text-[26vw] font-semibold leading-none text-white/[0.04]">
-        {L.footer.watermark}
-      </span>
+    <footer
+      id="kontakt-footer"
+      className="relative overflow-hidden text-white/70"
+      style={{
+        backgroundColor: C.pineDeep,
+        backgroundImage: `linear-gradient(rgba(8,33,27,0.94), rgba(8,33,27,0.94)), url(${FOOTER_IMAGE})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-4">
         <div>
           <span className="font-display text-2xl font-semibold text-white">AirportTransfers</span>
