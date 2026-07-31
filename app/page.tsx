@@ -9,9 +9,12 @@ const sans = Manrope({ subsets: ["latin"], weight: ["400", "500", "600", "700", 
 // ─────────────────────────────────────────────────────────────
 //  AYARLAR — kendi bilgilerinle değiştir
 // ─────────────────────────────────────────────────────────────
-const WHATSAPP_NUMBER = "41790000000"; // + ve boşluk olmadan
-const PHONE_DISPLAY = "+41 79 000 00 00";
-const CONTACT_EMAIL = "info@airporttransfers.ch";
+const WHATSAPP_NUMBER = "41763020326"; // + ve boşluk olmadan
+const PHONE_DISPLAY = "+41 76 302 03 26";
+const CONTACT_EMAIL = "info@airporttransfers.ch"; // kendi e-postanı yaz
+const COMPANY_NAME = "Kula-ZATK";
+const COMPANY_REG = "Handelsregister-Nr.: CH-020.1.089.436-5";
+const COMPANY_ADDRESS = "Industristrasse 14, 8302 Kloten, Switzerland";
 
 // Hero slider görselleri: bu dosyaları projendeki public/hero/ klasörüne koy.
 // (Görsel yoksa koyu yeşil zemin görünür, site yine çalışır.)
@@ -121,6 +124,7 @@ const t = {
       support: "Support",
       callUs: "Rufen Sie uns an",
       writeUs: "Schreiben Sie uns",
+      address: "Adresse",
       about2: "Über uns",
       faq: "Häufige Fragen",
       rights: "Alle Rechte vorbehalten.",
@@ -208,6 +212,7 @@ const t = {
       support: "Support",
       callUs: "Call us",
       writeUs: "Write to us",
+      address: "Address",
       about2: "About us",
       faq: "FAQ",
       rights: "All rights reserved.",
@@ -714,13 +719,22 @@ export default function Home() {
                   <a href={`mailto:${CONTACT_EMAIL}`} className="font-bold text-white hover:underline">{CONTACT_EMAIL}</a>
                 </span>
               </li>
+              <li className="flex items-center gap-3">
+                <span className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(201,162,75,0.15)", color: C.gold }}>📍</span>
+                <span>
+                  <span className="block text-[10px] uppercase tracking-[0.15em] text-white/45">{L.footer.address}</span>
+                  <span className="text-sm font-bold text-white">{COMPANY_ADDRESS}</span>
+                </span>
+              </li>
             </ul>
           </div>
         </div>
         <div className="relative border-t border-white/10">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row">
             <span>© {new Date().getFullYear()} <b className="text-white">AirportTransfers Zürich</b> · {L.footer.rights}</span>
-            <span className="font-mono text-white/40">ZRH ⇄ CH</span>
+            <span className="text-center text-white/50">
+              {COMPANY_NAME} · {COMPANY_REG} · {COMPANY_ADDRESS}
+            </span>
           </div>
         </div>
       </footer>
