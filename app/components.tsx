@@ -35,19 +35,28 @@ export function Eyebrow({ children, dark }: { children: React.ReactNode; dark?: 
 export function TopBar() {
   const { lang, setLang } = useLang();
   const L = t[lang];
+  const short = L.topbar.split("·")[0].trim(); // mobilde kısa etiket
   return (
     <div style={{ background: C.pine }} className="text-white/80">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em]">
-        <span style={{ color: C.gold }}>✈ {L.topbar}</span>
-        <div className="flex items-center gap-4 normal-case tracking-normal">
-          <a href={`tel:+${WHATSAPP_NUMBER}`} className="text-xs hover:text-white">📞 {PHONE_DISPLAY}</a>
+      <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 overflow-hidden px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
+        <span
+          className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
+          style={{ color: C.gold }}
+        >
+          <span className="sm:hidden">✈ {short}</span>
+          <span className="hidden sm:inline">✈ {L.topbar}</span>
+        </span>
+        <div className="flex flex-nowrap items-center gap-2 sm:gap-4">
+          <a href={`tel:+${WHATSAPP_NUMBER}`} className="whitespace-nowrap text-[11px] hover:text-white sm:text-xs">
+            📞 {PHONE_DISPLAY}
+          </a>
           <span className="hidden text-white/30 sm:inline">|</span>
-          <div className="flex items-center gap-1 text-xs font-bold">
+          <div className="flex flex-nowrap items-center gap-0.5 text-[11px] font-bold sm:gap-1 sm:text-xs">
             {(["de", "en"] as Lang[]).map((c) => (
               <button
                 key={c}
                 onClick={() => setLang(c)}
-                className="rounded-md px-2 py-1 uppercase transition-colors"
+                className="rounded-md px-1.5 py-0.5 uppercase transition-colors sm:px-2 sm:py-1"
                 style={lang === c ? { background: C.gold, color: C.pine } : { color: "rgba(255,255,255,0.55)" }}
               >
                 {c}
