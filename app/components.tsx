@@ -308,7 +308,7 @@ export function BookingCard() {
 }
 
 // ── Kartlar ───────────────────────────────────────────────────
-export function RouteCard({ to, km, min, price, img }: { to: LocalName; km: number; min: number; price: number; img: string }) {
+export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to: LocalName; km: number; min: number; price: number; img: string }) {
   const { lang } = useLang();
   const L = t[lang];
   const n = localName(to, lang);
@@ -318,9 +318,7 @@ export function RouteCard({ to, km, min, price, img }: { to: LocalName; km: numb
       : min < 60 ? `${min} mins` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60} mins` : ""}`;
   return (
     <a
-      href={waHref(`${L.msg.title}\n\n${L.msg.from}: ${L.routesSec.origin}\n${L.msg.to}: ${n}`)}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={`/strecken/${slug}`}
       className="group relative flex min-h-[240px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
       style={{
         backgroundColor: C.pine,
