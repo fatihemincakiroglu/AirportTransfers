@@ -105,7 +105,7 @@ export function SiteHeader({ active }: { active?: string }) {
 
         <div className="flex items-center gap-3">
           <a
-            href="/#buchen"
+            href="/buchung"
             className="rounded-full px-5 py-2.5 text-sm font-bold text-white shadow-md transition-transform hover:-translate-y-0.5"
             style={{ background: C.pine }}
           >
@@ -521,7 +521,7 @@ export function FloatingButtons() {
           <img src="/icons/phone.png" alt="" className={icon} />
           <span className={tip} style={{ background: C.pine }}>{labels.call}</span>
         </a>
-        <a href="/#buchen" aria-label={labels.book} className={btn}>
+        <a href="/buchung" aria-label={labels.book} className={btn}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/booking.png" alt="" className={icon} />
           <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
@@ -557,7 +557,7 @@ export function FloatingButtons() {
             {labels.call}
           </a>
           <a
-            href="/#buchen"
+            href="/buchung"
             className="flex items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
             style={{ borderColor: C.pine, color: C.pine }}
           >

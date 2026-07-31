@@ -80,6 +80,13 @@ export const t = {
         { text: "Best transfer experience in Switzerland so far. Fair fixed price, premium car.", name: "David L.", route: "ZRH → Winterthur", flag: "🇺🇸" },
       ],
     },
+    booking: {
+      title: "Buchung",
+      steps: ["Strecke & Zeit", "Fahrzeug", "Kontakt & Zahlung"],
+      route: "Strecke",
+      choose: "Bitte Zielort wählen …",
+      next: "Weiter",
+    },
     detail: {
       selectCar: "Wählen Sie Ihr Fahrzeug",
       summary: "Fahrtübersicht",
@@ -210,6 +217,13 @@ export const t = {
         { text: "Sehr professionell, WLAN und Wasser im Auto. Klare Kommunikation per WhatsApp.", name: "Anna K.", route: "ZRH → Basel", flag: "🇦🇹" },
         { text: "Best transfer experience in Switzerland so far. Fair fixed price, premium car.", name: "David L.", route: "ZRH → Winterthur", flag: "🇺🇸" },
       ],
+    },
+    booking: {
+      title: "Booking",
+      steps: ["Route & time", "Vehicle", "Contact & payment"],
+      route: "Route",
+      choose: "Please select destination …",
+      next: "Continue",
     },
     detail: {
       selectCar: "Select your car",
