@@ -457,13 +457,14 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             <li><a href="/touren" className="hover:text-white">{L.nav.tours}</a></li>
             <li><a href="/fahrzeuge" className="hover:text-white">{L.nav.fleet}</a></li>
             <li><a href="/galerie" className="hover:text-white">{L.nav.gallery}</a></li>
+            <li><a href="/blog" className="hover:text-white">{L.blogSec.title}</a></li>
           </ul>
         </div>
         <div>
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.company}</h4>
           <ul className="space-y-2.5 text-sm">
             <li><a href="/kontakt" className="hover:text-white">{L.nav.contact}</a></li>
-            <li><a href="/kontakt" className="hover:text-white">{L.footer.faq}</a></li>
+            <li><a href="/faq" className="hover:text-white">{L.footer.faq}</a></li>
           </ul>
         </div>
         <div>
