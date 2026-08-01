@@ -1,35 +1,51 @@
-"use client";
+import type { Metadata } from "next";
+import { routes } from "../config";
+import Strecken from "./strecken-client";
 
-import { C, routes } from "../config";
-import { t } from "../i18n";
-import { useLang } from "../providers";
-import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, BookingBar, RouteCard } from "../components";
+export const metadata: Metadata = {
+  title: "Strecken & Festpreise ab Flughafen Zürich | AirportTransfers",
+  description:
+    "Alle Transferstrecken ab Flughafen Zürich (ZRH) mit garantierten Festpreisen: Zug, Luzern, Basel, Interlaken, St. Moritz und 20 weitere Ziele in der ganzen Schweiz.",
+  alternates: { canonical: "/strecken" },
+};
 
-export default function Strecken() {
-  const { lang } = useLang();
-  const L = t[lang];
+const nameOf = (to: string | { de: string; en: string }) =>
+  typeof to === "string" ? to : to.de;
 
+export default function Page() {
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Flughafentransfer-Strecken ab Zürich",
+      numberOfItems: routes.length,
+      itemListElement: routes.map((r, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Service",
+          serviceType: "Airport transfer",
+          name: `Flughafen Zürich → ${nameOf(r.to)}`,
+          url: `/${r.slug}`,
+          offers: { "@type": "Offer", price: r.price.toFixed(2), priceCurrency: "CHF" },
+        },
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Startseite", item: "/" },
+        { "@type": "ListItem", position: 2, name: "Strecken", item: "/strecken" },
+      ],
+    },
+  ];
   return (
-    <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
-      <TopBar />
-      <SiteHeader active="strecken" />
-
-      <PageHero title={L.routesSec.pageTitle} crumb={L.nav.routes}>
-        <p className="mt-4 max-w-2xl text-white/70">{L.routesSec.pageSub}</p>
-        <BookingBar />
-      </PageHero>
-
-      <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {routes.map((r, i) => (
-            <RouteCard key={i} {...r} />
-          ))}
-        </div>
-        <p className="mt-8 text-sm font-semibold text-stone-500">{L.routesSec.allNote}</p>
-      </section>
-
-      <SiteFooter compact />
-      <FloatingButtons />
-    </div>
+    <>
+      {jsonLd.map((obj, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
+      ))}
+      <Strecken />
+    </>
   );
 }
