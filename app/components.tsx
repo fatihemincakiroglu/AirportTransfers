@@ -37,7 +37,7 @@ export function Eyebrow({ children, dark }: { children: React.ReactNode; dark?: 
 export function TopBar() {
   const { lang, setLang, P } = useLang();
   const L = t[lang];
-  const short = L.topbar.split("·")[0].trim(); // mobilde kısa etiket
+  const short = "VIP Transfers"; // mobilde kısa etiket
   return (
     <div style={{ background: C.pine }} className="text-white/80">
       <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 overflow-hidden px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
@@ -49,10 +49,6 @@ export function TopBar() {
           <span className="hidden sm:inline">✈ {L.topbar}</span>
         </span>
         <div className="flex flex-nowrap items-center gap-2 sm:gap-4">
-          <a href={`tel:+${WHATSAPP_NUMBER}`} className="whitespace-nowrap text-[11px] hover:text-white sm:text-xs">
-            📞 {PHONE_DISPLAY}
-          </a>
-          <span className="hidden text-white/30 sm:inline">|</span>
           <div className="flex flex-nowrap items-center gap-1 text-[11px] font-bold sm:gap-1.5 sm:text-xs">
             {(["de", "en"] as Lang[]).map((c) => {
               const active = lang === c;
