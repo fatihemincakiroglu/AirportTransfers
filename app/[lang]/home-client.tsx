@@ -94,8 +94,8 @@ export default function Home() {
                 {L.hero.cta2} ↗
               </a>
             </div>
-            {/* Slider noktaları — masaüstü (sol sütun) */}
-            <div className="mt-12 hidden gap-2 md:flex">
+            {/* Slider noktaları — CTA butonlarının altında (tüm ekranlar) */}
+            <div className="mt-8 flex gap-2 md:mt-12">
               {HERO_IMAGES.map((_, i) => (
                 <button
                   key={i}
@@ -110,18 +110,6 @@ export default function Home() {
 
           <div className="order-1 md:order-2">
             <BookingCard />
-            {/* Slider noktaları — mobil (kartın altında, ortalanmış) */}
-            <div className="mt-6 flex justify-center gap-2 md:hidden">
-              {HERO_IMAGES.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSlide(i)}
-                  aria-label={`Slide ${i + 1}`}
-                  className="h-2.5 rounded-full transition-all"
-                  style={{ width: slide === i ? 32 : 10, background: slide === i ? C.gold : "rgba(255,255,255,0.4)" }}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </section>
