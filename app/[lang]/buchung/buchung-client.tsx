@@ -28,6 +28,8 @@ export default function Buchung() {
   });
   const [accepted, setAccepted] = useState(false);
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
+  const [reversed, setReversed] = useState(false);
+
   const bump = (k: "baby" | "child" | "ski", d: number) =>
     setExtras((s) => ({ ...s, [k]: Math.max(0, Math.min(4, s[k] + d)) }));
 
@@ -65,16 +67,7 @@ export default function Buchung() {
 
     if (idx >= 0) {
       setRouteIdx(idx);
-      const nm = localName(routes[idx].to, lang);
-      if (reversed || isAirport(to)) {
-        setF((s) => ({
-          ...s,
-          notes:
-            lang === "de"
-              ? `Fahrtrichtung: ${nm} → Flughafen Zürich (ZRH)`
-              : `Direction: ${nm} → Zurich Airport (ZRH)`,
-        }));
-      }
+      if (reversed) setReversed(true); // yön: şehir → havalimanı
       if (d && tm) setStep(2); // → doğrudan araç seçimi
     } else if (from || to) {
       // Listede olmayan özel güzergâh — notlara yaz, adım 1'de kalsın
@@ -86,6 +79,9 @@ export default function Buchung() {
   const route = routeIdx !== null ? routes[routeIdx] : null;
   const n = route ? localName(route.to, lang) : "";
   const origin = L.routesSec.origin;
+  // Seçilen yöne göre A/B uçları (fiyat iki yönde de aynı)
+  const pickupLabel = reversed ? n : origin;
+  const dropoffLabel = reversed ? (origin as string) : n;
   const dur = route
     ? lang === "de"
       ? route.min < 60 ? `${route.min} Min.` : `${Math.floor(route.min / 60)} Std.${route.min % 60 ? ` ${route.min % 60} Min.` : ""}`
@@ -108,7 +104,7 @@ export default function Buchung() {
     ].filter(Boolean).join("\n");
     return (
       `${L.msg.title}\n\n` +
-      `${D.pickupLoc}: ${origin}\n${D.dropoffLoc}: ${n}\n` +
+      `${D.pickupLoc}: ${pickupLabel}\n${D.dropoffLoc}: ${dropoffLabel}\n` +
       `${L.form.date}: ${date}\n${L.form.time}: ${time}\n\n` +
       `${D.vehicle}: ${localName(c.name, lang)} – ${c.car}\n` +
       `${D.total}: CHF ${total.toFixed(2)}\n` +
@@ -365,18 +361,28 @@ export default function Buchung() {
         <aside className="h-fit space-y-4 lg:sticky lg:top-24">
           <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
             <h3 className="font-display text-lg font-semibold" style={{ color: C.pine }}>{D.summary}</h3>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li className="flex gap-3">
+            <ul className="relative mt-4 space-y-3 text-sm">
+              <li className="flex gap-3 pr-10">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: "#E2574C" }}>A</span>
-                <span><b>{origin}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
+                <span><b>{route ? pickupLabel : origin}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
               </li>
-              <li className="flex gap-3">
+              <li className="flex gap-3 pr-10">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: C.pine }}>B</span>
                 <span>
-                  <b>{route ? n : "—"}</b>
+                  <b>{route ? dropoffLabel : "—"}</b>
                   <span className="block text-xs text-stone-500">{D.dropoffLoc}</span>
                 </span>
               </li>
+              {route && (
+                <button
+                  type="button"
+                  onClick={() => setReversed((r) => !r)}
+                  title={lang === "de" ? "Richtung tauschen" : "Swap direction"}
+                  aria-label="swap direction"
+                  className="absolute right-0 top-7 flex h-8 w-8 items-center justify-center rounded-full border bg-white text-sm shadow-sm transition-all hover:rotate-180 hover:shadow-md"
+                  style={{ borderColor: C.gold, color: C.pine }}
+                >⇅</button>
+              )}
               {(date || time) && (
                 <li className="flex gap-3">
                   <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-100">📅</span>
@@ -390,7 +396,7 @@ export default function Buchung() {
                 <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
                   <iframe
                     title="Route map"
-                    src={`https://maps.google.com/maps?saddr=${encodeURIComponent("Zurich Airport")}&daddr=${encodeURIComponent(n + ", Switzerland")}&hl=${lang}&output=embed`}
+                    src={`https://maps.google.com/maps?saddr=${encodeURIComponent(reversed ? n + ", Switzerland" : "Zurich Airport")}&daddr=${encodeURIComponent(reversed ? "Zurich Airport" : n + ", Switzerland")}&hl=${lang}&output=embed`}
                     className="h-52 w-full"
                     loading="lazy"
                   />
