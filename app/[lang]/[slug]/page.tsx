@@ -63,7 +63,7 @@ export default async function Page({ params }: Params) {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: `/${lang}` },
-        { "@type": "ListItem", position: 2, name: lang === "de" ? "Strecken" : "Routes", item: `/${lang}/strecken` },
+        { "@type": "ListItem", position: 2, name: lang === "de" ? "Strecken" : "Routes", item: lang === "de" ? "/de/strecken" : "/en/routes" },
         { "@type": "ListItem", position: 3, name: `ZRH → ${n}`, item: `/${lang}/${slug}` },
       ],
     });
