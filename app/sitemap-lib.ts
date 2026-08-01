@@ -28,6 +28,7 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/touren", "monthly", 0.7],
   ["/galerie", "monthly", 0.5],
   ["/kontakt", "yearly", 0.6],
+  ["/ueber-uns", "yearly", 0.6],
   ["/faq", "monthly", 0.6],
   ["/blog", "weekly", 0.7],
   ...routes.map((r): [string, "monthly", number] => [`/${r.slug}`, "monthly", 0.8]),

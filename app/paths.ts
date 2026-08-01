@@ -6,6 +6,7 @@
 
 export const SEGMENTS: Record<string, { de: string; en: string }> = {
   kontakt: { de: "kontakt", en: "contact" },
+  "ueber-uns": { de: "ueber-uns", en: "about-us" },
   strecken: { de: "strecken", en: "routes" },
   fahrzeuge: { de: "fahrzeuge", en: "vehicles" },
   touren: { de: "touren", en: "tours" },
