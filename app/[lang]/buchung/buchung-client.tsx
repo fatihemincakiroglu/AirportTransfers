@@ -6,7 +6,7 @@ import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  mailHref, localName, inputCls, labelCls, norm,
+  mailHref, localName, inputCls, labelCls, norm, waHref,
 } from "../../components";
 
 export default function Buchung() {
@@ -29,6 +29,8 @@ export default function Buchung() {
   const [accepted, setAccepted] = useState(false);
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const [reversed, setReversed] = useState(false);
+  // İki ucu da havalimanı olmayan özel güzergâh (Uster → Basel gibi)
+  const [custom, setCustom] = useState<{ from: string; to: string } | null>(null);
 
   const bump = (k: "baby" | "child" | "ski", d: number) =>
     setExtras((s) => ({ ...s, [k]: Math.max(0, Math.min(4, s[k] + d)) }));
@@ -58,19 +60,35 @@ export default function Buchung() {
           })
         : -1;
 
-    let idx = findIdx(to);
-    let reversed = false;
-    if (idx < 0) {
-      idx = findIdx(from);
-      if (idx >= 0) reversed = true; // Basel → Flughafen yönü
+    const fromAir = isAirport(from);
+    const toAir = isAirport(to);
+
+    // İki uç da dolu ve İKİSİ DE havalimanı değilse: sabit rota YOK → özel güzergâh
+    if (from && to && !fromAir && !toAir) {
+      setCustom({ from, to });
+      setF((s) => ({ ...s, notes: `${from} → ${to}` }));
+      return;
+    }
+
+    let idx = -1;
+    let rev = false;
+    if (toAir && from) {
+      idx = findIdx(from);            // Basel → ZRH
+      if (idx >= 0) rev = true;
+    } else if (to) {
+      idx = findIdx(to);              // ZRH → Basel
+    } else if (from && !fromAir) {
+      idx = findIdx(from);            // sadece kalkış yazılmış: şehir → ZRH varsay
+      if (idx >= 0) rev = true;
     }
 
     if (idx >= 0) {
       setRouteIdx(idx);
-      if (reversed) setReversed(true); // yön: şehir → havalimanı
+      if (rev) setReversed(true);
       if (d && tm) setStep(2); // → doğrudan araç seçimi
     } else if (from || to) {
-      // Listede olmayan özel güzergâh — notlara yaz, adım 1'de kalsın
+      // Listede olmayan uç — özel güzergâh olarak göster
+      setCustom({ from: from || "", to: to || "" });
       setF((s) => ({ ...s, notes: `${from || "?"} → ${to || "?"}` }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,8 +98,11 @@ export default function Buchung() {
   const n = route ? localName(route.to, lang) : "";
   const origin = L.routesSec.origin;
   // Seçilen yöne göre A/B uçları (fiyat iki yönde de aynı)
-  const pickupLabel = reversed ? n : origin;
-  const dropoffLabel = reversed ? (origin as string) : n;
+  const showCustom = !route && custom !== null;
+  const cFrom = showCustom ? (reversed ? custom!.to : custom!.from) : "";
+  const cTo = showCustom ? (reversed ? custom!.from : custom!.to) : "";
+  const pickupLabel = showCustom ? (cFrom || "—") : reversed ? n : origin;
+  const dropoffLabel = showCustom ? (cTo || "—") : reversed ? (origin as string) : n;
   const dur = route
     ? lang === "de"
       ? route.min < 60 ? `${route.min} Min.` : `${Math.floor(route.min / 60)} Std.${route.min % 60 ? ` ${route.min % 60} Min.` : ""}`
@@ -364,16 +385,16 @@ export default function Buchung() {
             <ul className="relative mt-4 space-y-3 text-sm">
               <li className="flex gap-3 pr-10">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: "#E2574C" }}>A</span>
-                <span><b>{route ? pickupLabel : origin}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
+                <span><b>{route || showCustom ? pickupLabel : origin}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
               </li>
               <li className="flex gap-3 pr-10">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: C.pine }}>B</span>
                 <span>
-                  <b>{route ? dropoffLabel : "—"}</b>
+                  <b>{route || showCustom ? dropoffLabel : "—"}</b>
                   <span className="block text-xs text-stone-500">{D.dropoffLoc}</span>
                 </span>
               </li>
-              {route && (
+              {(route || showCustom) && (
                 <button
                   type="button"
                   onClick={() => setReversed((r) => !r)}
@@ -391,6 +412,42 @@ export default function Buchung() {
               )}
             </ul>
 
+            {showCustom && cFrom && cTo && (
+              <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
+                <iframe
+                  title="Custom route map"
+                  src={`https://maps.google.com/maps?saddr=${encodeURIComponent(cFrom + ", Switzerland")}&daddr=${encodeURIComponent(cTo + ", Switzerland")}&hl=${lang}&output=embed`}
+                  className="h-52 w-full"
+                  loading="lazy"
+                />
+              </div>
+            )}
+            {showCustom && (
+              <div className="mt-4 rounded-xl p-4 text-sm" style={{ background: "#FBF7EE" }}>
+                <b style={{ color: C.pine }}>
+                  {lang === "de" ? "Individuelle Strecke" : "Custom route"}
+                </b>
+                <p className="mt-1 text-stone-600">
+                  {lang === "de"
+                    ? "Diese Verbindung ist keine Standardstrecke – wir senden Ihnen gerne innert 15 Minuten ein Festpreisangebot per WhatsApp."
+                    : "This connection isn't a standard route – we'll gladly send you a fixed-price offer via WhatsApp within 15 minutes."}
+                </p>
+                <a
+                  href={waHref(
+                    `${L.msg.title}\n\n${D.pickupLoc}: ${cFrom || "?"}\n${D.dropoffLoc}: ${cTo || "?"}\n` +
+                    (date ? `${L.form.date}: ${date}\n` : "") +
+                    (time ? `${L.form.time}: ${time}\n` : "") +
+                    `${L.form.pax}: ${f.pax}`
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 block rounded-full px-5 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white"
+                  style={{ background: "#25D366" }}
+                >
+                  💬 {lang === "de" ? "Festpreis anfragen" : "Request fixed price"}
+                </a>
+              </div>
+            )}
             {route && (
               <>
                 <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">

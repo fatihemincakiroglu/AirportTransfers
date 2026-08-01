@@ -24,6 +24,7 @@ export default function RouteClient({ slug }: { slug: string }) {
 
   // Adım 1: tarih/saat + araç seçimi · Adım 2: yolcu bilgileri
   const [step, setStep] = useState<1 | 2>(1);
+  const [reversed, setReversed] = useState(false);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [car, setCar] = useState<number | null>(null);
@@ -56,6 +57,8 @@ export default function RouteClient({ slug }: { slug: string }) {
 
   const n = localName(route.to, lang);
   const origin = L.routesSec.origin;
+  const pickupLabel = reversed ? n : origin;
+  const dropoffLabel = reversed ? (origin as string) : n;
   const dur =
     lang === "de"
       ? route.min < 60 ? `${route.min} Min.` : `${Math.floor(route.min / 60)} Std.${route.min % 60 ? ` ${route.min % 60} Min.` : ""}`
@@ -75,7 +78,7 @@ export default function RouteClient({ slug }: { slug: string }) {
     ].filter(Boolean).join("\n");
     return (
       `${L.msg.title}\n\n` +
-      `${D.pickupLoc}: ${origin}\n${D.dropoffLoc}: ${n}\n` +
+      `${D.pickupLoc}: ${pickupLabel}\n${D.dropoffLoc}: ${dropoffLabel}\n` +
       `${L.form.date}: ${date}\n${L.form.time}: ${time}\n\n` +
       `${D.vehicle}: ${localName(c.name, lang)} – ${c.car}\n` +
       `${D.total}: CHF ${total.toFixed(2)}\n` +
@@ -116,15 +119,23 @@ export default function RouteClient({ slug }: { slug: string }) {
     <aside className="h-fit space-y-4 lg:sticky lg:top-24">
       <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
         <h3 className="font-display text-lg font-semibold" style={{ color: C.pine }}>{D.summary}</h3>
-        <ul className="mt-4 space-y-3 text-sm">
-          <li className="flex gap-3">
+        <ul className="relative mt-4 space-y-3 text-sm">
+          <li className="flex gap-3 pr-10">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: "#E2574C" }}>A</span>
-            <span><b>{origin}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
+            <span><b>{pickupLabel}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
           </li>
           <li className="flex gap-3">
             <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: C.pine }}>B</span>
-            <span><b>{n}</b><span className="block text-xs text-stone-500">{D.dropoffLoc}</span></span>
+            <span><b>{dropoffLabel}</b><span className="block text-xs text-stone-500">{D.dropoffLoc}</span></span>
           </li>
+          <button
+            type="button"
+            onClick={() => setReversed((r) => !r)}
+            title={lang === "de" ? "Richtung tauschen" : "Swap direction"}
+            aria-label="swap direction"
+            className="absolute right-0 top-7 flex h-8 w-8 items-center justify-center rounded-full border bg-white text-sm shadow-sm transition-all hover:rotate-180 hover:shadow-md"
+            style={{ borderColor: C.gold, color: C.pine }}
+          >⇅</button>
           {date && (
             <li className="flex gap-3">
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-100">📅</span>
@@ -136,7 +147,7 @@ export default function RouteClient({ slug }: { slug: string }) {
         <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
           <iframe
             title="Route map"
-            src={`https://maps.google.com/maps?saddr=${encodeURIComponent("Zurich Airport")}&daddr=${encodeURIComponent(n + ", Switzerland")}&hl=${lang}&output=embed`}
+            src={`https://maps.google.com/maps?saddr=${encodeURIComponent(reversed ? n + ", Switzerland" : "Zurich Airport")}&daddr=${encodeURIComponent(reversed ? "Zurich Airport" : n + ", Switzerland")}&hl=${lang}&output=embed`}
             className="h-52 w-full"
             loading="lazy"
           />
