@@ -571,17 +571,10 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
 export function SiteFooter({ compact }: { compact?: boolean }) {
   const { lang, P } = useLang();
   const L = t[lang];
-
-  if (compact) {
-    return (
-      <footer style={{ background: C.pineDeep }} className="text-white/70">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-6 text-xs md:flex-row">
-          <span>© {new Date().getFullYear()} <b className="text-white">AirportTransfers Zürich</b> · {L.footer.rights}</span>
-          <span className="text-center text-white/50">{COMPANY_NAME} · {COMPANY_REG} · {COMPANY_ADDRESS}</span>
-        </div>
-      </footer>
-    );
-  }
+  // Not: "compact" modu bilinçli olarak devre dışı — tam footer her sayfada
+  // gösterilir (linkler, popüler rotalar, iletişim). Prop, eski çağrılarla
+  // uyumluluk için imzada duruyor.
+  void compact;
 
   return (
     <footer
