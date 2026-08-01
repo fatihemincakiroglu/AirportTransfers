@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: `/${lang}/kontakt`,
-      languages: { en: "/en/kontakt", de: "/de/kontakt", "x-default": "/en/kontakt" },
+      canonical: lang === "de" ? "/de/kontakt" : "/en/contact",
+      languages: { en: "/en/contact", de: "/de/kontakt", "x-default": "/en/contact" },
     },
   };
 }

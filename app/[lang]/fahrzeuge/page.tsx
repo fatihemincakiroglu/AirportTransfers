@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: `/${lang}/fahrzeuge`,
-      languages: { en: "/en/fahrzeuge", de: "/de/fahrzeuge", "x-default": "/en/fahrzeuge" },
+      canonical: lang === "de" ? "/de/fahrzeuge" : "/en/vehicles",
+      languages: { en: "/en/vehicles", de: "/de/fahrzeuge", "x-default": "/en/vehicles" },
     },
   };
 }

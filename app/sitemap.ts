@@ -1,33 +1,35 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL, routes } from "./config";
 import { blogPosts } from "./blogContent";
+import { localizePath } from "./paths";
 
-// Dinamik sitemap: her sayfa iki dilde, hreflang alternatifleriyle.
+// Dinamik sitemap: her sayfa iki dilde, dile göre çevrilmiş yollarla.
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const langs = ["en", "de"] as const;
 
   const entry = (
-    path: string,
+    internalPath: string,
     lastModified: Date,
     changeFrequency: "weekly" | "monthly" | "yearly",
     priority: number
   ): MetadataRoute.Sitemap =>
-    langs.map((l) => ({
-      url: `${SITE_URL}/${l}${path}`,
-      lastModified,
-      changeFrequency,
-      priority,
-      alternates: {
-        languages: {
-          en: `${SITE_URL}/en${path}`,
-          de: `${SITE_URL}/de${path}`,
-        },
-      },
-    }));
+    langs.map((l) => {
+      const pub = (lg: "en" | "de") => {
+        const p = localizePath(internalPath, lg);
+        return `${SITE_URL}/${lg}${p === "/" ? "" : p}`;
+      };
+      return {
+        url: pub(l),
+        lastModified,
+        changeFrequency,
+        priority,
+        alternates: { languages: { en: pub("en"), de: pub("de") } },
+      };
+    });
 
   return [
-    ...entry("", now, "weekly", 1),
+    ...entry("/", now, "weekly", 1),
     ...entry("/strecken", now, "weekly", 0.9),
     ...entry("/buchung", now, "monthly", 0.9),
     ...entry("/fahrzeuge", now, "monthly", 0.7),
