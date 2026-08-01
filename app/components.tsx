@@ -559,12 +559,7 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
         </ul>
       )}
 
-      <a
-        href={waHref(`${L.msg.title}\n\n${n} – ${car}`)}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group/btn mt-auto block"
-      >
+      <a href={P("/buchung")} className="group/btn mt-auto block">
         <span
           className="mt-4 flex items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white shadow-md transition-all duration-300 group-hover/btn:shadow-lg"
           style={{ background: C.pine }}
@@ -572,7 +567,7 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
           <span
             className="bg-gradient-to-r from-white to-white bg-clip-text transition-colors duration-300 group-hover/btn:text-[#C9A24B]"
           >
-            {L.fleetSec.cta}
+            {L.nav.book}
           </span>
           <span className="transition-transform duration-300 group-hover/btn:translate-x-1" style={{ color: C.gold }}>→</span>
         </span>
