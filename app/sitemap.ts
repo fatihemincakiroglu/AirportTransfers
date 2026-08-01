@@ -2,38 +2,41 @@ import type { MetadataRoute } from "next";
 import { SITE_URL, routes } from "./config";
 import { blogPosts } from "./blogContent";
 
-// Dinamik sitemap: rota veya blog eklendiğinde otomatik güncellenir.
+// Dinamik sitemap: her sayfa iki dilde, hreflang alternatifleriyle.
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+  const langs = ["en", "de"] as const;
 
-  // Statik sayfalar
-  const staticPages: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
-    { url: `${SITE_URL}/strecken`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
-    { url: `${SITE_URL}/buchung`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
-    { url: `${SITE_URL}/fahrzeuge`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${SITE_URL}/touren`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${SITE_URL}/galerie`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${SITE_URL}/kontakt`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
-    { url: `${SITE_URL}/faq`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+  const entry = (
+    path: string,
+    lastModified: Date,
+    changeFrequency: "weekly" | "monthly" | "yearly",
+    priority: number
+  ): MetadataRoute.Sitemap =>
+    langs.map((l) => ({
+      url: `${SITE_URL}/${l}${path}`,
+      lastModified,
+      changeFrequency,
+      priority,
+      alternates: {
+        languages: {
+          en: `${SITE_URL}/en${path}`,
+          de: `${SITE_URL}/de${path}`,
+        },
+      },
+    }));
+
+  return [
+    ...entry("", now, "weekly", 1),
+    ...entry("/strecken", now, "weekly", 0.9),
+    ...entry("/buchung", now, "monthly", 0.9),
+    ...entry("/fahrzeuge", now, "monthly", 0.7),
+    ...entry("/touren", now, "monthly", 0.7),
+    ...entry("/galerie", now, "monthly", 0.5),
+    ...entry("/kontakt", now, "yearly", 0.6),
+    ...entry("/faq", now, "monthly", 0.6),
+    ...entry("/blog", now, "weekly", 0.7),
+    ...routes.flatMap((r) => entry(`/${r.slug}`, now, "monthly", 0.8)),
+    ...blogPosts.flatMap((p) => entry(`/blog/${p.slug}`, new Date(p.date), "yearly", 0.6)),
   ];
-
-  // 25 rota sayfası
-  const routePages: MetadataRoute.Sitemap = routes.map((r) => ({
-    url: `${SITE_URL}/${r.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
-
-  // Blog yazıları (yayın tarihiyle)
-  const blogPages: MetadataRoute.Sitemap = blogPosts.map((p) => ({
-    url: `${SITE_URL}/blog/${p.slug}`,
-    lastModified: new Date(p.date),
-    changeFrequency: "yearly",
-    priority: 0.6,
-  }));
-
-  return [...staticPages, ...routePages, ...blogPages];
 }

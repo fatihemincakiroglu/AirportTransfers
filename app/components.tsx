@@ -33,7 +33,7 @@ export function Eyebrow({ children, dark }: { children: React.ReactNode; dark?: 
 
 // ── Üst şerit ──────────────────────────────────────────────────
 export function TopBar() {
-  const { lang, setLang } = useLang();
+  const { lang, setLang, P } = useLang();
   const L = t[lang];
   const short = L.topbar.split("·")[0].trim(); // mobilde kısa etiket
   return (
@@ -72,7 +72,7 @@ export function TopBar() {
 
 // ── Header (aktif sayfa vurgusu + mobil menü) ─────────────────
 export function SiteHeader({ active }: { active?: string }) {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   const [open, setOpen] = useState(false);
 
@@ -92,7 +92,7 @@ export function SiteHeader({ active }: { active?: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-        <a href="/" className="flex items-center gap-3">
+        <a href={P("/")} className="flex items-center gap-3">
           <span
             className="font-display flex h-10 w-10 items-center justify-center rounded-full border-2 text-lg font-semibold"
             style={{ borderColor: C.gold, color: C.pine }}
@@ -114,7 +114,7 @@ export function SiteHeader({ active }: { active?: string }) {
 
         <div className="flex items-center gap-3">
           <a
-            href="/buchung"
+            href={P("/buchung")}
             className="rounded-full px-5 py-2.5 text-sm font-bold text-white shadow-md transition-transform hover:-translate-y-0.5"
             style={{ background: C.pine }}
           >
@@ -150,13 +150,13 @@ export function SiteHeader({ active }: { active?: string }) {
 
 // ── Alt sayfa hero'su (breadcrumb + başlık) ───────────────────
 export function PageHero({ title, crumb, children }: { title: string; crumb: string; children?: React.ReactNode }) {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   return (
     <section style={{ background: C.pine }} className="text-white">
       <div className="mx-auto max-w-7xl px-5 pb-12 pt-10 md:pb-14">
         <nav className="flex items-center gap-2 text-sm text-white/60">
-          <a href="/" className="hover:text-white">{L.nav.home}</a>
+          <a href={P("/")} className="hover:text-white">{L.nav.home}</a>
           <span>/</span>
           <span className="text-white">{crumb}</span>
         </nav>
@@ -170,7 +170,7 @@ export function PageHero({ title, crumb, children }: { title: string; crumb: str
 
 // ── Yatay rezervasyon çubuğu ──────────────────────────────────
 export function BookingBar() {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   const [f, setF] = useState({ from: "", to: "", date: "", time: "", pax: "2", kids: "0" });
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
@@ -244,7 +244,7 @@ export function BookingBar() {
 
 // ── Dikey rezervasyon kartı (ana sayfa hero) ──────────────────
 export function BookingCard() {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   const [f, setF] = useState({ from: "Flughafen Zürich (ZRH)", to: "", date: "", time: "", pax: "2", kids: "0" });
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
@@ -318,7 +318,7 @@ export function BookingCard() {
 
 // ── Kartlar ───────────────────────────────────────────────────
 export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to: LocalName; km: number; min: number; price: number; img: string }) {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   const n = localName(to, lang);
   const dur =
@@ -327,7 +327,7 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
       : min < 60 ? `${min} mins` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60} mins` : ""}`;
   return (
     <a
-      href={`/${slug}`}
+      href={P(`/${slug}`)}
       className="group relative flex min-h-[240px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
       style={{
         backgroundColor: C.pine,
@@ -353,7 +353,7 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
 }
 
 export function TourCard({ name, dur, img }: { name: string; dur: string; img: string }) {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   return (
     <a
@@ -378,7 +378,7 @@ export function TourCard({ name, dur, img }: { name: string; dur: string; img: s
 }
 
 export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: LocalName; car: string; pax: number; bags: number; img: string; showFeatures?: boolean }) {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   const n = localName(name, lang);
   return (
@@ -415,7 +415,7 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
 
 // ── Footer ────────────────────────────────────────────────────
 export function SiteFooter({ compact }: { compact?: boolean }) {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
 
   if (compact) {
@@ -453,18 +453,18 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
         <div>
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.explore}</h4>
           <ul className="space-y-2.5 text-sm">
-            <li><a href="/strecken" className="hover:text-white">{L.nav.routes}</a></li>
-            <li><a href="/touren" className="hover:text-white">{L.nav.tours}</a></li>
-            <li><a href="/fahrzeuge" className="hover:text-white">{L.nav.fleet}</a></li>
-            <li><a href="/galerie" className="hover:text-white">{L.nav.gallery}</a></li>
-            <li><a href="/blog" className="hover:text-white">{L.blogSec.title}</a></li>
+            <li><a href={P("/strecken")} className="hover:text-white">{L.nav.routes}</a></li>
+            <li><a href={P("/touren")} className="hover:text-white">{L.nav.tours}</a></li>
+            <li><a href={P("/fahrzeuge")} className="hover:text-white">{L.nav.fleet}</a></li>
+            <li><a href={P("/galerie")} className="hover:text-white">{L.nav.gallery}</a></li>
+            <li><a href={P("/blog")} className="hover:text-white">{L.blogSec.title}</a></li>
           </ul>
         </div>
         <div>
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.company}</h4>
           <ul className="space-y-2.5 text-sm">
-            <li><a href="/kontakt" className="hover:text-white">{L.nav.contact}</a></li>
-            <li><a href="/faq" className="hover:text-white">{L.footer.faq}</a></li>
+            <li><a href={P("/kontakt")} className="hover:text-white">{L.nav.contact}</a></li>
+            <li><a href={P("/faq")} className="hover:text-white">{L.footer.faq}</a></li>
           </ul>
         </div>
         <div>
@@ -506,7 +506,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
 
 // ── Yüzen butonlar: masaüstünde yan dock, mobilde alt çubuk ───
 export function FloatingButtons() {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const btn =
     "group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 hover:scale-110 hover:bg-stone-100";
   const icon = "h-7 w-7 object-contain drop-shadow-sm";
@@ -531,7 +531,7 @@ export function FloatingButtons() {
           <img src="/icons/phone.png" alt="" className={icon} />
           <span className={tip} style={{ background: C.pine }}>{labels.call}</span>
         </a>
-        <a href="/buchung" aria-label={labels.book} className={btn}>
+        <a href={P("/buchung")} aria-label={labels.book} className={btn}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/booking.png" alt="" className={icon} />
           <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
@@ -567,7 +567,7 @@ export function FloatingButtons() {
             {labels.call}
           </a>
           <a
-            href="/buchung"
+            href={P("/buchung")}
             className="flex items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
             style={{ borderColor: C.pine, color: C.pine }}
           >

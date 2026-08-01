@@ -1,0 +1,105 @@
+import type { Metadata } from "next";
+import { Playfair_Display, Manrope } from "next/font/google";
+import { LangProvider } from "../providers";
+import { SITE_URL } from "../config";
+import type { Lang } from "../i18n";
+import "../globals.css";
+
+const serif = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
+  variable: "--font-serif",
+});
+
+const sans = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+});
+
+type Params = { params: Promise<{ lang: string }> };
+
+// Her iki dili derleme sırasında oluştur
+export function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "de" }];
+}
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { lang } = await params;
+  const de = lang === "de";
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: de
+      ? "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes"
+      : "AirportTransfers Zurich | ZRH Airport Transfer · VIP Mercedes",
+    description: de
+      ? "Privater Flughafentransfer Zürich zum Festpreis. Geschulte Chauffeure, Flugverfolgung, 24/7."
+      : "Private Zurich Airport transfers at fixed prices. Trained chauffeurs, flight tracking, 24/7.",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    authors: [{ name: "AirportTransfers Zürich", url: SITE_URL }],
+    creator: "AirportTransfers Zürich",
+    publisher: "AirportTransfers Zürich",
+    alternates: {
+      canonical: `/${lang}`,
+      languages: { en: "/en", de: "/de", "x-default": "/en" },
+    },
+  };
+}
+
+export default async function RootLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const safeLang: Lang = lang === "de" ? "de" : "en";
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "AirportTransfers Zürich",
+      legalName: "Kula-ZATK",
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon.png`,
+      telephone: "+41763020326",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "Industristrasse 14",
+        postalCode: "8302",
+        addressLocality: "Kloten",
+        addressCountry: "CH",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "AirportTransfers Zürich",
+      url: SITE_URL,
+      inLanguage: ["en", "de"],
+    },
+  ];
+
+  return (
+    <html lang={safeLang}>
+      <body className={`${sans.variable} ${serif.variable}`}>
+        {jsonLd.map((obj, i) => (
+          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
+        ))}
+        <LangProvider lang={safeLang}>{children}</LangProvider>
+      </body>
+    </html>
+  );
+}

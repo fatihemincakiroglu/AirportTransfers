@@ -1,32 +1,36 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import type { Lang } from "./i18n";
 
-const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({
-  lang: "de",
+type Ctx = {
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  /** Dil önekli iç link üretir: P("/strecken") → "/de/strecken" */
+  P: (path: string) => string;
+};
+
+const LangContext = createContext<Ctx>({
+  lang: "en",
   setLang: () => {},
+  P: (p) => p,
 });
 
-export function LangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>("de");
-
-  // Sayfalar arasında dil seçimini hatırla
-  useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem("lang");
-      if (saved === "de" || saved === "en") setLangState(saved);
-    } catch {}
-  }, []);
+export function LangProvider({ lang, children }: { lang: Lang; children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
 
   const setLang = (l: Lang) => {
-    setLangState(l);
-    try {
-      window.localStorage.setItem("lang", l);
-    } catch {}
+    if (l === lang) return;
+    // Mevcut yolun dil önekini değiştir: /de/strecken → /en/strecken
+    const rest = pathname.replace(/^\/(de|en)(?=\/|$)/, "");
+    router.push(`/${l}${rest || ""}`);
   };
 
-  return <LangContext.Provider value={{ lang, setLang }}>{children}</LangContext.Provider>;
+  const P = (path: string) => (path === "/" ? `/${lang}` : `/${lang}${path}`);
+
+  return <LangContext.Provider value={{ lang, setLang, P }}>{children}</LangContext.Provider>;
 }
 
 export const useLang = () => useContext(LangContext);
