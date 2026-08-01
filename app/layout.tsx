@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Manrope } from "next/font/google";
 import { LangProvider } from "./providers";
+import { SITE_URL } from "./config";
 import "./globals.css";
 
 const serif = Playfair_Display({
@@ -16,6 +17,7 @@ const sans = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes",
   description:
     "Privater Flughafentransfer Zürich zum Festpreis. Geschulte Chauffeure, Flugverfolgung, 24/7. Private Zurich Airport transfers at fixed prices.",

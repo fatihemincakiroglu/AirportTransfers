@@ -1,6 +1,9 @@
 // ─────────────────────────────────────────────────────────────
 //  TEK AYAR DOSYASI — iletişim bilgilerini sadece burada değiştir
 // ─────────────────────────────────────────────────────────────
+// Sitenin tam adresi — kendi domainini bağlayınca burayı güncelle:
+export const SITE_URL = "https://airport-transfers-gamma.vercel.app";
+
 export const WHATSAPP_NUMBER = "41763020326"; // + ve boşluk olmadan
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
 export const BOOKING_WHATSAPP_NUMBER = "905325766383"; // +90 532 576 63 83
