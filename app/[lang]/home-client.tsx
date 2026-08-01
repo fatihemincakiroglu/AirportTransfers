@@ -67,19 +67,19 @@ export default function Home() {
           </div>
         ))}
 
-        <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-16 text-white md:grid-cols-[1.15fr_0.85fr] md:pb-24 md:pt-24">
-          <div className="flex flex-col justify-center">
+        <div className="relative mx-auto grid max-w-7xl gap-8 px-5 pb-16 pt-6 text-white md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:pb-24 md:pt-24">
+          <div className="order-2 flex flex-col justify-center md:order-1">
             <p className="mb-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em]" style={{ color: C.gold }}>
               <span className="h-px w-10" style={{ background: C.gold }} />
               {L.hero.eyebrow}
             </p>
-            <h1 className="font-display text-5xl font-semibold leading-[1.08] md:text-7xl">
+            <h1 className="font-display text-4xl font-semibold leading-[1.08] md:text-7xl">
               {L.hero.title1}
               <br />
               {L.hero.title2}
             </h1>
             <p className="mt-5 text-base text-white/80 md:text-lg">{L.hero.sub}</p>
-            <div className="mt-6 flex flex-wrap gap-2">
+            <div className="mt-6 hidden flex-wrap gap-2 md:flex">
               {L.hero.pills.map((p, i) => (
                 <span key={i} className="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold backdrop-blur">
                   ✓ {p}
@@ -108,7 +108,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div>
+          <div className="order-1 md:order-2">
             <BookingCard />
             {/* Slider noktaları — mobil (kartın altında, ortalanmış) */}
             <div className="mt-6 flex justify-center gap-2 md:hidden">
