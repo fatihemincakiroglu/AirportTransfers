@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  mailHref, localName, inputCls, labelCls,
+  mailHref, localName, inputCls, labelCls, norm,
 } from "../../components";
 
 export default function Buchung() {
@@ -30,6 +30,58 @@ export default function Buchung() {
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const bump = (k: "baby" | "child" | "ski", d: number) =>
     setExtras((s) => ({ ...s, [k]: Math.max(0, Math.min(4, s[k] + d)) }));
+
+  // ── Ana sayfa arama formundan gelen verilerle ön-doldurma ──
+  // /buchung?from=Basel&to=Flughafen…&date=…&time=…&pax=2&kids=0
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    if (![...sp.keys()].length) return;
+    const g = (k: string) => (sp.get(k) ?? "").trim();
+    const from = g("from"), to = g("to"), d = g("date"), tm = g("time");
+    const paxN = parseInt(g("pax") || "0", 10) || 0;
+    const kidsN = parseInt(g("kids") || "0", 10) || 0;
+
+    if (d) setDate(d);
+    if (tm) setTime(tm);
+    if (paxN) setF((s) => ({ ...s, pax: String(Math.min(7, paxN + kidsN)) }));
+    if (kidsN) setExtras((s) => ({ ...s, child: Math.min(4, kidsN) }));
+
+    // Konum metnini rotayla eşleştir (aksan duyarsız, iki dilde)
+    const isAirport = (s: string) => /zrh|flughafen|airport/.test(norm(s));
+    const findIdx = (s: string) =>
+      s
+        ? routes.findIndex((r) => {
+            const names = typeof r.to === "string" ? [r.to] : [r.to.de, r.to.en];
+            return names.some((nm) => norm(s).includes(norm(nm)) || norm(nm).includes(norm(s)));
+          })
+        : -1;
+
+    let idx = findIdx(to);
+    let reversed = false;
+    if (idx < 0) {
+      idx = findIdx(from);
+      if (idx >= 0) reversed = true; // Basel → Flughafen yönü
+    }
+
+    if (idx >= 0) {
+      setRouteIdx(idx);
+      const nm = localName(routes[idx].to, lang);
+      if (reversed || isAirport(to)) {
+        setF((s) => ({
+          ...s,
+          notes:
+            lang === "de"
+              ? `Fahrtrichtung: ${nm} → Flughafen Zürich (ZRH)`
+              : `Direction: ${nm} → Zurich Airport (ZRH)`,
+        }));
+      }
+      if (d && tm) setStep(2); // → doğrudan araç seçimi
+    } else if (from || to) {
+      // Listede olmayan özel güzergâh — notlara yaz, adım 1'de kalsın
+      setF((s) => ({ ...s, notes: `${from || "?"} → ${to || "?"}` }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const route = routeIdx !== null ? routes[routeIdx] : null;
   const n = route ? localName(route.to, lang) : "";

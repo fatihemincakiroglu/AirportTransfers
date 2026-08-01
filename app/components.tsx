@@ -252,7 +252,7 @@ const fieldInput =
   "w-full bg-transparent text-sm font-semibold text-stone-800 outline-none placeholder:font-normal placeholder:text-stone-400";
 
 /** Aksan/harf duyarsız arama: "zurich" → "Zürich" bulur */
-const norm = (s: string) =>
+export const norm = (s: string) =>
   s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u")
    .replace(/é|è|ê/g, "e").replace(/â|à/g, "a").replace(/î/g, "i");
 
@@ -356,7 +356,7 @@ function SelectField({ label, icon, value, options, onChange }: {
 }
 
 export function BookingCard() {
-  const { lang } = useLang();
+  const { lang, P } = useLang();
   const L = t[lang];
   const [f, setF] = useState({ from: "", to: "", date: "", time: "", pax: "2", kids: "0" });
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
@@ -417,14 +417,15 @@ export function BookingCard() {
           />
         </div>
 
-        {/* Hemen ara */}
+        {/* Ara → rezervasyon sayfasına form verisiyle */}
         <a
-          href={`tel:+${WHATSAPP_NUMBER}`}
-          className="mt-1 flex h-14 flex-col items-center justify-center rounded-2xl text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          href={`${P("/buchung")}?${new URLSearchParams({
+            from: f.from, to: f.to, date: f.date, time: f.time, pax: f.pax, kids: f.kids,
+          }).toString()}`}
+          className="mt-1 flex h-14 items-center justify-center gap-2.5 rounded-2xl text-sm font-extrabold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
           style={{ background: C.pine }}
         >
-          <span className="text-sm font-extrabold uppercase tracking-[0.15em]">📞 {L.form.callNow}</span>
-          <span className="text-xs font-semibold text-white/70">{PHONE_DISPLAY} · {L.form.callSub}</span>
+          🔍 {L.form.search}
         </a>
         <p className="text-center text-xs font-semibold text-stone-500">{L.form.note}</p>
       </div>

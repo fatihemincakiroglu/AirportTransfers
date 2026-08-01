@@ -22,7 +22,7 @@ export const t = {
       date: "Datum", time: "Zeit", pax: "Passagiere", kids: "Kinder",
       wa: "Per WhatsApp anfragen",
       callNow: "Jetzt anrufen", callSub: "Rund um die Uhr erreichbar", mail: "Per E-Mail anfragen",
-      search: "Jetzt suchen",
+      search: "Suchen",
       note: "Gratis Kindersitze · Keine Extragebühren",
     },
     msg: {
@@ -211,7 +211,7 @@ export const t = {
       date: "Date", time: "Time", pax: "Passengers", kids: "Children",
       wa: "Request via WhatsApp",
       callNow: "Call now", callSub: "Available around the clock", mail: "Request by email",
-      search: "Search now",
+      search: "Search",
       note: "Free child seats · No extra fees",
     },
     msg: {
