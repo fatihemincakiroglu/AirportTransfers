@@ -309,6 +309,52 @@ function PlaceField({ label, icon, value, placeholder, onChange }: {
   );
 }
 
+/** Özel açılır menü — tarayıcı select'i yerine markalı liste */
+function SelectField({ label, icon, value, options, onChange }: {
+  label: string; icon: string; value: string; options: (string | number)[]; onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative">
+      <label className={labelCls}>{icon} {label}</label>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        onBlur={() => setTimeout(() => setOpen(false), 120)}
+        className={`${fieldWrap} w-full cursor-pointer select-none`}
+      >
+        <span className="w-full text-left text-sm font-semibold text-stone-800">{value}</span>
+        <span
+          className={`pointer-events-none shrink-0 text-xs text-stone-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        >▾</span>
+      </button>
+      {open && (
+        <ul className="absolute z-30 mt-2 max-h-56 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
+          {options.map((o) => {
+            const v = String(o);
+            const active = v === value;
+            return (
+              <li key={v}>
+                <button
+                  type="button"
+                  onMouseDown={(e) => { e.preventDefault(); onChange(v); setOpen(false); }}
+                  className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-sm transition-colors hover:bg-[#FBF7EE] ${
+                    active ? "font-extrabold" : "font-medium text-stone-700"
+                  }`}
+                  style={active ? { color: C.pine, background: "#FBF7EE" } : undefined}
+                >
+                  {v}
+                  {active && <span style={{ color: C.gold }}>✓</span>}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 export function BookingCard() {
   const { lang } = useLang();
   const L = t[lang];
@@ -355,28 +401,20 @@ export function BookingCard() {
 
         {/* Yolcu / Çocuk */}
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className={labelCls}>👥 {L.form.pax}</label>
-            <div className={fieldWrap}>
-              <select className={`${fieldInput} appearance-none pr-6`} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-                {Array.from({ length: MAX_PAX }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-              <span className="pointer-events-none absolute right-3.5 text-xs text-stone-400">▾</span>
-            </div>
-          </div>
-          <div>
-            <label className={labelCls}>🧒 {L.form.kids}</label>
-            <div className={fieldWrap}>
-              <select className={`${fieldInput} appearance-none pr-6`} value={f.kids} onChange={(e) => set("kids", e.target.value)}>
-                {[0, 1, 2, 3, 4].map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-              <span className="pointer-events-none absolute right-3.5 text-xs text-stone-400">▾</span>
-            </div>
-          </div>
+          <SelectField
+            label={L.form.pax}
+            icon="👥"
+            value={f.pax}
+            options={Array.from({ length: MAX_PAX }, (_, i) => i + 1)}
+            onChange={(v) => set("pax", v)}
+          />
+          <SelectField
+            label={L.form.kids}
+            icon="🧒"
+            value={f.kids}
+            options={[0, 1, 2, 3, 4]}
+            onChange={(v) => set("kids", v)}
+          />
         </div>
 
         {/* Hemen ara */}
