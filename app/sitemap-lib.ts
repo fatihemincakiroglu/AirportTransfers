@@ -3,6 +3,7 @@
 // ─────────────────────────────────────────────────────────────
 import { SITE_URL, routes } from "./config";
 import { blogPosts } from "./blogContent";
+import { tours } from "./tourContent";
 import { localizePath } from "./paths";
 
 export type L = "en" | "de";
@@ -30,6 +31,7 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/faq", "monthly", 0.6],
   ["/blog", "weekly", 0.7],
   ...routes.map((r): [string, "monthly", number] => [`/${r.slug}`, "monthly", 0.8]),
+  ...tours.map((x): [string, "monthly", number] => [`/touren/${x.slug}`, "monthly", 0.7]),
   ...blogPosts.map((p): [string, "yearly", number, string] => [
     `/blog/${p.slug}`, "yearly", 0.6, new Date(p.date).toISOString(),
   ]),

@@ -361,14 +361,12 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
   );
 }
 
-export function TourCard({ name, dur, img }: { name: string; dur: string; img: string }) {
+export function TourCard({ slug, name, dur, img }: { slug: string; name: string; dur: string; img: string }) {
   const { lang, P } = useLang();
   const L = t[lang];
   return (
     <a
-      href={waHref(`${L.msg.title}\n\n${name}`)}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={P(`/touren/${slug}`)}
       className="group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
       style={{ backgroundColor: C.pine }}
     >
