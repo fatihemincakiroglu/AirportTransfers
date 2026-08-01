@@ -184,6 +184,7 @@ export const t = {
     footer: {
       popular: "Beliebte Strecken",
       aboutLink: "Über uns",
+      information: "Information",
       about: "VIP Mercedes Transfers in Zürich. Festpreise, geschulte Chauffeure und Flugverfolgung – rund um die Uhr.",
       follow: "Folgen Sie uns", explore: "Entdecken", company: "Unternehmen", support: "Support",
       callUs: "Rufen Sie uns an", writeUs: "Schreiben Sie uns", address: "Adresse",
@@ -374,6 +375,7 @@ export const t = {
     footer: {
       popular: "Popular routes",
       aboutLink: "About us",
+      information: "Information",
       about: "VIP Mercedes transfers in Zurich. Fixed prices, trained chauffeurs and flight tracking – around the clock.",
       follow: "Follow us", explore: "Explore", company: "Company", support: "Support",
       callUs: "Call us", writeUs: "Write to us", address: "Address",

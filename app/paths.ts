@@ -7,6 +7,10 @@
 export const SEGMENTS: Record<string, { de: string; en: string }> = {
   kontakt: { de: "kontakt", en: "contact" },
   "ueber-uns": { de: "ueber-uns", en: "about-us" },
+  datenschutz: { de: "datenschutz", en: "privacy-policy" },
+  cookies: { de: "cookie-richtlinie", en: "cookie-policy" },
+  agb: { de: "agb", en: "terms-and-conditions" },
+  rueckerstattung: { de: "rueckerstattung", en: "refund-policy" },
   strecken: { de: "strecken", en: "routes" },
   fahrzeuge: { de: "fahrzeuge", en: "vehicles" },
   touren: { de: "touren", en: "tours" },

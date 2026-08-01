@@ -8,6 +8,7 @@ import {
   COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
 } from "./config";
 import { t, Lang } from "./i18n";
+import { legalPages, LegalKey } from "./legalContent";
 import { useLang } from "./providers";
 
 // ── Yardımcılar ────────────────────────────────────────────────
@@ -567,6 +568,38 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
   );
 }
 
+// ── Yasal sayfa şablonu ───────────────────────────────────────
+export function LegalPage({ pageKey }: { pageKey: LegalKey }) {
+  // İçerikler tek merkezden: app/legalContent.ts
+  const { lang, P } = useLang();
+  const L = t[lang];
+  const c = legalPages[pageKey][lang];
+
+  return (
+    <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
+      <TopBar />
+      <SiteHeader />
+      <PageHero title={c.title} crumb={c.title} />
+      <section className="mx-auto max-w-3xl px-5 py-12 md:py-16">
+        <div className="rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5 md:p-10">
+          <span className="block h-0.5 w-10" style={{ background: C.gold }} />
+          <div className="mt-6 space-y-5 leading-relaxed text-stone-700">
+            {c.body.map((p, i) => <p key={i}>{p}</p>)}
+          </div>
+          <p className="mt-8 border-t border-stone-100 pt-5 text-sm text-stone-500">
+            {lang === "de" ? "Fragen? Wir sind rund um die Uhr erreichbar:" : "Questions? We're available around the clock:"}{" "}
+            <a href={P("/kontakt")} className="font-bold underline-offset-2 hover:underline" style={{ color: C.pine }}>
+              {L.nav.contact}
+            </a>
+          </p>
+        </div>
+      </section>
+      <SiteFooter />
+      <FloatingButtons />
+    </div>
+  );
+}
+
 // ── Footer ────────────────────────────────────────────────────
 export function SiteFooter({ compact }: { compact?: boolean }) {
   const { lang, P } = useLang();
@@ -587,7 +620,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
         backgroundPosition: "center",
       }}
     >
-      <div className="relative mx-auto grid grid-cols-2 gap-x-6 gap-y-10 max-w-7xl px-5 py-12 md:grid-cols-4 md:gap-10 md:py-16">
+      <div className="relative mx-auto grid grid-cols-2 gap-x-6 gap-y-10 max-w-7xl px-5 py-12 md:grid-cols-5 md:gap-8 md:py-16">
         <div className="col-span-2 md:col-span-1">
           <span className="font-display text-2xl font-semibold text-white">AirportTransfers</span>
           <p className="mt-4 text-sm leading-relaxed">{L.footer.about}</p>
@@ -615,7 +648,16 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             <li><a href={P("/faq")} className="hover:text-white">{L.footer.faq}</a></li>
           </ul>
         </div>
-        <div className="col-span-2 md:col-span-1">
+        <div>
+          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.information}</h4>
+          <ul className="space-y-2.5 text-sm">
+            <li><a href={P("/datenschutz")} className="hover:text-white">{lang === "de" ? "Datenschutz" : "Privacy Policy"}</a></li>
+            <li><a href={P("/cookies")} className="hover:text-white">{lang === "de" ? "Cookie-Richtlinie" : "Cookie Policy"}</a></li>
+            <li><a href={P("/agb")} className="hover:text-white">{lang === "de" ? "AGB" : "Terms & Conditions"}</a></li>
+            <li><a href={P("/rueckerstattung")} className="hover:text-white">{lang === "de" ? "Rückerstattung" : "Refund Policy"}</a></li>
+          </ul>
+        </div>
+        <div>
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.support}</h4>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">
