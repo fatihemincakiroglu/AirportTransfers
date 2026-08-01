@@ -116,7 +116,7 @@ export function SiteHeader({ active }: { active?: string }) {
 
         <nav className="hidden items-center gap-8 text-[12px] font-bold uppercase tracking-[0.18em] text-stone-600 lg:flex">
           {links.map((l) => (
-            <a key={l.key} href={l.href} className="transition-colors hover:text-[#C9A24B]" style={linkStyle(l.key)}>
+            <a key={l.key} href={P(l.href)} className="transition-colors hover:text-[#C9A24B]" style={linkStyle(l.key)}>
               {l.label}
             </a>
           ))}
@@ -145,7 +145,7 @@ export function SiteHeader({ active }: { active?: string }) {
           {links.map((l) => (
             <a
               key={l.key}
-              href={l.href}
+              href={P(l.href)}
               className="block border-b border-stone-100 py-3 text-sm font-bold uppercase tracking-[0.15em] text-stone-700 last:border-0"
               style={active === l.key ? { color: C.gold } : undefined}
             >
@@ -186,63 +186,54 @@ export function BookingBar() {
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
 
-  const msg = () =>
-    `${L.msg.title}\n\n${L.msg.from}: ${f.from}\n${L.msg.to}: ${f.to}\n${L.msg.date}: ${f.date}\n${L.msg.time}: ${f.time}\n${L.msg.pax}: ${f.pax}\n${L.msg.kids}: ${f.kids}`;
-
-  const lbl = "mb-1.5 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.15em]";
-  const inp =
-    "w-full rounded-xl border border-stone-300 bg-stone-50 px-3.5 py-3 text-[15px] outline-none transition-colors focus:border-[#C9A24B] focus:bg-white focus:ring-2 focus:ring-[#C9A24B]/30";
-
   return (
-    <div className="mt-8 rounded-2xl border-2 bg-white p-4 text-stone-900 shadow-2xl md:p-5" style={{ borderColor: C.gold }}>
+    <div className="relative mt-8 overflow-visible rounded-2xl bg-white p-4 text-stone-900 shadow-2xl ring-1 ring-black/5 md:p-5">
+      <span className="absolute inset-x-0 top-0 h-1 rounded-t-2xl" style={{ background: C.gold }} />
+      {/* Nereden / Nereye + değiştir */}
       <div className="grid gap-3 md:grid-cols-[1fr_auto_1fr]">
-        <div>
-          <label className={lbl} style={{ color: C.gold }}>🚗 {L.form.from}</label>
-          <input className={inp} placeholder={L.form.fromPh} value={f.from} onChange={(e) => set("from", e.target.value)} />
-        </div>
+        <PlaceField label={L.form.from} icon="🚗" value={f.from} placeholder={L.form.fromPh} onChange={(v) => set("from", v)} />
         <button
           type="button"
           onClick={swap}
-          aria-label="Swap"
-          className="mt-6 hidden h-11 w-11 items-center justify-center self-start rounded-xl border border-stone-300 text-lg transition-colors hover:border-[#C9A24B] hover:text-[#C9A24B] md:flex"
-        >
-          ⇆
-        </button>
-        <div>
-          <label className={lbl} style={{ color: C.gold }}>📍 {L.form.to}</label>
-          <input className={inp} placeholder={L.form.toPh} value={f.to} onChange={(e) => set("to", e.target.value)} />
-        </div>
+          aria-label="swap"
+          className="hidden h-9 w-9 items-center justify-center self-center rounded-full border bg-white text-sm shadow-md transition-all hover:rotate-180 hover:shadow-lg md:mt-5 md:flex"
+          style={{ borderColor: C.gold, color: C.pine }}
+        >⇆</button>
+        <PlaceField label={L.form.to} icon="📍" value={f.to} placeholder={L.form.toPh} onChange={(v) => set("to", v)} />
       </div>
+      {/* Tarih / Saat / Kişi / Çocuk / Ara */}
       <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-5">
         <div>
-          <label className={lbl} style={{ color: C.gold }}>📅 {L.form.date}</label>
-          <input type="date" className={inp} value={f.date} onChange={(e) => set("date", e.target.value)} />
+          <label className={labelCls}>📅 {L.form.date}</label>
+          <div className={fieldWrap}>
+            <input type="date" className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+          </div>
         </div>
         <div>
-          <label className={lbl} style={{ color: C.gold }}>🕐 {L.form.time}</label>
-          <input type="time" className={inp} value={f.time} onChange={(e) => set("time", e.target.value)} />
+          <label className={labelCls}>🕐 {L.form.time}</label>
+          <div className={fieldWrap}>
+            <input type="time" className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+          </div>
         </div>
-        <div>
-          <label className={lbl} style={{ color: C.gold }}>👥 {L.form.pax}</label>
-          <select className={inp} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-            {Array.from({ length: MAX_PAX }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className={lbl} style={{ color: C.gold }}>🧒 {L.form.kids}</label>
-          <select className={inp} value={f.kids} onChange={(e) => set("kids", e.target.value)}>
-            {[0, 1, 2, 3, 4].map((n) => (
-              <option key={n} value={n}>{n}</option>
-            ))}
-          </select>
-        </div>
+        <SelectField
+          label={L.form.pax}
+          icon="👥"
+          value={f.pax}
+          options={Array.from({ length: MAX_PAX }, (_, i) => i + 1)}
+          onChange={(v) => set("pax", v)}
+        />
+        <SelectField
+          label={L.form.kids}
+          icon="🧒"
+          value={f.kids}
+          options={[0, 1, 2, 3, 4]}
+          onChange={(v) => set("kids", v)}
+        />
         <a
-          href={waHref(msg())}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="col-span-2 mt-auto flex h-[50px] items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5 md:col-span-1"
+          href={`${P("/buchung")}?${new URLSearchParams({
+            from: f.from, to: f.to, date: f.date, time: f.time, pax: f.pax, kids: f.kids,
+          }).toString()}`}
+          className="col-span-2 mt-auto flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-[0.16em] shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg md:col-span-1"
           style={{ background: C.gold, color: C.pine }}
         >
           🔍 {L.form.search}
@@ -626,6 +617,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
         <div>
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.company}</h4>
           <ul className="space-y-2.5 text-sm">
+            <li><a href={P("/ueber-uns")} className="hover:text-white">{L.footer.aboutLink}</a></li>
             <li><a href={P("/kontakt")} className="hover:text-white">{L.nav.contact}</a></li>
             <li><a href={P("/faq")} className="hover:text-white">{L.footer.faq}</a></li>
           </ul>
