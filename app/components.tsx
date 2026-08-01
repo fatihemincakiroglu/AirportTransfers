@@ -74,7 +74,6 @@ export function TopBar() {
               );
             })}
           </div>
-          <span className="hidden rounded-md border border-white/20 px-2 py-1 text-xs sm:inline">CHF</span>
         </div>
       </div>
     </div>
@@ -530,25 +529,53 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Image src={img} alt={`${car} – ${n}`} width={360} height={160} className="max-h-full w-auto max-w-full object-contain" />
       </div>
-      <div className="flex gap-4 border-t border-stone-100 pt-3 text-sm">
-        <span>👥 <b>{pax}</b> <span className="text-stone-500">{L.fleetSec.pax}</span></span>
-        <span>🧳 <b>{bags}</b> <span className="text-stone-500">{L.fleetSec.bags}</span></span>
+      {/* Kapasite — fildişi zeminde iki eş istatistik hücresi */}
+      <div className="grid grid-cols-2 overflow-hidden rounded-xl ring-1 ring-black/5" style={{ background: "#FAF9F4" }}>
+        <div className="flex flex-col items-center gap-0.5 border-r border-black/5 px-3 py-3">
+          <span className="text-base leading-none">👥</span>
+          <span className="font-display text-lg font-semibold leading-tight" style={{ color: C.pine }}>{pax}</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-500">{L.fleetSec.pax}</span>
+        </div>
+        <div className="flex flex-col items-center gap-0.5 px-3 py-3">
+          <span className="text-base leading-none">🧳</span>
+          <span className="font-display text-lg font-semibold leading-tight" style={{ color: C.pine }}>{bags}</span>
+          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-500">{L.fleetSec.bags}</span>
+        </div>
       </div>
+
       {showFeatures && (
-        <ul className="mt-3 space-y-1 border-t border-stone-100 pt-3 text-sm text-stone-600">
+        <ul className="mt-4 space-y-2.5">
           {L.fleetSec.features.map((f, i) => (
-            <li key={i}>✓ {f}</li>
+            <li key={i} className="flex items-center gap-2.5 text-[13px] font-medium text-stone-600">
+              <span
+                className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold"
+                style={{ background: "rgba(201,162,75,0.15)", color: C.gold }}
+              >
+                ✓
+              </span>
+              {f}
+            </li>
           ))}
         </ul>
       )}
+
       <a
         href={waHref(`${L.msg.title}\n\n${n} – ${car}`)}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-auto pt-4 block rounded-full px-4 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5"
-        style={{ background: C.pine }}
+        className="group/btn mt-auto block"
       >
-        {L.fleetSec.cta} →
+        <span
+          className="mt-4 flex items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white shadow-md transition-all duration-300 group-hover/btn:shadow-lg"
+          style={{ background: C.pine }}
+        >
+          <span
+            className="bg-gradient-to-r from-white to-white bg-clip-text transition-colors duration-300 group-hover/btn:text-[#C9A24B]"
+          >
+            {L.fleetSec.cta}
+          </span>
+          <span className="transition-transform duration-300 group-hover/btn:translate-x-1" style={{ color: C.gold }}>→</span>
+        </span>
       </a>
     </div>
   );
