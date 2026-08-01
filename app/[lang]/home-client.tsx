@@ -160,7 +160,7 @@ export default function Home() {
       <section id="galerie" className="mx-auto max-w-7xl px-5 pb-16 md:pb-24">
         {sectionHead(L.gallerySec.eyebrow, L.gallerySec.title, L.gallerySec.pageSub, "/galerie")}
         <div className="mt-9 grid grid-cols-2 gap-3 md:grid-cols-4 md:grid-rows-2">
-          {gallery.slice(0, 7).map((src, i) => (
+          {gallery.slice(0, 9).map((src, i) => (
             <div
               key={i}
               className={`relative overflow-hidden rounded-2xl shadow-sm ${i === 0 ? "col-span-2 row-span-2" : ""}`}

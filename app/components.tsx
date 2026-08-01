@@ -399,8 +399,11 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
   const n = localName(name, lang);
   return (
     <div className="flex flex-col rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl">
-      <h3 className="font-display text-xl font-semibold" style={{ color: C.pine }}>{car}</h3>
-      <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{n}</p>
+      {/* Başlık bloğu sabit yükseklikte → 4 kart aynı hizada */}
+      <div className="min-h-[76px]">
+        <h3 className="font-display text-xl font-semibold leading-snug" style={{ color: C.pine }}>{car}</h3>
+        <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{n}</p>
+      </div>
       <div className="my-4 flex h-36 items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <Image src={img} alt={`${car} – ${n}`} width={360} height={160} className="max-h-full w-auto max-w-full object-contain" />
@@ -420,7 +423,7 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
         href={waHref(`${L.msg.title}\n\n${n} – ${car}`)}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 block rounded-full px-4 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5"
+        className="mt-auto pt-4 block rounded-full px-4 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5"
         style={{ background: C.pine }}
       >
         {L.fleetSec.cta} →
@@ -456,8 +459,8 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
         backgroundPosition: "center",
       }}
     >
-      <div className="relative mx-auto grid max-w-7xl gap-10 px-5 py-16 md:grid-cols-4">
-        <div>
+      <div className="relative mx-auto grid grid-cols-2 gap-x-6 gap-y-10 max-w-7xl px-5 py-12 md:grid-cols-4 md:gap-10 md:py-16">
+        <div className="col-span-2 md:col-span-1">
           <span className="font-display text-2xl font-semibold text-white">AirportTransfers</span>
           <p className="mt-4 text-sm leading-relaxed">{L.footer.about}</p>
           <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/50">{L.footer.follow}</p>
@@ -483,7 +486,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             <li><a href={P("/faq")} className="hover:text-white">{L.footer.faq}</a></li>
           </ul>
         </div>
-        <div>
+        <div className="col-span-2 md:col-span-1">
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.support}</h4>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">
