@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { C } from "../../../config";
 import { t } from "../../../i18n";
 import { useLang } from "../../../providers";
@@ -56,10 +58,9 @@ export default function PostClient({ slug }: { slug: string }) {
 
       {/* Kapak görseli */}
       <div className="mx-auto -mt-0 max-w-3xl px-5">
-        <div
-          className="mt-8 h-56 rounded-2xl bg-cover bg-center shadow-lg md:h-80"
-          style={{ backgroundColor: C.pine, backgroundImage: `url(${post.img})` }}
-        />
+        <div className="relative mt-8 h-56 overflow-hidden rounded-2xl shadow-lg md:h-80" style={{ backgroundColor: C.pine }}>
+          <Image src={post.img} alt={c.title} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
+        </div>
       </div>
 
       {/* Makale gövdesi */}
@@ -111,7 +112,9 @@ export default function PostClient({ slug }: { slug: string }) {
                   href={P(`/blog/${r.slug}`)}
                   className="group flex flex-col overflow-hidden rounded-2xl bg-stone-50 ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-lg"
                 >
-                  <div className="h-32 bg-cover bg-center" style={{ backgroundColor: C.pine, backgroundImage: `url(${r.img})` }} />
+                  <div className="relative h-32 overflow-hidden" style={{ backgroundColor: C.pine }}>
+                    <Image src={r.img} alt={rc.title} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
+                  </div>
                   <div className="flex flex-1 flex-col p-4">
                     <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500">
                       {formatDate(r.date, lang)} · 🕐 {readingTime(r, lang)} {B.minRead}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { routes } from "../../config";
 import { routeContent } from "../../routeContent";
+import { notFound } from "next/navigation";
 import RouteClient from "./route-client";
 
 const nameOf = (to: string | { de: string; en: string }, lang: string) =>
@@ -39,11 +40,12 @@ export function generateStaticParams() {
 export default async function Page({ params }: Params) {
   const { lang, slug } = await params;
   const route = routes.find((r) => r.slug === slug);
-  const n = route ? nameOf(route.to, lang) : "";
+  if (!route) notFound(); // Gerçek 404 — soft-404 önlenir
+  const n = nameOf(route.to, lang);
   const content = routeContent[slug]?.[lang === "de" ? "de" : "en"];
 
   const jsonLd: object[] = [];
-  if (route) {
+  {
     jsonLd.push({
       "@context": "https://schema.org",
       "@type": "Service",

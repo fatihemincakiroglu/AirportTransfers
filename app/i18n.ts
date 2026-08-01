@@ -155,6 +155,7 @@ export const t = {
       lblHours: "Bürozeiten", always: "Rund um die Uhr verfügbar",
     },
     footer: {
+      popular: "Beliebte Strecken",
       about: "VIP Mercedes Transfers in Zürich. Festpreise, geschulte Chauffeure und Flugverfolgung – rund um die Uhr.",
       follow: "Folgen Sie uns", explore: "Entdecken", company: "Unternehmen", support: "Support",
       callUs: "Rufen Sie uns an", writeUs: "Schreiben Sie uns", address: "Adresse",
@@ -316,6 +317,7 @@ export const t = {
       lblHours: "Office hours", always: "Available around the clock",
     },
     footer: {
+      popular: "Popular routes",
       about: "VIP Mercedes transfers in Zurich. Fixed prices, trained chauffeurs and flight tracking – around the clock.",
       follow: "Follow us", explore: "Explore", company: "Company", support: "Support",
       callUs: "Call us", writeUs: "Write to us", address: "Address",

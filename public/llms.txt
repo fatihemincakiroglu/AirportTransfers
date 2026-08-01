@@ -1,0 +1,37 @@
+# AirportTransfers Zürich
+
+> Private airport transfer service from Zurich Airport (ZRH) to all of
+> Switzerland. Fixed prices, Mercedes-Benz fleet, meet & greet, flight
+> tracking, free child seats and ski bags, available 24/7.
+> Languages: English (default, /en) and German (/de).
+
+Operated by Kula-ZATK, Industristrasse 14, 8302 Kloten, Switzerland.
+Phone/WhatsApp: +41 76 302 03 26.
+
+## Services
+- Private airport transfers ZRH → whole of Switzerland at fixed prices (per vehicle, incl. VAT)
+- Vehicle classes: Business (Mercedes E-Class), Business & Family (V-Class, 7 pax),
+  Premium (S-Class), VIP (V300 Maybach)
+- Meet & greet in the arrivals hall, free waiting time, real-time flight tracking
+- Free baby seats, child seats and ski bags; payment by cash, card or TWINT in the vehicle
+
+## Popular routes (Business Class fixed prices)
+- Zurich Airport → Zug: CHF 138.69 (46.2 km, ~55 min) — /en/zurich-airport-to-zug
+- Zurich Airport → Lucerne: CHF 189.75 (63.3 km, ~1 h 16 min) — /en/zurich-airport-to-luzern
+- Zurich Airport → Basel: CHF 258.50 (86.2 km, ~1 h 43 min) — /en/zurich-airport-to-basel
+- Zurich Airport → Bern: CHF 352.50 (117.5 km, ~2 h 21 min) — /en/zurich-airport-to-bern
+- Zurich Airport → Interlaken: CHF 375.63 (125.2 km, ~2 h 30 min) — /en/zurich-airport-to-interlaken
+- Zurich Airport → Zermatt: CHF 711.00 (237 km, ~4 h 44 min) — /en/zurich-airport-to-zermatt
+- Zurich Airport → St. Moritz: CHF 638.00 (212.7 km, ~4 h 15 min) — /en/zurich-airport-to-st-moritz
+- All 25 routes: /en/routes
+
+## Key pages
+- Booking (3-step wizard): /en/booking
+- All routes & prices: /en/routes
+- Fleet: /en/vehicles
+- FAQ: /en/faq
+- Blog (travel guides): /en/blog
+- Contact: /en/contact
+
+## Sitemaps
+- /sitemap.xml (index) · /sitemap-en.xml · /sitemap-de.xml

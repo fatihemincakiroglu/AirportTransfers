@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useState } from "react";
-import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery } from "../config";
+import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor } from "../config";
 import { t } from "../i18n";
 import { useLang } from "../providers";
 import {
@@ -47,12 +49,22 @@ export default function Home() {
           <div
             key={src}
             aria-hidden
-            className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
-            style={{
-              backgroundImage: `linear-gradient(100deg, rgba(8,33,27,0.92) 0%, rgba(8,33,27,0.55) 55%, rgba(8,33,27,0.75) 100%), url(${src})`,
-              opacity: slide === i ? 1 : 0,
-            }}
-          />
+            className="absolute inset-0 transition-opacity duration-1000"
+            style={{ opacity: slide === i ? 1 : 0 }}
+          >
+            <Image
+              src={src}
+              alt=""
+              fill
+              priority={i === 0}
+              sizes="100vw"
+              className="object-cover"
+            />
+            <span
+              className="absolute inset-0"
+              style={{ background: "linear-gradient(100deg, rgba(8,33,27,0.92) 0%, rgba(8,33,27,0.55) 55%, rgba(8,33,27,0.75) 100%)" }}
+            />
+          </div>
         ))}
 
         <div className="relative mx-auto grid max-w-7xl gap-12 px-5 pb-20 pt-16 text-white md:grid-cols-[1.15fr_0.85fr] md:pb-24 md:pt-24">
@@ -151,15 +163,17 @@ export default function Home() {
           {gallery.slice(0, 7).map((src, i) => (
             <div
               key={i}
-              className={`overflow-hidden rounded-2xl shadow-sm ${i === 0 ? "col-span-2 row-span-2" : ""}`}
-              style={{
-                minHeight: i === 0 ? 260 : 120,
-                backgroundColor: C.pine,
-                backgroundImage: `url(${src})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }}
-            />
+              className={`relative overflow-hidden rounded-2xl shadow-sm ${i === 0 ? "col-span-2 row-span-2" : ""}`}
+              style={{ minHeight: i === 0 ? 260 : 120, backgroundColor: C.pine }}
+            >
+              <Image
+                src={src}
+                alt={altFor(src)}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover"
+              />
+            </div>
           ))}
         </div>
       </section>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { blogPosts } from "../../../blogContent";
+import { notFound } from "next/navigation";
 import PostClient from "./post-client";
 
 type Params = { params: Promise<{ lang: string; slug: string }> };
@@ -27,9 +28,10 @@ export function generateStaticParams() {
 export default async function Page({ params }: Params) {
   const { lang, slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
+  if (!post) notFound(); // Gerçek 404 — soft-404 önlenir
 
   const jsonLd: object[] = [];
-  if (post) {
+  {
     const c = lang === "de" ? post.de : post.en;
     const words = [c.title, c.excerpt, ...c.body.flatMap((b) => [b.h ?? "", ...b.p])].join(" ").split(/\s+/).length;
     jsonLd.push({

@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import { useCallback, useEffect, useState } from "react";
-import { C, gallery } from "../../config";
+import { C, gallery, altFor } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero } from "../../components";
@@ -61,10 +63,13 @@ export default function Galerie() {
               style={{ minHeight: i % 7 === 0 ? 260 : 130 }}
             >
               {/* Görsel katmanı — hover'da yavaşça yakınlaşır */}
-              <span
-                aria-hidden
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-                style={{ backgroundColor: C.pine, backgroundImage: `url(${src})` }}
+              <Image
+                src={src}
+                alt={altFor(src)}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                style={{ backgroundColor: C.pine }}
               />
               {/* Karartma + altın çerçeve */}
               <span
@@ -124,7 +129,7 @@ export default function Galerie() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={gallery[open]}
-            alt={`Galerie ${open + 1}`}
+            alt={altFor(gallery[open])}
             onClick={(e) => e.stopPropagation()}
             className="max-h-[85vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
           />

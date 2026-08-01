@@ -77,3 +77,34 @@ export const MAX_PAX = 7;
 
 // Galeri — public/gallery/1.jpg ... 20.jpg (pakette hazır)
 export const gallery = Array.from({ length: 20 }, (_, i) => `/gallery/${i + 1}.jpg`);
+
+// Galeri alt metinleri (SEO + erişilebilirlik) — sırayla 1.jpg ... 20.jpg
+export const galleryAlts: string[] = [
+  "Zürich Altstadt und Limmat – Luftaufnahme bei Sonnenaufgang",
+  "Limmatquai Zürich mit Grossmünster bei Sonnenuntergang",
+  "Bernina Express am türkisblauen Lago Bianco, Graubünden",
+  "Zermatt mit Matterhorn im Hintergrund",
+  "Staubbachfall im Lauterbrunnental – Luftaufnahme",
+  "Bergdorf Wengen vor Jungfrau-Massiv",
+  "Schloss Seeburg am Brienzersee bei Iseltwald",
+  "Grindelwaldtal mit Eiger und Wetterhorn",
+  "Schilthorn-Luftseilbahn über verschneiten Gipfeln",
+  "Landwasserviadukt mit roter Rhätischer Bahn im Winter",
+  "Iseltwald am Brienzersee – Luftaufnahme",
+  "Lauterbrunnen Dorf mit Staubbachfall",
+  "Oeschinensee bei Kandersteg mit Bergpanorama",
+  "Seealpsee im Alpstein mit Kuh auf der Weide",
+  "Arnisee mit Berghaus, Kanton Uri",
+  "Chalets in Grimentz, Val d'Anniviers, Wallis",
+  "Melchsee-Frutt mit Bergsee, Obwalden",
+  "Kurvige Passstrasse im Jura, Region Basel",
+  "Engelberg im Herbst mit verschneiten Gipfeln",
+  "Kurpark Bad Ragaz mit Alpenblick",
+];
+
+/** Görsel yoluna göre alt metni bul: "/gallery/4.jpg" → Zermatt … */
+export function altFor(src: string, fallback = "AirportTransfers Zürich"): string {
+  const m = src.match(/\/gallery\/(\d+)\.jpg/);
+  if (m) return galleryAlts[Number(m[1]) - 1] ?? fallback;
+  return fallback;
+}

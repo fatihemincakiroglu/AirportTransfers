@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { C } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
@@ -48,10 +50,15 @@ export default function BlogList() {
                 href={P(`/blog/${post.slug}`)}
                 className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl"
               >
-                <div
-                  className="h-44 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ backgroundColor: C.pine, backgroundImage: `url(${post.img})` }}
-                />
+                <div className="relative h-44 overflow-hidden" style={{ backgroundColor: C.pine }}>
+                  <Image
+                    src={post.img}
+                    alt={c.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
                 <div className="flex flex-1 flex-col p-5">
                   <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
                     {formatDate(post.date, lang)}

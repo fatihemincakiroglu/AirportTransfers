@@ -1,9 +1,11 @@
 "use client";
 
+import Image from "next/image";
+
 import { useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
-  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE,
+  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes,
 } from "./config";
 import { t, Lang } from "./i18n";
 import { useLang } from "./providers";
@@ -329,19 +331,26 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
     <a
       href={P(`/${slug}`)}
       className="group relative flex min-h-[240px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
-      style={{
-        backgroundColor: C.pine,
-        backgroundImage: `linear-gradient(180deg, rgba(8,33,27,0.15) 0%, rgba(8,33,27,0.85) 85%), url(${img})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      style={{ backgroundColor: C.pine }}
     >
-      <span className="absolute right-4 top-4 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wide" style={{ background: C.gold, color: C.pine }}>
+      <Image
+        src={img}
+        alt={lang === "de" ? `Flughafentransfer Zürich nach ${n}` : `Zurich Airport transfer to ${n}`}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      <span
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(180deg, rgba(8,33,27,0.15) 0%, rgba(8,33,27,0.85) 85%)" }}
+      />
+      <span className="absolute right-4 top-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wide" style={{ background: C.gold, color: C.pine }}>
         {L.routesSec.from} CHF {price.toFixed(2)}
       </span>
-      <span className="mb-2 h-0.5 w-8" style={{ background: C.gold }} />
-      <h3 className="font-display text-xl font-semibold leading-snug">Flughafen Zürich (ZRH) → {n}</h3>
-      <div className="mt-3 flex items-center justify-between text-sm text-white/85">
+      <span className="relative z-10 mb-2 h-0.5 w-8" style={{ background: C.gold }} />
+      <h3 className="font-display relative z-10 text-xl font-semibold leading-snug">Flughafen Zürich (ZRH) → {n}</h3>
+      <div className="relative z-10 mt-3 flex items-center justify-between text-sm text-white/85">
         <span className="flex flex-wrap gap-x-3 gap-y-1">
           <span>🛣 {km} km</span>
           <span>🕐 {dur}</span>
@@ -361,18 +370,25 @@ export function TourCard({ name, dur, img }: { name: string; dur: string; img: s
       target="_blank"
       rel="noopener noreferrer"
       className="group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
-      style={{
-        backgroundColor: C.pine,
-        backgroundImage: `linear-gradient(180deg, rgba(8,33,27,0.1) 0%, rgba(8,33,27,0.85) 85%), url(${img})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      style={{ backgroundColor: C.pine }}
     >
+      <Image
+        src={img}
+        alt={name}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      <span
+        aria-hidden
+        className="absolute inset-0"
+        style={{ background: "linear-gradient(180deg, rgba(8,33,27,0.1) 0%, rgba(8,33,27,0.85) 85%)" }}
+      />
       <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide" style={{ color: C.pine }}>
         🕐 {dur}
       </span>
-      <span className="mb-2 h-0.5 w-8" style={{ background: C.gold }} />
-      <h3 className="font-display text-xl font-semibold leading-snug">{name}</h3>
+      <span className="relative z-10 mb-2 h-0.5 w-8" style={{ background: C.gold }} />
+      <h3 className="font-display relative z-10 text-xl font-semibold leading-snug">{name}</h3>
     </a>
   );
 }
@@ -387,7 +403,7 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
       <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{n}</p>
       <div className="my-4 flex h-36 items-center justify-center">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={img} alt={`${car} – ${n}`} className="max-h-full w-auto max-w-full object-contain" />
+        <Image src={img} alt={`${car} – ${n}`} width={360} height={160} className="max-h-full w-auto max-w-full object-contain" />
       </div>
       <div className="flex gap-4 border-t border-stone-100 pt-3 text-sm">
         <span>👥 <b>{pax}</b> <span className="text-stone-500">{L.fleetSec.pax}</span></span>
@@ -491,6 +507,23 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
                 <span className="text-sm font-bold text-white">{COMPANY_ADDRESS}</span>
               </span>
             </li>
+          </ul>
+        </div>
+      </div>
+      {/* Beliebte Strecken — iç linkleme şeridi */}
+      <div className="relative border-t border-white/10">
+        <div className="mx-auto max-w-7xl px-5 py-8">
+          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+            {L.footer.popular}
+          </h4>
+          <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-5">
+            {routes.slice(0, 10).map((r) => (
+              <li key={r.slug}>
+                <a href={P(`/${r.slug}`)} className="text-white/60 transition-colors hover:text-white">
+                  ZRH → {localName(r.to, lang)}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

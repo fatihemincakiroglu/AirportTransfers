@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useMemo, useState } from "react";
 
 import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../../config";
@@ -407,10 +409,9 @@ function RouteSeoContent({ slug }: { slug: string }) {
         {/* Varış noktası */}
         {content && (
           <div className="mt-12 grid gap-6 md:grid-cols-[1fr_1.4fr] md:items-center">
-            <div
-              className="min-h-[200px] rounded-2xl shadow-md"
-              style={{ backgroundColor: C.pine, backgroundImage: `url(${route.img})`, backgroundSize: "cover", backgroundPosition: "center" }}
-            />
+            <div className="relative min-h-[200px] overflow-hidden rounded-2xl shadow-md" style={{ backgroundColor: C.pine }}>
+              <Image src={route.img} alt={content.aboutTitle} fill sizes="(max-width: 768px) 100vw, 40vw" className="object-cover" />
+            </div>
             <div>
               <h3 className="font-display text-2xl font-semibold" style={{ color: C.pine }}>{content.aboutTitle}</h3>
               <p className="mt-3 leading-relaxed text-stone-700">{content.about}</p>
