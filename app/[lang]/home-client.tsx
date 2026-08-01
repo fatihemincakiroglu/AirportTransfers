@@ -29,7 +29,7 @@ export default function Home() {
         <p className="mt-3 max-w-xl text-stone-600">{sub}</p>
       </div>
       <a
-        href={href}
+        href={P(href)}
         className="text-[12px] font-extrabold uppercase tracking-[0.18em] underline-offset-4 transition-colors hover:underline"
         style={{ color: C.gold }}
       >

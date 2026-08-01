@@ -116,7 +116,7 @@ export function SiteHeader({ active }: { active?: string }) {
 
         <nav className="hidden items-center gap-8 text-[12px] font-bold uppercase tracking-[0.18em] text-stone-600 lg:flex">
           {links.map((l) => (
-            <a key={l.key} href={l.href} className="transition-colors hover:text-[#C9A24B]" style={linkStyle(l.key)}>
+            <a key={l.key} href={P(l.href)} className="transition-colors hover:text-[#C9A24B]" style={linkStyle(l.key)}>
               {l.label}
             </a>
           ))}
@@ -145,7 +145,7 @@ export function SiteHeader({ active }: { active?: string }) {
           {links.map((l) => (
             <a
               key={l.key}
-              href={l.href}
+              href={P(l.href)}
               className="block border-b border-stone-100 py-3 text-sm font-bold uppercase tracking-[0.15em] text-stone-700 last:border-0"
               style={active === l.key ? { color: C.gold } : undefined}
             >
