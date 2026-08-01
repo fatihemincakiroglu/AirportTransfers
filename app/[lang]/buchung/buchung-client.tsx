@@ -265,7 +265,7 @@ export default function Buchung() {
           )}
 
           {/* ── ADIM 2: Araç seçimi ─────────────────────────── */}
-          {step === 2 && route && (
+          {step === 2 && hasTrip && (
             <>
               <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>{D.selectCar}</h2>
               <div className="space-y-4">
