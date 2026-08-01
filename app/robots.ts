@@ -11,6 +11,10 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "PerplexityBot", allow: "/" },
       { userAgent: "Googlebot", allow: "/" },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: [
+      `${SITE_URL}/sitemap.xml`,
+      `${SITE_URL}/sitemap-en.xml`,
+      `${SITE_URL}/sitemap-de.xml`,
+    ],
   };
 }
