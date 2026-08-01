@@ -53,17 +53,30 @@ export function TopBar() {
             📞 {PHONE_DISPLAY}
           </a>
           <span className="hidden text-white/30 sm:inline">|</span>
-          <div className="flex flex-nowrap items-center gap-0.5 text-[11px] font-bold sm:gap-1 sm:text-xs">
-            {(["de", "en"] as Lang[]).map((c) => (
-              <button
-                key={c}
-                onClick={() => setLang(c)}
-                className="rounded-md px-1.5 py-0.5 uppercase transition-colors sm:px-2 sm:py-1"
-                style={lang === c ? { background: C.gold, color: C.pine } : { color: "rgba(255,255,255,0.55)" }}
-              >
-                {c}
-              </button>
-            ))}
+          <div className="flex flex-nowrap items-center gap-1 text-[11px] font-bold sm:gap-1.5 sm:text-xs">
+            {(["de", "en"] as Lang[]).map((c) => {
+              const active = lang === c;
+              return (
+                <button
+                  key={c}
+                  onClick={() => setLang(c)}
+                  aria-label={c === "de" ? "Deutsch" : "English"}
+                  className={`flex items-center gap-1.5 rounded-full py-0.5 pl-0.5 pr-2 uppercase transition-all sm:py-1 sm:pl-1 sm:pr-2.5 ${
+                    active ? "" : "opacity-50 grayscale-[35%] hover:opacity-85 hover:grayscale-0"
+                  }`}
+                  style={active ? { background: "rgba(201,162,75,0.18)", boxShadow: `inset 0 0 0 1px ${C.gold}` } : undefined}
+                >
+                  <Image
+                    src={c === "de" ? "/icons/flag-de.png" : "/icons/flag-en.png"}
+                    alt={c === "de" ? "Deutsch" : "English"}
+                    width={18}
+                    height={18}
+                    className="h-[18px] w-[18px] rounded-full sm:h-5 sm:w-5"
+                  />
+                  <span style={{ color: active ? C.gold : "rgba(255,255,255,0.7)" }}>{c}</span>
+                </button>
+              );
+            })}
           </div>
           <span className="hidden rounded-md border border-white/20 px-2 py-1 text-xs sm:inline">CHF</span>
         </div>
