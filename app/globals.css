@@ -38,3 +38,9 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .marquee-left, .marquee-right { animation: none; }
 }
+
+/* Dar ekranlarda yatay kayma/taşmayı engelle */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}

@@ -102,15 +102,15 @@ export function SiteHeader({ active }: { active?: string }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
-        <a href={P("/")} className="flex items-center gap-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-5 sm:py-4">
+        <a href={P("/")} className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
           <span
-            className="font-display flex h-10 w-10 items-center justify-center rounded-full border-2 text-lg font-semibold"
+            className="font-display flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-base font-semibold sm:h-10 sm:w-10 sm:text-lg"
             style={{ borderColor: C.gold, color: C.pine }}
           >
             A
           </span>
-          <span className="font-display text-xl font-semibold tracking-tight" style={{ color: C.pine }}>
+          <span className="font-display truncate text-lg font-semibold tracking-tight sm:text-xl" style={{ color: C.pine }}>
             AirportTransfers
           </span>
         </a>
@@ -123,10 +123,10 @@ export function SiteHeader({ active }: { active?: string }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <a
             href={P("/buchung")}
-            className="rounded-full px-5 py-2.5 text-sm font-bold text-white shadow-md transition-transform hover:-translate-y-0.5"
+            className="whitespace-nowrap rounded-full px-3.5 py-2 text-xs font-bold text-white shadow-md transition-transform hover:-translate-y-0.5 sm:px-5 sm:py-2.5 sm:text-sm"
             style={{ background: C.pine }}
           >
             {L.nav.book}
@@ -134,7 +134,7 @@ export function SiteHeader({ active }: { active?: string }) {
           <button
             onClick={() => setOpen(!open)}
             aria-label="Menu"
-            className="flex h-10 w-10 items-center justify-center rounded-lg border border-stone-300 text-lg lg:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-stone-300 text-lg sm:h-10 sm:w-10 lg:hidden"
           >
             {open ? "✕" : "☰"}
           </button>
