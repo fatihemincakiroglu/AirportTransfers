@@ -21,6 +21,22 @@ export const metadata: Metadata = {
   title: "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes",
   description:
     "Privater Flughafentransfer Zürich zum Festpreis. Geschulte Chauffeure, Flugverfolgung, 24/7. Private Zurich Airport transfers at fixed prices.",
+  // Robots meta etiketi: indeksle ve linkleri takip et
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  // Yazar ve yayıncı bilgileri
+  authors: [{ name: "AirportTransfers Zürich", url: SITE_URL }],
+  creator: "AirportTransfers Zürich",
+  publisher: "AirportTransfers Zürich",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
