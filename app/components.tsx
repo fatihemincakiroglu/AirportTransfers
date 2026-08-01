@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
-  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes,
+  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
 } from "./config";
 import { t, Lang } from "./i18n";
 import { useLang } from "./providers";
@@ -245,72 +245,148 @@ export function BookingBar() {
 }
 
 // ── Dikey rezervasyon kartı (ana sayfa hero) ──────────────────
-export function BookingCard() {
-  const { lang, P } = useLang();
-  const L = t[lang];
-  const [f, setF] = useState({ from: "Flughafen Zürich (ZRH)", to: "", date: "", time: "", pax: "2", kids: "0" });
-  const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
+/* ── Premium form alanları ─────────────────────────────── */
+const fieldWrap =
+  "group relative flex h-12 items-center gap-2.5 rounded-xl border border-stone-200 bg-[#FAF9F4] px-3.5 transition-all focus-within:border-[#C9A24B] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#C9A24B]/15";
+const fieldInput =
+  "w-full bg-transparent text-sm font-semibold text-stone-800 outline-none placeholder:font-normal placeholder:text-stone-400";
 
-  const msg = () =>
-    `${L.msg.title}\n\n${L.msg.from}: ${f.from}\n${L.msg.to}: ${f.to}\n${L.msg.date}: ${f.date}\n${L.msg.time}: ${f.time}\n${L.msg.pax}: ${f.pax}\n${L.msg.kids}: ${f.kids}`;
+/** Aksan/harf duyarsız arama: "zurich" → "Zürich" bulur */
+const norm = (s: string) =>
+  s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u")
+   .replace(/é|è|ê/g, "e").replace(/â|à/g, "a").replace(/î/g, "i");
+
+/** İsviçre yerleri için otomatik tamamlamalı alan */
+function PlaceField({ label, icon, value, placeholder, onChange }: {
+  label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const q = norm(value.trim());
+  const matches = q.length >= 1
+    ? SWISS_PLACES.filter((p) => norm(p).includes(q) && norm(p) !== q).slice(0, 7)
+    : [];
+  const show = open && matches.length > 0;
 
   return (
-    <div id="buchen" className="rounded-3xl bg-white p-6 text-stone-900 shadow-2xl ring-1 ring-black/5">
+    <div className="relative">
+      <label className={labelCls}>{icon} {label}</label>
+      <div className={fieldWrap}>
+        <input
+          className={fieldInput}
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => { onChange(e.target.value); setOpen(true); }}
+          onFocus={() => setOpen(true)}
+          onBlur={() => setTimeout(() => setOpen(false), 120)}
+          autoComplete="off"
+        />
+        {value && (
+          <button
+            type="button"
+            aria-label="clear"
+            onMouseDown={(e) => { e.preventDefault(); onChange(""); }}
+            className="shrink-0 text-stone-300 transition-colors hover:text-stone-500"
+          >✕</button>
+        )}
+      </div>
+      {show && (
+        <ul className="absolute z-30 mt-2 max-h-56 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
+          {matches.map((p) => (
+            <li key={p}>
+              <button
+                type="button"
+                onMouseDown={(e) => { e.preventDefault(); onChange(p); setOpen(false); }}
+                className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm font-medium text-stone-700 transition-colors hover:bg-[#FBF7EE]"
+              >
+                <span className="text-xs" style={{ color: C.gold }}>📍</span>
+                {p}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+export function BookingCard() {
+  const { lang } = useLang();
+  const L = t[lang];
+  const [f, setF] = useState({ from: "", to: "", date: "", time: "", pax: "2", kids: "0" });
+  const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
+  const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
+
+  return (
+    <div id="buchen" className="relative overflow-visible rounded-3xl bg-white p-6 text-stone-900 shadow-2xl ring-1 ring-black/5">
+      <span className="absolute inset-x-0 top-0 h-1 rounded-t-3xl" style={{ background: C.gold }} />
       <h2 className="font-display mb-5 text-xl font-semibold" style={{ color: C.pine }}>
         {L.form.title}
       </h2>
       <div className="space-y-4">
-        <div>
-          <label className={labelCls}>🚗 {L.form.from}</label>
-          <input className={inputCls} placeholder={L.form.fromPh} value={f.from} onChange={(e) => set("from", e.target.value)} />
+        {/* Nereden / Nereye + değiştir düğmesi */}
+        <div className="relative space-y-4">
+          <PlaceField label={L.form.from} icon="🚗" value={f.from} placeholder={L.form.fromPh} onChange={(v) => set("from", v)} />
+          <PlaceField label={L.form.to} icon="📍" value={f.to} placeholder={L.form.toPh} onChange={(v) => set("to", v)} />
+          <button
+            type="button"
+            onClick={swap}
+            aria-label="swap"
+            title="⇅"
+            className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border bg-white text-sm shadow-md transition-all hover:rotate-180 hover:shadow-lg"
+            style={{ borderColor: C.gold, color: C.pine }}
+          >⇅</button>
         </div>
-        <div>
-          <label className={labelCls}>📍 {L.form.to}</label>
-          <input className={inputCls} placeholder={L.form.toPh} value={f.to} onChange={(e) => set("to", e.target.value)} />
-        </div>
+
+        {/* Tarih / Saat */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelCls}>📅 {L.form.date}</label>
-            <input type="date" className={inputCls} value={f.date} onChange={(e) => set("date", e.target.value)} />
+            <div className={fieldWrap}>
+              <input type="date" className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+            </div>
           </div>
           <div>
             <label className={labelCls}>🕐 {L.form.time}</label>
-            <input type="time" className={inputCls} value={f.time} onChange={(e) => set("time", e.target.value)} />
+            <div className={fieldWrap}>
+              <input type="time" className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+            </div>
           </div>
         </div>
+
+        {/* Yolcu / Çocuk */}
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className={labelCls}>👥 {L.form.pax}</label>
-            <select className={inputCls} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-              {Array.from({ length: MAX_PAX }, (_, i) => i + 1).map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
+            <div className={fieldWrap}>
+              <select className={`${fieldInput} appearance-none pr-6`} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
+                {Array.from({ length: MAX_PAX }, (_, i) => i + 1).map((n) => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-3.5 text-xs text-stone-400">▾</span>
+            </div>
           </div>
           <div>
             <label className={labelCls}>🧒 {L.form.kids}</label>
-            <select className={inputCls} value={f.kids} onChange={(e) => set("kids", e.target.value)}>
-              {[0, 1, 2, 3, 4].map((n) => (
-                <option key={n} value={n}>{n}</option>
-              ))}
-            </select>
+            <div className={fieldWrap}>
+              <select className={`${fieldInput} appearance-none pr-6`} value={f.kids} onChange={(e) => set("kids", e.target.value)}>
+                {[0, 1, 2, 3, 4].map((n) => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+              <span className="pointer-events-none absolute right-3.5 text-xs text-stone-400">▾</span>
+            </div>
           </div>
         </div>
+
+        {/* Hemen ara */}
         <a
-          href={waHref(msg())}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-xl px-4 py-3.5 text-center text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5"
-          style={{ background: C.gold, color: C.pine }}
+          href={`tel:+${WHATSAPP_NUMBER}`}
+          className="mt-1 flex h-14 flex-col items-center justify-center rounded-2xl text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          style={{ background: C.pine }}
         >
-          💬 {L.form.wa}
-        </a>
-        <a
-          href={mailHref(L.msg.subject, msg())}
-          className="block rounded-xl border px-4 py-3 text-center text-sm font-bold transition-colors"
-          style={{ borderColor: C.pine, color: C.pine }}
-        >
-          ✉️ {L.form.mail}
+          <span className="text-sm font-extrabold uppercase tracking-[0.15em]">📞 {L.form.callNow}</span>
+          <span className="text-xs font-semibold text-white/70">{PHONE_DISPLAY} · {L.form.callSub}</span>
         </a>
         <p className="text-center text-xs font-semibold text-stone-500">{L.form.note}</p>
       </div>

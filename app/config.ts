@@ -108,3 +108,18 @@ export function altFor(src: string, fallback = "AirportTransfers Zürich"): stri
   if (m) return galleryAlts[Number(m[1]) - 1] ?? fallback;
   return fallback;
 }
+
+// Rezervasyon formu otomatik tamamlama — İsviçre şehir/kanton/tatil yerleri
+export const SWISS_PLACES: string[] = [
+  "Flughafen Zürich (ZRH)",
+  "Zürich", "Winterthur", "Uster", "Rapperswil-Jona", "Baden", "Aarau", "Olten",
+  "Basel", "Liestal", "Bern", "Thun", "Biel/Bienne", "Solothurn",
+  "Luzern / Lucerne", "Zug", "Schwyz", "Einsiedeln", "Sarnen", "Stans", "Altdorf", "Andermatt", "Engelberg",
+  "St. Gallen", "Appenzell", "Herisau", "Glarus", "Frauenfeld", "Kreuzlingen", "Schaffhausen", "Stein am Rhein",
+  "Chur", "Davos", "Klosters", "Arosa", "Lenzerheide", "Flims", "Laax", "St. Moritz", "Pontresina", "Scuol",
+  "Interlaken", "Grindelwald", "Wengen", "Lauterbrunnen", "Mürren", "Gstaad", "Adelboden", "Kandersteg", "Spiez",
+  "Fribourg / Freiburg", "Bulle", "Gruyères", "Neuchâtel / Neuenburg", "Yverdon-les-Bains", "Delémont",
+  "Lausanne", "Montreux", "Vevey", "Nyon", "Morges", "Genf / Geneva",
+  "Sion / Sitten", "Brig", "Visp", "Zermatt", "Täsch", "Saas-Fee", "Crans-Montana", "Verbier", "Leukerbad", "Martigny",
+  "Lugano", "Locarno", "Ascona", "Bellinzona", "Morcote",
+];
