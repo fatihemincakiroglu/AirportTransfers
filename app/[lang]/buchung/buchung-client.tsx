@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../../config";
+import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER, CUSTOM_BASE_PRICE } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
@@ -67,6 +67,7 @@ export default function Buchung() {
     if (from && to && !fromAir && !toAir) {
       setCustom({ from, to });
       setF((s) => ({ ...s, notes: `${from} → ${to}` }));
+      if (d && tm) setStep(2); // özel güzergâhta da araç seçimine geç
       return;
     }
 
@@ -111,9 +112,12 @@ export default function Buchung() {
 
   const sorted = [...fleet].sort((a, b) => a.mult - b.mult);
   const chosen = car !== null ? sorted[car] : null;
-  const total = route && chosen ? route.price * chosen.mult : 0;
+  // Fiyat tabanı: sabit rota fiyatı ya da (geçici) özel güzergâh taban fiyatı
+  const basePrice = route ? route.price : showCustom && custom!.from && custom!.to ? CUSTOM_BASE_PRICE : 0;
+  const hasTrip = route !== null || (showCustom && !!custom!.from && !!custom!.to);
+  const total = hasTrip && chosen ? basePrice * chosen.mult : 0;
 
-  const step1Ready = route !== null && date && time;
+  const step1Ready = hasTrip && date && time;
   const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight;
 
   const message = () => {
@@ -128,7 +132,7 @@ export default function Buchung() {
       `${D.pickupLoc}: ${pickupLabel}\n${D.dropoffLoc}: ${dropoffLabel}\n` +
       `${L.form.date}: ${date}\n${L.form.time}: ${time}\n\n` +
       `${D.vehicle}: ${localName(c.name, lang)} – ${c.car}\n` +
-      `${D.total}: CHF ${total.toFixed(2)}\n` +
+      `${D.total}: CHF ${total.toFixed(2)}${showCustom ? (lang === "de" ? " (provisorisch)" : " (provisional)") : ""}\n` +
       `${D.payTitle}: ${D.payOptions[pay][0]}\n\n` +
       `${D.name}: ${f.name} ${f.surname}\n${D.email}: ${f.email}\n${D.phone}: ${f.phone}\n` +
       `${D.flight}: ${f.flight}\n` +
@@ -213,6 +217,17 @@ export default function Buchung() {
           {step === 1 && (
             <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 md:p-6">
               <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>{B.steps[0]}</h2>
+              {showCustom && (
+                <div className="mb-3 flex items-center justify-between rounded-xl px-4 py-3 text-sm" style={{ background: "#FBF7EE" }}>
+                  <span>
+                    <b style={{ color: C.pine }}>{custom!.from} → {custom!.to}</b>
+                    <span className="block text-[11px] text-stone-500">
+                      {lang === "de" ? "Individuelle Strecke – Endpreis wird bestätigt" : "Custom route – final price to be confirmed"}
+                    </span>
+                  </span>
+                  <span className="text-base" style={{ color: C.gold }}>✓</span>
+                </div>
+              )}
               <div>
                 <label className={labelCls}>📍 {B.route}</label>
                 <select
@@ -268,7 +283,7 @@ export default function Buchung() {
                     </div>
                     <div className="text-center sm:text-right">
                       <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                        CHF {(route.price * v.mult).toFixed(2)}
+                        CHF {(basePrice * v.mult).toFixed(2)}
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button
@@ -289,7 +304,7 @@ export default function Buchung() {
           )}
 
           {/* ── ADIM 3: Ödeme + iletişim ────────────────────── */}
-          {step === 3 && route && chosen && (
+          {step === 3 && hasTrip && chosen && (
             <>
               <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm">
                 <b>{D.noticeTitle}</b>
@@ -422,32 +437,6 @@ export default function Buchung() {
                 />
               </div>
             )}
-            {showCustom && (
-              <div className="mt-4 rounded-xl p-4 text-sm" style={{ background: "#FBF7EE" }}>
-                <b style={{ color: C.pine }}>
-                  {lang === "de" ? "Individuelle Strecke" : "Custom route"}
-                </b>
-                <p className="mt-1 text-stone-600">
-                  {lang === "de"
-                    ? "Diese Verbindung ist keine Standardstrecke – wir senden Ihnen gerne innert 15 Minuten ein Festpreisangebot per WhatsApp."
-                    : "This connection isn't a standard route – we'll gladly send you a fixed-price offer via WhatsApp within 15 minutes."}
-                </p>
-                <a
-                  href={waHref(
-                    `${L.msg.title}\n\n${D.pickupLoc}: ${cFrom || "?"}\n${D.dropoffLoc}: ${cTo || "?"}\n` +
-                    (date ? `${L.form.date}: ${date}\n` : "") +
-                    (time ? `${L.form.time}: ${time}\n` : "") +
-                    `${L.form.pax}: ${f.pax}`
-                  )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-3 block rounded-full px-5 py-2.5 text-center text-xs font-extrabold uppercase tracking-wider text-white"
-                  style={{ background: "#25D366" }}
-                >
-                  💬 {lang === "de" ? "Festpreis anfragen" : "Request fixed price"}
-                </a>
-              </div>
-            )}
             {route && (
               <>
                 <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
@@ -476,12 +465,17 @@ export default function Buchung() {
             )}
           </div>
 
-          {route && chosen && (
+          {hasTrip && chosen && (
             <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
               <div className="flex items-center justify-between">
                 <b style={{ color: C.gold }}>{D.total}</b>
                 <span className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
                   CHF {total.toFixed(2)}
+              {showCustom && (
+                <p className="mt-1 text-right text-[11px] text-stone-500">
+                  {lang === "de" ? "Individuelle Strecke – Endpreis wird per WhatsApp bestätigt." : "Custom route – final price confirmed via WhatsApp."}
+                </p>
+              )}
                 </span>
               </div>
               <p className="mt-1 text-xs text-stone-500">{D.priceNote}</p>

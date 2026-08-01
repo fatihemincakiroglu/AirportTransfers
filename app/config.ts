@@ -123,3 +123,7 @@ export const SWISS_PLACES: string[] = [
   "Sion / Sitten", "Brig", "Visp", "Zermatt", "Täsch", "Saas-Fee", "Crans-Montana", "Verbier", "Leukerbad", "Martigny",
   "Lugano", "Locarno", "Ascona", "Bellinzona", "Morcote",
 ];
+
+// Özel güzergâhlar (25 sabit rota dışı) için GEÇİCİ taban fiyat.
+// ⚠ DENEME DEĞERİ — canlıya çıkmadan gerçek fiyatlandırmayla güncellenecek!
+export const CUSTOM_BASE_PRICE = 250.0;
