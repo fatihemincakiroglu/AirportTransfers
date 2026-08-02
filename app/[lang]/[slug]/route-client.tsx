@@ -167,25 +167,30 @@ export default function RouteClient({ slug }: { slug: string }) {
       <TopBar />
       <SiteHeader active="strecken" />
 
-      {/* Başlık şeridi */}
-      <section style={{ background: C.pine }} className="text-white">
-        <div className="mx-auto max-w-7xl px-5 pb-10 pt-8">
-          <nav className="flex flex-wrap items-center gap-2 text-sm text-white/60">
-            <a href={P("/")} className="hover:text-white">{L.nav.home}</a><span>/</span>
-            <a href={P("/strecken")} className="hover:text-white">{L.nav.routes}</a><span>/</span>
-            <span className="text-white">{n}</span>
+      {/* Başlık — fildişi zeminde kesintisiz */}
+      <section style={{ background: C.ivory }}>
+        <div className="mx-auto max-w-7xl px-5 pb-8 pt-8">
+          <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
+            <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
+            <span className="text-stone-300">/</span>
+            <a href={P("/strecken")} className="transition-colors hover:text-[#0C2E25]">{L.nav.routes}</a>
+            <span className="text-stone-300">/</span>
+            <span style={{ color: C.pine }}>{n}</span>
           </nav>
           <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
-          <h1 className="font-display mt-3 text-3xl font-semibold md:text-5xl">
+          <h1 className="font-display mt-3 text-3xl font-semibold md:text-5xl" style={{ color: C.pine }}>
             Flughafen Zürich (ZRH) → {n}
           </h1>
-          <p className="mt-3 flex flex-wrap gap-4 text-sm text-white/80">
+          <p className="mt-3 flex flex-wrap items-center gap-4 text-sm text-stone-600">
             <span>🛣 {route.km} km</span>
             <span>🕐 {dur}</span>
             <span className="rounded-full px-3 py-0.5 text-xs font-extrabold uppercase" style={{ background: C.gold, color: C.pine }}>
               {L.routesSec.from} CHF {route.price.toFixed(2)}
             </span>
           </p>
+        </div>
+        <div aria-hidden className="mx-auto h-px max-w-7xl px-5">
+          <div className="h-px w-full" style={{ background: `linear-gradient(90deg, ${C.gold} 0%, ${C.gold}66 30%, transparent 75%)` }} />
         </div>
       </section>
 

@@ -16,7 +16,7 @@ export default function FaqClient() {
       <SiteHeader />
 
       <PageHero title={F.title} crumb="FAQ">
-        <p className="mt-4 max-w-2xl text-white/70">{F.sub}</p>
+        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{F.sub}</p>
       </PageHero>
 
       <section className="mx-auto max-w-3xl px-5 py-14 md:py-20">

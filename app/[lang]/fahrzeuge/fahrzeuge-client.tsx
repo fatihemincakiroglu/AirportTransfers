@@ -15,7 +15,7 @@ export default function Fahrzeuge() {
       <SiteHeader active="fahrzeuge" />
 
       <PageHero title={L.fleetSec.pageTitle} crumb={L.nav.fleet}>
-        <p className="mt-4 max-w-2xl text-white/70">{L.fleetSec.pageSub}</p>
+        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{L.fleetSec.pageSub}</p>
       </PageHero>
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">

@@ -39,20 +39,24 @@ export default function PostClient({ slug }: { slug: string }) {
       <TopBar />
       <SiteHeader />
 
-      {/* Başlık bölümü */}
-      <section style={{ background: C.pine }} className="text-white">
-        <div className="mx-auto max-w-3xl px-5 pb-12 pt-8">
-          <nav className="flex flex-wrap items-center gap-2 text-sm text-white/60">
-            <a href={P("/")} className="hover:text-white">{L.nav.home}</a><span>/</span>
-            <a href={P("/blog")} className="hover:text-white">{B.title}</a>
+      {/* Başlık bölümü — fildişi zeminde kesintisiz */}
+      <section style={{ background: C.ivory }}>
+        <div className="mx-auto max-w-3xl px-5 pb-10 pt-8">
+          <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
+            <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
+            <span className="text-stone-300">/</span>
+            <a href={P("/blog")} className="transition-colors hover:text-[#0C2E25]" style={{ color: C.pine }}>{B.title}</a>
           </nav>
           <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
-          <h1 className="font-display mt-3 text-3xl font-semibold leading-tight md:text-5xl">{c.title}</h1>
-          <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-white/70">
+          <h1 className="font-display mt-3 text-3xl font-semibold leading-tight md:text-5xl" style={{ color: C.pine }}>{c.title}</h1>
+          <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-stone-500">
             <span style={{ color: C.gold }}>📅</span> {B.published} {formatDate(post.date, lang)}
-            <span className="text-white/30">·</span>
+            <span className="text-stone-300">·</span>
             🕐 {readingTime(post, lang)} {B.minRead}
           </p>
+        </div>
+        <div aria-hidden className="mx-auto h-px max-w-3xl px-5">
+          <div className="h-px w-full" style={{ background: `linear-gradient(90deg, ${C.gold} 0%, ${C.gold}66 30%, transparent 75%)` }} />
         </div>
       </section>
 

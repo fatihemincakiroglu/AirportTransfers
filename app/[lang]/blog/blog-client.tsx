@@ -37,7 +37,7 @@ export default function BlogList() {
       <SiteHeader />
 
       <PageHero title={B.title} crumb={B.title}>
-        <p className="mt-4 max-w-2xl text-white/70">{B.pageSub}</p>
+        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{B.pageSub}</p>
       </PageHero>
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">

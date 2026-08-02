@@ -122,7 +122,7 @@ export default function UeberUns() {
       <TopBar />
       <SiteHeader />
       <PageHero title={c.title} crumb={c.crumb}>
-        <p className="mt-4 max-w-2xl text-white/70">{c.lead}</p>
+        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{c.lead}</p>
       </PageHero>
 
       {/* ── Giriş + istatistik bandı ─────────────────────── */}

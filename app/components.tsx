@@ -186,20 +186,25 @@ export function SiteHeader({ active }: { active?: string }) {
 }
 
 // ── Alt sayfa hero'su (breadcrumb + başlık) ───────────────────
+// Fildişi zeminde kesintisiz akar; imza öğesi alttaki eriyen altın çizgidir.
 export function PageHero({ title, crumb, children }: { title: string; crumb: string; children?: React.ReactNode }) {
   const { lang, P } = useLang();
   const L = t[lang];
   return (
-    <section style={{ background: C.pine }} className="text-white">
-      <div className="mx-auto max-w-7xl px-5 pb-12 pt-10 md:pb-14">
-        <nav className="flex items-center gap-2 text-sm text-white/60">
-          <a href={P("/")} className="hover:text-white">{L.nav.home}</a>
-          <span>/</span>
-          <span className="text-white">{crumb}</span>
+    <section style={{ background: C.ivory }}>
+      <div className="mx-auto max-w-7xl px-5 pb-10 pt-10 md:pb-12">
+        <nav className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
+          <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
+          <span className="text-stone-300">/</span>
+          <span style={{ color: C.pine }}>{crumb}</span>
         </nav>
         <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
-        <h1 className="font-display mt-3 text-5xl font-semibold md:text-6xl">{title}</h1>
+        <h1 className="font-display mt-3 text-5xl font-semibold md:text-6xl" style={{ color: C.pine }}>{title}</h1>
         {children}
+      </div>
+      {/* İmza: soldan eriyen altın ayraç */}
+      <div aria-hidden className="mx-auto h-px max-w-7xl px-5">
+        <div className="h-px w-full" style={{ background: `linear-gradient(90deg, ${C.gold} 0%, ${C.gold}66 30%, transparent 75%)` }} />
       </div>
     </section>
   );

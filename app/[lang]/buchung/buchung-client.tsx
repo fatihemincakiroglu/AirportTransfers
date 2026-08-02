@@ -160,15 +160,16 @@ export default function Buchung() {
       <TopBar />
       <SiteHeader />
 
-      {/* Başlık + adım göstergesi */}
-      <section style={{ background: C.pine }} className="text-white">
-        <div className="mx-auto max-w-7xl px-5 pb-10 pt-8">
-          <nav className="flex items-center gap-2 text-sm text-white/60">
-            <a href={P("/")} className="hover:text-white">{L.nav.home}</a><span>/</span>
-            <span className="text-white">{B.title}</span>
+      {/* Başlık + adım göstergesi — fildişi zeminde kesintisiz */}
+      <section style={{ background: C.ivory }}>
+        <div className="mx-auto max-w-7xl px-5 pb-8 pt-8">
+          <nav className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
+            <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
+            <span className="text-stone-300">/</span>
+            <span style={{ color: C.pine }}>{B.title}</span>
           </nav>
           <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
-          <h1 className="font-display mt-3 text-4xl font-semibold md:text-5xl">{B.title}</h1>
+          <h1 className="font-display mt-3 text-4xl font-semibold md:text-5xl" style={{ color: C.pine }}>{B.title}</h1>
 
           {/* Stepper */}
           <ol className="mt-6 flex flex-wrap gap-2">
@@ -185,8 +186,8 @@ export default function Buchung() {
                       active
                         ? { background: C.gold, color: C.pine }
                         : done
-                          ? { background: "rgba(255,255,255,0.15)", color: "#fff", cursor: "pointer" }
-                          : { background: "rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.45)" }
+                          ? { background: "#0C2E2514", color: C.pine, cursor: "pointer" }
+                          : { background: "#0C2E250A", color: "#a8a29e" }
                     }
                   >
                     <span className="flex h-5 w-5 items-center justify-center rounded-full border text-[10px]"
@@ -199,6 +200,9 @@ export default function Buchung() {
               );
             })}
           </ol>
+        </div>
+        <div aria-hidden className="mx-auto h-px max-w-7xl px-5">
+          <div className="h-px w-full" style={{ background: `linear-gradient(90deg, ${C.gold} 0%, ${C.gold}66 30%, transparent 75%)` }} />
         </div>
       </section>
 
