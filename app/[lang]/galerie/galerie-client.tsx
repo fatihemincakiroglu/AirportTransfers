@@ -46,9 +46,7 @@ export default function Galerie() {
       <TopBar />
       <SiteHeader active="galerie" />
 
-      <PageHero title={L.gallerySec.pageTitle} crumb={L.nav.gallery}>
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{L.gallerySec.pageSub}</p>
-      </PageHero>
+      <PageHero title={L.gallerySec.pageTitle} crumb={L.nav.gallery} />
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">

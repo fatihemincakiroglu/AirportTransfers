@@ -15,9 +15,7 @@ export default function FaqClient() {
       <TopBar />
       <SiteHeader />
 
-      <PageHero title={F.title} crumb="FAQ">
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{F.sub}</p>
-      </PageHero>
+      <PageHero title={F.title} crumb="FAQ" />
 
       <section className="mx-auto max-w-3xl px-5 py-14 md:py-20">
         <div className="divide-y divide-stone-200 rounded-2xl bg-white px-5 shadow-md ring-1 ring-black/5 md:px-7">

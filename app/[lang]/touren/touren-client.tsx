@@ -14,9 +14,7 @@ export default function Touren() {
       <TopBar />
       <SiteHeader active="touren" />
 
-      <PageHero title={L.toursSec.pageTitle} crumb={L.nav.tours}>
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{L.toursSec.pageSub}</p>
-      </PageHero>
+      <PageHero title={L.toursSec.pageTitle} crumb={L.nav.tours} />
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

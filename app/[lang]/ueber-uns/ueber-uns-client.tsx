@@ -121,9 +121,7 @@ export default function UeberUns() {
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
       <TopBar />
       <SiteHeader />
-      <PageHero title={c.title} crumb={c.crumb}>
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{c.lead}</p>
-      </PageHero>
+      <PageHero title={c.title} crumb={c.crumb} />
 
       {/* ── Giriş + istatistik bandı ─────────────────────── */}
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">

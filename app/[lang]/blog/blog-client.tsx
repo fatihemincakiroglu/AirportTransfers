@@ -36,9 +36,7 @@ export default function BlogList() {
       <TopBar />
       <SiteHeader />
 
-      <PageHero title={B.title} crumb={B.title}>
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{B.pageSub}</p>
-      </PageHero>
+      <PageHero title={B.title} crumb={B.title} />
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

@@ -15,7 +15,6 @@ export default function Strecken() {
       <SiteHeader active="strecken" />
 
       <PageHero title={L.routesSec.pageTitle} crumb={L.nav.routes}>
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{L.routesSec.pageSub}</p>
         <BookingBar />
       </PageHero>
 

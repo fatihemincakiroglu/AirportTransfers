@@ -14,9 +14,7 @@ export default function Fahrzeuge() {
       <TopBar />
       <SiteHeader active="fahrzeuge" />
 
-      <PageHero title={L.fleetSec.pageTitle} crumb={L.nav.fleet}>
-        <p className="mt-4 max-w-2xl leading-relaxed text-stone-600">{L.fleetSec.pageSub}</p>
-      </PageHero>
+      <PageHero title={L.fleetSec.pageTitle} crumb={L.nav.fleet} />
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

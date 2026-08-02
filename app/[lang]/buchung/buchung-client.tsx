@@ -168,11 +168,10 @@ export default function Buchung() {
             <span className="text-stone-300">/</span>
             <span style={{ color: C.pine }}>{B.title}</span>
           </nav>
-          <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
-          <h1 className="font-display mt-3 text-4xl font-semibold md:text-5xl" style={{ color: C.pine }}>{B.title}</h1>
+          <h1 className="sr-only">{B.title}</h1>
 
           {/* Stepper */}
-          <ol className="mt-6 flex flex-wrap gap-2">
+          <ol className="mt-4 flex flex-wrap gap-2">
             {B.steps.map((s, i) => {
               const num = (i + 1) as 1 | 2 | 3;
               const active = step === num;
