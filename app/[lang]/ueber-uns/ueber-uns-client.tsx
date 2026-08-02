@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { C } from "../../config";
-import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, Eyebrow } from "../../components";
 
@@ -116,7 +115,6 @@ const A = {
 
 export default function UeberUns() {
   const { lang, P } = useLang();
-  const L = t[lang];
   const c = A[lang];
 
   return (

@@ -22,7 +22,7 @@ export default function Strecken() {
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {routes.map((r, i) => (
-            <RouteCard key={i} {...r} />
+            <RouteCard key={i} {...r} priority={i < 3} />
           ))}
         </div>
         <p className="mt-8 text-sm font-semibold text-stone-500">{L.routesSec.allNote}</p>

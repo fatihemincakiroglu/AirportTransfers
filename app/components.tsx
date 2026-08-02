@@ -25,7 +25,33 @@ export const inputCls =
 export const labelCls =
   "mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-500";
 
-export function Eyebrow({ children, dark }: { children: React.ReactNode; dark?: boolean }) {
+// ── Ekstra sayaç satırı (bebek koltuğu / çocuk koltuğu / kayak çantası) ──
+// Rezervasyon sayfalarında ortak; modül seviyesinde tanımlı olduğu için
+// her render'da yeniden oluşmaz (react-hooks/static-components).
+export function ExtrasCounter({ title, desc, freeLabel, value, onBump }: {
+  title: string; desc: string; freeLabel: string; value: number; onBump: (d: number) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-stone-100 py-4">
+      <div>
+        <p className="font-bold">
+          {title}{" "}
+          <span className="ml-1 rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase text-white" style={{ background: "#E2574C" }}>
+            {freeLabel}
+          </span>
+        </p>
+        <p className="text-xs text-stone-500">{desc}</p>
+      </div>
+      <div className="flex items-center gap-3">
+        <button onClick={() => onBump(-1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">−</button>
+        <b className="w-4 text-center">{value}</b>
+        <button onClick={() => onBump(1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">+</button>
+      </div>
+    </div>
+  );
+}
+
+export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.gold }}>
       <span className="h-px w-8" style={{ background: C.gold }} />
@@ -36,7 +62,7 @@ export function Eyebrow({ children, dark }: { children: React.ReactNode; dark?: 
 
 // ── Üst şerit ──────────────────────────────────────────────────
 export function TopBar() {
-  const { lang, setLang, P } = useLang();
+  const { lang, setLang } = useLang();
   const L = t[lang];
   const short = "VIP Transfers"; // mobilde kısa etiket
   return (
@@ -434,7 +460,7 @@ export function BookingCard() {
 }
 
 // ── Kartlar ───────────────────────────────────────────────────
-export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to: LocalName; km: number; min: number; price: number; img: string }) {
+export function RouteCard({ slug, to, km, min, price, img, priority }: { slug: string; to: LocalName; km: number; min: number; price: number; img: string; priority?: boolean }) {
   const { lang, P } = useLang();
   const L = t[lang];
   const n = localName(to, lang);
@@ -452,6 +478,7 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
         src={img}
         alt={lang === "de" ? `Flughafentransfer Zürich nach ${n}` : `Zurich Airport transfer to ${n}`}
         fill
+        priority={priority}
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="object-cover transition-transform duration-700 group-hover:scale-105"
       />
@@ -477,8 +504,7 @@ export function RouteCard({ slug, to, km, min, price, img }: { slug: string; to:
 }
 
 export function TourCard({ slug, name, dur, img }: { slug: string; name: string; dur: string; img: string }) {
-  const { lang, P } = useLang();
-  const L = t[lang];
+  const { P } = useLang();
   return (
     <a
       href={P(`/touren/${slug}`)}
@@ -518,7 +544,6 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
         <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{n}</p>
       </div>
       <div className="my-4 flex h-36 items-center justify-center">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <Image src={img} alt={`${car} – ${n}`} width={360} height={160} className="max-h-full w-auto max-w-full object-contain" />
       </div>
       {/* Kapasite — fildişi zeminde iki eş istatistik hücresi */}

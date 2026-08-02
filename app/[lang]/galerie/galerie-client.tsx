@@ -67,6 +67,7 @@ export default function Galerie() {
                 src={src}
                 alt={altFor(src)}
                 fill
+                priority={i < 4}
                 sizes="(max-width: 768px) 50vw, 25vw"
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 style={{ backgroundColor: C.pine }}

@@ -11,7 +11,7 @@ import { routeContent } from "../../routeContent";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   mailHref, localName, inputCls, labelCls,
-  RouteCard,
+  RouteCard, ExtrasCounter,
 } from "../../components";
 
 export default function RouteClient({ slug }: { slug: string }) {
@@ -95,27 +95,9 @@ export default function RouteClient({ slug }: { slug: string }) {
   const ready =
     accepted && f.name && f.surname && f.email && f.phone && f.flight && date && time;
 
-  const Counter = ({ k, title, desc }: { k: "baby" | "child" | "ski"; title: string; desc: string }) => (
-    <div className="flex items-center justify-between gap-4 border-b border-stone-100 py-4">
-      <div>
-        <p className="font-bold">
-          {title}{" "}
-          <span className="ml-1 rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase text-white" style={{ background: "#E2574C" }}>
-            {D.free}
-          </span>
-        </p>
-        <p className="text-xs text-stone-500">{desc}</p>
-      </div>
-      <div className="flex items-center gap-3">
-        <button onClick={() => bump(k, -1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">−</button>
-        <b className="w-4 text-center">{extras[k]}</b>
-        <button onClick={() => bump(k, 1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">+</button>
-      </div>
-    </div>
-  );
-
   // ── Sağ taraftaki özet kartı ─────────────────────────────
-  const Summary = () => (
+  // JSX döndüren yardımcı — bileşen değil, fonksiyon olarak çağrılır (remount olmaz)
+  const renderSummary = () => (
     <aside className="h-fit space-y-4 lg:sticky lg:top-24">
       <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
         <h3 className="font-display text-lg font-semibold" style={{ color: C.pine }}>{D.summary}</h3>
@@ -294,9 +276,9 @@ export default function RouteClient({ slug }: { slug: string }) {
                 </div>
 
                 <div className="mt-4">
-                  <Counter k="baby" title={D.baby[0]} desc={D.baby[1]} />
-                  <Counter k="child" title={D.child[0]} desc={D.child[1]} />
-                  <Counter k="ski" title={D.ski[0]} desc={D.ski[1]} />
+                  <ExtrasCounter title={D.baby[0]} desc={D.baby[1]} freeLabel={D.free} value={extras.baby} onBump={(d) => bump("baby", d)} />
+                  <ExtrasCounter title={D.child[0]} desc={D.child[1]} freeLabel={D.free} value={extras.child} onBump={(d) => bump("child", d)} />
+                  <ExtrasCounter title={D.ski[0]} desc={D.ski[1]} freeLabel={D.free} value={extras.ski} onBump={(d) => bump("ski", d)} />
                 </div>
 
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -354,7 +336,7 @@ export default function RouteClient({ slug }: { slug: string }) {
           )}
         </div>
 
-        <Summary />
+        {renderSummary()}
       </section>
 
       {/* ── SEO içerik bölümleri ─────────────────────────────── */}

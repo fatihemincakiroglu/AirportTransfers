@@ -6,7 +6,7 @@ import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  mailHref, localName, inputCls, labelCls, norm, waHref,
+  mailHref, localName, inputCls, labelCls, norm, ExtrasCounter,
 } from "../../components";
 
 export default function Buchung() {
@@ -45,11 +45,6 @@ export default function Buchung() {
     const paxN = parseInt(g("pax") || "0", 10) || 0;
     const kidsN = parseInt(g("kids") || "0", 10) || 0;
 
-    if (d) setDate(d);
-    if (tm) setTime(tm);
-    if (paxN) setF((s) => ({ ...s, pax: String(Math.min(7, paxN + kidsN)) }));
-    if (kidsN) setExtras((s) => ({ ...s, child: Math.min(4, kidsN) }));
-
     // Konum metnini rotayla eşleştir (aksan duyarsız, iki dilde)
     const isAirport = (s: string) => /zrh|flughafen|airport/.test(norm(s));
     const findIdx = (s: string) =>
@@ -63,36 +58,51 @@ export default function Buchung() {
     const fromAir = isAirport(from);
     const toAir = isAirport(to);
 
-    // İki uç da dolu ve İKİSİ DE havalimanı değilse: sabit rota YOK → özel güzergâh
-    if (from && to && !fromAir && !toAir) {
-      setCustom({ from, to });
-      setF((s) => ({ ...s, notes: `${from} → ${to}` }));
-      if (d && tm) setStep(2); // özel güzergâhta da araç seçimine geç
-      return;
-    }
-
+    // ── Önce tüm hedef durum hesaplanır, sonra TEK blokta uygulanır ──
     let idx = -1;
     let rev = false;
-    if (toAir && from) {
-      idx = findIdx(from);            // Basel → ZRH
-      if (idx >= 0) rev = true;
-    } else if (to) {
-      idx = findIdx(to);              // ZRH → Basel
-    } else if (from && !fromAir) {
-      idx = findIdx(from);            // sadece kalkış yazılmış: şehir → ZRH varsay
-      if (idx >= 0) rev = true;
+    let customPlan: { from: string; to: string } | null = null;
+    let notes = "";
+    let step2 = false;
+
+    if (from && to && !fromAir && !toAir) {
+      // İki uç da dolu ve İKİSİ DE havalimanı değilse: sabit rota YOK → özel güzergâh
+      customPlan = { from, to };
+      notes = `${from} → ${to}`;
+      step2 = Boolean(d && tm); // özel güzergâhta da araç seçimine geç
+    } else {
+      if (toAir && from) {
+        idx = findIdx(from);            // Basel → ZRH
+        if (idx >= 0) rev = true;
+      } else if (to) {
+        idx = findIdx(to);              // ZRH → Basel
+      } else if (from && !fromAir) {
+        idx = findIdx(from);            // sadece kalkış yazılmış: şehir → ZRH varsay
+        if (idx >= 0) rev = true;
+      }
+      if (idx >= 0) {
+        step2 = Boolean(d && tm);       // → doğrudan araç seçimi
+      } else if (from || to) {
+        // Listede olmayan uç — özel güzergâh olarak göster
+        customPlan = { from: from || "", to: to || "" };
+        notes = `${from || "?"} → ${to || "?"}`;
+      }
     }
 
-    if (idx >= 0) {
-      setRouteIdx(idx);
-      if (rev) setReversed(true);
-      if (d && tm) setStep(2); // → doğrudan araç seçimi
-    } else if (from || to) {
-      // Listede olmayan uç — özel güzergâh olarak göster
-      setCustom({ from: from || "", to: to || "" });
-      setF((s) => ({ ...s, notes: `${from || "?"} → ${to || "?"}` }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // URL → state senkronu mount'ta bir kez çalışır; React tüm bu çağrıları
+    // tek render'da toplar (otomatik batching). Bu, dokümante edilmiş
+    // "harici sistemle senkron" istisnasıdır.
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (d) setDate(d);
+    if (tm) setTime(tm);
+    if (paxN) setF((s) => ({ ...s, pax: String(Math.min(7, paxN + kidsN)) }));
+    if (kidsN) setExtras((s) => ({ ...s, child: Math.min(4, kidsN) }));
+    if (customPlan) setCustom(customPlan);
+    if (notes) setF((s) => ({ ...s, notes }));
+    if (idx >= 0) setRouteIdx(idx);
+    if (rev) setReversed(true);
+    if (step2) setStep(2);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const route = routeIdx !== null ? routes[routeIdx] : null;
@@ -144,25 +154,6 @@ export default function Buchung() {
   };
 
   const go = (s: 1 | 2 | 3) => { setStep(s); window.scrollTo({ top: 0, behavior: "smooth" }); };
-
-  const Counter = ({ k, title, desc }: { k: "baby" | "child" | "ski"; title: string; desc: string }) => (
-    <div className="flex items-center justify-between gap-4 border-b border-stone-100 py-4">
-      <div>
-        <p className="font-bold">
-          {title}{" "}
-          <span className="ml-1 rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase text-white" style={{ background: "#E2574C" }}>
-            {D.free}
-          </span>
-        </p>
-        <p className="text-xs text-stone-500">{desc}</p>
-      </div>
-      <div className="flex items-center gap-3">
-        <button onClick={() => bump(k, -1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">−</button>
-        <b className="w-4 text-center">{extras[k]}</b>
-        <button onClick={() => bump(k, 1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">+</button>
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
@@ -337,9 +328,9 @@ export default function Buchung() {
                 </div>
 
                 <div className="mt-4">
-                  <Counter k="baby" title={D.baby[0]} desc={D.baby[1]} />
-                  <Counter k="child" title={D.child[0]} desc={D.child[1]} />
-                  <Counter k="ski" title={D.ski[0]} desc={D.ski[1]} />
+                  <ExtrasCounter title={D.baby[0]} desc={D.baby[1]} freeLabel={D.free} value={extras.baby} onBump={(d) => bump("baby", d)} />
+                  <ExtrasCounter title={D.child[0]} desc={D.child[1]} freeLabel={D.free} value={extras.child} onBump={(d) => bump("child", d)} />
+                  <ExtrasCounter title={D.ski[0]} desc={D.ski[1]} freeLabel={D.free} value={extras.ski} onBump={(d) => bump("ski", d)} />
                 </div>
 
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">

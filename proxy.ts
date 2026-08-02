@@ -6,7 +6,7 @@ const DEFAULT_LOCALE = "en";
 const LANG_COOKIE = "site-lang";
 type L = (typeof LOCALES)[number];
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const parts = pathname.split("/").filter(Boolean);
 
