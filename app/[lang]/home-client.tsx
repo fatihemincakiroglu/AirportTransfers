@@ -9,7 +9,7 @@ import { tx } from "../i18nX";
 import { useLang } from "../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  BookingCard, RouteCard, TourCard, FleetCard, Eyebrow,
+  BookingCard, RouteCard, FleetCard, Eyebrow,
 } from "../components";
 
 // ── Yorum marquee'si — modül seviyesinde tanımlı (her render'da yeniden oluşmaz) ──
@@ -186,16 +186,6 @@ export default function Home() {
         <a href="#buchen" className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
           {X.howSec.cta} →
         </a>
-      </section>
-
-      {/* ── Tours preview ───────────────────────────────────── */}
-      <section id="touren" className="mx-auto max-w-7xl px-5 pb-16 md:pb-24">
-        {sectionHead(L.toursSec.eyebrow, L.toursSec.title, L.toursSec.sub, "/touren")}
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {L.toursSec.list.slice(0, 4).map((tour, i) => (
-            <TourCard key={i} {...tour} />
-          ))}
-        </div>
       </section>
 
       {/* ── Fleet preview ───────────────────────────────────── */}

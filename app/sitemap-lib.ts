@@ -4,7 +4,6 @@
 import { SITE_URL, routes } from "./config";
 import { allDestinationSlugs } from "./destinations";
 import { blogPosts } from "./blogContent";
-import { tours } from "./tourContent";
 import { localizePath } from "./paths";
 
 export type L = "en" | "de";
@@ -26,7 +25,6 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/strecken", "weekly", 0.9],
   ["/buchung", "monthly", 0.9],
   ["/fahrzeuge", "monthly", 0.7],
-  ["/touren", "monthly", 0.7],
   ["/galerie", "monthly", 0.5],
   ["/kontakt", "yearly", 0.6],
   ["/ueber-uns", "yearly", 0.6],
@@ -41,7 +39,6 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/blog", "weekly", 0.7],
   ...routes.map((r): [string, "monthly", number] => [`/${r.slug}`, "monthly", 0.8]),
   ...allDestinationSlugs().map((sl): [string, "monthly", number] => [`/${sl}`, "monthly", 0.6]),
-  ...tours.map((x): [string, "monthly", number] => [`/touren/${x.slug}`, "monthly", 0.7]),
   ...blogPosts.map((p): [string, "yearly", number, string] => [
     `/blog/${p.slug}`, "yearly", 0.6, new Date(p.date).toISOString(),
   ]),

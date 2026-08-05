@@ -13,7 +13,6 @@ export const SEGMENTS: Record<string, { de: string; en: string }> = {
   rueckerstattung: { de: "rueckerstattung", en: "refund-policy" },
   strecken: { de: "strecken", en: "routes" },
   fahrzeuge: { de: "fahrzeuge", en: "vehicles" },
-  touren: { de: "touren", en: "tours" },
   galerie: { de: "galerie", en: "gallery" },
   buchung: { de: "buchung", en: "booking" },
   faq: { de: "faq", en: "faq" },

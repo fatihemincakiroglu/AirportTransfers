@@ -120,7 +120,6 @@ export function SiteHeader({ active }: { active?: string }) {
     { href: "/staedte", key: "staedte", label: X.nav.destinations },
     { href: "/preise", key: "preise", label: X.nav.prices },
     { href: "/events", key: "events", label: X.nav.events },
-    { href: "/touren", key: "touren", label: L.nav.tours },
     { href: "/fahrzeuge", key: "fahrzeuge", label: L.nav.fleet },
     { href: "/galerie", key: "galerie", label: L.nav.gallery },
     { href: "/kontakt", key: "kontakt", label: L.nav.contact },
@@ -570,34 +569,6 @@ export function RouteCard({ slug, to, km, min, price, img, priority }: { slug: s
   );
 }
 
-export function TourCard({ slug, name, dur, img }: { slug: string; name: string; dur: string; img: string }) {
-  const { P } = useLang();
-  return (
-    <a
-      href={P(`/touren/${slug}`)}
-      className="group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl p-5 text-white shadow-md transition-all hover:-translate-y-1 hover:shadow-xl"
-      style={{ backgroundColor: C.pine }}
-    >
-      <Image
-        src={img}
-        alt={name}
-        fill
-        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        className="object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      <span
-        aria-hidden
-        className="absolute inset-0"
-        style={{ background: "linear-gradient(180deg, rgba(8,33,27,0.1) 0%, rgba(8,33,27,0.85) 85%)" }}
-      />
-      <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wide" style={{ color: C.pine }}>
-        🕐 {dur}
-      </span>
-      <span className="relative z-10 mb-2 h-0.5 w-8" style={{ background: C.gold }} />
-      <h3 className="font-display relative z-10 text-xl font-semibold leading-snug">{name}</h3>
-    </a>
-  );
-}
 
 export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: LocalName; car: string; pax: number; bags: number; img: string; showFeatures?: boolean }) {
   const { lang, P } = useLang();
@@ -726,7 +697,6 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.explore}</h4>
           <ul className="space-y-2.5 text-sm">
             <li><a href={P("/strecken")} className="hover:text-white">{L.nav.routes}</a></li>
-            <li><a href={P("/touren")} className="hover:text-white">{L.nav.tours}</a></li>
             <li><a href={P("/fahrzeuge")} className="hover:text-white">{L.nav.fleet}</a></li>
             <li><a href={P("/galerie")} className="hover:text-white">{L.nav.gallery}</a></li>
             <li><a href={P("/blog")} className="hover:text-white">{L.blogSec.title}</a></li>

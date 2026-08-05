@@ -20,6 +20,15 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
+  async redirects() {
+    // Touren bölümü kaldırıldı — eski URL'ler ana sayfaya yönlenir
+    return [
+      { source: "/:lang/touren/:path*", destination: "/:lang", permanent: true },
+      { source: "/:lang/tours/:path*", destination: "/:lang", permanent: true },
+      { source: "/:lang/touren", destination: "/:lang", permanent: true },
+      { source: "/:lang/tours", destination: "/:lang", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;
