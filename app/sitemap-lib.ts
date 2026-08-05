@@ -2,6 +2,7 @@
 //  SITEMAP YARDIMCILARI — iki dilin URL listesi + XML üretici
 // ─────────────────────────────────────────────────────────────
 import { SITE_URL, routes } from "./config";
+import { allDestinationSlugs } from "./destinations";
 import { blogPosts } from "./blogContent";
 import { tours } from "./tourContent";
 import { localizePath } from "./paths";
@@ -34,8 +35,12 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/agb", "yearly", 0.3],
   ["/rueckerstattung", "yearly", 0.3],
   ["/faq", "monthly", 0.6],
+  ["/staedte", "weekly", 0.8],
+  ["/preise", "monthly", 0.8],
+  ["/events", "monthly", 0.7],
   ["/blog", "weekly", 0.7],
   ...routes.map((r): [string, "monthly", number] => [`/${r.slug}`, "monthly", 0.8]),
+  ...allDestinationSlugs().map((sl): [string, "monthly", number] => [`/${sl}`, "monthly", 0.6]),
   ...tours.map((x): [string, "monthly", number] => [`/touren/${x.slug}`, "monthly", 0.7]),
   ...blogPosts.map((p): [string, "yearly", number, string] => [
     `/blog/${p.slug}`, "yearly", 0.6, new Date(p.date).toISOString(),

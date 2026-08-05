@@ -3,6 +3,8 @@ import { routes } from "../../config";
 import { routeContent } from "../../routeContent";
 import { notFound } from "next/navigation";
 import RouteClient from "./route-client";
+import DestinationClient from "./destination-client";
+import { findDestination, allDestinationSlugs } from "../../destinations";
 
 const nameOf = (to: string | { de: string; en: string }, lang: string) =>
   typeof to === "string" ? to : lang === "de" ? to.de : to.en;
@@ -12,7 +14,26 @@ type Params = { params: Promise<{ lang: string; slug: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, slug } = await params;
   const route = routes.find((r) => r.slug === slug);
-  if (!route) return { title: "AirportTransfers Zürich" };
+  if (!route) {
+    const dest = findDestination(slug);
+    if (dest) {
+      const de = lang === "de";
+      const n = dest.d.name;
+      return {
+        title: de
+          ? `Flughafentransfer ${n} | Privater Chauffeur ab Flughafen Zürich`
+          : `Airport Transfer ${n} | Private chauffeur from Zurich Airport`,
+        description: de
+          ? `Privater Flughafentransfer und Chauffeurservice ${n}: Festpreis pro Fahrzeug, Meet & Greet, Flugverfolgung – 24/7 ab Flughafen Zürich (ZRH).`
+          : `Private airport transfer and chauffeur service ${n}: fixed price per vehicle, meet & greet, flight tracking – 24/7 from Zurich Airport (ZRH).`,
+        alternates: {
+          canonical: `/${lang}/${slug}`,
+          languages: { en: `/en/${slug}`, de: `/de/${slug}`, "x-default": `/en/${slug}` },
+        },
+      };
+    }
+    return { title: "AirportTransfers Zürich" };
+  }
   const n = nameOf(route.to, lang);
   const de = lang === "de";
   return {
@@ -34,13 +55,40 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export function generateStaticParams() {
-  return routes.map((r) => ({ slug: r.slug }));
+  return [
+    ...routes.map((r) => ({ slug: r.slug })),
+    ...allDestinationSlugs().map((slug) => ({ slug })),
+  ];
 }
 
 export default async function Page({ params }: Params) {
   const { lang, slug } = await params;
   const route = routes.find((r) => r.slug === slug);
-  if (!route) notFound(); // Gerçek 404 — soft-404 önlenir
+  if (!route) {
+    const dest = findDestination(slug);
+    if (dest) {
+      const dJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        serviceType: "Airport transfer",
+        name: `Zurich Airport (ZRH) → ${dest.d.name}`,
+        areaServed: "Switzerland",
+        provider: {
+          "@type": "LocalBusiness",
+          name: "AirportTransfers Zürich",
+          telephone: "+41763020326",
+          address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
+        },
+      };
+      return (
+        <>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dJsonLd) }} />
+          <DestinationClient slug={slug} />
+        </>
+      );
+    }
+    notFound(); // Gerçek 404 — soft-404 önlenir
+  }
   const n = nameOf(route.to, lang);
   const content = routeContent[slug]?.[lang === "de" ? "de" : "en"];
 

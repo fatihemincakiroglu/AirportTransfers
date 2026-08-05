@@ -8,6 +8,7 @@ import {
   COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
 } from "./config";
 import { t, Lang } from "./i18n";
+import { tx } from "./i18nX";
 import { legalPages, LegalKey } from "./legalContent";
 import { useLang } from "./providers";
 
@@ -113,8 +114,12 @@ export function SiteHeader({ active }: { active?: string }) {
   const L = t[lang];
   const [open, setOpen] = useState(false);
 
+  const X = tx[lang];
   const links = [
     { href: "/strecken", key: "strecken", label: L.nav.routes },
+    { href: "/staedte", key: "staedte", label: X.nav.destinations },
+    { href: "/preise", key: "preise", label: X.nav.prices },
+    { href: "/events", key: "events", label: X.nav.events },
     { href: "/touren", key: "touren", label: L.nav.tours },
     { href: "/fahrzeuge", key: "fahrzeuge", label: L.nav.fleet },
     { href: "/galerie", key: "galerie", label: L.nav.gallery },
@@ -340,8 +345,8 @@ function PlaceField({ label, icon, value, placeholder, onChange }: {
 }
 
 /** Özel açılır menü — tarayıcı select'i yerine markalı liste */
-function SelectField({ label, icon, value, options, onChange }: {
-  label: string; icon: string; value: string; options: (string | number)[]; onChange: (v: string) => void;
+function SelectField({ label, icon, value, options, onChange, suffix }: {
+  label: string; icon: string; value: string; options: (string | number)[]; onChange: (v: string) => void; suffix?: string;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -353,7 +358,7 @@ function SelectField({ label, icon, value, options, onChange }: {
         onBlur={() => setTimeout(() => setOpen(false), 120)}
         className={`${fieldWrap} w-full cursor-pointer select-none`}
       >
-        <span className="w-full text-left text-sm font-semibold text-stone-800">{value}</span>
+        <span className="w-full text-left text-sm font-semibold text-stone-800">{value}{suffix ? ` ${suffix}` : ""}</span>
         <span
           className={`pointer-events-none shrink-0 text-xs text-stone-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         >▾</span>
@@ -388,6 +393,9 @@ function SelectField({ label, icon, value, options, onChange }: {
 export function BookingCard() {
   const { lang, P } = useLang();
   const L = t[lang];
+  const X = tx[lang];
+  const [mode, setMode] = useState<"transfer" | "hourly">("transfer");
+  const [hours, setHours] = useState("2");
   const [f, setF] = useState({ from: "", to: "", date: "", time: "", pax: "2", kids: "0" });
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
@@ -395,9 +403,63 @@ export function BookingCard() {
   return (
     <div id="buchen" className="relative overflow-visible rounded-3xl bg-white p-6 text-stone-900 shadow-2xl ring-1 ring-black/5">
       <span className="absolute inset-x-0 top-0 h-1 rounded-t-3xl" style={{ background: C.gold }} />
-      <h2 className="font-display mb-5 text-xl font-semibold" style={{ color: C.pine }}>
-        {L.form.title}
-      </h2>
+
+      {/* Transfer | Stündlich sekmeleri */}
+      <div className="mb-5 flex rounded-full bg-stone-100 p-1 text-sm font-bold">
+        {(["transfer", "hourly"] as const).map((m) => (
+          <button
+            key={m}
+            type="button"
+            onClick={() => setMode(m)}
+            className="flex-1 rounded-full px-4 py-2 transition-colors"
+            style={mode === m ? { background: C.gold, color: C.pine } : { color: "#78716c" }}
+          >
+            {m === "transfer" ? X.hourly.tabTransfer : X.hourly.tabHourly}
+          </button>
+        ))}
+      </div>
+
+      {mode === "hourly" ? (
+        <div className="space-y-4">
+          <SelectField
+            label={X.hourly.duration}
+            icon="⏱"
+            value={hours}
+            options={Array.from({ length: 11 }, (_, i) => i + 2)}
+            suffix={X.hourly.hoursShort}
+            onChange={setHours}
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className={labelCls}>📅 {L.form.date}</label>
+              <div className={fieldWrap}>
+                <input type="date" className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>🕐 {L.form.time}</label>
+              <div className={fieldWrap}>
+                <input type="time" className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+              </div>
+            </div>
+          </div>
+          <SelectField
+            label={L.form.pax}
+            icon="👥"
+            value={f.pax}
+            options={Array.from({ length: MAX_PAX }, (_, i) => i + 1)}
+            onChange={(v) => set("pax", v)}
+          />
+          <a
+            href={`${P("/buchung")}?${new URLSearchParams({ mode: "hourly", hours, date: f.date, time: f.time, pax: f.pax }).toString()}`}
+            className="mt-1 flex h-14 items-center justify-center gap-2.5 rounded-2xl text-sm font-extrabold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+            style={{ background: C.pine }}
+          >
+            {X.hourly.cta} →
+          </a>
+          <p className="text-center text-xs font-semibold text-stone-500">{X.hourly.note}</p>
+        </div>
+      ) : (
       <div className="space-y-4">
         {/* Nereden / Nereye + değiştir düğmesi */}
         <div className="relative space-y-4">
@@ -459,6 +521,7 @@ export function BookingCard() {
         </a>
         <p className="text-center text-xs font-semibold text-stone-500">{L.form.note}</p>
       </div>
+      )}
     </div>
   );
 }

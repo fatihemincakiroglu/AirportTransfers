@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor } from "../config";
 import { t } from "../i18n";
+import { tx } from "../i18nX";
 import { useLang } from "../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
@@ -48,6 +49,7 @@ function ReviewRow({ items, dir }: { items: Review[]; dir: "left" | "right" }) {
 
 export default function Home() {
   const { lang, P } = useLang();
+  const X = tx[lang];
   const L = t[lang];
   const [slide, setSlide] = useState(0);
 
@@ -114,12 +116,21 @@ export default function Home() {
               {L.hero.title2}
             </h1>
             <p className="mt-5 text-base text-white/80 md:text-lg">{L.hero.sub}</p>
-            <div className="mt-6 hidden flex-wrap gap-2 md:flex">
-              {L.hero.pills.map((p, i) => (
-                <span key={i} className="rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold backdrop-blur">
-                  ✓ {p}
+            {/* Güven rozetleri — 2x2 + puan kartı */}
+            <div className="mt-6 hidden grid-cols-2 gap-3 md:grid">
+              {X.heroBadges.map((b, i) => (
+                <span key={i} className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold backdrop-blur">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold" style={{ background: C.gold, color: C.pine }}>✓</span>
+                  {b}
                 </span>
               ))}
+            </div>
+            <div className="mt-3 hidden items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-5 py-3.5 backdrop-blur md:flex">
+              <span className="text-base tracking-[0.15em]" style={{ color: C.gold }}>★★★★★</span>
+              <span className="text-sm">
+                <b>{X.heroRating.score}</b>
+                <span className="block text-xs text-white/60">{X.heroRating.sub}</span>
+              </span>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#buchen" className="rounded-full px-6 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
@@ -157,6 +168,24 @@ export default function Home() {
             <RouteCard key={i} {...r} />
           ))}
         </div>
+      </section>
+
+      {/* ── Ablauf: 3 adımda rezervasyon ────────────────────── */}
+      <section className="mx-auto max-w-7xl px-5 pb-16 md:pb-24">
+        <Eyebrow>{X.howSec.eyebrow}</Eyebrow>
+        <h2 className="font-display mt-2 text-3xl font-semibold md:text-4xl" style={{ color: C.pine }}>{X.howSec.title}</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {X.howSec.steps.map(([tt, dd], i) => (
+            <div key={i} className="rounded-2xl bg-white p-6 shadow-md ring-1 ring-black/5">
+              <span className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-extrabold" style={{ background: C.gold, color: C.pine }}>{i + 1}</span>
+              <h3 className="mt-4 text-lg font-bold" style={{ color: C.pine }}>{tt}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-stone-600">{dd}</p>
+            </div>
+          ))}
+        </div>
+        <a href="#buchen" className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
+          {X.howSec.cta} →
+        </a>
       </section>
 
       {/* ── Tours preview ───────────────────────────────────── */}
@@ -198,6 +227,31 @@ export default function Home() {
               />
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ── SSS ─────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-3xl px-5 pb-16 md:pb-24">
+        <div className="text-center">
+          <Eyebrow>{X.faqSec.eyebrow}</Eyebrow>
+          <h2 className="font-display mt-2 text-3xl font-semibold md:text-4xl" style={{ color: C.pine }}>{X.faqSec.title}</h2>
+          <p className="mt-3 text-stone-600">{X.faqSec.sub}</p>
+        </div>
+        <div className="mt-8 divide-y divide-stone-200 rounded-2xl bg-white px-5 shadow-md ring-1 ring-black/5 md:px-7">
+          {L.faqPage.list.map(([q, a], i) => (
+            <details key={i} className="group py-5">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold text-stone-900 [&::-webkit-details-marker]:hidden">
+                {q}
+                <span className="shrink-0 text-stone-400 transition-transform duration-200 group-open:rotate-180">▾</span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-stone-600">{a}</p>
+            </details>
+          ))}
+        </div>
+        <div className="mt-6 text-center">
+          <a href={P("/faq")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: C.pine }}>
+            {X.faqSec.all} →
+          </a>
         </div>
       </section>
 

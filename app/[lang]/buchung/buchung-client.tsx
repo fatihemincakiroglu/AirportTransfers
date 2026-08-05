@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER, CUSTOM_BASE_PRICE } from "../../config";
 import { t } from "../../i18n";
+import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
@@ -11,6 +12,7 @@ import {
 
 export default function Buchung() {
   const { lang, P } = useLang();
+  const XH = tx[lang].hourly; // saatlik kiralama etiketleri (URL ön-doldurma için)
   const L = t[lang];
   const B = L.booking;
   const D = L.detail;
@@ -42,6 +44,20 @@ export default function Buchung() {
     if (![...sp.keys()].length) return;
     const g = (k: string) => (sp.get(k) ?? "").trim();
     const from = g("from"), to = g("to"), d = g("date"), tm = g("time");
+
+    // ── Saatlik kiralama modu (ana sayfa formundan) ──
+    if (g("mode") === "hourly") {
+      const h = g("hours") || "2";
+      const paxH = parseInt(g("pax") || "0", 10) || 0;
+      /* eslint-disable react-hooks/set-state-in-effect */
+      if (d) setDate(d);
+      if (tm) setTime(tm);
+      if (paxH) setF((s) => ({ ...s, pax: String(Math.min(7, paxH)) }));
+      setCustom({ from: "Flughafen Zürich (ZRH)", to: `${XH.bookingLabel} · ${h}h` });
+      setF((s) => ({ ...s, notes: XH.bookingNote(h) }));
+      if (d && tm) setStep(2);
+      return;
+    }
     const paxN = parseInt(g("pax") || "0", 10) || 0;
     const kidsN = parseInt(g("kids") || "0", 10) || 0;
 
@@ -92,7 +108,6 @@ export default function Buchung() {
     // URL → state senkronu mount'ta bir kez çalışır; React tüm bu çağrıları
     // tek render'da toplar (otomatik batching). Bu, dokümante edilmiş
     // "harici sistemle senkron" istisnasıdır.
-    /* eslint-disable react-hooks/set-state-in-effect */
     if (d) setDate(d);
     if (tm) setTime(tm);
     if (paxN) setF((s) => ({ ...s, pax: String(Math.min(7, paxN + kidsN)) }));
@@ -103,7 +118,7 @@ export default function Buchung() {
     if (rev) setReversed(true);
     if (step2) setStep(2);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, []);
+  }, [XH]);
 
   const route = routeIdx !== null ? routes[routeIdx] : null;
   const n = route ? localName(route.to, lang) : "";

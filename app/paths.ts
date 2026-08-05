@@ -18,6 +18,9 @@ export const SEGMENTS: Record<string, { de: string; en: string }> = {
   buchung: { de: "buchung", en: "booking" },
   faq: { de: "faq", en: "faq" },
   blog: { de: "blog", en: "blog" },
+  staedte: { de: "staedte", en: "destinations" },
+  preise: { de: "preise", en: "prices" },
+  events: { de: "events", en: "events" },
 };
 
 type L = "de" | "en";
