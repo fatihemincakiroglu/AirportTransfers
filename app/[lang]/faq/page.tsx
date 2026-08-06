@@ -1,18 +1,14 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import { t } from "../../i18n";
 import FaqClient from "./faq-client";
 
 type Params = { params: Promise<{ lang: string }> };
 
-const META = {
-  de: { title: "Häufige Fragen (FAQ) | AirportTransfers Zürich", description: "Antworten zu Buchung, Festpreisen, Flugverspätung, Zahlung, Stornierung, Kindersitzen und Gepäck." },
-  en: { title: "Frequently Asked Questions (FAQ) | AirportTransfers Zurich", description: "Answers on booking, fixed prices, flight delays, payment, cancellation, child seats and luggage." },
-};
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const m = lang === "de" ? META.de : META.en;
+  const m = pageMeta(lang as never, "faq");
   return {
     title: m.title,
     description: m.description,

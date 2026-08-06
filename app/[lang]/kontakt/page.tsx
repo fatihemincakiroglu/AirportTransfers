@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import Kontakt from "./kontakt-client";
 
 type Params = { params: Promise<{ lang: string }> };
 
-const META = {
-  de: { title: "Kontakt – 24/7 erreichbar | AirportTransfers Zürich", description: "Kontaktieren Sie uns per WhatsApp, Telefon +41 76 302 03 26 oder E-Mail. Rund um die Uhr erreichbar." },
-  en: { title: "Contact – Available 24/7 | AirportTransfers Zurich", description: "Contact us via WhatsApp, phone +41 76 302 03 26 or email. Available around the clock." },
-};
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const m = lang === "de" ? META.de : META.en;
+  const m = pageMeta(lang as never, "kontakt");
   return {
     title: m.title,
     description: m.description,

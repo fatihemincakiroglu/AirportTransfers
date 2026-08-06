@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import BlogList from "./blog-client";
 
 type Params = { params: Promise<{ lang: string }> };
 
-const META = {
-  de: { title: "Blog | AirportTransfers Zürich – Reisetipps & Transfer-Guides", description: "Reisetipps, Strecken-Guides und Wissenswertes rund um Flughafentransfers ab Zürich." },
-  en: { title: "Blog | AirportTransfers Zurich – Travel Tips & Transfer Guides", description: "Travel tips, route guides and useful know-how around transfers from Zurich Airport." },
-};
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const m = lang === "de" ? META.de : META.en;
+  const m = pageMeta(lang as never, "blog");
   return {
     title: m.title,
     description: m.description,

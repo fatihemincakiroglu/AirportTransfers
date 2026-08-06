@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pickL } from "../../../i18n";
 import { langAlternates } from "../../../paths";
 import { blogPosts } from "../../../blogContent";
 import { notFound } from "next/navigation";
@@ -10,7 +11,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
   if (!post) return { title: "Blog | AirportTransfers Zürich" };
-  const c = lang === "de" ? post.de : post.en;
+  const c = pickL(post, lang as never);
   return {
     title: `${c.title} | AirportTransfers Zürich Blog`,
     description: c.excerpt,
@@ -33,7 +34,7 @@ export default async function Page({ params }: Params) {
 
   const jsonLd: object[] = [];
   {
-    const c = lang === "de" ? post.de : post.en;
+    const c = pickL(post, lang as never);
     const words = [c.title, c.excerpt, ...c.body.flatMap((b) => [b.h ?? "", ...b.p])].join(" ").split(/\s+/).length;
     jsonLd.push({
       "@context": "https://schema.org",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import { LegalPage } from "../../components";
 
@@ -6,10 +7,10 @@ type Params = { params: Promise<{ lang: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const de = lang === "de";
+  const m = pageMeta(lang as never, "agb");
   return {
-    title: de ? "Allgemeine Geschäftsbedingungen (AGB) | AirportTransfers Zürich" : "Terms and Conditions | AirportTransfers Zurich",
-    description: de ? "AGB für Buchung und Durchführung von Flughafentransfers der AirportTransfers Zürich." : "Terms and conditions for booking and providing airport transfers by AirportTransfers Zurich.",
+    title: m.title,
+    description: m.description,
     alternates: {
       canonical: `/${lang}${localizePath("/agb", lang as never) === "/" ? "" : localizePath("/agb", lang as never)}`,
       languages: langAlternates("/agb"),

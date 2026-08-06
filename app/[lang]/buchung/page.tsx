@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import Buchung from "./buchung-client";
 
 type Params = { params: Promise<{ lang: string }> };
 
-const META = {
-  de: { title: "Online buchen: Transfer ab Flughafen Zürich | AirportTransfers", description: "Buchen Sie Ihren Flughafentransfer in 3 Schritten: Strecke, Fahrzeug, bestätigen – Festpreis, Bestätigung innert 15 Minuten." },
-  en: { title: "Book Online: Zurich Airport Transfer | AirportTransfers", description: "Book your airport transfer in 3 steps: route, vehicle, confirm – fixed price, confirmation within 15 minutes." },
-};
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const m = lang === "de" ? META.de : META.en;
+  const m = pageMeta(lang as never, "buchung");
   return {
     title: m.title,
     description: m.description,

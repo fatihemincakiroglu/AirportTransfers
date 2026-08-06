@@ -1,23 +1,13 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import UeberUns from "./ueber-uns-client";
 
 type Params = { params: Promise<{ lang: string }> };
 
-const META = {
-  de: {
-    title: "Über uns – Ihr Flughafentransfer-Partner in Zürich | AirportTransfers",
-    description: "Schweizer Unternehmen mit Sitz in Kloten: professionelle Chauffeure, gepflegte Mercedes-Flotte, Festpreise und 24/7-Service für Transfers ab Flughafen Zürich.",
-  },
-  en: {
-    title: "About Us – Your Airport Transfer Partner in Zurich | AirportTransfers",
-    description: "Swiss company based in Kloten: professional chauffeurs, a well-kept Mercedes fleet, fixed prices and 24/7 service for transfers from Zurich Airport.",
-  },
-};
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const m = lang === "de" ? META.de : META.en;
+  const m = pageMeta(lang as never, "ueber-uns");
   return {
     title: m.title,
     description: m.description,

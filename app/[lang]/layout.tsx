@@ -3,7 +3,7 @@ import { Playfair_Display, Manrope } from "next/font/google";
 import { LangProvider } from "../providers";
 import { SITE_URL } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
-import type { Lang } from "../i18n";
+import { t, type Lang } from "../i18n";
 import "../globals.css";
 
 const serif = Playfair_Display({
@@ -28,15 +28,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang = (LANGS as readonly string[]).includes(rawLang) ? rawLang : DEFAULT_LANG;
-  const de = lang === "de";
+  const m = t[lang as Lang].meta;
   return {
     metadataBase: new URL(SITE_URL),
-    title: de
-      ? "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes"
-      : "AirportTransfers Zurich | ZRH Airport Transfer · VIP Mercedes",
-    description: de
-      ? "Privater Flughafentransfer Zürich zum Festpreis. Geschulte Chauffeure, Flugverfolgung, 24/7."
-      : "Private Zurich Airport transfers at fixed prices. Trained chauffeurs, flight tracking, 24/7.",
+    title: m.title,
+    description: m.desc,
     robots: {
       index: true,
       follow: true,

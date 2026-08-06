@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
+import { pageMeta } from "../pageMeta";
 import { langAlternates, localizePath } from "../paths";
 import Home from "./home-client";
 
 type Params = { params: Promise<{ lang: string }> };
 
-const META = {
-  de: { title: "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes zum Festpreis", description: "Privater Flughafentransfer Zürich zum Festpreis: Mercedes-Flotte, Meet & Greet, Flugverfolgung, 24/7." },
-  en: { title: "AirportTransfers Zurich | ZRH Airport Transfer · VIP Mercedes at Fixed Prices", description: "Private Zurich Airport transfers at fixed prices: Mercedes fleet, meet & greet, flight tracking, 24/7." },
-};
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang } = await params;
-  const m = lang === "de" ? META.de : META.en;
+  const m = pageMeta(lang as never, "home");
   return {
     title: m.title,
     description: m.description,
