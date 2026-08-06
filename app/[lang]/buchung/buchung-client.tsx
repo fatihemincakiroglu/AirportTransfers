@@ -14,6 +14,7 @@ export default function Buchung() {
   const { lang, P } = useLang();
   const XH = tx[lang].hourly; // saatlik kiralama etiketleri (URL ön-doldurma için)
   const XS = tx[lang].stops;  // ara durak etiketi
+  const [stops, setStops] = useState<string[]>([]); // URL'den gelen ara duraklar
   const L = t[lang];
   const B = L.booking;
   const D = L.detail;
@@ -111,9 +112,11 @@ export default function Buchung() {
     // URL → state senkronu mount'ta bir kez çalışır; React tüm bu çağrıları
     // tek render'da toplar (otomatik batching). Bu, dokümante edilmiş
     // "harici sistemle senkron" istisnasıdır.
-    if (stopsParam) {
-      const line = `${XS.label} ${stopsParam}`;
+    const stopList = stopsParam ? stopsParam.split(" | ").map((x) => x.trim()).filter(Boolean) : [];
+    if (stopList.length) {
+      const line = `${XS.label} ${stopList.join(", ")}`;
       notes = notes ? `${notes}\n${line}` : line;
+      setStops(stopList);
     }
 
     if (d) setDate(d);
@@ -132,6 +135,10 @@ export default function Buchung() {
   const n = route ? localName(route.to, lang) : "";
   const origin = L.routesSec.origin;
   // Seçilen yöne göre A/B uçları (fiyat iki yönde de aynı)
+
+  // Harita için varış zinciri: duraklar + varış ("to:" sözdizimi waypoint verir)
+  const chain = (stopsArr: string[], dest: string) =>
+    [...stopsArr.map((x) => `${x}, Switzerland`), dest].join(" to:");
   const showCustom = !route && custom !== null;
   const cFrom = showCustom ? (reversed ? custom!.to : custom!.from) : "";
   const cTo = showCustom ? (reversed ? custom!.from : custom!.to) : "";
@@ -419,6 +426,12 @@ export default function Buchung() {
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: "#E2574C" }}>A</span>
                 <span><b>{route || showCustom ? pickupLabel : origin}</b><span className="block text-xs text-stone-500">{D.pickupLoc}</span></span>
               </li>
+              {(reversed ? [...stops].reverse() : stops).map((sv, i) => (
+                <li key={i} className="flex gap-3 pr-10">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold" style={{ background: `${C.gold}22`, color: C.pine, boxShadow: `inset 0 0 0 1.5px ${C.gold}` }}>{i + 1}</span>
+                  <span><b>{sv}</b><span className="block text-xs text-stone-500">{XS.ph.split(" –")[0]}</span></span>
+                </li>
+              ))}
               <li className="flex gap-3 pr-10">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold text-white" style={{ background: C.pine }}>B</span>
                 <span>
@@ -448,7 +461,7 @@ export default function Buchung() {
               <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
                 <iframe
                   title="Custom route map"
-                  src={`https://maps.google.com/maps?saddr=${encodeURIComponent(cFrom + ", Switzerland")}&daddr=${encodeURIComponent(cTo + ", Switzerland")}&hl=${lang}&output=embed`}
+                  src={`https://maps.google.com/maps?saddr=${encodeURIComponent(cFrom + ", Switzerland")}&daddr=${encodeURIComponent(chain(reversed ? [...stops].reverse() : stops, cTo + ", Switzerland"))}&hl=${lang}&output=embed`}
                   className="h-52 w-full"
                   loading="lazy"
                 />
@@ -459,7 +472,7 @@ export default function Buchung() {
                 <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
                   <iframe
                     title="Route map"
-                    src={`https://maps.google.com/maps?saddr=${encodeURIComponent(reversed ? n + ", Switzerland" : "Zurich Airport")}&daddr=${encodeURIComponent(reversed ? "Zurich Airport" : n + ", Switzerland")}&hl=${lang}&output=embed`}
+                    src={`https://maps.google.com/maps?saddr=${encodeURIComponent(reversed ? n + ", Switzerland" : "Zurich Airport")}&daddr=${encodeURIComponent(chain(reversed ? [...stops].reverse() : stops, reversed ? "Zurich Airport" : n + ", Switzerland"))}&hl=${lang}&output=embed`}
                     className="h-52 w-full"
                     loading="lazy"
                   />
