@@ -38,6 +38,7 @@ const baseX = {
       bookingLabel: "Stundenmiete", bookingNote: (h: string) => `Stundenbuchung: ${h} Stunden – Chauffeur zur freien Verfügung`,
     },
     stops: { add: "Zwischenstopp hinzufügen", ph: "Zwischenstopp – Adresse", remove: "Entfernen", label: "Zwischenstopps:" },
+    done: { title: "Anfrage übermittelt!", body: (r: string) => `Ihre Transferanfrage ${r} wurde erstellt und in WhatsApp bzw. E-Mail geöffnet. Bitte senden Sie die Nachricht ab – wir bestätigen in der Regel innerhalb von 15 Minuten.`, hint: "Vielen Dank für Ihre Anfrage! Bitte prüfen Sie auch Ihren Posteingang bzw. Spam-Ordner.", payment: "Zahlungsart", home: "Zur Startseite" },
     dest: {
       crumb: "Reiseziele",
       pageTitle: "Transfers in der ganzen Schweiz",
@@ -125,6 +126,7 @@ const baseX = {
       bookingLabel: "Hourly hire", bookingNote: (h: string) => `Hourly booking: ${h} hours – chauffeur at your disposal`,
     },
     stops: { add: "Add a stop", ph: "Stop – address", remove: "Remove", label: "Stops:" },
+    done: { title: "Request submitted!", body: (r: string) => `Your transfer request ${r} has been created and opened in WhatsApp or e-mail. Please send the message – we usually confirm within 15 minutes.`, hint: "Thank you for your request! Please also check your inbox or spam folder.", payment: "Payment method", home: "Back to homepage" },
     dest: {
       crumb: "Destinations",
       pageTitle: "Transfers across all of Switzerland",

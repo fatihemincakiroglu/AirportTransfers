@@ -117,6 +117,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Réservation à l'heure : ${h} heures – chauffeur à disposition`,
   },
   stops: { add: "Ajouter un arrêt", ph: "Arrêt – adresse", remove: "Supprimer", label: "Arrêts intermédiaires :" },
+  done: { title: "Demande envoyée !", body: (r: string) => `Votre demande de transfert ${r} a été créée et ouverte dans WhatsApp ou par e-mail. Envoyez le message – nous confirmons en général sous 15 minutes.`, hint: "Merci pour votre demande ! Pensez à vérifier votre boîte de réception ou vos spams.", payment: "Mode de paiement", home: "Retour à l'accueil" },
   dest: {
     crumb: "Destinations",
     pageTitle: "Transferts dans toute la Suisse",

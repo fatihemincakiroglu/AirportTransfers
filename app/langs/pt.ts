@@ -117,6 +117,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Reserva por hora: ${h} horas – motorista à disposição`,
   },
   stops: { add: "Adicionar paragem", ph: "Paragem – morada", remove: "Remover", label: "Paragens intermédias:" },
+  done: { title: "Pedido enviado!", body: (r: string) => `O seu pedido de transfer ${r} foi criado e aberto no WhatsApp ou por e-mail. Envie a mensagem – normalmente confirmamos em 15 minutos.`, hint: "Obrigado pelo seu pedido! Verifique também a caixa de entrada ou a pasta de spam.", payment: "Método de pagamento", home: "Voltar ao início" },
   dest: {
     crumb: "Destinos",
     pageTitle: "Transfers em toda a Suíça",

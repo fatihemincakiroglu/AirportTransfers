@@ -13,8 +13,11 @@ import {
 export default function Buchung() {
   const { lang, P } = useLang();
   const XH = tx[lang].hourly; // saatlik kiralama etiketleri (URL ön-doldurma için)
-  const XS = tx[lang].stops;  // ara durak etiketi
+  const X = tx[lang];
+  const XS = X.stops;  // ara durak etiketi
   const [stops, setStops] = useState<string[]>([]); // URL'den gelen ara duraklar
+  const [doneRef, setDoneRef] = useState<string | null>(null); // talep gönderildi ekranı (referans no)
+  const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase();
   const L = t[lang];
   const B = L.booking;
   const D = L.detail;
@@ -401,13 +404,13 @@ export default function Buchung() {
                     aria-disabled={!ready}
                     className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-all ${ready ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"}`}
                     style={{ background: ready ? "#25D366" : "#9ca3af" }}
-                    onClick={(e) => { if (!ready) e.preventDefault(); }}
+                    onClick={(e) => { if (!ready) { e.preventDefault(); return; } setDoneRef(makeRef()); }}
                   >
                     💬 {D.continueWa} — CHF {total.toFixed(2)}
                   </a>
                 </div>
                 {ready && (
-                  <a href={mailHref(L.msg.subject, message())} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
+                  <a href={mailHref(L.msg.subject, message())} onClick={() => setDoneRef(makeRef())} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
                     {D.continueMail}
                   </a>
                 )}
@@ -513,6 +516,55 @@ export default function Buchung() {
           )}
         </aside>
       </section>
+
+      {/* ── Talep gönderildi — bilgilendirme ekranı ── */}
+      {doneRef && chosen && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
+          <div className="relative w-full max-w-md rounded-3xl bg-white p-7 text-center shadow-2xl md:p-9">
+            <button
+              type="button"
+              onClick={() => setDoneRef(null)}
+              aria-label="close"
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600"
+            >✕</button>
+
+            <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-600">✓</span>
+            <h3 className="font-display mt-4 text-2xl font-semibold" style={{ color: C.pine }}>{X.done.title}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-stone-600">
+              {X.done.body(doneRef).split(doneRef).map((part, i, arr) => (
+                <span key={i}>{part}{i < arr.length - 1 && <b style={{ color: C.pine }}>{doneRef}</b>}</span>
+              ))}
+            </p>
+
+            <div className="mt-4 rounded-xl border px-4 py-3 text-sm font-medium" style={{ background: "#FFFBEB", borderColor: "#FDE68A", color: "#92400E" }}>
+              {X.done.hint}
+            </div>
+
+            <div className="mt-4 space-y-2 rounded-xl bg-stone-50 p-4 text-sm">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-stone-500">{D.vehicle}</span>
+                <b>{localName(chosen.name, lang)}</b>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-stone-500">{D.total}</span>
+                <b>CHF {total.toFixed(2)}</b>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-stone-500">{X.done.payment}</span>
+                <b>{D.payOptions[pay][1]}</b>
+              </div>
+            </div>
+
+            <a
+              href={P("/")}
+              className="mt-6 inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-extrabold uppercase tracking-wide transition-transform hover:-translate-y-0.5"
+              style={{ background: C.gold, color: C.pine }}
+            >
+              {X.done.home}
+            </a>
+          </div>
+        </div>
+      )}
 
       <SiteFooter compact />
       <FloatingButtons />

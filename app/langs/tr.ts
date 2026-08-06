@@ -117,6 +117,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Saatlik rezervasyon: ${h} saat – şoför emrinizde`,
   },
   stops: { add: "Durak ekle", ph: "Ara durak – adres", remove: "Kaldır", label: "Ara duraklar:" },
+  done: { title: "Talep alındı!", body: (r: string) => `${r} numaralı transfer talebiniz oluşturuldu ve WhatsApp ya da e-posta ile açıldı. Lütfen mesajı gönderin – genellikle 15 dakika içinde onaylıyoruz.`, hint: "Talebiniz için teşekkürler! Lütfen gelen kutunuzu veya spam klasörünüzü de kontrol edin.", payment: "Ödeme türü", home: "Ana sayfaya dön" },
   dest: {
     crumb: "Destinasyonlar",
     pageTitle: "Tüm İsviçre'ye transfer",
