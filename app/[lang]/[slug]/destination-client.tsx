@@ -90,7 +90,7 @@ export default function DestinationClient({ slug }: { slug: string }) {
         <h2 className="font-display mt-2 text-2xl font-semibold md:text-3xl" style={{ color: C.pine }}>
           {D.vehiclesFor(d.name)}
         </h2>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-5 md:grid-cols-3">
           {fleet.map((v) => (
             <FleetCard key={v.car} {...v} />
           ))}

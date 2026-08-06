@@ -103,7 +103,7 @@ const t: Dict = {
 
 const tx: DictX = {
   nav: { destinations: "Destinos", prices: "Preços", events: "Eventos" },
-  heroBadges: ["Cancelamento gratuito", "Assistência 24/7", "Monitorização de voos", "Meet & Greet"],
+  heroBadges: ["Cancelamento gratuito", "Assistência 24/7", "Monitorização de voos", "Preço fixo"],
   heroRating: { score: "Excelente · 4.8/5", sub: "A escolha dos viajantes no aeroporto de Zurique" },
   howSec: {
     eyebrow: "Como funciona", title: "Reserve em três passos simples",

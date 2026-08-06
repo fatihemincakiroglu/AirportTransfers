@@ -103,7 +103,7 @@ const t: Dict = {
 
 const tx: DictX = {
   nav: { destinations: "Destinations", prices: "Tarifs", events: "Événements" },
-  heroBadges: ["Annulation gratuite", "Assistance 24h/24", "Suivi des vols", "Meet & Greet"],
+  heroBadges: ["Annulation gratuite", "Assistance 24h/24", "Suivi des vols", "Prix fixe"],
   heroRating: { score: "Excellent · 4.8/5", sub: "Plébiscité par les voyageurs à l'aéroport de Zurich" },
   howSec: {
     eyebrow: "Comment ça marche", title: "Réservez en trois étapes simples",

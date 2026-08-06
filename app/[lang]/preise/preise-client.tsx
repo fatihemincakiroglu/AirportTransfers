@@ -62,7 +62,7 @@ export default function PreiseClient() {
         {/* ── Araç sınıfları ── */}
         <div className="mt-14">
           <SectionLabel>{PR.classesTitle}</SectionLabel>
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-7 grid gap-5 md:grid-cols-3">
             {fleet.map((v) => (
               <a
                 key={v.car}

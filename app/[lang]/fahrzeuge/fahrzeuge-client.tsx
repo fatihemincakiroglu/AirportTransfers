@@ -17,7 +17,7 @@ export default function Fahrzeuge() {
       <PageHero title={L.fleetSec.pageTitle} crumb={L.nav.fleet} />
 
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-3">
           {fleet.map((v, i) => (
             <FleetCard key={i} {...v} showFeatures />
           ))}

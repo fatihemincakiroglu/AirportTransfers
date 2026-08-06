@@ -65,9 +65,7 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 // ── Üst şerit ──────────────────────────────────────────────────
 export function TopBar() {
   const { lang, setLang } = useLang();
-  const L = t[lang];
   const [open, setOpen] = useState(false);
-  const short = "VIP Transfers"; // mobilde kısa etiket
   return (
     <div style={{ background: C.pine }} className="text-white/80">
       <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
@@ -75,8 +73,7 @@ export function TopBar() {
           className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
           style={{ color: C.gold }}
         >
-          <span className="sm:hidden">✈ {short}</span>
-          <span className="hidden sm:inline">✈ {L.topbar}</span>
+          ✈ Airport Zurich Transfer
         </span>
 
         {/* Dil seçici — 11 dil, açılır menü */}
@@ -610,28 +607,31 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
   const L = t[lang];
   const n = localName(name, lang);
   return (
-    <div className="flex flex-col rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl">
-      {/* Başlık bloğu sabit yükseklikte → 4 kart aynı hizada */}
-      <div className="min-h-[76px]">
-        <h3 className="font-display text-xl font-semibold leading-snug" style={{ color: C.pine }}>{car}</h3>
-        <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{n}</p>
+    <a
+      href={P("/buchung")}
+      className="group flex flex-col rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl"
+    >
+      {/* Sınıf etiketi + araç adı — editoryal hiyerarşi */}
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>{n}</p>
+      <h3 className="font-display mt-1.5 text-2xl font-semibold leading-snug" style={{ color: C.pine }}>{car}</h3>
+
+      {/* Araç görseli — geniş sahne */}
+      <div className="my-6 flex h-44 items-center justify-center md:h-48">
+        <Image
+          src={img}
+          alt={`${car} – ${n}`}
+          width={420}
+          height={200}
+          className="max-h-full w-auto max-w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+        />
       </div>
-      <div className="my-4 flex h-36 items-center justify-center">
-        <Image src={img} alt={`${car} – ${n}`} width={360} height={160} className="max-h-full w-auto max-w-full object-contain" />
-      </div>
-      {/* Kapasite — fildişi zeminde iki eş istatistik hücresi */}
-      <div className="grid grid-cols-2 overflow-hidden rounded-xl ring-1 ring-black/5" style={{ background: "#FAF9F4" }}>
-        <div className="flex flex-col items-center gap-0.5 border-r border-black/5 px-3 py-3">
-          <span className="text-base leading-none">👥</span>
-          <span className="font-display text-lg font-semibold leading-tight" style={{ color: C.pine }}>{pax}</span>
-          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-500">{L.fleetSec.pax}</span>
-        </div>
-        <div className="flex flex-col items-center gap-0.5 px-3 py-3">
-          <span className="text-base leading-none">🧳</span>
-          <span className="font-display text-lg font-semibold leading-tight" style={{ color: C.pine }}>{bags}</span>
-          <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-stone-500">{L.fleetSec.bags}</span>
-        </div>
-      </div>
+
+      {/* Kapasite — sakin tek satır */}
+      <p className="flex items-center gap-4 border-t border-stone-100 pt-4 text-sm font-semibold text-stone-600">
+        <span>👥 {pax} <span className="font-medium text-stone-400">{L.fleetSec.pax}</span></span>
+        <span aria-hidden className="h-3 w-px bg-stone-200" />
+        <span>🧳 {bags} <span className="font-medium text-stone-400">{L.fleetSec.bags}</span></span>
+      </p>
 
       {showFeatures && (
         <ul className="mt-4 space-y-2.5">
@@ -649,24 +649,15 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
         </ul>
       )}
 
-      <a href={P("/buchung")} className="group/btn mt-auto block">
-        <span
-          className="mt-4 flex items-center justify-center gap-2 rounded-full px-4 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white shadow-md transition-all duration-300 group-hover/btn:shadow-lg"
-          style={{ background: C.pine }}
-        >
-          <span
-            className="bg-gradient-to-r from-white to-white bg-clip-text transition-colors duration-300 group-hover/btn:text-[#C9A24B]"
-          >
-            {L.nav.book}
-          </span>
-          <span className="transition-transform duration-300 group-hover/btn:translate-x-1" style={{ color: C.gold }}>→</span>
-        </span>
-      </a>
-    </div>
+      {/* Metin CTA — buton yerine */}
+      <p className="mt-5 flex items-center gap-2 text-sm font-bold underline-offset-4 group-hover:underline" style={{ color: C.pine, textDecorationColor: C.gold }}>
+        {L.fleetSec.cta}
+        <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+      </p>
+    </a>
   );
 }
 
-// ── Yasal sayfa şablonu ───────────────────────────────────────
 export function LegalPage({ pageKey }: { pageKey: LegalKey }) {
   // İçerikler tek merkezden: app/legalContent.ts
   const { lang, P } = useLang();

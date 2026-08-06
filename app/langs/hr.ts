@@ -103,7 +103,7 @@ const t: Dict = {
 
 const tx: DictX = {
   nav: { destinations: "Destinacije", prices: "Cijene", events: "Događanja" },
-  heroBadges: ["Besplatno otkazivanje", "Podrška 24/7", "Praćenje letova", "Meet & Greet"],
+  heroBadges: ["Besplatno otkazivanje", "Podrška 24/7", "Praćenje letova", "Fiksna cijena"],
   heroRating: { score: "Izvrsno · 4.8/5", sub: "Izbor putnika u zračnoj luci Zürich" },
   howSec: {
     eyebrow: "Kako funkcionira", title: "Rezervirajte u tri jednostavna koraka",

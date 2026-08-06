@@ -106,16 +106,11 @@ export default function Home() {
 
         <div className="relative mx-auto grid max-w-7xl gap-8 px-5 pb-16 pt-6 text-white md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:pb-24 md:pt-24">
           <div className="order-2 flex flex-col justify-center md:order-1">
-            <p className="mb-5 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.3em]" style={{ color: C.gold }}>
-              <span className="h-px w-10" style={{ background: C.gold }} />
-              {L.hero.eyebrow}
-            </p>
             <h1 className="font-display text-4xl font-semibold leading-[1.08] md:text-7xl">
-              {L.hero.title1}
+              Airport Zurich
               <br />
-              {L.hero.title2}
+              <span style={{ color: C.gold }}>Transfer</span>
             </h1>
-            <p className="mt-5 text-base text-white/80 md:text-lg">{L.hero.sub}</p>
             {/* Güven rozetleri — 2x2 + puan kartı */}
             <div className="mt-6 grid grid-cols-2 gap-2 md:gap-3">
               {X.heroBadges.map((b, i) => (
@@ -191,7 +186,7 @@ export default function Home() {
       {/* ── Fleet preview ───────────────────────────────────── */}
       <section id="fahrzeuge" className="mx-auto max-w-7xl px-5 pb-16 md:pb-24">
         {sectionHead(L.fleetSec.eyebrow, L.fleetSec.title, L.fleetSec.sub, "/fahrzeuge")}
-        <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-9 grid gap-5 md:grid-cols-3">
           {fleet.map((v, i) => (
             <FleetCard key={i} {...v} />
           ))}

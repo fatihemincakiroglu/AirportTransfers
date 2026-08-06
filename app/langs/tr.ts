@@ -103,7 +103,7 @@ const t: Dict = {
 
 const tx: DictX = {
   nav: { destinations: "Destinasyonlar", prices: "Fiyatlar", events: "Etkinlikler" },
-  heroBadges: ["Ücretsiz iptal", "7/24 destek", "Uçuş takibi", "Meet & Greet"],
+  heroBadges: ["Ücretsiz iptal", "7/24 destek", "Uçuş takibi", "Sabit fiyat"],
   heroRating: { score: "Mükemmel · 4.8/5", sub: "Zürih Havalimanı yolcularının tercihi" },
   howSec: {
     eyebrow: "Nasıl çalışır", title: "Üç kolay adımda rezervasyon",

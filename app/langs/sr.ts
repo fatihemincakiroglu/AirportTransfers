@@ -103,7 +103,7 @@ const t: Dict = {
 
 const tx: DictX = {
   nav: { destinations: "Destinacije", prices: "Cene", events: "Događaji" },
-  heroBadges: ["Besplatno otkazivanje", "Podrška 24/7", "Praćenje letova", "Meet & Greet"],
+  heroBadges: ["Besplatno otkazivanje", "Podrška 24/7", "Praćenje letova", "Fiksna cena"],
   heroRating: { score: "Odlično · 4.8/5", sub: "Izbor putnika na aerodromu Cirih" },
   howSec: {
     eyebrow: "Kako funkcioniše", title: "Rezervišite u tri jednostavna koraka",
