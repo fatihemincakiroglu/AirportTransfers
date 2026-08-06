@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Manrope } from "next/font/google";
+import { Cormorant_Garamond, Inter } from "next/font/google";
 import { LangProvider } from "../providers";
 import { SITE_URL } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
@@ -12,8 +12,8 @@ const serif = Cormorant_Garamond({
   variable: "--font-serif",
 });
 
-const sans = Manrope({
-  subsets: ["latin"],
+const sans = Inter({
+  subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-sans",
 });
