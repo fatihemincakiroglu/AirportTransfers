@@ -382,13 +382,13 @@ export const blogPosts: BlogPost[] = [
     img: "/gallery/6.jpg",
     de: {
       title: "Wie viel Gepäck passt ins Fahrzeug? Der ehrliche Kapazitäts-Guide",
-      excerpt: "E-Klasse, V-Klasse oder V300: welche Koffermengen realistisch passen und wie Sie bei der Buchung richtig kalkulieren.",
+      excerpt: "E-Klasse, V-Klasse oder S-Klasse: welche Koffermengen realistisch passen und wie Sie bei der Buchung richtig kalkulieren.",
       body: [
         { p: [
           "„Passt das alles rein?“ ist die häufigste Frage vor einem Transfer – und eine berechtigte. Hier die ehrlichen Zahlen aus der Praxis, damit am Flughafen keine Überraschung wartet.",
         ]},
         { h: "Die Kapazitäten im Überblick", p: [
-          "Business Class (E-Klasse): 2 Passagiere mit 2 grossen Koffern plus Handgepäck. Premium Class (S-Klasse): 3 Passagiere, 3 Koffer. Business & Family (V-Klasse): bis 7 Passagiere und 7 Koffer – oder weniger Personen mit deutlich mehr Gepäck. VIP V300: 5 Passagiere mit 5 Koffern in maximalem Komfort.",
+          "Business Class (E-Klasse): 2 Passagiere mit 2 grossen Koffern plus Handgepäck. Premium Class (S-Klasse): 3 Passagiere, 3 Koffer. Business & Family (V-Klasse): bis 7 Passagiere und 7 Koffer – oder weniger Personen mit deutlich mehr Gepäck.",
         ]},
         { h: "Unsere Faustregel", p: [
           "Zählen Sie grosse Koffer, nicht Handtaschen – und runden Sie bei Sperrigem (Kinderwagen, Golfbag, Skitasche) gedanklich einen Koffer auf. Im Zweifel: kurz per WhatsApp fragen. Lieber einmal die V-Klasse zu viel als einmal ein Koffer auf dem Schoss.",
@@ -397,13 +397,13 @@ export const blogPosts: BlogPost[] = [
     },
     en: {
       title: "How Much Luggage Fits in the Car? The Honest Capacity Guide",
-      excerpt: "E-Class, V-Class or V300: which luggage loads realistically fit and how to calculate correctly when booking.",
+      excerpt: "E-Class, V-Class or S-Class: which luggage loads realistically fit and how to calculate correctly when booking.",
       body: [
         { p: [
           "\"Will it all fit?\" is the most common question before a transfer – and a fair one. Here are the honest, real-world numbers so there are no surprises at the airport.",
         ]},
         { h: "The capacities at a glance", p: [
-          "Business Class (E-Class): 2 passengers with 2 large suitcases plus hand luggage. Premium Class (S-Class): 3 passengers, 3 suitcases. Business & Family (V-Class): up to 7 passengers and 7 suitcases – or fewer people with considerably more luggage. VIP V300: 5 passengers with 5 suitcases in maximum comfort.",
+          "Business Class (E-Class): 2 passengers with 2 large suitcases plus hand luggage. Premium Class (S-Class): 3 passengers, 3 suitcases. Business & Family (V-Class): up to 7 passengers and 7 suitcases – or fewer people with considerably more luggage.",
         ]},
         { h: "Our rule of thumb", p: [
           "Count large suitcases, not handbags – and mentally round up one suitcase for anything bulky (pram, golf bag, ski bag). When in doubt, ask via WhatsApp. Better one V-Class too many than one suitcase on your lap.",

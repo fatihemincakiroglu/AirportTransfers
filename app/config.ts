@@ -69,7 +69,6 @@ export const fleet: { name: LocalName; car: string; pax: number; bags: number; i
   { name: "Business Class", car: "Mercedes-Benz E-Class", pax: 2, bags: 2, img: "/fleet/e-class.webp", mult: 1.0 },
   { name: { de: "Business & Family Class", en: "Business & Family Class" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.webp", mult: 1.19 },
   { name: "Premium Class", car: "Mercedes-Benz S-Class", pax: 3, bags: 3, img: "/fleet/s-class.webp", mult: 1.87 },
-  { name: "VIP Ultra Comfort", car: "Mercedes-Benz V300 Maybach", pax: 5, bags: 5, img: "/fleet/v300-maybach.webp", mult: 2.2 },
 ];
 
 // Formlardaki maksimum yolcu sayısı (en büyük araca göre)
