@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { C } from "../../config";
-import { t } from "../../i18n";
+import { t, pickL } from "../../i18n";
 import { useLang } from "../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero } from "../../components";
 import { blogPosts, BlogPost } from "../../blogContent";
@@ -11,7 +11,7 @@ import type { Lang } from "../../i18n";
 
 // Okuma süresi: kelime sayısı / 180
 export function readingTime(post: BlogPost, lang: Lang) {
-  const c = post[lang];
+  const c = pickL(post, lang);
   const words = [c.title, c.excerpt, ...c.body.flatMap((b) => [b.h ?? "", ...b.p])]
     .join(" ")
     .split(/\s+/).length;
@@ -41,7 +41,7 @@ export default function BlogList() {
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {blogPosts.map((post) => {
-            const c = post[lang];
+            const c = pickL(post, lang);
             return (
               <a
                 key={post.slug}

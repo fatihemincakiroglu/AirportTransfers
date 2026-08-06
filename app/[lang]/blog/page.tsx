@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import BlogList from "./blog-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: `/${lang}/blog`,
-      languages: { en: "/en/blog", de: "/de/blog", "x-default": "/en/blog" },
+      canonical: `/${lang}${localizePath("/blog", lang as never) === "/" ? "" : localizePath("/blog", lang as never)}`,
+      languages: langAlternates("/blog"),
     },
   };
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../paths";
 import Home from "./home-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: `/${lang}`,
-      languages: { en: "/en", de: "/de", "x-default": "/en" },
+      canonical: `/${lang}${localizePath("/", lang as never) === "/" ? "" : localizePath("/", lang as never)}`,
+      languages: langAlternates("/"),
     },
   };
 }

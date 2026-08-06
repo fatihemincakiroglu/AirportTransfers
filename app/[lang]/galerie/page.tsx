@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import Galerie from "./galerie-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: lang === "de" ? "/de/galerie" : "/en/gallery",
-      languages: { en: "/en/gallery", de: "/de/galerie", "x-default": "/en/gallery" },
+      canonical: `/${lang}${localizePath("/galerie", lang as never) === "/" ? "" : localizePath("/galerie", lang as never)}`,
+      languages: langAlternates("/galerie"),
     },
   };
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates } from "../../../paths";
 import { blogPosts } from "../../../blogContent";
 import { notFound } from "next/navigation";
 import PostClient from "./post-client";
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     description: c.excerpt,
     alternates: {
       canonical: `/${lang}/blog/${slug}`,
-      languages: { en: `/en/blog/${slug}`, de: `/de/blog/${slug}`, "x-default": `/en/blog/${slug}` },
+      languages: langAlternates(`/blog/${slug}`),
     },
     openGraph: { type: "article", title: c.title, description: c.excerpt, publishedTime: post.date, images: [post.img] },
   };

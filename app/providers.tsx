@@ -3,7 +3,7 @@
 import { createContext, useContext } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Lang } from "./i18n";
-import { localizePath, internalizePath } from "./paths";
+import { localizePath, internalizePath, LANGS } from "./paths";
 
 type Ctx = {
   lang: Lang;
@@ -13,7 +13,7 @@ type Ctx = {
 };
 
 const LangContext = createContext<Ctx>({
-  lang: "en",
+  lang: "de",
   setLang: () => {},
   P: (p) => p,
 });
@@ -25,7 +25,7 @@ export function LangProvider({ lang, children }: { lang: Lang; children: React.R
   const setLang = (l: Lang) => {
     if (l === lang) return;
     // /en/contact → (iç) /kontakt → /de/kontakt
-    const rest = pathname.replace(/^\/(de|en)(?=\/|$)/, "") || "/";
+    const rest = pathname.replace(new RegExp(`^/(${LANGS.join("|")})(?=/|$)`), "") || "/";
     const internal = internalizePath(rest, lang);
     const target = localizePath(internal, l);
     router.push(`/${l}${target === "/" ? "" : target}`);

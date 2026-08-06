@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SEGMENTS, findInternalKey } from "./app/paths";
+import { SEGMENTS, findInternalKey, LANGS, DEFAULT_LANG } from "./app/paths";
 
-const LOCALES = ["en", "de"] as const;
-const DEFAULT_LOCALE = "en";
+const LOCALES = LANGS;
+const DEFAULT_LOCALE = DEFAULT_LANG;
 const LANG_COOKIE = "site-lang";
 type L = (typeof LOCALES)[number];
 
@@ -49,11 +49,11 @@ export function proxy(req: NextRequest) {
   // Öncelik: 1) dil çerezi  2) geldiği sayfanın dili  3) varsayılan (EN)
   let target: L = DEFAULT_LOCALE;
   const cookieLang = req.cookies.get(LANG_COOKIE)?.value;
-  if (cookieLang === "de" || cookieLang === "en") {
-    target = cookieLang;
+  if (cookieLang && (LOCALES as readonly string[]).includes(cookieLang)) {
+    target = cookieLang as L;
   } else {
     const ref = req.headers.get("referer") ?? "";
-    const m = ref.match(/\/(de|en)(\/|$)/);
+    const m = ref.match(new RegExp(`/(${LOCALES.join("|")})(/|$)`));
     if (m) target = m[1] as L;
   }
 

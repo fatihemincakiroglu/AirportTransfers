@@ -4,17 +4,17 @@
 import { SITE_URL, routes } from "./config";
 import { allDestinationSlugs } from "./destinations";
 import { blogPosts } from "./blogContent";
-import { localizePath } from "./paths";
+import { localizePath, LANGS, DEFAULT_LANG, type LangCode } from "./paths";
 
-export type L = "en" | "de";
+export type L = LangCode;
 
 type Row = {
   loc: string;
   lastmod: string;
   changefreq: string;
   priority: number;
-  altEn: string;
-  altDe: string;
+  /** dil → mutlak URL (tüm diller) */
+  alts: Record<LangCode, string>;
 };
 
 const NOW = new Date().toISOString();
@@ -56,9 +56,18 @@ export function rowsFor(lang: L): Row[] {
     lastmod: date ?? NOW,
     changefreq,
     priority,
-    altEn: pub(path, "en"),
-    altDe: pub(path, "de"),
+    alts: Object.fromEntries(LANGS.map((l) => [l, pub(path, l)])) as Record<LangCode, string>,
   }));
+}
+
+/** hreflang satırları: x-default = Almanca; de için ayrı satır yazılmaz (tercih) */
+function hreflangLinks(alts: Record<LangCode, string>): string {
+  const lines: string[] = [];
+  for (const l of LANGS) {
+    if (l === DEFAULT_LANG) lines.push(`    <xhtml:link rel="alternate" hreflang="x-default" href="${alts[l]}"/>`);
+    else lines.push(`    <xhtml:link rel="alternate" hreflang="${l}" href="${alts[l]}"/>`);
+  }
+  return lines.join("\n");
 }
 
 /** Dil sitemap'inin XML çıktısı (hreflang alternatifleriyle) */
@@ -70,8 +79,7 @@ export function urlsetXml(lang: L): string {
     <lastmod>${r.lastmod}</lastmod>
     <changefreq>${r.changefreq}</changefreq>
     <priority>${r.priority}</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="${r.altEn}"/>
-    <xhtml:link rel="alternate" hreflang="de" href="${r.altDe}"/>
+${hreflangLinks(r.alts)}
   </url>`
     )
     .join("\n");
@@ -82,18 +90,17 @@ ${rows}
 </urlset>`;
 }
 
-/** Ana index: dillere link verir */
+/** Ana index: tüm dillerin sitemap'lerine link verir */
 export function indexXml(): string {
+  const items = LANGS.map(
+    (l) => `  <sitemap>
+    <loc>${SITE_URL}/sitemap-${l}.xml</loc>
+    <lastmod>${NOW}</lastmod>
+  </sitemap>`
+  ).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>${SITE_URL}/sitemap-en.xml</loc>
-    <lastmod>${NOW}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>${SITE_URL}/sitemap-de.xml</loc>
-    <lastmod>${NOW}</lastmod>
-  </sitemap>
+${items}
 </sitemapindex>`;
 }

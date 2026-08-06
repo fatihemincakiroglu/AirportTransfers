@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { C, routes } from "../../config";
 import { tx } from "../../i18nX";
+import { pickL } from "../../i18n";
 import { useLang } from "../../providers";
 import { destRegions } from "../../destinations";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, norm } from "../../components";
@@ -49,7 +50,7 @@ export default function StaedteClient() {
         {popular.cities.some((c) => match(c.name)) && (
           <div className="mt-12">
             <h2 className="font-display text-2xl font-semibold md:text-3xl" style={{ color: C.pine }}>
-              {popular.label[lang]}
+              {pickL(popular.label, lang)}
             </h2>
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {popular.cities.filter((c) => match(c.name)).map((c) => {
@@ -89,7 +90,7 @@ export default function StaedteClient() {
             <div key={region.key} className="mt-14">
               <div className="flex items-baseline gap-4">
                 <h2 className="shrink-0 text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: C.pine }}>
-                  {region.label[lang]}
+                  {pickL(region.label, lang)}
                 </h2>
                 <span aria-hidden className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${C.gold}66, transparent 70%)` }} />
               </div>

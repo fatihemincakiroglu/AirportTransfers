@@ -5,10 +5,12 @@
 // ─────────────────────────────────────────────────────────────
 
 export type Destination = { name: string; slug: string; routeSlug?: string };
-export type DestRegion = { key: string; label: { de: string; en: string }; cities: Destination[] };
+import type { Lang } from "./i18n";
+
+export type DestRegion = { key: string; label: { de: string; en: string } & Partial<Record<Lang, string>>; cities: Destination[] };
 
 export const destRegions: DestRegion[] = [
-  { key: "popular", label: { de: "Beliebte Orte", en: "Popular places" }, cities: [
+  { key: "popular", label: { de: "Beliebte Orte", en: "Popular places", it: "Località più richieste", pt: "Locais populares", fr: "Lieux populaires", es: "Lugares populares", tr: "Popüler yerler", sr: "Popularna mesta", hr: "Popularna mjesta", ar: "أماكن شائعة", ru: "Популярные места" }, cities: [
     { name: "Zürich", slug: "flughafentransfer-zuerich" },
     { name: "Genève", slug: "flughafentransfer-geneve", routeSlug: "zurich-airport-to-geneva" },
     { name: "Basel", slug: "flughafentransfer-basel", routeSlug: "zurich-airport-to-basel" },
@@ -22,7 +24,7 @@ export const destRegions: DestRegion[] = [
     { name: "Lugano", slug: "flughafentransfer-lugano", routeSlug: "zurich-airport-to-lugano" },
     { name: "St. Gallen", slug: "flughafentransfer-st-gallen", routeSlug: "zurich-airport-to-st-gallen" },
   ] },
-  { key: "zuerich", label: { de: "Kanton Zürich", en: "Canton of Zurich" }, cities: [
+  { key: "zuerich", label: { de: "Kanton Zürich", en: "Canton of Zurich", it: "Canton Zurigo", pt: "Cantão de Zurique", fr: "Canton de Zurich", es: "Cantón de Zúrich", tr: "Zürih Kantonu", sr: "Kanton Zürich", hr: "Kanton Zürich", ar: "كانتون زيورخ", ru: "Кантон Цюрих" }, cities: [
     { name: "Winterthur", slug: "flughafentransfer-winterthur", routeSlug: "zurich-airport-to-winterthur" },
     { name: "Uster", slug: "flughafentransfer-uster" },
     { name: "Dübendorf", slug: "flughafentransfer-duebendorf" },
@@ -44,7 +46,7 @@ export const destRegions: DestRegion[] = [
     { name: "Zollikon", slug: "flughafentransfer-zollikon" },
     { name: "Rüti", slug: "flughafentransfer-rueti" },
   ] },
-  { key: "bern", label: { de: "Kanton Bern", en: "Canton of Bern" }, cities: [
+  { key: "bern", label: { de: "Kanton Bern", en: "Canton of Bern", it: "Canton Berna", pt: "Cantão de Berna", fr: "Canton de Berne", es: "Cantón de Berna", tr: "Bern Kantonu", sr: "Kanton Bern", hr: "Kanton Bern", ar: "كانتون برن", ru: "Кантон Берн" }, cities: [
     { name: "Thun", slug: "flughafentransfer-thun", routeSlug: "zurich-airport-to-thun" },
     { name: "Biel/Bienne", slug: "flughafentransfer-biel-bienne" },
     { name: "Köniz", slug: "flughafentransfer-koeniz" },
@@ -71,7 +73,7 @@ export const destRegions: DestRegion[] = [
     { name: "Frutigen", slug: "flughafentransfer-frutigen" },
     { name: "Kandersteg", slug: "flughafentransfer-kandersteg" },
   ] },
-  { key: "luzern", label: { de: "Kanton Luzern", en: "Canton of Lucerne" }, cities: [
+  { key: "luzern", label: { de: "Kanton Luzern", en: "Canton of Lucerne", it: "Canton Lucerna", pt: "Cantão de Lucerna", fr: "Canton de Lucerne", es: "Cantón de Lucerna", tr: "Luzern Kantonu", sr: "Kanton Luzern", hr: "Kanton Luzern", ar: "كانتون لوتسيرن", ru: "Кантон Люцерн" }, cities: [
     { name: "Emmen", slug: "flughafentransfer-emmen" },
     { name: "Kriens", slug: "flughafentransfer-kriens" },
     { name: "Horw", slug: "flughafentransfer-horw" },
@@ -88,7 +90,7 @@ export const destRegions: DestRegion[] = [
     { name: "Schötz", slug: "flughafentransfer-schoetz" },
     { name: "Wolhusen", slug: "flughafentransfer-wolhusen" },
   ] },
-  { key: "uri", label: { de: "Kanton Uri", en: "Canton of Uri" }, cities: [
+  { key: "uri", label: { de: "Kanton Uri", en: "Canton of Uri", it: "Canton Uri", pt: "Cantão de Uri", fr: "Canton de Uri", es: "Cantón de Uri", tr: "Uri Kantonu", sr: "Kanton Uri", hr: "Kanton Uri", ar: "كانتون أوري", ru: "Кантон Ури" }, cities: [
     { name: "Altdorf", slug: "flughafentransfer-altdorf" },
     { name: "Erstfeld", slug: "flughafentransfer-erstfeld" },
     { name: "Schattdorf", slug: "flughafentransfer-schattdorf" },
@@ -98,7 +100,7 @@ export const destRegions: DestRegion[] = [
     { name: "Silenen", slug: "flughafentransfer-silenen" },
     { name: "Wassen", slug: "flughafentransfer-wassen" },
   ] },
-  { key: "schwyz", label: { de: "Kanton Schwyz", en: "Canton of Schwyz" }, cities: [
+  { key: "schwyz", label: { de: "Kanton Schwyz", en: "Canton of Schwyz", it: "Canton Schwyz", pt: "Cantão de Schwyz", fr: "Canton de Schwyz", es: "Cantón de Schwyz", tr: "Schwyz Kantonu", sr: "Kanton Schwyz", hr: "Kanton Schwyz", ar: "كانتون شفيتس", ru: "Кантон Швиц" }, cities: [
     { name: "Schwyz", slug: "flughafentransfer-schwyz" },
     { name: "Einsiedeln", slug: "flughafentransfer-einsiedeln" },
     { name: "Freienbach", slug: "flughafentransfer-freienbach" },
@@ -111,7 +113,7 @@ export const destRegions: DestRegion[] = [
     { name: "Ibach", slug: "flughafentransfer-ibach" },
     { name: "Wollerau", slug: "flughafentransfer-wollerau" },
   ] },
-  { key: "obwalden", label: { de: "Kanton Obwalden", en: "Canton of Obwalden" }, cities: [
+  { key: "obwalden", label: { de: "Kanton Obwalden", en: "Canton of Obwalden", it: "Canton Obvaldo", pt: "Cantão de Obwalden", fr: "Canton de Obwald", es: "Cantón de Obwalden", tr: "Obwalden Kantonu", sr: "Kanton Obwalden", hr: "Kanton Obwalden", ar: "كانتون أوبفالدن", ru: "Кантон Обвальден" }, cities: [
     { name: "Sarnen", slug: "flughafentransfer-sarnen" },
     { name: "Kerns", slug: "flughafentransfer-kerns" },
     { name: "Sachseln", slug: "flughafentransfer-sachseln" },
@@ -120,7 +122,7 @@ export const destRegions: DestRegion[] = [
     { name: "Giswil", slug: "flughafentransfer-giswil" },
     { name: "Lungern", slug: "flughafentransfer-lungern" },
   ] },
-  { key: "nidwalden", label: { de: "Kanton Nidwalden", en: "Canton of Nidwalden" }, cities: [
+  { key: "nidwalden", label: { de: "Kanton Nidwalden", en: "Canton of Nidwalden", it: "Canton Nidvaldo", pt: "Cantão de Nidwalden", fr: "Canton de Nidwald", es: "Cantón de Nidwalden", tr: "Nidwalden Kantonu", sr: "Kanton Nidwalden", hr: "Kanton Nidwalden", ar: "كانتون نيدفالدن", ru: "Кантон Нидвальден" }, cities: [
     { name: "Stans", slug: "flughafentransfer-stans" },
     { name: "Hergiswil", slug: "flughafentransfer-hergiswil" },
     { name: "Buochs", slug: "flughafentransfer-buochs" },
@@ -130,7 +132,7 @@ export const destRegions: DestRegion[] = [
     { name: "Ennetbürgen", slug: "flughafentransfer-ennetbuergen" },
     { name: "Dallenwil", slug: "flughafentransfer-dallenwil" },
   ] },
-  { key: "glarus", label: { de: "Kanton Glarus", en: "Canton of Glarus" }, cities: [
+  { key: "glarus", label: { de: "Kanton Glarus", en: "Canton of Glarus", it: "Canton Glarona", pt: "Cantão de Glarus", fr: "Canton de Glaris", es: "Cantón de Glarus", tr: "Glarus Kantonu", sr: "Kanton Glarus", hr: "Kanton Glarus", ar: "كانتون غلاروس", ru: "Кантон Гларус" }, cities: [
     { name: "Glarus", slug: "flughafentransfer-glarus" },
     { name: "Näfels", slug: "flughafentransfer-naefels" },
     { name: "Netstal", slug: "flughafentransfer-netstal" },
@@ -140,7 +142,7 @@ export const destRegions: DestRegion[] = [
     { name: "Schwanden", slug: "flughafentransfer-schwanden" },
     { name: "Braunwald", slug: "flughafentransfer-braunwald" },
   ] },
-  { key: "zug", label: { de: "Kanton Zug", en: "Canton of Zug" }, cities: [
+  { key: "zug", label: { de: "Kanton Zug", en: "Canton of Zug", it: "Canton Zugo", pt: "Cantão de Zug", fr: "Canton de Zoug", es: "Cantón de Zug", tr: "Zug Kantonu", sr: "Kanton Zug", hr: "Kanton Zug", ar: "كانتون تسوغ", ru: "Кантон Цуг" }, cities: [
     { name: "Zug", slug: "flughafentransfer-zug", routeSlug: "zurich-airport-to-zug" },
     { name: "Baar", slug: "flughafentransfer-baar" },
     { name: "Cham", slug: "flughafentransfer-cham" },
@@ -153,7 +155,7 @@ export const destRegions: DestRegion[] = [
     { name: "Neuheim", slug: "flughafentransfer-neuheim" },
     { name: "Walchwil", slug: "flughafentransfer-walchwil" },
   ] },
-  { key: "freiburg", label: { de: "Kanton Freiburg", en: "Canton of Fribourg" }, cities: [
+  { key: "freiburg", label: { de: "Kanton Freiburg", en: "Canton of Fribourg", it: "Canton Friburgo", pt: "Cantão de Friburgo", fr: "Canton de Fribourg", es: "Cantón de Friburgo", tr: "Freiburg Kantonu", sr: "Kanton Freiburg", hr: "Kanton Freiburg", ar: "كانتون فريبورغ", ru: "Кантон Фрибур" }, cities: [
     { name: "Fribourg", slug: "flughafentransfer-fribourg", routeSlug: "zurich-airport-to-fribourg" },
     { name: "Bulle", slug: "flughafentransfer-bulle" },
     { name: "Villars-sur-Glâne", slug: "flughafentransfer-villars-sur-glane" },
@@ -167,7 +169,7 @@ export const destRegions: DestRegion[] = [
     { name: "Gruyères", slug: "flughafentransfer-gruyeres" },
     { name: "Charmey", slug: "flughafentransfer-charmey" },
   ] },
-  { key: "solothurn", label: { de: "Kanton Solothurn", en: "Canton of Solothurn" }, cities: [
+  { key: "solothurn", label: { de: "Kanton Solothurn", en: "Canton of Solothurn", it: "Canton Soletta", pt: "Cantão de Solothurn", fr: "Canton de Soleure", es: "Cantón de Solothurn", tr: "Solothurn Kantonu", sr: "Kanton Solothurn", hr: "Kanton Solothurn", ar: "كانتون زولوتورن", ru: "Кантон Золотурн" }, cities: [
     { name: "Solothurn", slug: "flughafentransfer-solothurn" },
     { name: "Olten", slug: "flughafentransfer-olten" },
     { name: "Grenchen", slug: "flughafentransfer-grenchen" },
@@ -179,7 +181,7 @@ export const destRegions: DestRegion[] = [
     { name: "Biberist", slug: "flughafentransfer-biberist" },
     { name: "Wangen bei Olten", slug: "flughafentransfer-wangen-bei-olten" },
   ] },
-  { key: "basel", label: { de: "Region Basel", en: "Basel region" }, cities: [
+  { key: "basel", label: { de: "Region Basel", en: "Basel region", it: "Regione di Basilea", pt: "Região de Basileia", fr: "Région de Bâle", es: "Región de Basilea", tr: "Basel bölgesi", sr: "Region Bazel", hr: "Regija Basel", ar: "منطقة بازل", ru: "Регион Базель" }, cities: [
     { name: "Riehen", slug: "flughafentransfer-riehen" },
     { name: "Bettingen", slug: "flughafentransfer-bettingen" },
     { name: "Liestal", slug: "flughafentransfer-liestal" },
@@ -195,7 +197,7 @@ export const destRegions: DestRegion[] = [
     { name: "Birsfelden", slug: "flughafentransfer-birsfelden" },
     { name: "Bottmingen", slug: "flughafentransfer-bottmingen" },
   ] },
-  { key: "schaffhausen", label: { de: "Kanton Schaffhausen", en: "Canton of Schaffhausen" }, cities: [
+  { key: "schaffhausen", label: { de: "Kanton Schaffhausen", en: "Canton of Schaffhausen", it: "Canton Sciaffusa", pt: "Cantão de Schaffhausen", fr: "Canton de Schaffhouse", es: "Cantón de Schaffhausen", tr: "Schaffhausen Kantonu", sr: "Kanton Schaffhausen", hr: "Kanton Schaffhausen", ar: "كانتون شافهاوزن", ru: "Кантон Шаффхаузен" }, cities: [
     { name: "Schaffhausen", slug: "flughafentransfer-schaffhausen", routeSlug: "zurich-airport-to-schaffhausen" },
     { name: "Neuhausen", slug: "flughafentransfer-neuhausen" },
     { name: "Thayngen", slug: "flughafentransfer-thayngen" },
@@ -204,7 +206,7 @@ export const destRegions: DestRegion[] = [
     { name: "Ramsen", slug: "flughafentransfer-ramsen" },
     { name: "Hallau", slug: "flughafentransfer-hallau" },
   ] },
-  { key: "appenzell", label: { de: "Appenzellerland", en: "Appenzell region" }, cities: [
+  { key: "appenzell", label: { de: "Appenzellerland", en: "Appenzell region", it: "Regione di Appenzello", pt: "Região de Appenzell", fr: "Pays d'Appenzell", es: "Región de Appenzell", tr: "Appenzell bölgesi", sr: "Region Apencel", hr: "Regija Appenzell", ar: "منطقة أبنتسل", ru: "Регион Аппенцелль" }, cities: [
     { name: "Herisau", slug: "flughafentransfer-herisau" },
     { name: "Teufen", slug: "flughafentransfer-teufen" },
     { name: "Speicher", slug: "flughafentransfer-speicher" },
@@ -216,7 +218,7 @@ export const destRegions: DestRegion[] = [
     { name: "Oberegg", slug: "flughafentransfer-oberegg" },
     { name: "Gonten", slug: "flughafentransfer-gonten" },
   ] },
-  { key: "stgallen", label: { de: "Kanton St. Gallen", en: "Canton of St. Gallen" }, cities: [
+  { key: "stgallen", label: { de: "Kanton St. Gallen", en: "Canton of St. Gallen", it: "Canton San Gallo", pt: "Cantão de St. Gallen", fr: "Canton de Saint-Gall", es: "Cantón de San Galo", tr: "St. Gallen Kantonu", sr: "Kanton St. Gallen", hr: "Kanton St. Gallen", ar: "كانتون سانت غالن", ru: "Кантон Санкт-Галлен" }, cities: [
     { name: "Rapperswil-Jona", slug: "flughafentransfer-rapperswil-jona" },
     { name: "Wil", slug: "flughafentransfer-wil" },
     { name: "Gossau", slug: "flughafentransfer-gossau" },
@@ -233,7 +235,7 @@ export const destRegions: DestRegion[] = [
     { name: "Wildhaus", slug: "flughafentransfer-wildhaus" },
     { name: "Flums", slug: "flughafentransfer-flums" },
   ] },
-  { key: "graubuenden", label: { de: "Kanton Graubünden", en: "Canton of Grisons" }, cities: [
+  { key: "graubuenden", label: { de: "Kanton Graubünden", en: "Canton of Grisons", it: "Canton Grigioni", pt: "Cantão de Grisões", fr: "Canton de Grisons", es: "Cantón de Grisones", tr: "Graubünden Kantonu", sr: "Kanton Graubünden", hr: "Kanton Graubünden", ar: "كانتون غراوبوندن", ru: "Кантон Граубюнден" }, cities: [
     { name: "Chur", slug: "flughafentransfer-chur", routeSlug: "zurich-airport-to-chur" },
     { name: "Landquart", slug: "flughafentransfer-landquart" },
     { name: "Domat/Ems", slug: "flughafentransfer-domat-ems" },
@@ -254,7 +256,7 @@ export const destRegions: DestRegion[] = [
     { name: "Zernez", slug: "flughafentransfer-zernez" },
     { name: "Splügen", slug: "flughafentransfer-spluegen" },
   ] },
-  { key: "aargau", label: { de: "Kanton Aargau", en: "Canton of Aargau" }, cities: [
+  { key: "aargau", label: { de: "Kanton Aargau", en: "Canton of Aargau", it: "Canton Argovia", pt: "Cantão de Aargau", fr: "Canton de Argovie", es: "Cantón de Aargau", tr: "Aargau Kantonu", sr: "Kanton Aargau", hr: "Kanton Aargau", ar: "كانتون آرغاو", ru: "Кантон Ааргау" }, cities: [
     { name: "Aarau", slug: "flughafentransfer-aarau" },
     { name: "Baden", slug: "flughafentransfer-baden" },
     { name: "Wettingen", slug: "flughafentransfer-wettingen" },
@@ -276,7 +278,7 @@ export const destRegions: DestRegion[] = [
     { name: "Klingnau", slug: "flughafentransfer-klingnau" },
     { name: "Muri", slug: "flughafentransfer-muri" },
   ] },
-  { key: "thurgau", label: { de: "Kanton Thurgau", en: "Canton of Thurgau" }, cities: [
+  { key: "thurgau", label: { de: "Kanton Thurgau", en: "Canton of Thurgau", it: "Canton Turgovia", pt: "Cantão de Thurgau", fr: "Canton de Thurgovie", es: "Cantón de Thurgau", tr: "Thurgau Kantonu", sr: "Kanton Thurgau", hr: "Kanton Thurgau", ar: "كانتون تورغاو", ru: "Кантон Тургау" }, cities: [
     { name: "Frauenfeld", slug: "flughafentransfer-frauenfeld" },
     { name: "Kreuzlingen", slug: "flughafentransfer-kreuzlingen" },
     { name: "Arbon", slug: "flughafentransfer-arbon" },
@@ -289,7 +291,7 @@ export const destRegions: DestRegion[] = [
     { name: "Steckborn", slug: "flughafentransfer-steckborn" },
     { name: "Ermatingen", slug: "flughafentransfer-ermatingen" },
   ] },
-  { key: "tessin", label: { de: "Kanton Tessin", en: "Canton of Ticino" }, cities: [
+  { key: "tessin", label: { de: "Kanton Tessin", en: "Canton of Ticino", it: "Canton Ticino", pt: "Cantão de Tessin", fr: "Canton de Tessin", es: "Cantón de Tesino", tr: "Tessin Kantonu", sr: "Kanton Tessin", hr: "Kanton Tessin", ar: "كانتون تيتشينو", ru: "Кантон Тичино" }, cities: [
     { name: "Bellinzona", slug: "flughafentransfer-bellinzona", routeSlug: "zurich-airport-to-bellinzona" },
     { name: "Locarno", slug: "flughafentransfer-locarno", routeSlug: "zurich-airport-to-locarno" },
     { name: "Mendrisio", slug: "flughafentransfer-mendrisio" },
@@ -306,7 +308,7 @@ export const destRegions: DestRegion[] = [
     { name: "Faido", slug: "flughafentransfer-faido" },
     { name: "Muralto", slug: "flughafentransfer-muralto" },
   ] },
-  { key: "waadt", label: { de: "Kanton Waadt", en: "Canton of Vaud" }, cities: [
+  { key: "waadt", label: { de: "Kanton Waadt", en: "Canton of Vaud", it: "Canton Vaud", pt: "Cantão de Vaud", fr: "Canton de Vaud", es: "Cantón de Vaud", tr: "Vaud Kantonu", sr: "Kanton Waadt", hr: "Kanton Waadt", ar: "كانتون فو", ru: "Кантон Во" }, cities: [
     { name: "Montreux", slug: "flughafentransfer-montreux", routeSlug: "zurich-airport-to-montreux" },
     { name: "Yverdon-les-Bains", slug: "flughafentransfer-yverdon-les-bains" },
     { name: "Nyon", slug: "flughafentransfer-nyon" },
@@ -325,7 +327,7 @@ export const destRegions: DestRegion[] = [
     { name: "Bex", slug: "flughafentransfer-bex" },
     { name: "Château-d'Oex", slug: "flughafentransfer-chateau-d-oex" },
   ] },
-  { key: "wallis", label: { de: "Kanton Wallis", en: "Canton of Valais" }, cities: [
+  { key: "wallis", label: { de: "Kanton Wallis", en: "Canton of Valais", it: "Canton Vallese", pt: "Cantão de Valais", fr: "Canton de Valais", es: "Cantón de Valais", tr: "Valais Kantonu", sr: "Kanton Wallis", hr: "Kanton Wallis", ar: "كانتون فاليه", ru: "Кантон Вале" }, cities: [
     { name: "Sion", slug: "flughafentransfer-sion", routeSlug: "zurich-airport-to-sion" },
     { name: "Sierre", slug: "flughafentransfer-sierre" },
     { name: "Martigny", slug: "flughafentransfer-martigny" },
@@ -343,7 +345,7 @@ export const destRegions: DestRegion[] = [
     { name: "Grächen", slug: "flughafentransfer-graechen" },
     { name: "Champéry", slug: "flughafentransfer-champery" },
   ] },
-  { key: "neuenburg", label: { de: "Kanton Neuenburg", en: "Canton of Neuchâtel" }, cities: [
+  { key: "neuenburg", label: { de: "Kanton Neuenburg", en: "Canton of Neuchâtel", it: "Canton Neuchâtel", pt: "Cantão de Neuenburg", fr: "Canton de Neuchâtel", es: "Cantón de Neuchâtel", tr: "Neuenburg Kantonu", sr: "Kanton Neuenburg", hr: "Kanton Neuenburg", ar: "كانتون نوشاتيل", ru: "Кантон Невшатель" }, cities: [
     { name: "Neuchâtel", slug: "flughafentransfer-neuchatel" },
     { name: "La Chaux-de-Fonds", slug: "flughafentransfer-la-chaux-de-fonds" },
     { name: "Le Locle", slug: "flughafentransfer-le-locle" },
@@ -354,7 +356,7 @@ export const destRegions: DestRegion[] = [
     { name: "Val-de-Travers", slug: "flughafentransfer-val-de-travers" },
     { name: "Cortaillod", slug: "flughafentransfer-cortaillod" },
   ] },
-  { key: "genf", label: { de: "Kanton Genf", en: "Canton of Geneva" }, cities: [
+  { key: "genf", label: { de: "Kanton Genf", en: "Canton of Geneva", it: "Canton Ginevra", pt: "Cantão de Genebra", fr: "Canton de Genève", es: "Cantón de Ginebra", tr: "Cenevre Kantonu", sr: "Kanton Genf", hr: "Kanton Genf", ar: "كانتون جنيف", ru: "Кантон Женева" }, cities: [
     { name: "Carouge", slug: "flughafentransfer-carouge" },
     { name: "Vernier", slug: "flughafentransfer-vernier" },
     { name: "Lancy", slug: "flughafentransfer-lancy" },
@@ -366,7 +368,7 @@ export const destRegions: DestRegion[] = [
     { name: "Grand-Saconnex", slug: "flughafentransfer-grand-saconnex" },
     { name: "Cologny", slug: "flughafentransfer-cologny" },
   ] },
-  { key: "jura", label: { de: "Kanton Jura", en: "Canton of Jura" }, cities: [
+  { key: "jura", label: { de: "Kanton Jura", en: "Canton of Jura", it: "Canton Jura", pt: "Cantão de Jura", fr: "Canton de Jura", es: "Cantón de Jura", tr: "Jura Kantonu", sr: "Kanton Jura", hr: "Kanton Jura", ar: "كانتون جورا", ru: "Кантон Юра" }, cities: [
     { name: "Delémont", slug: "flughafentransfer-delemont" },
     { name: "Porrentruy", slug: "flughafentransfer-porrentruy" },
     { name: "Saignelégier", slug: "flughafentransfer-saignelegier" },
@@ -375,7 +377,7 @@ export const destRegions: DestRegion[] = [
     { name: "Courroux", slug: "flughafentransfer-courroux" },
     { name: "Les Breuleux", slug: "flughafentransfer-les-breuleux" },
   ] },
-  { key: "hubs", label: { de: "Flughäfen & Bahnhöfe", en: "Airports & stations" }, cities: [
+  { key: "hubs", label: { de: "Flughäfen & Bahnhöfe", en: "Airports & stations", it: "Aeroporti e stazioni", pt: "Aeroportos e estações", fr: "Aéroports et gares", es: "Aeropuertos y estaciones", tr: "Havalimanları ve garlar", sr: "Aerodromi i stanice", hr: "Zračne luke i kolodvori", ar: "مطارات ومحطات", ru: "Аэропорты и вокзалы" }, cities: [
     { name: "Flughafen Genf (GVA)", slug: "flughafentransfer-flughafen-genf-gva" },
     { name: "EuroAirport Basel", slug: "flughafentransfer-euroairport-basel" },
     { name: "Flughafen Bern-Belp", slug: "flughafentransfer-flughafen-bern-belp" },
@@ -386,7 +388,7 @@ export const destRegions: DestRegion[] = [
     { name: "Genève-Cornavin", slug: "flughafentransfer-geneve-cornavin" },
     { name: "Lausanne Gare", slug: "flughafentransfer-lausanne-gare" },
   ] },
-  { key: "nachbar", label: { de: "Grenzregion & Nachbarländer", en: "Border region & neighbours" }, cities: [
+  { key: "nachbar", label: { de: "Grenzregion & Nachbarländer", en: "Border region & neighbours", it: "Regione di confine e paesi vicini", pt: "Região fronteiriça e países vizinhos", fr: "Région frontalière et pays voisins", es: "Región fronteriza y países vecinos", tr: "Sınır bölgesi ve komşu ülkeler", sr: "Pogranični region i susedne zemlje", hr: "Pogranična regija i susjedne zemlje", ar: "المنطقة الحدودية والدول المجاورة", ru: "Приграничный регион и соседние страны" }, cities: [
     { name: "Vaduz (FL)", slug: "flughafentransfer-vaduz-fl" },
     { name: "Schaan (FL)", slug: "flughafentransfer-schaan-fl" },
     { name: "Konstanz (DE)", slug: "flughafentransfer-konstanz-de" },

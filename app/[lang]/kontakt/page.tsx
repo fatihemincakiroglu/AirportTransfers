@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import Kontakt from "./kontakt-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: lang === "de" ? "/de/kontakt" : "/en/contact",
-      languages: { en: "/en/contact", de: "/de/kontakt", "x-default": "/en/contact" },
+      canonical: `/${lang}${localizePath("/kontakt", lang as never) === "/" ? "" : localizePath("/kontakt", lang as never)}`,
+      languages: langAlternates("/kontakt"),
     },
   };
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Manrope } from "next/font/google";
 import { LangProvider } from "../providers";
 import { SITE_URL } from "../config";
+import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
 import type { Lang } from "../i18n";
 import "../globals.css";
 
@@ -19,13 +20,14 @@ const sans = Manrope({
 
 type Params = { params: Promise<{ lang: string }> };
 
-// Her iki dili derleme sırasında oluştur
+// Tüm dilleri derleme sırasında oluştur
 export function generateStaticParams() {
-  return [{ lang: "en" }, { lang: "de" }];
+  return LANGS.map((lang) => ({ lang }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { lang } = await params;
+  const { lang: rawLang } = await params;
+  const lang = (LANGS as readonly string[]).includes(rawLang) ? rawLang : DEFAULT_LANG;
   const de = lang === "de";
   return {
     metadataBase: new URL(SITE_URL),
@@ -51,7 +53,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     publisher: "AirportTransfers Zürich",
     alternates: {
       canonical: `/${lang}`,
-      languages: { en: "/en", de: "/de", "x-default": "/en" },
+      languages: langAlternates("/"),
     },
   };
 }
@@ -64,7 +66,7 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const safeLang: Lang = lang === "de" ? "de" : "en";
+  const safeLang: Lang = (LANGS as readonly string[]).includes(lang) ? (lang as Lang) : DEFAULT_LANG;
 
   const jsonLd = [
     {
@@ -88,12 +90,12 @@ export default async function RootLayout({
       "@type": "WebSite",
       name: "AirportTransfers Zürich",
       url: SITE_URL,
-      inLanguage: ["en", "de"],
+      inLanguage: [...LANGS],
     },
   ];
 
   return (
-    <html lang={safeLang}>
+    <html lang={safeLang} dir={RTL_LANGS.includes(safeLang) ? "rtl" : "ltr"}>
       <body className={`${sans.variable} ${serif.variable}`}>
         {jsonLd.map((obj, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />

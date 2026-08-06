@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import { routes } from "../../config";
 import Strecken from "./strecken-client";
 
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: m.title,
     description: m.description,
-    alternates: { canonical: lang === "de" ? "/de/strecken" : "/en/routes", languages: { en: "/en/routes", de: "/de/strecken", "x-default": "/en/routes" } },
+    alternates: { canonical: `/${lang}${localizePath("/strecken", lang as never) === "/" ? "" : localizePath("/strecken", lang as never)}`, languages: langAlternates("/strecken") },
   };
 }
 

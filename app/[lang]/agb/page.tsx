@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import { LegalPage } from "../../components";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -10,8 +11,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: de ? "Allgemeine Geschäftsbedingungen (AGB) | AirportTransfers Zürich" : "Terms and Conditions | AirportTransfers Zurich",
     description: de ? "AGB für Buchung und Durchführung von Flughafentransfers der AirportTransfers Zürich." : "Terms and conditions for booking and providing airport transfers by AirportTransfers Zurich.",
     alternates: {
-      canonical: de ? "/de/agb" : "/en/terms-and-conditions",
-      languages: { en: "/en/terms-and-conditions", de: "/de/agb", "x-default": "/en/terms-and-conditions" },
+      canonical: `/${lang}${localizePath("/agb", lang as never) === "/" ? "" : localizePath("/agb", lang as never)}`,
+      languages: langAlternates("/agb"),
     },
   };
 }

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { C, routes, fleet } from "../../config";
 import { tx } from "../../i18nX";
+import { pickL } from "../../i18n";
 import { useLang } from "../../providers";
 import { destRegions } from "../../destinations";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, localName } from "../../components";
@@ -141,7 +142,7 @@ export default function PreiseClient() {
           {destRegions.map((region) => {
             return (
               <div key={region.key} className="mt-10">
-                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-stone-400">{region.label[lang]}</h3>
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-stone-400">{pickL(region.label, lang)}</h3>
                 <ul className="mt-4 columns-2 gap-x-10 md:columns-3 lg:columns-4">
                   {region.cities.map((c) => {
                     const r = routeOf(c.routeSlug);

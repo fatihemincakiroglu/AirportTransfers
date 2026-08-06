@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { C } from "../../config";
 import { tx } from "../../i18nX";
+import { pickL } from "../../i18n";
 import { useLang } from "../../providers";
 import { swissEvents, eventCats, type EventCat } from "../../eventsContent";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero } from "../../components";
@@ -15,7 +16,7 @@ export default function EventsClient() {
   const [cat, setCat] = useState<EventCat | "all">("all");
 
   const list = swissEvents.filter((e) => cat === "all" || e.cat === cat);
-  const catLabel = (k: EventCat) => eventCats.find((c) => c.key === k)?.label[lang] ?? k;
+  const catLabel = (k: EventCat) => { const c = eventCats.find((c) => c.key === k); return c ? pickL(c.label, lang) : k; };
   const bookHref = (city: string) =>
     `${P("/buchung")}?${new URLSearchParams({ from: "Flughafen Zürich (ZRH)", to: city }).toString()}`;
 
@@ -45,7 +46,7 @@ export default function EventsClient() {
                     borderBottom: active ? `2px solid ${C.gold}` : "2px solid transparent",
                   }}
                 >
-                  {c.label[lang]}
+                  {pickL(c.label, lang)}
                 </button>
               );
             })}
@@ -72,12 +73,12 @@ export default function EventsClient() {
               </div>
               <div className="flex flex-1 flex-col p-6">
                 <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>
-                  {catLabel(e.cat)} · {e.when[lang]}
+                  {catLabel(e.cat)} · {pickL(e.when, lang)}
                 </p>
                 <h2 className="font-display mt-2 text-2xl font-semibold leading-snug" style={{ color: C.pine }}>
                   {e.name}
                 </h2>
-                <p className="mt-2.5 flex-1 text-sm leading-relaxed text-stone-600">{e.desc[lang]}</p>
+                <p className="mt-2.5 flex-1 text-sm leading-relaxed text-stone-600">{pickL(e.desc, lang)}</p>
                 <p className="mt-5 flex items-center gap-2 text-sm font-bold underline-offset-4 group-hover:underline" style={{ color: C.pine, textDecorationColor: C.gold }}>
                   {E.book}
                   <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>

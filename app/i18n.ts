@@ -1,10 +1,25 @@
-export type Lang = "de" | "en";
+import type { LangCode } from "./paths";
+import { it } from "./langs/it";
+import { pt } from "./langs/pt";
+import { fr } from "./langs/fr";
+import { es } from "./langs/es";
+import { tr } from "./langs/tr";
+import { sr } from "./langs/sr";
+import { hr } from "./langs/hr";
+import { ar } from "./langs/ar";
+import { ru } from "./langs/ru";
 
-export const t = {
+export type Lang = LangCode;
+
+const base = {
   de: {
+    meta: {
+      title: "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes",
+      desc: "Privater Flughafentransfer Zürich zum Festpreis. Geschulte Chauffeure, Flugverfolgung, 24/7.",
+    },
     topbar: "Zürich · Private Transfer",
     nav: {
-      routes: "Strecken", tours: "Touren", fleet: "Fahrzeuge", gallery: "Galerie",
+      routes: "Strecken", fleet: "Fahrzeuge", gallery: "Galerie",
       contact: "Kontakt", book: "Jetzt buchen", home: "Startseite",
     },
     hero: {
@@ -41,22 +56,6 @@ export const t = {
       from: "ab", origin: "Flughafen Zürich (ZRH)",
       all: "Alle anzeigen", allNote: "Andere Destination? Wir fahren in die ganze Schweiz – fragen Sie uns.",
     },
-    toursSec: {
-      eyebrow: "Touren", title: "Touren",
-      sub: "Private Tagesausflüge in und um Zürich – mit eigenem Chauffeur.",
-      pageTitle: "Touren",
-      pageSub: "Private, geführte Ausflüge mit Abholung an Ihrer Adresse. Preis auf Anfrage – je nach Fahrzeug und Dauer.",
-      all: "Alle anzeigen", cta: "Anfragen",
-      half: "Halbtags", full: "Ganztägig", h3: "3 Stunden",
-      list: [
-        { slug: "rhine-falls-schaffhausen", name: "Rheinfall Schaffhausen", dur: "Halbtags", img: "/gallery/5.jpg" },
-        { slug: "lucerne-lake-lucerne", name: "Luzern & Vierwaldstättersee", dur: "Ganztägig", img: "/gallery/17.jpg" },
-        { slug: "titlis-engelberg", name: "Titlis & Engelberg", dur: "Ganztägig", img: "/gallery/19.jpg" },
-        { slug: "zurich-city-tour", name: "Zürich Stadtrundfahrt", dur: "3 Stunden", img: "/gallery/1.jpg" },
-        { slug: "interlaken-grindelwald", name: "Interlaken & Grindelwald", dur: "Ganztägig", img: "/gallery/8.jpg" },
-        { slug: "bern-emmental", name: "Bern & Emmental", dur: "Ganztägig", img: "/gallery/18.jpg" },
-      ],
-    },
     fleetSec: {
       eyebrow: "Fahrzeuge", title: "Unsere Flotte",
       sub: "Gepflegte, komfortable VIP-Fahrzeuge für jede Gruppengrösse.",
@@ -81,31 +80,6 @@ export const t = {
         { text: "Sehr professionell, WLAN und Wasser im Auto. Klare Kommunikation per WhatsApp.", name: "Anna K.", route: "ZRH → Basel", flag: "🇦🇹" },
         { text: "Best transfer experience in Switzerland so far. Fair fixed price, premium car.", name: "David L.", route: "ZRH → Winterthur", flag: "🇺🇸" },
       ],
-    },
-    tourDetail: {
-      highlights: "Höhepunkte",
-      itinerary: "Tagesprogramm",
-      included: "Inbegriffen",
-      notIncluded: "Nicht inbegriffen",
-      photos: "Impressionen",
-      faq: "Häufige Fragen",
-      request: "Tour anfragen",
-      priceOnRequest: "Preis auf Anfrage",
-      priceNote: "Festpreisangebot innert 15 Minuten – unverbindlich.",
-      duration: "Dauer",
-      hoursShort: "Std.",
-      pickup: "Abholung",
-      pickupVal: "Jede Adresse in Zürich & Flughafen",
-      group: "Gruppengrösse",
-      groupVal: "1–7 Personen",
-      langs: "Sprachen",
-      langsVal: "Deutsch · Englisch",
-      requestWa: "Per WhatsApp anfragen",
-      requestMail: "…oder per E-Mail",
-      otherTours: "Weitere Touren",
-      allTours: "Alle Touren",
-      backTours: "Alle Touren ansehen",
-      optional: "Optional",
     },
     blogSec: {
       title: "Blog",
@@ -193,9 +167,13 @@ export const t = {
     },
   },
   en: {
+    meta: {
+      title: "AirportTransfers Zurich | ZRH Airport Transfer · VIP Mercedes",
+      desc: "Private Zurich Airport transfers at fixed prices. Trained chauffeurs, flight tracking, 24/7.",
+    },
     topbar: "Zurich · Private Transfer",
     nav: {
-      routes: "Routes", tours: "Tours", fleet: "Vehicles", gallery: "Gallery",
+      routes: "Routes", fleet: "Vehicles", gallery: "Gallery",
       contact: "Contact", book: "Book now", home: "Home",
     },
     hero: {
@@ -232,22 +210,6 @@ export const t = {
       from: "from", origin: "Zurich Airport (ZRH)",
       all: "View all", allNote: "Different destination? We drive anywhere in Switzerland – just ask.",
     },
-    toursSec: {
-      eyebrow: "Tours", title: "Tours",
-      sub: "Private day trips in and around Zurich – with your own chauffeur.",
-      pageTitle: "Tours",
-      pageSub: "Private guided trips with pickup at your address. Price on request – depending on vehicle and duration.",
-      all: "View all", cta: "Enquire",
-      half: "Half day", full: "Full day", h3: "3 hours",
-      list: [
-        { slug: "rhine-falls-schaffhausen", name: "Rhine Falls Schaffhausen", dur: "Half day", img: "/gallery/5.jpg" },
-        { slug: "lucerne-lake-lucerne", name: "Lucerne & Lake Lucerne", dur: "Full day", img: "/gallery/17.jpg" },
-        { slug: "titlis-engelberg", name: "Titlis & Engelberg", dur: "Full day", img: "/gallery/19.jpg" },
-        { slug: "zurich-city-tour", name: "Zurich City Tour", dur: "3 hours", img: "/gallery/1.jpg" },
-        { slug: "interlaken-grindelwald", name: "Interlaken & Grindelwald", dur: "Full day", img: "/gallery/8.jpg" },
-        { slug: "bern-emmental", name: "Bern & Emmental", dur: "Full day", img: "/gallery/18.jpg" },
-      ],
-    },
     fleetSec: {
       eyebrow: "Vehicles", title: "Our fleet",
       sub: "Well-maintained, comfortable VIP vehicles for every group size.",
@@ -272,31 +234,6 @@ export const t = {
         { text: "Sehr professionell, WLAN und Wasser im Auto. Klare Kommunikation per WhatsApp.", name: "Anna K.", route: "ZRH → Basel", flag: "🇦🇹" },
         { text: "Best transfer experience in Switzerland so far. Fair fixed price, premium car.", name: "David L.", route: "ZRH → Winterthur", flag: "🇺🇸" },
       ],
-    },
-    tourDetail: {
-      highlights: "Highlights",
-      itinerary: "Itinerary",
-      included: "Included",
-      notIncluded: "Not included",
-      photos: "Impressions",
-      faq: "Frequently asked questions",
-      request: "Request this tour",
-      priceOnRequest: "Price on request",
-      priceNote: "Fixed-price offer within 15 minutes – no obligation.",
-      duration: "Duration",
-      hoursShort: "hrs",
-      pickup: "Pickup",
-      pickupVal: "Any address in Zurich & airport",
-      group: "Group size",
-      groupVal: "1–7 people",
-      langs: "Languages",
-      langsVal: "German · English",
-      requestWa: "Request via WhatsApp",
-      requestMail: "…or by email",
-      otherTours: "More tours",
-      allTours: "All tours",
-      backTours: "See all tours",
-      optional: "Optional",
     },
     blogSec: {
       title: "Blog",
@@ -383,4 +320,21 @@ export const t = {
       rights: "All rights reserved.", watermark: "Zurich",
     },
   },
-} as const;
+};
+
+/** Bir dilin tam sözlük tipi (Almanca referans alınır) */
+export type Dict = typeof base.de;
+
+export const t: Record<Lang, Dict> = {
+  ...base,
+  it: it.t, pt: pt.t, fr: fr.t, es: es.t, tr: tr.t,
+  sr: sr.t, hr: hr.t, ar: ar.t, ru: ru.t,
+};
+
+/**
+ * Yalnızca de/en içeren eski içerik nesneleri için güvenli seçim:
+ * istenen dil yoksa İngilizceye (Almanca isteniyorsa Almancaya) düşer.
+ */
+export function pickL<T>(obj: { de: T; en: T } & Partial<Record<Lang, T>>, lang: Lang): T {
+  return (obj as Partial<Record<Lang, T>>)[lang] ?? (lang === "de" ? obj.de : obj.en);
+}

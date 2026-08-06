@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates } from "../../paths";
 import { routes } from "../../config";
 import { routeContent } from "../../routeContent";
 import { notFound } from "next/navigation";
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
           : `Private airport transfer and chauffeur service ${n}: fixed price per vehicle, meet & greet, flight tracking – 24/7 from Zurich Airport (ZRH).`,
         alternates: {
           canonical: `/${lang}/${slug}`,
-          languages: { en: `/en/${slug}`, de: `/de/${slug}`, "x-default": `/en/${slug}` },
+          languages: langAlternates(`/${slug}`),
         },
       };
     }
@@ -45,7 +46,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       : `Private transfer from Zurich Airport (ZRH) to ${n}: ${route.km} km, fixed price from CHF ${route.price.toFixed(2)}, meet & greet, flight tracking, 24/7.`,
     alternates: {
       canonical: `/${lang}/${slug}`,
-      languages: { en: `/en/${slug}`, de: `/de/${slug}`, "x-default": `/en/${slug}` },
+      languages: langAlternates(`/${slug}`),
     },
     openGraph: {
       title: de ? `Flughafentransfer Zürich → ${n}` : `Zurich Airport → ${n} transfer`,

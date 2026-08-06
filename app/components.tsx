@@ -7,9 +7,10 @@ import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
   COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
 } from "./config";
-import { t, Lang } from "./i18n";
+import { t, Lang, pickL } from "./i18n";
 import { tx } from "./i18nX";
 import { legalPages, LegalKey } from "./legalContent";
+import { LANGS, LANG_NAMES } from "./paths";
 import { useLang } from "./providers";
 
 // ── Yardımcılar ────────────────────────────────────────────────
@@ -19,7 +20,7 @@ export const waHref = (text?: string) =>
 export const mailHref = (subject: string, body: string) =>
   `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-export const localName = (v: LocalName, lang: Lang) => (typeof v === "string" ? v : v[lang]);
+export const localName = (v: LocalName, lang: Lang) => (typeof v === "string" ? v : pickL(v, lang));
 
 export const inputCls =
   "w-full rounded-xl border border-stone-300 bg-white px-3.5 py-3 text-[15px] outline-none transition-colors focus:border-[#C9A24B] focus:ring-2 focus:ring-[#C9A24B]/30";
@@ -65,10 +66,11 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 export function TopBar() {
   const { lang, setLang } = useLang();
   const L = t[lang];
+  const [open, setOpen] = useState(false);
   const short = "VIP Transfers"; // mobilde kısa etiket
   return (
     <div style={{ background: C.pine }} className="text-white/80">
-      <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 overflow-hidden px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
+      <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
         <span
           className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
           style={{ color: C.gold }}
@@ -76,39 +78,49 @@ export function TopBar() {
           <span className="sm:hidden">✈ {short}</span>
           <span className="hidden sm:inline">✈ {L.topbar}</span>
         </span>
-        <div className="flex flex-nowrap items-center gap-2 sm:gap-4">
-          <div className="flex flex-nowrap items-center gap-1 text-[11px] font-bold sm:gap-1.5 sm:text-xs">
-            {(["de", "en"] as Lang[]).map((c) => {
-              const active = lang === c;
-              return (
-                <button
-                  key={c}
-                  onClick={() => setLang(c)}
-                  aria-label={c === "de" ? "Deutsch" : "English"}
-                  className={`flex items-center gap-1.5 rounded-full py-0.5 pl-0.5 pr-2 uppercase transition-all sm:py-1 sm:pl-1 sm:pr-2.5 ${
-                    active ? "" : "opacity-50 grayscale-[35%] hover:opacity-85 hover:grayscale-0"
-                  }`}
-                  style={active ? { background: "rgba(201,162,75,0.18)", boxShadow: `inset 0 0 0 1px ${C.gold}` } : undefined}
-                >
-                  <Image
-                    src={c === "de" ? "/icons/flag-de.png" : "/icons/flag-en.png"}
-                    alt={c === "de" ? "Deutsch" : "English"}
-                    width={18}
-                    height={18}
-                    className="h-[18px] w-[18px] rounded-full sm:h-5 sm:w-5"
-                  />
-                  <span style={{ color: active ? C.gold : "rgba(255,255,255,0.7)" }}>{c}</span>
-                </button>
-              );
-            })}
-          </div>
+
+        {/* Dil seçici — 11 dil, açılır menü */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            aria-label="Language"
+            className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors sm:text-xs"
+            style={{ background: "rgba(201,162,75,0.15)", boxShadow: `inset 0 0 0 1px ${C.gold}55`, color: C.gold }}
+          >
+            🌐 {lang}
+            <span className={`text-[9px] transition-transform duration-200 ${open ? "rotate-180" : ""}`}>▾</span>
+          </button>
+          {open && (
+            <ul className="absolute right-0 z-[60] mt-2 max-h-[70vh] w-44 overflow-auto rounded-xl bg-white py-1.5 text-stone-800 shadow-xl ring-1 ring-black/5" dir="ltr">
+              {LANGS.map((c) => {
+                const active = lang === c;
+                return (
+                  <li key={c}>
+                    <button
+                      type="button"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => { setOpen(false); setLang(c); }}
+                      className="flex w-full items-center justify-between px-4 py-2 text-left text-sm font-semibold transition-colors hover:bg-stone-50"
+                      style={active ? { color: C.pine } : undefined}
+                    >
+                      {LANG_NAMES[c]}
+                      <span className="text-[10px] font-bold uppercase" style={{ color: active ? C.gold : "#d6d3d1" }}>
+                        {active ? "✓" : c}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-// ── Header (aktif sayfa vurgusu + mobil menü) ─────────────────
 export function SiteHeader({ active }: { active?: string }) {
   const { lang, P } = useLang();
   const L = t[lang];
@@ -636,7 +648,7 @@ export function LegalPage({ pageKey }: { pageKey: LegalKey }) {
   // İçerikler tek merkezden: app/legalContent.ts
   const { lang, P } = useLang();
   const L = t[lang];
-  const c = legalPages[pageKey][lang];
+  const c = pickL(legalPages[pageKey], lang);
 
   return (
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>

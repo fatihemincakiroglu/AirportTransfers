@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import { t } from "../../i18n";
 import FaqClient from "./faq-client";
 
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: m.title,
     description: m.description,
-    alternates: { canonical: `/${lang}/faq`, languages: { en: "/en/faq", de: "/de/faq", "x-default": "/en/faq" } },
+    alternates: { canonical: `/${lang}${localizePath("/faq", lang as never) === "/" ? "" : localizePath("/faq", lang as never)}`, languages: langAlternates("/faq") },
   };
 }
 

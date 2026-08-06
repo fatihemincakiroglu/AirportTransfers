@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import Fahrzeuge from "./fahrzeuge-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: m.title,
     description: m.description,
     alternates: {
-      canonical: lang === "de" ? "/de/fahrzeuge" : "/en/vehicles",
-      languages: { en: "/en/vehicles", de: "/de/fahrzeuge", "x-default": "/en/vehicles" },
+      canonical: `/${lang}${localizePath("/fahrzeuge", lang as never) === "/" ? "" : localizePath("/fahrzeuge", lang as never)}`,
+      languages: langAlternates("/fahrzeuge"),
     },
   };
 }

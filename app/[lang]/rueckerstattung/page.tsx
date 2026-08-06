@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { langAlternates, localizePath } from "../../paths";
 import { LegalPage } from "../../components";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -10,8 +11,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: de ? "Rückerstattungsrichtlinie | AirportTransfers Zürich" : "Refund Policy | AirportTransfers Zurich",
     description: de ? "Stornierungs- und Rückerstattungsbedingungen für Transferbuchungen." : "Cancellation and refund terms for transfer bookings.",
     alternates: {
-      canonical: de ? "/de/rueckerstattung" : "/en/refund-policy",
-      languages: { en: "/en/refund-policy", de: "/de/rueckerstattung", "x-default": "/en/refund-policy" },
+      canonical: `/${lang}${localizePath("/rueckerstattung", lang as never) === "/" ? "" : localizePath("/rueckerstattung", lang as never)}`,
+      languages: langAlternates("/rueckerstattung"),
     },
   };
 }

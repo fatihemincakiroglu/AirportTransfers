@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { C } from "../../../config";
-import { t } from "../../../i18n";
+import { t, pickL } from "../../../i18n";
 import { useLang } from "../../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons } from "../../../components";
 import { blogPosts } from "../../../blogContent";
@@ -30,7 +30,7 @@ export default function PostClient({ slug }: { slug: string }) {
     );
   }
 
-  const c = post[lang];
+  const c = pickL(post, lang);
   // İlgili yazılar: sıradaki 3 yazı (döngüsel)
   const related = [1, 2, 3].map((o) => blogPosts[(idx + o) % blogPosts.length]);
 
@@ -109,7 +109,7 @@ export default function PostClient({ slug }: { slug: string }) {
           </div>
           <div className="mt-6 grid gap-5 sm:grid-cols-3">
             {related.map((r) => {
-              const rc = r[lang];
+              const rc = pickL(r, lang);
               return (
                 <a
                   key={r.slug}
