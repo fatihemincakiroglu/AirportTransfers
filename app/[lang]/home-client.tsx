@@ -117,15 +117,15 @@ export default function Home() {
             </h1>
             <p className="mt-5 text-base text-white/80 md:text-lg">{L.hero.sub}</p>
             {/* Güven rozetleri — 2x2 + puan kartı */}
-            <div className="mt-6 hidden grid-cols-2 gap-3 md:grid">
+            <div className="mt-6 grid grid-cols-2 gap-2 md:gap-3">
               {X.heroBadges.map((b, i) => (
-                <span key={i} className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-bold backdrop-blur">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-extrabold" style={{ background: C.gold, color: C.pine }}>✓</span>
+                <span key={i} className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-3 py-2.5 text-xs font-bold backdrop-blur md:gap-3 md:rounded-2xl md:px-4 md:py-3 md:text-sm">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold md:h-6 md:w-6 md:text-[11px]" style={{ background: C.gold, color: C.pine }}>✓</span>
                   {b}
                 </span>
               ))}
             </div>
-            <div className="mt-3 hidden items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-5 py-3.5 backdrop-blur md:flex">
+            <div className="mt-2 flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur md:mt-3 md:gap-4 md:rounded-2xl md:px-5 md:py-3.5">
               <span className="text-base tracking-[0.15em]" style={{ color: C.gold }}>★★★★★</span>
               <span className="text-sm">
                 <b>{X.heroRating.score}</b>

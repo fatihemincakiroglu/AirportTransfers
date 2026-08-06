@@ -1,6 +1,5 @@
 import type { Dict } from "../i18n";
 import type { DictX } from "../i18nX";
-import { REVIEWS } from "./shared";
 
 const t: Dict = {
   meta: { title: "Zuerich Airport Taxi - Taxi Aéroport de Zurich & Service Chauffeur Suisse", desc: "Transferts aéroport premium depuis Zurich (ZRH) dans toute la Suisse – prix fixes, chauffeurs professionnels et suivi des vols. Réservez votre transfert en 1 minute !" },
@@ -43,7 +42,13 @@ const t: Dict = {
     features: ["WiFi gratuit", "Eau minérale", "Sièges enfants sur demande", "Suivi des vols"],
   },
   gallerySec: { eyebrow: "Galerie", title: "Galerie", pageTitle: "Galerie", pageSub: "Impressions de nos véhicules et de nos trajets.", all: "Tout voir" },
-  reviewsSec: { eyebrow: "Avis clients", title: "Ce que disent nos clients", sub: "Des expériences réelles de vrais voyageurs.", count: "avis", list: REVIEWS },
+  reviewsSec: { eyebrow: "Avis clients", title: "Ce que disent nos clients", sub: "Des expériences réelles de vrais voyageurs.", count: "avis", list: [
+      { text: "Chauffeur ponctuel, pancarte à l'arrivée, voiture impeccable. Parfait.", name: "Camille D.", route: "ZRH → Genève", flag: "🇫🇷" },
+      { text: "Prix fixe respecté malgré les bouchons. Réservation WhatsApp très simple.", name: "Nicolas L.", route: "ZRH → Lausanne", flag: "🇫🇷" },
+      { text: "Vol retardé de 45 minutes – le chauffeur attendait sans supplément.", name: "Sophie M.", route: "ZRH → Montreux", flag: "🇨🇭" },
+      { text: "Siège enfant installé comme demandé. Trajet serein jusqu'à Verbier.", name: "Julien P.", route: "ZRH → Verbier", flag: "🇫🇷" },
+      { text: "Mercedes très confortable, chauffeur discret. Idéal pour nos clients d'affaires.", name: "Isabelle R.", route: "ZRH → Fribourg", flag: "🇧🇪" },
+    ] },
   blogSec: {
     title: "Blog", pageSub: "Conseils de voyage, guides des trajets et informations utiles sur les transferts depuis l'aéroport de Zurich.",
     read: "Lire la suite", minRead: "min de lecture", more: "Autres articles", back: "Tous les articles", published: "Publié le",

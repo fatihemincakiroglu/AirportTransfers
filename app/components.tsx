@@ -789,6 +789,26 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
         </div>
       </div>
       {/* Beliebte Strecken — iç linkleme şeridi */}
+        {/* Üyelikler, kalite ve ödeme rozetleri */}
+        <div className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-5 px-5">
+          {[
+            ["/badges/taca.png", "The Transportation Alliance", 36],
+            ["/badges/iata.png", "IATA", 36],
+            ["/badges/gbta.png", "GBTA", 36],
+            ["/badges/swiss-made.png", "Swiss Made", 40],
+            ["/badges/quality.png", "100% Qualität", 52],
+          ].map(([src, alt, h]) => (
+            <span key={src as string} className="flex items-center justify-center rounded-xl bg-white/95 px-3.5 py-2 shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src as string} alt={alt as string} style={{ height: h as number }} className="w-auto" loading="lazy" />
+            </span>
+          ))}
+          <span className="flex items-center justify-center rounded-xl bg-white/95 px-3.5 py-2 shadow-sm">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/badges/payments.png" alt="Maestro · MasterCard · PostFinance · Visa · American Express" style={{ height: 24 }} className="w-auto" loading="lazy" />
+          </span>
+        </div>
+
       <div className="relative border-t border-white/10">
         <div className="mx-auto max-w-7xl px-5 py-8">
           <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">

@@ -1,6 +1,5 @@
 import type { Dict } from "../i18n";
 import type { DictX } from "../i18nX";
-import { REVIEWS } from "./shared";
 
 const t: Dict = {
   meta: { title: "Zuerich Airport Taxi - Táxi Aeroporto de Zurique & Serviço de Chauffeur Suíça", desc: "Transfers premium do aeroporto de Zurique (ZRH) para toda a Suíça – preços fixos, motoristas profissionais e monitorização de voos. Reserve o seu transfer em 1 minuto!" },
@@ -43,7 +42,13 @@ const t: Dict = {
     features: ["WiFi grátis", "Água mineral", "Cadeiras de criança a pedido", "Monitorização de voos"],
   },
   gallerySec: { eyebrow: "Galeria", title: "Galeria", pageTitle: "Galeria", pageSub: "Imagens dos nossos veículos e das nossas viagens.", all: "Ver tudo" },
-  reviewsSec: { eyebrow: "Avaliações", title: "O que dizem os nossos clientes", sub: "Experiências reais de verdadeiros viajantes.", count: "avaliações", list: REVIEWS },
+  reviewsSec: { eyebrow: "Avaliações", title: "O que dizem os nossos clientes", sub: "Experiências reais de verdadeiros viajantes.", count: "avaliações", list: [
+      { text: "Motorista pontual, carro impecável e preço fixo sem surpresas. Recomendo!", name: "João M.", route: "ZRH → Zermatt", flag: "🇵🇹" },
+      { text: "Reserva pelo WhatsApp em menos de um minuto. Confirmação imediata.", name: "Ana C.", route: "ZRH → Luzern", flag: "🇧🇷" },
+      { text: "O voo atrasou e o motorista esperou sem custo extra. Serviço de confiança.", name: "Pedro S.", route: "ZRH → Interlaken", flag: "🇵🇹" },
+      { text: "Cadeirinha para o bebé já instalada. Viagem tranquila até Grindelwald.", name: "Mariana L.", route: "ZRH → Grindelwald", flag: "🇧🇷" },
+      { text: "Mercedes confortável, WiFi e água a bordo. Experiência verdadeiramente premium.", name: "Rui F.", route: "ZRH → Genève", flag: "🇵🇹" },
+    ] },
   blogSec: {
     title: "Blog", pageSub: "Dicas de viagem, guias de rotas e informações úteis sobre transfers do aeroporto de Zurique.",
     read: "Ler mais", minRead: "min de leitura", more: "Mais artigos", back: "Todos os artigos", published: "Publicado em",

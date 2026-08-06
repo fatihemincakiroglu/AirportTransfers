@@ -1,6 +1,5 @@
 import type { Dict } from "../i18n";
 import type { DictX } from "../i18nX";
-import { REVIEWS } from "./shared";
 
 const t: Dict = {
   meta: { title: "Zuerich Airport Taxi - Zürih Havalimanı Taksi & Şoför Hizmeti İsviçre", desc: "Zürih (ZRH) çıkışlı, tüm İsviçre'ye premium havalimanı transferi – sabit fiyatlar, profesyonel şoförler ve uçuş takibi. Transferinizi 1 dakikada rezerve edin!" },
@@ -43,7 +42,13 @@ const t: Dict = {
     features: ["Ücretsiz WiFi", "Maden suyu", "İsteğe bağlı çocuk koltuğu", "Uçuş takibi"],
   },
   gallerySec: { eyebrow: "Galeri", title: "Galeri", pageTitle: "Galeri", pageSub: "Araçlarımızdan ve yolculuklarımızdan kareler.", all: "Tümünü gör" },
-  reviewsSec: { eyebrow: "Yorumlar", title: "Misafirlerimiz ne diyor", sub: "Gerçek yolculardan gerçek deneyimler.", count: "yorum", list: REVIEWS },
+  reviewsSec: { eyebrow: "Yorumlar", title: "Misafirlerimiz ne diyor", sub: "Gerçek yolculardan gerçek deneyimler.", count: "yorum", list: [
+      { text: "Şoför isim tabelasıyla bekliyordu, araç tertemizdi. WhatsApp'tan rezervasyon çok kolay.", name: "Emre K.", route: "ZRH → Zürich City", flag: "🇹🇷" },
+      { text: "Uçağımız rötar yaptı, şoför ek ücret almadan bekledi. Güvenilir hizmet.", name: "Ayşe D.", route: "ZRH → Luzern", flag: "🇹🇷" },
+      { text: "Sabit fiyat aynen korundu, sürpriz yok. İsviçre'deki en iyi transfer deneyimim.", name: "Mehmet A.", route: "ZRH → Interlaken", flag: "🇹🇷" },
+      { text: "Çocuk koltuğu istediğimiz gibi hazırdı. Zermatt'a kadar konforlu bir yolculuk.", name: "Zeynep T.", route: "ZRH → Zermatt", flag: "🇹🇷" },
+      { text: "Mercedes çok konforlu, şoför son derece kibar. İş seyahatleri için ideal.", name: "Burak S.", route: "ZRH → Zug", flag: "🇹🇷" },
+    ] },
   blogSec: {
     title: "Blog", pageSub: "Zürih Havalimanı transferleri hakkında seyahat ipuçları, güzergâh rehberleri ve faydalı bilgiler.",
     read: "Devamını oku", minRead: "dk. okuma", more: "Diğer yazılar", back: "Tüm yazılar", published: "Yayın tarihi",

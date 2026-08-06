@@ -1,6 +1,5 @@
 import type { Dict } from "../i18n";
 import type { DictX } from "../i18nX";
-import { REVIEWS } from "./shared";
 
 const t: Dict = {
   meta: { title: "Zuerich Airport Taxi - Taxi Aeroporto di Zurigo & Servizio Chauffeur Svizzera", desc: "Transfer aeroportuali premium da Zurigo (ZRH) in tutta la Svizzera – prezzi fissi, autisti professionisti e monitoraggio voli. Prenota il tuo transfer in 1 minuto!" },
@@ -43,7 +42,13 @@ const t: Dict = {
     features: ["WiFi gratuito", "Acqua minerale", "Seggiolini su richiesta", "Monitoraggio voli"],
   },
   gallerySec: { eyebrow: "Galleria", title: "Galleria", pageTitle: "Galleria", pageSub: "Immagini dei nostri veicoli e dei nostri viaggi.", all: "Vedi tutto" },
-  reviewsSec: { eyebrow: "Recensioni", title: "Cosa dicono i nostri ospiti", sub: "Esperienze vere di veri viaggiatori.", count: "recensioni", list: REVIEWS },
+  reviewsSec: { eyebrow: "Recensioni", title: "Cosa dicono i nostri ospiti", sub: "Esperienze vere di veri viaggiatori.", count: "recensioni", list: [
+      { text: "Autista puntualissimo, auto impeccabile. Prezzo fisso rispettato al centesimo.", name: "Elena R.", route: "ZRH → Lugano", flag: "🇮🇹" },
+      { text: "Prenotazione via WhatsApp in un minuto, conferma subito. Servizio eccellente.", name: "Marco B.", route: "ZRH → Milano", flag: "🇮🇹" },
+      { text: "Il volo era in ritardo ma l'autista ci aspettava sorridente. Grande professionalità.", name: "Giulia T.", route: "ZRH → Locarno", flag: "🇮🇹" },
+      { text: "Seggiolino per il bimbo già montato, viaggio tranquillo fino a Interlaken.", name: "Alessandro F.", route: "ZRH → Interlaken", flag: "🇮🇹" },
+      { text: "Mercedes elegante e autista discreto: perfetto per i clienti della nostra azienda.", name: "Francesca D.", route: "ZRH → Bellinzona", flag: "🇨🇭" },
+    ] },
   blogSec: {
     title: "Blog", pageSub: "Consigli di viaggio, guide alle tratte e informazioni utili sui transfer dall'aeroporto di Zurigo.",
     read: "Leggi di più", minRead: "min di lettura", more: "Altri articoli", back: "Tutti gli articoli", published: "Pubblicato il",

@@ -1,6 +1,5 @@
 import type { Dict } from "../i18n";
 import type { DictX } from "../i18nX";
-import { REVIEWS } from "./shared";
 
 const t: Dict = {
   meta: { title: "Zuerich Airport Taxi - Taxi Aeropuerto de Zúrich & Servicio de Chófer Suiza", desc: "Traslados premium desde el aeropuerto de Zúrich (ZRH) a toda Suiza – precios fijos, conductores profesionales y seguimiento de vuelos. ¡Reserve su traslado en 1 minuto!" },
@@ -43,7 +42,13 @@ const t: Dict = {
     features: ["WiFi gratis", "Agua mineral", "Sillas infantiles bajo petición", "Seguimiento de vuelos"],
   },
   gallerySec: { eyebrow: "Galería", title: "Galería", pageTitle: "Galería", pageSub: "Impresiones de nuestros vehículos y trayectos.", all: "Ver todo" },
-  reviewsSec: { eyebrow: "Opiniones", title: "Lo que dicen nuestros clientes", sub: "Experiencias reales de viajeros reales.", count: "opiniones", list: REVIEWS },
+  reviewsSec: { eyebrow: "Opiniones", title: "Lo que dicen nuestros clientes", sub: "Experiencias reales de viajeros reales.", count: "opiniones", list: [
+      { text: "Conductor puntual con cartel a la llegada, coche impecable. ¡Perfecto!", name: "Carmen G.", route: "ZRH → Zürich City", flag: "🇪🇸" },
+      { text: "Precio fijo respetado a pesar del tráfico. Reserva por WhatsApp muy fácil.", name: "Javier M.", route: "ZRH → Luzern", flag: "🇪🇸" },
+      { text: "El vuelo llegó con retraso y el conductor esperó sin coste extra.", name: "Lucía F.", route: "ZRH → Interlaken", flag: "🇲🇽" },
+      { text: "Silla infantil lista como pedimos. Viaje tranquilo hasta Zermatt.", name: "Diego R.", route: "ZRH → Zermatt", flag: "🇪🇸" },
+      { text: "Mercedes elegante, WiFi y agua a bordo. Un servicio realmente premium.", name: "Marta S.", route: "ZRH → Basel", flag: "🇦🇷" },
+    ] },
   blogSec: {
     title: "Blog", pageSub: "Consejos de viaje, guías de rutas e información útil sobre traslados desde el aeropuerto de Zúrich.",
     read: "Leer más", minRead: "min de lectura", more: "Más artículos", back: "Todos los artículos", published: "Publicado el",

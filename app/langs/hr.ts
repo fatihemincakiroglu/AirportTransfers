@@ -1,6 +1,5 @@
 import type { Dict } from "../i18n";
 import type { DictX } from "../i18nX";
-import { REVIEWS } from "./shared";
 
 const t: Dict = {
   meta: { title: "Zuerich Airport Taxi - Taksi zračna luka Zürich & usluga vozača Švicarska", desc: "Premium transferi iz zračne luke Zürich (ZRH) po cijeloj Švicarskoj – fiksne cijene, profesionalni vozači i praćenje letova. Rezervirajte transfer u 1 minuti!" },
@@ -43,7 +42,13 @@ const t: Dict = {
     features: ["Besplatan WiFi", "Mineralna voda", "Dječje sjedalice na zahtjev", "Praćenje letova"],
   },
   gallerySec: { eyebrow: "Galerija", title: "Galerija", pageTitle: "Galerija", pageSub: "Dojmovi iz naših vozila i s naših vožnji.", all: "Prikaži sve" },
-  reviewsSec: { eyebrow: "Recenzije", title: "Što kažu naši gosti", sub: "Prava iskustva pravih putnika.", count: "recenzija", list: REVIEWS },
+  reviewsSec: { eyebrow: "Recenzije", title: "Što kažu naši gosti", sub: "Prava iskustva pravih putnika.", count: "recenzija", list: [
+      { text: "Vozač je čekao s pločicom, auto besprijekoran. Rezervacija WhatsAppom u minuti.", name: "Ivan H.", route: "ZRH → Zürich City", flag: "🇭🇷" },
+      { text: "Let je kasnio – vozač je čekao bez doplate. Pouzdana usluga od početka do kraja.", name: "Petra M.", route: "ZRH → Luzern", flag: "🇭🇷" },
+      { text: "Fiksna cijena ispoštovana unatoč gužvi. Najbolji transfer u Švicarskoj.", name: "Luka B.", route: "ZRH → Bern", flag: "🇭🇷" },
+      { text: "Dječja sjedalica spremna kako smo tražili. Miran put do Interlakena.", name: "Ana V.", route: "ZRH → Interlaken", flag: "🇭🇷" },
+      { text: "Udoban Mercedes, diskretan vozač. Idealno za poslovna putovanja.", name: "Marko T.", route: "ZRH → Zug", flag: "🇭🇷" },
+    ] },
   blogSec: {
     title: "Blog", pageSub: "Savjeti za putovanja, vodiči po rutama i korisne informacije o transferima iz zračne luke Zürich.",
     read: "Pročitaj više", minRead: "min. čitanja", more: "Ostali članci", back: "Svi članci", published: "Objavljeno",

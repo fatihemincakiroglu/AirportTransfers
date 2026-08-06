@@ -74,11 +74,10 @@ const base = {
       sub: "Echte Erfahrungen von echten Reisenden.", count: "Bewertungen",
       list: [
         { text: "Pünktliche Abholung, Festpreis wie versprochen. Jederzeit wieder!", name: "Sophie W.", route: "ZRH → Zürich City", flag: "🇩🇪" },
-        { text: "Driver was waiting with a name sign, car was spotless. Easy booking via WhatsApp.", name: "James H.", route: "ZRH → Luzern", flag: "🇬🇧" },
         { text: "Flug hatte 40 Minuten Verspätung – der Fahrer hat ohne Aufpreis gewartet.", name: "Markus B.", route: "ZRH → Zug", flag: "🇨🇭" },
-        { text: "Comfortable ride to Interlaken, child seat was ready as requested.", name: "Elena R.", route: "ZRH → Interlaken", flag: "🇮🇹" },
         { text: "Sehr professionell, WLAN und Wasser im Auto. Klare Kommunikation per WhatsApp.", name: "Anna K.", route: "ZRH → Basel", flag: "🇦🇹" },
-        { text: "Best transfer experience in Switzerland so far. Fair fixed price, premium car.", name: "David L.", route: "ZRH → Winterthur", flag: "🇺🇸" },
+        { text: "Kindersitz war wie gewünscht montiert, Fahrt nach Davos absolut entspannt.", name: "Thomas R.", route: "ZRH → Davos", flag: "🇨🇭" },
+        { text: "Diskreter Chauffeur, makelloser Mercedes. Genau das richtige Niveau für Geschäftsreisen.", name: "Claudia M.", route: "ZRH → St. Moritz", flag: "🇩🇪" },
       ],
     },
     blogSec: {
@@ -227,12 +226,11 @@ const base = {
       eyebrow: "Reviews", title: "What our guests say",
       sub: "Real experiences from real travellers.", count: "reviews",
       list: [
-        { text: "Pünktliche Abholung, Festpreis wie versprochen. Jederzeit wieder!", name: "Sophie W.", route: "ZRH → Zurich City", flag: "🇩🇪" },
-        { text: "Driver was waiting with a name sign, car was spotless. Easy booking via WhatsApp.", name: "James H.", route: "ZRH → Lucerne", flag: "🇬🇧" },
-        { text: "Flug hatte 40 Minuten Verspätung – der Fahrer hat ohne Aufpreis gewartet.", name: "Markus B.", route: "ZRH → Zug", flag: "🇨🇭" },
-        { text: "Comfortable ride to Interlaken, child seat was ready as requested.", name: "Elena R.", route: "ZRH → Interlaken", flag: "🇮🇹" },
-        { text: "Sehr professionell, WLAN und Wasser im Auto. Klare Kommunikation per WhatsApp.", name: "Anna K.", route: "ZRH → Basel", flag: "🇦🇹" },
+        { text: "Driver was waiting with a name sign, car was spotless. Easy booking via WhatsApp.", name: "James H.", route: "ZRH → Luzern", flag: "🇬🇧" },
         { text: "Best transfer experience in Switzerland so far. Fair fixed price, premium car.", name: "David L.", route: "ZRH → Winterthur", flag: "🇺🇸" },
+        { text: "Comfortable ride to Interlaken, child seat was ready as requested.", name: "Emily R.", route: "ZRH → Interlaken", flag: "🇬🇧" },
+        { text: "Flight landed early and the driver was already there. Seamless from start to finish.", name: "Michael T.", route: "ZRH → Zermatt", flag: "🇺🇸" },
+        { text: "Booked for my parents – driver helped with all the luggage. Highly recommended.", name: "Sarah P.", route: "ZRH → Bern", flag: "🇦🇺" },
       ],
     },
     blogSec: {
