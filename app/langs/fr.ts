@@ -116,6 +116,7 @@ const tx: DictX = {
     cta: "Voir les tarifs", bookingLabel: "Location à l'heure",
     bookingNote: (h: string) => `Réservation à l'heure : ${h} heures – chauffeur à disposition`,
   },
+  stops: { add: "Ajouter un arrêt", ph: "Arrêt – adresse", remove: "Supprimer", label: "Arrêts intermédiaires :" },
   dest: {
     crumb: "Destinations",
     pageTitle: "Transferts dans toute la Suisse",

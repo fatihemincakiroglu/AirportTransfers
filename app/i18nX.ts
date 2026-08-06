@@ -37,6 +37,7 @@ const baseX = {
       cta: "Preise ansehen",
       bookingLabel: "Stundenmiete", bookingNote: (h: string) => `Stundenbuchung: ${h} Stunden – Chauffeur zur freien Verfügung`,
     },
+    stops: { add: "Zwischenstopp hinzufügen", ph: "Zwischenstopp – Adresse", remove: "Entfernen", label: "Zwischenstopps:" },
     dest: {
       crumb: "Reiseziele",
       pageTitle: "Transfers in der ganzen Schweiz",
@@ -123,6 +124,7 @@ const baseX = {
       cta: "See prices",
       bookingLabel: "Hourly hire", bookingNote: (h: string) => `Hourly booking: ${h} hours – chauffeur at your disposal`,
     },
+    stops: { add: "Add a stop", ph: "Stop – address", remove: "Remove", label: "Stops:" },
     dest: {
       crumb: "Destinations",
       pageTitle: "Transfers across all of Switzerland",

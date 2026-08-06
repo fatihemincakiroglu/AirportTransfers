@@ -229,7 +229,7 @@ export function PageHero({ title, crumb, children }: { title: string; crumb: str
 export function BookingBar() {
   const { lang, P } = useLang();
   const L = t[lang];
-  const [f, setF] = useState({ from: "", to: "", date: "", time: "", pax: "2", kids: "0" });
+  const [f, setF] = useState({ from: "Flughafen Zürich (ZRH), Schweiz", to: "", date: "", time: "", pax: "2", kids: "0" });
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
 
@@ -407,9 +407,12 @@ export function BookingCard() {
   const X = tx[lang];
   const [mode, setMode] = useState<"transfer" | "hourly">("transfer");
   const [hours, setHours] = useState("2");
-  const [f, setF] = useState({ from: "", to: "", date: "", time: "", pax: "2", kids: "0" });
+  const [f, setF] = useState({ from: "Flughafen Zürich (ZRH), Schweiz", to: "", date: "", time: "", pax: "2", kids: "0" });
+  const [stops, setStops] = useState<string[]>([]);
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
+  const setStop = (i: number, v: string) => setStops((a) => a.map((x, j) => (j === i ? v : x)));
+  const removeStop = (i: number) => setStops((a) => a.filter((_, j) => j !== i));
 
   return (
     <div id="buchen" className="relative overflow-visible rounded-3xl bg-white p-6 text-stone-900 shadow-2xl ring-1 ring-black/5">
@@ -486,6 +489,32 @@ export function BookingCard() {
           >⇅</button>
         </div>
 
+        {/* Ara duraklar */}
+        {stops.map((sv, i) => (
+          <div key={i} className="flex items-end gap-2">
+            <div className="min-w-0 flex-1">
+              <PlaceField label={`${i + 1}. ${X.stops.ph}`} icon="🚏" value={sv} placeholder={X.stops.ph} onChange={(v) => setStop(i, v)} />
+            </div>
+            <button
+              type="button"
+              onClick={() => removeStop(i)}
+              aria-label={X.stops.remove}
+              className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600"
+            >✕</button>
+          </div>
+        ))}
+        {stops.length < 3 && (
+          <button
+            type="button"
+            onClick={() => setStops((a) => [...a, ""])}
+            className="flex items-center gap-2 text-sm font-bold transition-colors hover:opacity-80"
+            style={{ color: C.pine }}
+          >
+            <span className="flex h-5 w-5 items-center justify-center rounded-full text-[11px]" style={{ background: `${C.gold}22`, color: C.gold }}>+</span>
+            {X.stops.add}
+          </button>
+        )}
+
         {/* Tarih / Saat */}
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -524,6 +553,7 @@ export function BookingCard() {
         <a
           href={`${P("/buchung")}?${new URLSearchParams({
             from: f.from, to: f.to, date: f.date, time: f.time, pax: f.pax, kids: f.kids,
+            ...(stops.filter((x) => x.trim()).length ? { stops: stops.filter((x) => x.trim()).join(" | ") } : {}),
           }).toString()}`}
           className="mt-1 flex h-14 items-center justify-center gap-2.5 rounded-2xl text-sm font-extrabold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
           style={{ background: C.pine }}

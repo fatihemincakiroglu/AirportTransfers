@@ -13,6 +13,7 @@ import {
 export default function Buchung() {
   const { lang, P } = useLang();
   const XH = tx[lang].hourly; // saatlik kiralama etiketleri (URL ön-doldurma için)
+  const XS = tx[lang].stops;  // ara durak etiketi
   const L = t[lang];
   const B = L.booking;
   const D = L.detail;
@@ -74,6 +75,8 @@ export default function Buchung() {
     const fromAir = isAirport(from);
     const toAir = isAirport(to);
 
+    const stopsParam = g("stops");
+
     // ── Önce tüm hedef durum hesaplanır, sonra TEK blokta uygulanır ──
     let idx = -1;
     let rev = false;
@@ -108,6 +111,11 @@ export default function Buchung() {
     // URL → state senkronu mount'ta bir kez çalışır; React tüm bu çağrıları
     // tek render'da toplar (otomatik batching). Bu, dokümante edilmiş
     // "harici sistemle senkron" istisnasıdır.
+    if (stopsParam) {
+      const line = `${XS.label} ${stopsParam}`;
+      notes = notes ? `${notes}\n${line}` : line;
+    }
+
     if (d) setDate(d);
     if (tm) setTime(tm);
     if (paxN) setF((s) => ({ ...s, pax: String(Math.min(7, paxN + kidsN)) }));
@@ -118,7 +126,7 @@ export default function Buchung() {
     if (rev) setReversed(true);
     if (step2) setStep(2);
     /* eslint-enable react-hooks/set-state-in-effect */
-  }, [XH]);
+  }, [XH, XS]);
 
   const route = routeIdx !== null ? routes[routeIdx] : null;
   const n = route ? localName(route.to, lang) : "";

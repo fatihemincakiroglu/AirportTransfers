@@ -116,6 +116,7 @@ const tx: DictX = {
     cta: "Ver precios", bookingLabel: "Alquiler por horas",
     bookingNote: (h: string) => `Reserva por horas: ${h} horas – chófer a disposición`,
   },
+  stops: { add: "Añadir una parada", ph: "Parada – dirección", remove: "Eliminar", label: "Paradas intermedias:" },
   dest: {
     crumb: "Destinos",
     pageTitle: "Traslados por toda Suiza",

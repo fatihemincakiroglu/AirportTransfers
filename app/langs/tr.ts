@@ -116,6 +116,7 @@ const tx: DictX = {
     cta: "Fiyatları gör", bookingLabel: "Saatlik kiralama",
     bookingNote: (h: string) => `Saatlik rezervasyon: ${h} saat – şoför emrinizde`,
   },
+  stops: { add: "Durak ekle", ph: "Ara durak – adres", remove: "Kaldır", label: "Ara duraklar:" },
   dest: {
     crumb: "Destinasyonlar",
     pageTitle: "Tüm İsviçre'ye transfer",

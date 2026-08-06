@@ -116,6 +116,7 @@ const tx: DictX = {
     cta: "Pogledajte cijene", bookingLabel: "Najam po satu",
     bookingNote: (h: string) => `Rezervacija po satu: ${h} sati – vozač na raspolaganju`,
   },
+  stops: { add: "Dodaj stajanje", ph: "Usputna stanica – adresa", remove: "Ukloni", label: "Usputne stanice:" },
   dest: {
     crumb: "Destinacije",
     pageTitle: "Transferi po cijeloj Švicarskoj",
