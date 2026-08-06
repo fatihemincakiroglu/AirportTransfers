@@ -3,7 +3,7 @@ import type { DictX } from "../i18nX";
 import { REVIEWS } from "./shared";
 
 const t: Dict = {
-  meta: { title: "AirportTransfers Zürich | Transfer iz zračne luke ZRH · VIP Mercedes", desc: "Privatni transferi iz zračne luke Zürich po fiksnoj cijeni. Obučeni vozači, praćenje letova, 24/7." },
+  meta: { title: "Zuerich Airport Taxi - Taksi zračna luka Zürich & usluga vozača Švicarska", desc: "Premium transferi iz zračne luke Zürich (ZRH) po cijeloj Švicarskoj – fiksne cijene, profesionalni vozači i praćenje letova. Rezervirajte transfer u 1 minuti!" },
   topbar: "Zürich · Privatni transferi",
   nav: { routes: "Rute", fleet: "Vozila", gallery: "Galerija", contact: "Kontakt", book: "Rezerviraj odmah", home: "Početna" },
   hero: {

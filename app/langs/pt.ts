@@ -3,7 +3,7 @@ import type { DictX } from "../i18nX";
 import { REVIEWS } from "./shared";
 
 const t: Dict = {
-  meta: { title: "AirportTransfers Zurique | Transfer aeroporto ZRH · Mercedes VIP", desc: "Transfers privados do aeroporto de Zurique a preço fixo. Motoristas qualificados, monitorização de voos, 24/7." },
+  meta: { title: "Zuerich Airport Taxi - Táxi Aeroporto de Zurique & Serviço de Chauffeur Suíça", desc: "Transfers premium do aeroporto de Zurique (ZRH) para toda a Suíça – preços fixos, motoristas profissionais e monitorização de voos. Reserve o seu transfer em 1 minuto!" },
   topbar: "Zurique · Transfers privados",
   nav: { routes: "Rotas", fleet: "Veículos", gallery: "Galeria", contact: "Contacto", book: "Reservar", home: "Início" },
   hero: {

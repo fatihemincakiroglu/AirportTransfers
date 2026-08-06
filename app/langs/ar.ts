@@ -3,7 +3,7 @@ import type { DictX } from "../i18nX";
 import { REVIEWS } from "./shared";
 
 const t: Dict = {
-  meta: { title: "AirportTransfers زيورخ | نقل من مطار زيورخ ZRH · مرسيدس VIP", desc: "خدمة نقل خاصة من مطار زيورخ بسعر ثابت. سائقون مدرَّبون، تتبُّع الرحلات، على مدار الساعة." },
+  meta: { title: "Zuerich Airport Taxi - تاكسي مطار زيورخ وخدمة السائق الخاص في سويسرا", desc: "نقل مطار فاخر من زيورخ (ZRH) إلى كل أنحاء سويسرا – أسعار ثابتة وسائقون محترفون وتتبُّع للرحلات. احجز رحلتك خلال دقيقة واحدة!" },
   topbar: "زيورخ · نقل خاص",
   nav: { routes: "المسارات", fleet: "المركبات", gallery: "المعرض", contact: "اتصل بنا", book: "احجز الآن", home: "الرئيسية" },
   hero: {

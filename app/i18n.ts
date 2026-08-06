@@ -14,8 +14,8 @@ export type Lang = LangCode;
 const base = {
   de: {
     meta: {
-      title: "AirportTransfers Zürich | Flughafentransfer ZRH · VIP Mercedes",
-      desc: "Privater Flughafentransfer Zürich zum Festpreis. Geschulte Chauffeure, Flugverfolgung, 24/7.",
+      title: "Zuerich Airport Taxi - Zurich Airport Taxi & Chauffeur Service Switzerland",
+      desc: "Premium airport transfers from Zurich (ZRH) across all of Switzerland – fixed prices, professional drivers & flight tracking. Book your transfer in 1 minute!",
     },
     topbar: "Zürich · Private Transfer",
     nav: {

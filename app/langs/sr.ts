@@ -3,7 +3,7 @@ import type { DictX } from "../i18nX";
 import { REVIEWS } from "./shared";
 
 const t: Dict = {
-  meta: { title: "AirportTransfers Cirih | Aerodromski transfer ZRH · VIP Mercedes", desc: "Privatni transferi sa aerodroma Cirih po fiksnoj ceni. Obučeni vozači, praćenje letova, 24/7." },
+  meta: { title: "Zuerich Airport Taxi - Taksi aerodrom Cirih & šoferska služba Švajcarska", desc: "Premijum transferi sa aerodroma Cirih (ZRH) po celoj Švajcarskoj – fiksne cene, profesionalni vozači i praćenje letova. Rezervišite transfer za 1 minut!" },
   topbar: "Cirih · Privatni transferi",
   nav: { routes: "Rute", fleet: "Vozila", gallery: "Galerija", contact: "Kontakt", book: "Rezerviši odmah", home: "Početna" },
   hero: {

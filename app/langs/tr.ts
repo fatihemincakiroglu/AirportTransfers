@@ -3,7 +3,7 @@ import type { DictX } from "../i18nX";
 import { REVIEWS } from "./shared";
 
 const t: Dict = {
-  meta: { title: "AirportTransfers Zürih | ZRH Havalimanı Transferi · VIP Mercedes", desc: "Zürih Havalimanı'ndan sabit fiyatlı özel transfer. Eğitimli şoförler, uçuş takibi, 7/24." },
+  meta: { title: "Zuerich Airport Taxi - Zürih Havalimanı Taksi & Şoför Hizmeti İsviçre", desc: "Zürih (ZRH) çıkışlı, tüm İsviçre'ye premium havalimanı transferi – sabit fiyatlar, profesyonel şoförler ve uçuş takibi. Transferinizi 1 dakikada rezerve edin!" },
   topbar: "Zürih · Özel Transfer",
   nav: { routes: "Güzergâhlar", fleet: "Araçlar", gallery: "Galeri", contact: "İletişim", book: "Hemen rezervasyon", home: "Ana sayfa" },
   hero: {

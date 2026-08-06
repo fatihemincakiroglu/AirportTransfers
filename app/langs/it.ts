@@ -3,7 +3,7 @@ import type { DictX } from "../i18nX";
 import { REVIEWS } from "./shared";
 
 const t: Dict = {
-  meta: { title: "AirportTransfers Zurigo | Transfer aeroporto ZRH · Mercedes VIP", desc: "Transfer privati dall'aeroporto di Zurigo a prezzo fisso. Autisti qualificati, monitoraggio voli, 24/7." },
+  meta: { title: "Zuerich Airport Taxi - Taxi Aeroporto di Zurigo & Servizio Chauffeur Svizzera", desc: "Transfer aeroportuali premium da Zurigo (ZRH) in tutta la Svizzera – prezzi fissi, autisti professionisti e monitoraggio voli. Prenota il tuo transfer in 1 minuto!" },
   topbar: "Zurigo · Transfer privati",
   nav: { routes: "Tratte", fleet: "Veicoli", gallery: "Galleria", contact: "Contatto", book: "Prenota ora", home: "Home" },
   hero: {
