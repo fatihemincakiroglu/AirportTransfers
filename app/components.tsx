@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
-  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
+  COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
 } from "./config";
 import { t, Lang, pickL } from "./i18n";
 import { tx } from "./i18nX";
@@ -145,16 +145,9 @@ export function SiteHeader({ active }: { active?: string }) {
   return (
     <header className="sticky top-0 z-50 border-b border-stone-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-5 sm:py-4">
-        <a href={P("/")} className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3">
-          <span
-            className="font-display flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-base font-semibold sm:h-10 sm:w-10 sm:text-lg"
-            style={{ borderColor: C.gold, color: C.pine }}
-          >
-            A
-          </span>
-          <span className="font-display truncate text-lg font-semibold tracking-tight sm:text-xl" style={{ color: C.pine }}>
-            AirportTransfers
-          </span>
+        <a href={P("/")} className="flex min-w-0 flex-1 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="Zuerich Airport Taxi" className="h-9 w-auto sm:h-11" />
         </a>
 
         <nav className="hidden items-center gap-8 text-[12px] font-bold uppercase tracking-[0.18em] text-stone-600 lg:flex">
@@ -706,6 +699,24 @@ export function LegalPage({ pageKey }: { pageKey: LegalKey }) {
 }
 
 // ── Footer ────────────────────────────────────────────────────
+
+// Alt bardaki yapımcı kredisi — {name} yerine bağlantılı isim gelir
+const MADE_BY: Record<Lang, string> = {
+  de: "Website erstellt von {name}.",
+  en: "Website by {name}.",
+  it: "Sito web realizzato da {name}.",
+  pt: "Website criado por {name}.",
+  fr: "Site web réalisé par {name}.",
+  es: "Sitio web creado por {name}.",
+  tr: "Web sitesi {name} tarafından yapılmıştır.",
+  sr: "Veb-sajt izradio {name}.",
+  hr: "Web-stranicu izradio {name}.",
+  ar: "تم إنشاء الموقع بواسطة {name}.",
+  ru: "Сайт разработан {name}.",
+};
+const MADE_BY_NAME = "Fatih Emin Çakıroğlu";
+const MADE_BY_URL = "https://fatihemincakiroglu.com/";
+
 export function SiteFooter({ compact }: { compact?: boolean }) {
   const { lang, P } = useLang();
   const L = t[lang];
@@ -727,7 +738,10 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
     >
       <div className="relative mx-auto grid grid-cols-2 gap-x-6 gap-y-10 max-w-7xl px-5 py-12 md:grid-cols-5 md:gap-8 md:py-16">
         <div className="col-span-2 md:col-span-1">
-          <span className="font-display text-2xl font-semibold text-white">AirportTransfers</span>
+          <span className="inline-flex rounded-xl bg-white/95 px-3 py-2 shadow-sm">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Zuerich Airport Taxi" className="h-9 w-auto" />
+          </span>
           <p className="mt-4 text-sm leading-relaxed">{L.footer.about}</p>
           <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/50">{L.footer.follow}</p>
           <div className="mt-2 flex gap-2">
@@ -828,7 +842,18 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row">
           <span>© {new Date().getFullYear()} <b className="text-white">AirportTransfers Zürich</b> · {L.footer.rights}</span>
-          <span className="text-center text-white/50">{COMPANY_NAME} · {COMPANY_REG} · {COMPANY_ADDRESS}</span>
+          <span className="text-center text-white/50">
+            {MADE_BY[lang].split("{name}").map((part, i, arr) => (
+              <span key={i}>
+                {part}
+                {i < arr.length - 1 && (
+                  <a href={MADE_BY_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-white/80 underline-offset-2 transition-colors hover:text-white hover:underline">
+                    {MADE_BY_NAME}
+                  </a>
+                )}
+              </span>
+            ))}
+          </span>
         </div>
       </div>
     </footer>
