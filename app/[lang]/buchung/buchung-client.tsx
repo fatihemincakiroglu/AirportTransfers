@@ -333,10 +333,6 @@ export default function Buchung() {
           {/* ── ADIM 3: Ödeme + iletişim ────────────────────── */}
           {step === 3 && hasTrip && chosen && (
             <>
-              <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm">
-                <b>{D.noticeTitle}</b>
-                <p className="mt-1 text-stone-600">{D.noticeText}</p>
-              </div>
 
               <h2 className="font-display mb-3 text-2xl font-semibold" style={{ color: C.pine }}>{D.payTitle}</h2>
               <div className="mb-8 grid grid-cols-3 gap-3">
