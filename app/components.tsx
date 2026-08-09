@@ -691,22 +691,6 @@ export function LegalPage({ pageKey }: { pageKey: LegalKey }) {
 
 // ── Footer ────────────────────────────────────────────────────
 
-// Alt bardaki yapımcı kredisi — {name} yerine bağlantılı isim gelir
-const MADE_BY: Record<Lang, string> = {
-  de: "Website erstellt von {name}.",
-  en: "Website by {name}.",
-  it: "Sito web realizzato da {name}.",
-  pt: "Website criado por {name}.",
-  fr: "Site web réalisé par {name}.",
-  es: "Sitio web creado por {name}.",
-  tr: "Web sitesi {name} tarafından yapılmıştır.",
-  sr: "Veb-sajt izradio {name}.",
-  hr: "Web-stranicu izradio {name}.",
-  ar: "تم إنشاء الموقع بواسطة {name}.",
-  ru: "Сайт разработан {name}.",
-};
-const MADE_BY_NAME = "Fatih Emin Çakıroğlu";
-const MADE_BY_URL = "https://fatihemincakiroglu.com/";
 
 export function SiteFooter({ compact }: { compact?: boolean }) {
   const { lang, P } = useLang();
@@ -833,18 +817,6 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row">
           <span>© {new Date().getFullYear()} <b className="text-white">AirportTransfers Zürich</b> · {L.footer.rights}</span>
-          <span className="text-center text-white/50">
-            {MADE_BY[lang].split("{name}").map((part, i, arr) => (
-              <span key={i}>
-                {part}
-                {i < arr.length - 1 && (
-                  <a href={MADE_BY_URL} target="_blank" rel="noopener noreferrer" className="font-semibold text-white/80 underline-offset-2 transition-colors hover:text-white hover:underline">
-                    {MADE_BY_NAME}
-                  </a>
-                )}
-              </span>
-            ))}
-          </span>
         </div>
       </div>
     </footer>
