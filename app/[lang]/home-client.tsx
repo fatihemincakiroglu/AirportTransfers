@@ -169,18 +169,52 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-5 pb-16 md:pb-24">
         <Eyebrow>{X.howSec.eyebrow}</Eyebrow>
         <h2 className="font-display mt-2 text-3xl font-semibold md:text-4xl" style={{ color: C.pine }}>{X.howSec.title}</h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
+        {/* Adımlar — aralarında akış oku; masaüstünde yatay, mobilde dikey zincir */}
+        <ol className="relative mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
+          {/* Arka plandaki kesikli bağlantı çizgisi (yalnızca masaüstü) */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute left-[16.6%] right-[16.6%] top-7 hidden md:block"
+            style={{
+              height: 2,
+              backgroundImage: `repeating-linear-gradient(90deg, ${C.gold}66 0 7px, transparent 7px 15px)`,
+            }}
+          />
           {X.howSec.steps.map(([tt, dd], i) => (
-            <div key={i} className="rounded-2xl bg-white p-6 shadow-md ring-1 ring-black/5">
-              <span className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-extrabold" style={{ background: C.gold, color: C.pine }}>{i + 1}</span>
-              <h3 className="mt-4 text-lg font-bold" style={{ color: C.pine }}>{tt}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-stone-600">{dd}</p>
-            </div>
+            <li key={i} className="group relative flex flex-col items-center text-center">
+              {/* Numara madalyonu */}
+              <span
+                className="font-display relative z-10 flex h-14 w-14 items-center justify-center rounded-full text-xl font-semibold transition-transform duration-300 group-hover:-translate-y-1"
+                style={{ background: C.pine, color: C.gold, boxShadow: `0 0 0 6px ${C.ivory}, 0 0 0 8px ${C.gold}44` }}
+              >
+                {i + 1}
+              </span>
+
+              <h3 className="mt-5 text-lg font-bold" style={{ color: C.pine }}>{tt}</h3>
+              <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-stone-600">{dd}</p>
+
+              {/* Akış oku: masaüstünde sağa, mobilde aşağı */}
+              {i < X.howSec.steps.length - 1 && (
+                <>
+                  <span
+                    aria-hidden
+                    className="absolute right-[-14px] top-7 hidden -translate-y-1/2 text-xl md:block"
+                    style={{ color: C.gold }}
+                  >
+                    ➔
+                  </span>
+                  <span aria-hidden className="mt-6 text-xl md:hidden" style={{ color: C.gold }}>↓</span>
+                </>
+              )}
+            </li>
           ))}
+        </ol>
+        <div className="mt-10 text-center">
+          <a href="#buchen" className="inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-extrabold uppercase tracking-wide shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md" style={{ background: C.gold, color: C.pine }}>
+            {X.howSec.cta}
+            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+          </a>
         </div>
-        <a href="#buchen" className="mt-7 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
-          {X.howSec.cta} →
-        </a>
       </section>
 
       {/* ── Fleet preview ───────────────────────────────────── */}
