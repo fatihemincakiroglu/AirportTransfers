@@ -38,8 +38,19 @@ Tablolar ilk istekte otomatik oluşur; ayrı migration adımı yok.
 `http://localhost:3000/admin` → parola ile giriş.
 Canlıda: `https://alanadin.ch/admin`
 
+## E-posta bildirimi (opsiyonel — Faz 2)
+1. https://resend.com → ücretsiz hesap (ayda 3.000 mail).
+2. **API Keys** → Create → anahtarı kopyala.
+3. Ortam değişkenlerine ekle: `RESEND_API_KEY`, `MAIL_TO` (bildirimin geleceği adres).
+4. Kendi alan adından göndermek istersen Resend'de alan adını doğrula ve `MAIL_FROM` ekle.
+   Doğrulamadan da test edebilirsin: varsayılan gönderen `onboarding@resend.dev`.
+
+Bu değişkenler yoksa bildirim sessizce atlanır; rezervasyon kaydı normal çalışır.
+
 ## Sayfalar
 - **Kontrol Paneli** — özet sayılar + son rezervasyonlar
+- **Raporlar** — aylık rezervasyon/ciro grafikleri, en çok gidilen yerler, araç ve dil dağılımı, CSV indirme
+- **Faturalar** — onaylı yolculuklara fatura no atama (RE-YYYY-0001), yazdırılabilir fatura (PDF)
 - **Rezervasyonlar** — filtre, arama, detay, durum değiştirme (Yeni/Onaylı/Tamamlandı/İptal)
 - **Takvim** — yolculuk tarihine göre gruplanmış yaklaşan işler
 - **İletişim Talepleri** — siteden gelen mesajlar

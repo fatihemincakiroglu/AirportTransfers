@@ -63,6 +63,9 @@ export async function ensureSchema() {
       created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
+  // Fatura alanları (sonradan eklendi)
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoice_no   TEXT`;
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoiced_at  TIMESTAMPTZ`;
   await sql`CREATE INDEX IF NOT EXISTS bookings_created_idx ON bookings (created_at DESC)`;
   await sql`CREATE INDEX IF NOT EXISTS bookings_status_idx  ON bookings (status)`;
 
@@ -102,3 +105,6 @@ export async function logEvent(kind: string, detail: string, ip?: string) {
 
 export const BOOKING_STATUSES = ["new", "confirmed", "done", "cancelled"] as const;
 export type BookingStatus = (typeof BOOKING_STATUSES)[number];
+
+/** İsviçre KDV oranı (yolcu taşımacılığı, normal oran) */
+export const VAT_RATE = 0.081;

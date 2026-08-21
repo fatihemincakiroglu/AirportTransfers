@@ -1,6 +1,7 @@
 // Siteden gelen rezervasyon talebini kaydeder (WhatsApp/e-posta akışına ek olarak).
 import { NextRequest, NextResponse } from "next/server";
 import { sql, ensureSchema, dbReady } from "../../lib/db";
+import { sendBookingMail } from "../../lib/mail";
 
 export const runtime = "nodejs";
 
@@ -28,6 +29,10 @@ export async function POST(req: NextRequest) {
         ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)}
       )
       ON CONFLICT (ref) DO NOTHING`;
+
+    // Bildirim e-postası (yapılandırılmışsa) — kaydı bekletmez
+    await sendBookingMail(b);
+
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("[api/bookings]", e);

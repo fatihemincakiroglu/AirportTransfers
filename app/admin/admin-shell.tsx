@@ -7,8 +7,10 @@ const C = { pine: "#0C2E25", gold: "#C9A24B", ivory: "#FAFAF7" };
 
 const NAV: [string, string, string][] = [
   ["/admin", "Kontrol Paneli", "▦"],
+  ["/admin/raporlar", "Raporlar", "▤"],
   ["/admin/rezervasyonlar", "Rezervasyonlar", "🗓"],
   ["/admin/takvim", "Takvim", "📅"],
+  ["/admin/faturalar", "Faturalar", "🧾"],
   ["/admin/talepler", "İletişim Talepleri", "✉"],
   ["/admin/loglar", "Sistem Logları", "☰"],
 ];
