@@ -44,3 +44,10 @@ html, body {
   overflow-x: hidden;
   max-width: 100%;
 }
+
+/* ── Panel: sayfa geçişi ilerleme çubuğu ── */
+@keyframes admin-progress {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(60%); }
+  100% { transform: translateX(260%); }
+}

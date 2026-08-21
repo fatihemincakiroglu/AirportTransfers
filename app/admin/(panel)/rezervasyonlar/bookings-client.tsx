@@ -18,7 +18,13 @@ const FILTERS: [string, string][] = [
   ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"],
 ];
 
-export default function BookingsClient({ rows }: { rows: Booking[] }) {
+const TR_MONTHS = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+const monthName = (ym: string) => {
+  const [y, m] = ym.split("-").map(Number);
+  return `${TR_MONTHS[m - 1]} ${y}`;
+};
+
+export default function BookingsClient({ rows, months, month }: { rows: Booking[]; months: string[]; month: string }) {
   const [filter, setFilter] = useState("all");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState<Booking | null>(null);
@@ -66,12 +72,23 @@ export default function BookingsClient({ rows }: { rows: Booking[] }) {
             </button>
           ))}
         </div>
-        <input
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          placeholder="Ref, isim, e-posta, telefon, uçuş…"
-          className="ml-auto w-full max-w-xs rounded-full border border-stone-200 bg-white px-4 py-2 text-sm outline-none focus:border-[#C9A24B]"
-        />
+        <div className="ml-auto flex flex-wrap items-center gap-2">
+          <select
+            value={month}
+            onChange={(e) => router.push(e.target.value === "all" ? "/admin/rezervasyonlar" : `/admin/rezervasyonlar?ay=${e.target.value}`)}
+            className="rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-bold outline-none"
+            style={{ color: C.pine }}
+          >
+            <option value="all">Tüm aylar</option>
+            {months.map((m) => <option key={m} value={m}>{monthName(m)}</option>)}
+          </select>
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Ref, isim, e-posta, telefon, uçuş…"
+            className="w-full max-w-xs rounded-full border border-stone-200 bg-white px-4 py-2 text-sm outline-none focus:border-[#C9A24B]"
+          />
+        </div>
       </div>
 
       <Card className="overflow-x-auto p-0">

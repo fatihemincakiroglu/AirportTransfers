@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 const C = { pine: "#0C2E25", gold: "#C9A24B", ivory: "#FAFAF7" };
@@ -20,6 +21,10 @@ export default function AdminShell({
 }: { children: React.ReactNode; version?: string; nextVersion?: string }) {
   const path = usePathname();
   const router = useRouter();
+  // Tıklanan bağlantı, sayfa gelene kadar "yükleniyor" görünür.
+  // Yol değişince işaret otomatik düşer (effect'e gerek yok).
+  const [pending, setPending] = useState<{ href: string; from: string } | null>(null);
+  const loadingHref = pending && pending.from === path ? pending.href : null;
 
   const logout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -36,16 +41,21 @@ export default function AdminShell({
         <nav className="flex flex-1 flex-col gap-1">
           {NAV.map(([href, label, icon]) => {
             const active = href === "/admin" ? path === "/admin" : path.startsWith(href);
+            const loading = loadingHref === href;
             return (
-              <a
+              <Link
                 key={href}
                 href={href}
+                onClick={() => setPending({ href, from: path })}
                 className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-colors"
-                style={active ? { background: "rgba(255,255,255,0.12)", color: "#fff" } : { color: "rgba(255,255,255,0.65)" }}
+                style={active || loading ? { background: "rgba(255,255,255,0.12)", color: "#fff" } : { color: "rgba(255,255,255,0.65)" }}
               >
                 <span className="w-4 text-center opacity-80">{icon}</span>
-                {label}
-              </a>
+                <span className="flex-1">{label}</span>
+                {loading && (
+                  <span className="h-3.5 w-3.5 shrink-0 animate-spin rounded-full border-2 border-white/25 border-t-white/80" />
+                )}
+              </Link>
             );
           })}
         </nav>
@@ -69,10 +79,11 @@ export default function AdminShell({
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex items-center gap-2 overflow-x-auto border-b border-black/5 px-3 py-2 md:hidden" style={{ background: C.pine }}>
           {NAV.map(([href, label]) => (
-            <a key={href} href={href} className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold"
+            <Link key={href} href={href} onClick={() => setPending({ href, from: path })}
+               className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold"
                style={path === href ? { background: C.gold, color: C.pine } : { color: "rgba(255,255,255,0.7)" }}>
               {label}
-            </a>
+            </Link>
           ))}
           <button type="button" onClick={logout} className="whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-bold text-white/70">Çıkış</button>
         </div>
