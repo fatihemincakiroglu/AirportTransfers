@@ -25,7 +25,10 @@ export default function LoginClient() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-5" style={{ background: C.ivory }}>
+    <div
+      className="fixed inset-0 flex items-center justify-center overflow-hidden overscroll-none p-5 md:static md:min-h-screen md:overflow-auto"
+      style={{ background: C.ivory }}
+    >
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5">
         <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>Airport Zurich Transfer</p>
         <h1 className="mt-1 text-2xl font-semibold" style={{ color: C.pine }}>Panel girişi</h1>
@@ -33,19 +36,18 @@ export default function LoginClient() {
         <input
           type="password"
           value={pw}
-          autoFocus
           onChange={(e) => setPw(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter" && pw) submit(); }}
           placeholder="Parola"
           className="mt-6 w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm font-semibold outline-none transition-colors focus:border-[#C9A24B]"
         />
-        {err && <p className="mt-3 text-sm font-semibold text-red-600">{err}</p>}
+        <p className="mt-3 min-h-[2.5rem] text-sm font-semibold text-red-600">{err}</p>
 
         <button
           type="button"
           onClick={submit}
           disabled={!pw || busy}
-          className="mt-5 w-full rounded-xl py-3 text-sm font-extrabold uppercase tracking-wide transition-opacity disabled:opacity-40"
+          className="mt-1 w-full rounded-xl py-3 text-sm font-extrabold uppercase tracking-wide transition-opacity disabled:opacity-40"
           style={{ background: C.gold, color: C.pine }}
         >
           {busy ? "Kontrol ediliyor…" : "Giriş yap"}
