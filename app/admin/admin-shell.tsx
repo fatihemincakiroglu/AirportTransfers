@@ -93,7 +93,10 @@ export default function AdminShell({
   return (
     <div className="flex min-h-screen" style={{ background: C.ivory }}>
       {/* ── Masaüstü yan menü ── */}
-      <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-black/5 px-3 py-5 md:flex" style={{ background: C.pine }}>
+      <aside
+        className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col overflow-y-auto border-r border-black/5 px-3 py-5 md:flex"
+        style={{ background: C.pine }}
+      >
         <Link href="/" className="mb-6 px-3 text-sm font-bold" style={{ color: C.gold }}>✈ Airport Zurich Transfer</Link>
         <p className="px-3 pb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">Menü</p>
         {navList()}
@@ -101,7 +104,7 @@ export default function AdminShell({
         {sysInfo}
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col md:ml-60">
         {/* ── Mobil üst çubuk: başlık + hamburger ── */}
         <header className="sticky top-0 z-40 flex items-center gap-3 px-4 py-3 md:hidden" style={{ background: C.pine }}>
           <span className="min-w-0 flex-1">
