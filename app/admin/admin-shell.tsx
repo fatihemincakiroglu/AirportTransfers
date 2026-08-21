@@ -41,9 +41,11 @@ export default function AdminShell({
 
   const current = NAV.find(([href]) => (href === "/admin" ? path === "/admin" : path.startsWith(href)));
 
-  const navList = (onNavigate?: () => void) => (
+  const bottomHrefs = BOTTOM.map(([h]) => h);
+
+  const navList = (onNavigate?: () => void, only?: "rest") => (
     <nav className="flex flex-1 flex-col gap-1">
-      {NAV.map(([href, label, icon]) => {
+      {(only === "rest" ? NAV.filter(([h]) => !bottomHrefs.includes(h)) : NAV).map(([href, label, icon]) => {
         const active = href === "/admin" ? path === "/admin" : path.startsWith(href);
         const loading = loadingHref === href;
         return (
@@ -116,12 +118,12 @@ export default function AdminShell({
                    style={{ background: C.pine, paddingBottom: "calc(env(safe-area-inset-bottom) + 1.5rem)" }}>
               <span aria-hidden className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/20" />
               <div className="mb-4 flex items-center justify-between px-3">
-                <span className="text-sm font-bold" style={{ color: C.gold }}>Tüm bölümler</span>
+                <span className="text-sm font-bold" style={{ color: C.gold }}>Diğer bölümler</span>
                 <button type="button" onClick={() => setMenuOpen(false)} aria-label="Menüyü kapat"
                         className="flex h-9 w-9 items-center justify-center rounded-full text-lg text-white/70"
                         style={{ background: "rgba(255,255,255,0.1)" }}>✕</button>
               </div>
-              {navList(() => setMenuOpen(false))}
+              {navList(() => setMenuOpen(false), "rest")}
               <button type="button" onClick={() => { setMenuOpen(false); logout(); }}
                 className="mt-4 flex items-center gap-3 rounded-xl px-3 py-3 text-left text-sm font-semibold text-white/65">
                 <span className="w-4 text-center">⏻</span> Çıkış
