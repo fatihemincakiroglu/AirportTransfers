@@ -10,6 +10,9 @@ import {
   mailHref, localName, inputCls, labelCls, norm, ExtrasCounter,
 } from "../../components";
 
+// Talep referans numarası (tıklama anında üretilir)
+const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase();
+
 export default function Buchung() {
   const { lang, P } = useLang();
   const XH = tx[lang].hourly; // saatlik kiralama etiketleri (URL ön-doldurma için)
@@ -17,7 +20,41 @@ export default function Buchung() {
   const XS = X.stops;  // ara durak etiketi
   const [stops, setStops] = useState<string[]>([]); // URL'den gelen ara duraklar
   const [doneRef, setDoneRef] = useState<string | null>(null); // talep gönderildi ekranı (referans no)
-  const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase();
+
+  // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
+  const saveBooking = (ref: string, channel: "whatsapp" | "email") => {
+    try {
+      const payload = {
+        ref, channel, lang,
+        pickup: showCustom ? custom!.from : reversed ? n : "Flughafen Zürich (ZRH)",
+        dropoff: showCustom ? custom!.to : reversed ? "Flughafen Zürich (ZRH)" : n,
+        stops: stops.join(" | "),
+        date, time,
+        pax: Number(f.pax) || null,
+        luggage: Number(f.luggage) || null,
+        vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
+        price: total || null,
+        payment: D.payOptions[pay]?.[0] ?? null,
+        firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone,
+        flight: f.flight, nameboard: f.nameboard,
+        extras: [
+          extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
+          extras.child ? `${D.child[0]}: ${extras.child}` : "",
+          extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
+        ].filter(Boolean).join(", "),
+        notes: f.notes,
+      };
+      const body = JSON.stringify(payload);
+      // sendBeacon: yeni sekme açılırken isteğin kesilmemesi için
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon("/api/bookings", new Blob([body], { type: "application/json" }));
+      } else {
+        fetch("/api/bookings", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true });
+      }
+    } catch {
+      /* kayıt başarısız olsa da rezervasyon akışı devam eder */
+    }
+  };
   const L = t[lang];
   const B = L.booking;
   const D = L.detail;
@@ -400,13 +437,13 @@ export default function Buchung() {
                     aria-disabled={!ready}
                     className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-all ${ready ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"}`}
                     style={{ background: ready ? "#25D366" : "#9ca3af" }}
-                    onClick={(e) => { if (!ready) { e.preventDefault(); return; } setDoneRef(makeRef()); }}
+                    onClick={(e) => { if (!ready) { e.preventDefault(); return; } const r = makeRef(); saveBooking(r, "whatsapp"); setDoneRef(r); }}
                   >
                     💬 {D.continueWa} — CHF {total.toFixed(2)}
                   </a>
                 </div>
                 {ready && (
-                  <a href={mailHref(L.msg.subject, message())} onClick={() => setDoneRef(makeRef())} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
+                  <a href={mailHref(L.msg.subject, message())} onClick={() => { const r = makeRef(); saveBooking(r, "email"); setDoneRef(r); }} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
                     {D.continueMail}
                   </a>
                 )}

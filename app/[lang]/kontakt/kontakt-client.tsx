@@ -15,6 +15,20 @@ export default function Kontakt() {
   const K = L.kontakt;
 
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+
+  // Mesajı panele kaydeder (WhatsApp/e-posta akışını etkilemez)
+  const saveContact = () => {
+    try {
+      const body = JSON.stringify({ lang, ...form });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon("/api/contact", new Blob([body], { type: "application/json" }));
+      } else {
+        fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true });
+      }
+    } catch {
+      /* sessizce geç */
+    }
+  };
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
   const contactMessage = () =>
@@ -56,6 +70,7 @@ export default function Kontakt() {
           </div>
           <a
             href={waHref(contactMessage())}
+            onClick={() => saveContact()}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-6 block rounded-full px-6 py-3.5 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5"
@@ -63,7 +78,7 @@ export default function Kontakt() {
           >
             {K.send}
           </a>
-          <a href={mailHref(L.msg.subject, contactMessage())} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
+          <a href={mailHref(L.msg.subject, contactMessage())} onClick={() => saveContact()} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
             {K.orMail}
           </a>
         </div>
