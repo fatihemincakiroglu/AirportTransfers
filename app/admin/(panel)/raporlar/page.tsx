@@ -40,6 +40,13 @@ export default async function Page() {
     SELECT EXTRACT(dow FROM created_at)::int AS d, COUNT(*)::int AS n
     FROM bookings GROUP BY 1 ORDER BY 1`) as unknown as { d: number; n: number }[];
 
+  const [lost] = (await sql`
+    SELECT COALESCE(SUM(price) FILTER (WHERE status = 'cancelled'), 0)::float AS lost_revenue,
+           COUNT(*) FILTER (WHERE status = 'cancelled')::int AS lost_count,
+           COALESCE(SUM(price) FILTER (WHERE status = 'new'), 0)::float AS pending_revenue,
+           COUNT(*) FILTER (WHERE status = 'new')::int AS pending_count
+    FROM bookings`) as unknown as { lost_revenue: number; lost_count: number; pending_revenue: number; pending_count: number }[];
+
   const [tot] = (await sql`
     SELECT COUNT(*)::int AS n,
            COALESCE(AVG(price) FILTER (WHERE price IS NOT NULL), 0)::float AS avg_price,
@@ -62,9 +69,11 @@ export default async function Page() {
 
   const kpis: { label: string; value: string; note?: string; accent: string }[] = [
     { label: "Toplam rezervasyon", value: String(tot.n), note: trend ? `${trend > 0 ? "▲" : "▼"} geçen aya göre %${Math.abs(trend)}` : undefined, accent: C.pine },
-    { label: "Onaylı ciro", value: chf(tot.revenue), note: `${tot.won} yolculuk`, accent: "#059669" },
+    { label: "Kazanılan ciro", value: chf(tot.revenue), note: `${tot.won} onaylı/tamamlanmış yolculuk`, accent: "#059669" },
     { label: "Ortalama sepet", value: chf(tot.avg_price), accent: C.gold },
-    { label: "Dönüşüm oranı", value: `%${convRate}`, note: "onaylanan / toplam", accent: "#1D4ED8" },
+    { label: "Kayıp ciro", value: chf(lost.lost_revenue), note: `${lost.lost_count} iptal edilen talep`, accent: "#DC2626" },
+    { label: "Bekleyen ciro", value: chf(lost.pending_revenue), note: `${lost.pending_count} yanıt bekleyen`, accent: "#D97706" },
+    { label: "Dönüşüm oranı", value: `%${convRate}`, note: "kazanılan / toplam talep", accent: "#1D4ED8" },
   ];
 
   return (
@@ -72,7 +81,7 @@ export default async function Page() {
       <PageTitle title="Raporlar" sub="Son 12 ayın performans özeti" />
 
       {/* KPI kartları */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         {kpis.map((k) => (
           <div key={k.label} className="relative overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
             <span className="absolute inset-y-0 left-0 w-1" style={{ background: k.accent }} />
@@ -87,7 +96,7 @@ export default async function Page() {
       <Card className="mt-6">
         <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Ciro trendi</h2>
-          <span className="text-xs text-stone-400">onaylı ve tamamlanmış yolculuklar · CHF (k = bin)</span>
+          <span className="text-xs text-stone-400">kazanılan ciro: onaylı + tamamlanmış · CHF (k = bin)</span>
         </div>
         <AreaChart data={monthly.map((m) => ({ label: label(m.ym), value: m.revenue }))} kind="chf" />
       </Card>

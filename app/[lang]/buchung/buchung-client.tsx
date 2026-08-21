@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER, CUSTOM_BASE_PRICE } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
@@ -20,9 +20,10 @@ export default function Buchung() {
   const XS = X.stops;  // ara durak etiketi
   const [stops, setStops] = useState<string[]>([]); // URL'den gelen ara duraklar
   const [doneRef, setDoneRef] = useState<string | null>(null); // talep gönderildi ekranı (referans no)
+  const draftRef = useRef<string | null>(null); // son adımda oluşturulan taslak referansı
 
   // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
-  const saveBooking = (ref: string, channel: "whatsapp" | "email") => {
+  const saveBooking = (ref: string, channel: "whatsapp" | "email" | "taslak") => {
     try {
       const payload = {
         ref, channel, lang,
@@ -223,7 +224,17 @@ export default function Buchung() {
     );
   };
 
-  const go = (s: 1 | 2 | 3) => { setStep(s); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const go = (s: 1 | 2 | 3) => {
+    // Son adıma geçerken talebi şimdiden kaydet: müşteri tarayıcıyı
+    // kapatsa bile kayıt panelde kalır (WhatsApp'a basınca güncellenir).
+    if (s === 3 && !draftRef.current) {
+      const r = makeRef();
+      draftRef.current = r;
+      saveBooking(r, "taslak");
+    }
+    setStep(s);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
@@ -437,13 +448,13 @@ export default function Buchung() {
                     aria-disabled={!ready}
                     className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-all ${ready ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"}`}
                     style={{ background: ready ? "#25D366" : "#9ca3af" }}
-                    onClick={(e) => { if (!ready) { e.preventDefault(); return; } const r = makeRef(); saveBooking(r, "whatsapp"); setDoneRef(r); }}
+                    onClick={(e) => { if (!ready) { e.preventDefault(); return; } const r = draftRef.current ?? makeRef(); saveBooking(r, "whatsapp"); setDoneRef(r); }}
                   >
                     💬 {D.continueWa} — CHF {total.toFixed(2)}
                   </a>
                 </div>
                 {ready && (
-                  <a href={mailHref(L.msg.subject, message())} onClick={() => { const r = makeRef(); saveBooking(r, "email"); setDoneRef(r); }} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
+                  <a href={mailHref(L.msg.subject, message())} onClick={() => { const r = draftRef.current ?? makeRef(); saveBooking(r, "email"); setDoneRef(r); }} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
                     {D.continueMail}
                   </a>
                 )}

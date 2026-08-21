@@ -12,7 +12,22 @@ export type Booking = {
   first_name: string | null; last_name: string | null; email: string | null; phone: string | null;
   flight: string | null; nameboard: string | null; extras: string | null;
   notes: string | null; admin_note: string | null; created_at: string;
+  driver_id?: number | null; source?: string | null;
 };
+
+type Driver = { id: number; name: string };
+type History = Record<string, { trips: number; spent: number }>;
+
+/** Düzenlenebilir alanlar: [anahtar, etiket, tip] */
+const EDIT_FIELDS: [keyof Booking, string, string][] = [
+  ["pickup", "Alınış", "text"], ["dropoff", "Varış", "text"], ["stops", "Ara duraklar", "text"],
+  ["ride_date", "Yolculuk tarihi", "date"], ["ride_time", "Saat", "time"],
+  ["pax", "Yolcu", "number"], ["luggage", "Bagaj", "number"],
+  ["vehicle", "Araç", "text"], ["price", "Tutar (CHF)", "number"], ["payment", "Ödeme", "text"],
+  ["first_name", "Ad", "text"], ["last_name", "Soyad", "text"],
+  ["phone", "Telefon", "text"], ["email", "E-posta", "text"],
+  ["flight", "Uçuş no", "text"], ["extras", "Ekstralar", "text"], ["notes", "Müşteri notu", "text"],
+];
 
 const FILTERS: [string, string][] = [
   ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"],
@@ -36,8 +51,12 @@ const monthName = (ym: string) => {
   return `${TR_MONTHS[m - 1]} ${y}`;
 };
 
-export default function BookingsClient({ rows, months, month }: { rows: Booking[]; months: string[]; month: string }) {
+export default function BookingsClient({
+  rows, months, month, drivers = [], history = {},
+}: { rows: Booking[]; months: string[]; month: string; drivers?: Driver[]; history?: History }) {
   const [filter, setFilter] = useState("all");
+  const [edit, setEdit] = useState<Record<string, string> | null>(null);
+  const [note, setNote] = useState("");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState<Booking | null>(null);
   const [busy, setBusy] = useState(false);
@@ -51,7 +70,7 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
     return hay.includes(q.toLowerCase());
   });
 
-  const update = async (id: number, patch: { status?: string; adminNote?: string }) => {
+  const update = async (id: number, patch: { status?: string; adminNote?: string; fields?: Record<string, string> }) => {
     setBusy(true);
     await fetch("/api/admin/bookings", {
       method: "PATCH",
@@ -60,7 +79,22 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
     });
     setBusy(false);
     setOpen(null);
+    setEdit(null);
     router.refresh();
+  };
+
+  /** Müşteri geçmişi anahtarı: e-posta varsa e-posta, yoksa telefon */
+  const histOf = (b: Booking) => {
+    const key = (b.email || b.phone || "").toLowerCase();
+    return key ? history[key] : undefined;
+  };
+
+  const startEdit = (b: Booking) => {
+    const init: Record<string, string> = {};
+    for (const [k] of EDIT_FIELDS) init[k as string] = b[k] == null ? "" : String(b[k]);
+    init.driver_id = b.driver_id ? String(b.driver_id) : "";
+    setEdit(init);
+    setNote(b.admin_note ?? "");
   };
 
   return (
@@ -199,6 +233,64 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
               <StatusPill status={open.status} />
             </div>
 
+            {/* Müşteri geçmişi rozeti */}
+            {histOf(open) && (
+              <div className="mt-4 flex items-center gap-3 rounded-xl px-4 py-3" style={{ background: `${C.gold}18` }}>
+                <span className="text-lg">🏅</span>
+                <span className="text-sm">
+                  <b style={{ color: C.pine }}>{histOf(open)!.trips}. yolculuk</b>
+                  <span className="block text-xs text-stone-500">
+                    Bu müşteriden toplam CHF {histOf(open)!.spent.toFixed(2)} ciro
+                  </span>
+                </span>
+              </div>
+            )}
+
+            {edit ? (
+              /* ── Düzenleme modu ── */
+              <div className="mt-5 space-y-3">
+                {EDIT_FIELDS.map(([k, label, type]) => (
+                  <label key={k as string} className="block">
+                    <span className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-stone-400">{label}</span>
+                    <input
+                      type={type}
+                      value={edit[k as string] ?? ""}
+                      onChange={(e) => setEdit({ ...edit, [k as string]: e.target.value })}
+                      className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm outline-none focus:border-[#C9A24B]"
+                    />
+                  </label>
+                ))}
+                <label className="block">
+                  <span className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-stone-400">Şoför</span>
+                  <select
+                    value={edit.driver_id ?? ""}
+                    onChange={(e) => setEdit({ ...edit, driver_id: e.target.value })}
+                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm outline-none focus:border-[#C9A24B]"
+                  >
+                    <option value="">— atanmadı —</option>
+                    {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+                  </select>
+                </label>
+                <label className="block">
+                  <span className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-stone-400">Panel notu</span>
+                  <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2}
+                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm outline-none focus:border-[#C9A24B]" />
+                </label>
+                <div className="flex gap-2 pt-1">
+                  <button type="button" disabled={busy}
+                    onClick={() => update(open.id, { fields: edit, adminNote: note })}
+                    className="flex-1 rounded-xl py-3 text-xs font-extrabold uppercase tracking-wide disabled:opacity-40"
+                    style={{ background: C.gold, color: C.pine }}>
+                    {busy ? "Kaydediliyor…" : "Değişiklikleri kaydet"}
+                  </button>
+                  <button type="button" onClick={() => setEdit(null)}
+                    className="rounded-xl bg-stone-100 px-5 py-3 text-xs font-extrabold uppercase text-stone-600">
+                    Vazgeç
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
             <dl className="mt-5 space-y-2 text-sm">
               {([
                 ["Müşteri", [open.first_name, open.last_name].filter(Boolean).join(" ")],
@@ -206,9 +298,13 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
                 ["Güzergâh", `${open.pickup ?? "—"} → ${open.dropoff ?? "—"}`],
                 ["Ara duraklar", open.stops], ["Tarih / saat", `${open.ride_date ?? ""} ${open.ride_time ?? ""}`],
                 ["Yolcu / bagaj", `${open.pax ?? "—"} / ${open.luggage ?? "—"}`],
-                ["Araç", open.vehicle], ["Tutar", open.price ? `CHF ${Number(open.price).toFixed(2)}` : null],
+                ["Araç", open.vehicle],
+                ["Şoför", drivers.find((d) => d.id === open.driver_id)?.name ?? null],
+                ["Tutar", open.price ? `CHF ${Number(open.price).toFixed(2)}` : null],
                 ["Ödeme", open.payment], ["Uçuş", open.flight], ["İsim tabelası", open.nameboard],
                 ["Ekstralar", open.extras], ["Müşteri notu", open.notes],
+                ["Panel notu", open.admin_note],
+                ["Kaynak", open.source === "panel" ? "Panelden eklendi" : "Siteden geldi"],
                 ["Dil / kanal", [open.lang, open.channel].filter(Boolean).join(" · ")],
                 ["Kayıt", fmtDate(open.created_at)],
               ] as [string, string | null][])
@@ -220,6 +316,11 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
                   </div>
                 ))}
             </dl>
+
+            <button type="button" onClick={() => startEdit(open)}
+              className="mt-4 w-full rounded-xl bg-stone-100 py-3 text-xs font-extrabold uppercase tracking-wide text-stone-600">
+              ✎ Kaydı düzenle
+            </button>
 
             <div className="mt-5">
               <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">Durumu değiştir</p>
@@ -238,6 +339,9 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
                 ))}
               </div>
             </div>
+
+              </>
+            )}
 
             <div className="mt-5 flex justify-end gap-2">
               {open.phone && (

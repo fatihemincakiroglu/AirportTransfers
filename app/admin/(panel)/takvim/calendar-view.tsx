@@ -10,6 +10,7 @@ export type Trip = {
   pickup: string | null; dropoff: string | null; stops: string | null;
   vehicle: string | null; price: string | null;
   first_name: string | null; last_name: string | null; phone: string | null; pax: number | null;
+  driver_id?: number | null; driver_name?: string | null;
 };
 
 const TR_MONTHS = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
@@ -21,9 +22,16 @@ const shift = (ym: string, delta: number) => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 };
 
-export default function CalendarView({ month, trips, months }: { month: string; trips: Trip[]; months: string[] }) {
+export default function CalendarView({
+  month, trips: allTrips, months, drivers = [],
+}: { month: string; trips: Trip[]; months: string[]; drivers?: { id: number; name: string }[] }) {
   const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
+  const [driver, setDriver] = useState<string>("all");
+
+  // Şoför filtresi
+  const trips = allTrips.filter((t) =>
+    driver === "all" ? true : driver === "none" ? !t.driver_id : String(t.driver_id) === driver);
 
   const [year, mon] = month.split("-").map(Number);
   const first = new Date(year, mon - 1, 1);
@@ -64,6 +72,19 @@ export default function CalendarView({ month, trips, months }: { month: string; 
           className="rounded-full bg-white px-4 py-2 text-xs font-bold shadow-sm ring-1 ring-black/5" style={{ color: C.pine }}>
           Bu ay
         </button>
+
+        {drivers.length > 0 && (
+          <select
+            value={driver}
+            onChange={(e) => setDriver(e.target.value)}
+            className="w-full rounded-full border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold outline-none sm:w-auto"
+            style={{ color: C.pine }}
+          >
+            <option value="all">Tüm şoförler</option>
+            <option value="none">Şoför atanmamış</option>
+            {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
+          </select>
+        )}
 
         <select
           value={months.includes(month) ? month : ""}
@@ -155,6 +176,9 @@ export default function CalendarView({ month, trips, months }: { month: string; 
                   {t.pax ? ` · ${t.pax} kişi` : ""}
                 </span>
                 <span className="text-xs text-stone-400">{t.vehicle}</span>
+                <span className="text-xs" style={{ color: t.driver_name ? C.pine : "#DC2626" }}>
+                  {t.driver_name ? `👤 ${t.driver_name}` : "şoför yok"}
+                </span>
                 {t.price && <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(t.price).toFixed(2)}</span>}
                 <StatusPill status={t.status} />
                 {t.phone && (

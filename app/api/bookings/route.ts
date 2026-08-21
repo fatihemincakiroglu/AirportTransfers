@@ -28,9 +28,29 @@ export async function POST(req: NextRequest) {
         ${str(b.firstName, 80)}, ${str(b.lastName, 80)}, ${str(b.email, 160)}, ${str(b.phone, 40)},
         ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)}
       )
-      ON CONFLICT (ref) DO NOTHING`;
+      ON CONFLICT (ref) DO UPDATE SET
+        channel   = EXCLUDED.channel,
+        pickup    = COALESCE(EXCLUDED.pickup, bookings.pickup),
+        dropoff   = COALESCE(EXCLUDED.dropoff, bookings.dropoff),
+        stops     = COALESCE(EXCLUDED.stops, bookings.stops),
+        ride_date = COALESCE(EXCLUDED.ride_date, bookings.ride_date),
+        ride_time = COALESCE(EXCLUDED.ride_time, bookings.ride_time),
+        pax       = COALESCE(EXCLUDED.pax, bookings.pax),
+        luggage   = COALESCE(EXCLUDED.luggage, bookings.luggage),
+        vehicle   = COALESCE(EXCLUDED.vehicle, bookings.vehicle),
+        price     = COALESCE(EXCLUDED.price, bookings.price),
+        payment   = COALESCE(EXCLUDED.payment, bookings.payment),
+        first_name= COALESCE(EXCLUDED.first_name, bookings.first_name),
+        last_name = COALESCE(EXCLUDED.last_name, bookings.last_name),
+        email     = COALESCE(EXCLUDED.email, bookings.email),
+        phone     = COALESCE(EXCLUDED.phone, bookings.phone),
+        flight    = COALESCE(EXCLUDED.flight, bookings.flight),
+        extras    = COALESCE(EXCLUDED.extras, bookings.extras),
+        notes     = COALESCE(EXCLUDED.notes, bookings.notes),
+        updated_at= now()`;
 
-    await logEvent(
+    const isDraft = str(b.channel, 20) === "taslak";
+    if (!isDraft) await logEvent(
       "booking_new",
       `Yeni rezervasyon talebi: ${ref} · ${str(b.pickup) ?? "—"} → ${str(b.dropoff) ?? "—"} · ${str(b.date, 20) ?? ""} ${str(b.time, 10) ?? ""}` +
         (b.price ? ` · CHF ${Number(b.price).toFixed(2)}` : "") +
@@ -38,8 +58,8 @@ export async function POST(req: NextRequest) {
       { actor: "site", ref, ip: req.headers.get("x-forwarded-for")?.split(",")[0] ?? undefined },
     );
 
-    // Bildirim e-postası (yapılandırılmışsa) — kaydı bekletmez
-    await sendBookingMail(b);
+    // Bildirim e-postası yalnızca müşteri talebi gönderdiğinde
+    if (!isDraft) await sendBookingMail(b);
 
     return NextResponse.json({ ok: true });
   } catch (e) {

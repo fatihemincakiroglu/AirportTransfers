@@ -63,6 +63,21 @@ export async function ensureSchema() {
       created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
+  // Şoför ataması ve kaynak bilgisi
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS driver_id INT`;
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS source    TEXT DEFAULT 'site'`; // site | panel
+  await sql`
+    CREATE TABLE IF NOT EXISTS drivers (
+      id         SERIAL PRIMARY KEY,
+      name       TEXT NOT NULL,
+      phone      TEXT,
+      email      TEXT,
+      vehicle    TEXT,
+      note       TEXT,
+      active     BOOLEAN NOT NULL DEFAULT true,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )`;
+
   // Fatura alanları (sonradan eklendi)
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoice_no   TEXT`;
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoiced_at  TIMESTAMPTZ`;
