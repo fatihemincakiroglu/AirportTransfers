@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 
@@ -11,6 +11,9 @@ const sans = Inter({
 });
 
 export const metadata: Metadata = { title: "Panel", robots: { index: false, follow: false } };
+
+// Mobilde doğru ölçekleme için (panel kendi kök düzeni olduğundan burada tanımlanır)
+export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
 export default function AdminRootLayout({ children }: { children: React.ReactNode }) {
   return (

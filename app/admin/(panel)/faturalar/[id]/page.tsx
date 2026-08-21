@@ -36,24 +36,24 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   return (
     <div className="min-h-screen bg-stone-100 py-8 print:bg-white print:py-0">
       <div className="mx-auto max-w-3xl px-5 print:px-0">
-        <div className="mb-4 flex gap-3 print:hidden">
+        <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:gap-3 print:hidden">
           <PrintButton />
           {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-          <a href="/admin/faturalar" className="rounded-full bg-white px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-stone-600 shadow-sm">
+          <a href="/admin/faturalar" className="rounded-full bg-white px-5 py-3 text-center text-xs font-extrabold uppercase tracking-wide text-stone-600 shadow-sm">
             Listeye dön
           </a>
         </div>
 
-        <div className="bg-white p-10 shadow-sm print:p-0 print:shadow-none">
+        <div className="bg-white p-5 shadow-sm sm:p-10 print:p-0 print:shadow-none">
           {/* Başlık */}
-          <div className="flex items-start justify-between gap-6 border-b-2 pb-6" style={{ borderColor: C.gold }}>
+          <div className="flex flex-col gap-4 border-b-2 pb-6 sm:flex-row sm:items-start sm:justify-between sm:gap-6" style={{ borderColor: C.gold }}>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>
                 Airport Zurich Transfer
               </p>
               <h1 className="mt-1 text-3xl font-semibold" style={{ color: C.pine }}>Rechnung</h1>
             </div>
-            <div className="text-right text-xs leading-relaxed text-stone-600">
+            <div className="text-xs leading-relaxed text-stone-600 sm:text-right">
               <p className="font-bold" style={{ color: C.pine }}>{COMPANY_NAME}</p>
               <p>{COMPANY_ADDRESS}</p>
               <p>{COMPANY_REG}</p>

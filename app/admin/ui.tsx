@@ -35,15 +35,15 @@ export function StatusPill({ status }: { status: string }) {
 
 export function PageTitle({ title, sub }: { title: string; sub?: string }) {
   return (
-    <div className="mb-6">
-      <h1 className="text-2xl font-semibold" style={{ color: C.pine }}>{title}</h1>
-      {sub && <p className="mt-1 text-sm text-stone-500">{sub}</p>}
+    <div className="mb-5 md:mb-6">
+      <h1 className="text-xl font-semibold sm:text-2xl" style={{ color: C.pine }}>{title}</h1>
+      {sub && <p className="mt-1 text-xs text-stone-500 sm:text-sm">{sub}</p>}
     </div>
   );
 }
 
 export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 ${className}`}>{children}</div>;
+  return <div className={`rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 sm:p-5 ${className}`}>{children}</div>;
 }
 
 export function NoDb() {

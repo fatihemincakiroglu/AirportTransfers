@@ -33,20 +33,42 @@ export default async function Dashboard() {
     <>
       <PageTitle title="Kontrol Paneli" sub="Rezervasyon ve talep özeti" />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-5">
         {cards.map(([label, value]) => (
           <Card key={label}>
             <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">{label}</p>
-            <p className="mt-2 text-3xl font-semibold" style={{ color: C.pine }}>{value}</p>
+            <p className="mt-2 text-2xl font-semibold sm:text-3xl" style={{ color: C.pine }}>{value}</p>
           </Card>
         ))}
       </div>
 
       <h2 className="mb-3 mt-8 text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Son rezervasyonlar</h2>
-      <Card className="overflow-x-auto p-0">
-        {recent.length === 0 ? (
-          <p className="p-6 text-sm text-stone-500">Henüz kayıt yok. Siteden bir rezervasyon talebi geldiğinde burada görünür.</p>
-        ) : (
+      {recent.length === 0 ? (
+        <Card><p className="text-sm text-stone-500">Henüz kayıt yok. Siteden bir rezervasyon talebi geldiğinde burada görünür.</p></Card>
+      ) : (
+      <>
+      {/* Mobil: kart listesi */}
+      <div className="space-y-2 md:hidden">
+        {recent.map((r) => (
+          <Card key={r.id} className="py-3.5">
+            <div className="flex items-start justify-between gap-3">
+              <span className="min-w-0">
+                <span className="block text-sm font-bold" style={{ color: C.pine }}>{r.ref}</span>
+                <span className="block truncate text-xs text-stone-500">{[r.first_name, r.last_name].filter(Boolean).join(" ") || "—"}</span>
+              </span>
+              <StatusPill status={r.status} />
+            </div>
+            <p className="mt-2 break-words text-sm text-stone-700">{r.pickup} → {r.dropoff}</p>
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 text-xs text-stone-500">
+              <span>{r.ride_date} {r.ride_time}</span>
+              {r.price && <span className="ml-auto font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(r.price).toFixed(2)}</span>}
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <Card className="hidden overflow-x-auto p-0 md:block">
+        {(
           <table className="w-full min-w-[720px] text-left text-sm">
             <thead>
               <tr className="border-b border-stone-100 text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
@@ -70,6 +92,8 @@ export default async function Dashboard() {
           </table>
         )}
       </Card>
+      </>
+      )}
       {recent.length > 0 && (
         <p className="mt-3 text-xs text-stone-400">Son kayıt: {fmtDate(recent[0].created_at)}</p>
       )}

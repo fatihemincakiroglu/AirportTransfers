@@ -29,7 +29,7 @@ export default async function Page() {
     <>
       <PageTitle title="Faturalar" sub="Onaylı ve tamamlanmış yolculuklar için fatura oluşturun" />
 
-      <div className="mb-5 grid gap-4 sm:grid-cols-3">
+      <div className="mb-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
         {([
           ["Faturalanabilir", String(rows.length)],
           ["Kesilen fatura", String(invoiced.length)],
@@ -42,7 +42,33 @@ export default async function Page() {
         ))}
       </div>
 
-      <Card className="overflow-x-auto p-0">
+      {/* Mobil: kart listesi */}
+      <div className="space-y-2 md:hidden">
+        {rows.map((r) => (
+          <Card key={r.id}>
+            <div className="flex items-start justify-between gap-3">
+              <span className="min-w-0">
+                <span className="block text-sm font-bold" style={{ color: r.invoice_no ? C.pine : "#D6D3D1" }}>
+                  {r.invoice_no ?? "Fatura kesilmedi"}
+                </span>
+                <span className="block truncate text-xs text-stone-500">
+                  {r.ref} · {[r.first_name, r.last_name].filter(Boolean).join(" ") || "—"}
+                </span>
+              </span>
+              <StatusPill status={r.status} />
+            </div>
+            <p className="mt-2 break-words text-sm text-stone-600">{r.pickup} → {r.dropoff}</p>
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>
+                {r.price ? `CHF ${Number(r.price).toFixed(2)}` : "—"}
+              </span>
+              <InvoiceActions id={r.id} hasInvoice={!!r.invoice_no} />
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      <Card className="hidden overflow-x-auto p-0 md:block">
         {rows.length === 0 ? (
           <p className="p-6 text-sm text-stone-500">
             Faturalanacak kayıt yok. Bir rezervasyonu &quot;Onaylandı&quot; ya da &quot;Tamamlandı&quot; yaptığınızda burada görünür.

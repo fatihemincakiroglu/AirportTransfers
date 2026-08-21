@@ -22,7 +22,7 @@ export default function Loading() {
           <div className="h-7 w-52 rounded-lg bg-stone-200" />
           <div className="mt-2 h-4 w-72 rounded bg-stone-100" />
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
           {[0, 1, 2].map((i) => (
             <div key={i} className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
               <div className="h-3 w-24 rounded bg-stone-100" />

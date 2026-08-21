@@ -37,13 +37,13 @@ export default function ContactsClient({ rows }: { rows: Contact[] }) {
 
   return (
     <>
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="-mx-1 mb-4 flex gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible">
         {FILTERS.map(([key, label]) => {
           const n = key === "all" ? rows.length : rows.filter((r) => r.status === key).length;
           const st = ST[key];
           return (
             <button key={key} type="button" onClick={() => setFilter(key)}
-              className="rounded-full px-4 py-2 text-xs font-bold shadow-sm transition-all hover:-translate-y-0.5"
+              className="shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold shadow-sm transition-all hover:-translate-y-0.5"
               style={
                 filter === key
                   ? key === "all" ? { background: C.pine, color: "#fff" } : { background: st.fg, color: "#fff" }
@@ -80,7 +80,7 @@ export default function ContactsClient({ rows }: { rows: Contact[] }) {
 
                 <p className="mt-3 flex-1 whitespace-pre-wrap text-sm leading-relaxed text-stone-600">{r.message}</p>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2">
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-center">
                   {r.email && (
                     <a href={`mailto:${r.email}`} onClick={() => setStatus(r.id, "replied")}
                        className="rounded-full bg-stone-100 px-4 py-2 text-xs font-bold text-stone-600">E-posta yaz</a>
@@ -90,7 +90,7 @@ export default function ContactsClient({ rows }: { rows: Contact[] }) {
                        onClick={() => setStatus(r.id, "replied")}
                        className="rounded-full px-4 py-2 text-xs font-bold text-white" style={{ background: "#25D366" }}>WhatsApp</a>
                   )}
-                  <span className="ml-auto flex gap-1.5">
+                  <span className="flex gap-1.5 sm:ml-auto">
                     {["new", "read", "replied"].filter((s) => s !== r.status).map((s) => (
                       <button key={s} type="button" disabled={busy === r.id} onClick={() => setStatus(r.id, s)}
                         className="rounded-full px-3 py-1.5 text-[11px] font-bold transition-opacity disabled:opacity-40"

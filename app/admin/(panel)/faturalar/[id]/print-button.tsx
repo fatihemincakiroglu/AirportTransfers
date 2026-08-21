@@ -7,7 +7,7 @@ export default function PrintButton() {
     <button
       type="button"
       onClick={() => window.print()}
-      className="rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide shadow-sm"
+      className="rounded-full px-5 py-3 text-xs font-extrabold uppercase tracking-wide shadow-sm"
       style={{ background: C.gold, color: C.pine }}
     >
       Yazdır / PDF kaydet

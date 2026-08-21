@@ -54,14 +54,14 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
       <PageTitle title="Sistem Logları" sub="Sitede ve panelde olan biten her şey" />
 
       {/* Tür filtreleri */}
-      <div className="mb-5 flex flex-wrap gap-2">
-        <Link href="/admin/loglar" className="rounded-full px-4 py-2 text-xs font-bold shadow-sm"
+      <div className="-mx-1 mb-5 flex gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible">
+        <Link href="/admin/loglar" className="shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold shadow-sm"
            style={!tur ? { background: C.pine, color: "#fff" } : { background: "#fff", color: C.pine }}>
           Tümü ({counts.reduce((s, c) => s + c.n, 0)})
         </Link>
         {Object.entries(KIND).map(([key, k]) => (
           <Link key={key} href={`/admin/loglar?tur=${key}`}
-             className="rounded-full px-4 py-2 text-xs font-bold shadow-sm transition-opacity"
+             className="shrink-0 whitespace-nowrap rounded-full px-4 py-2 text-xs font-bold shadow-sm transition-opacity"
              style={tur === key ? { background: k.fg, color: "#fff" } : { background: k.bg, color: k.fg, opacity: countOf(key) ? 1 : 0.45 }}>
             {k.icon} {k.label} ({countOf(key)})
           </Link>
@@ -83,7 +83,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
                 {list.map((r) => {
                   const k = KIND[r.kind] ?? { label: r.kind, icon: "•", bg: "#F5F5F4", fg: "#57534E" };
                   return (
-                    <Card key={r.id} className="flex items-start gap-4 py-3.5">
+                    <Card key={r.id} className="flex items-start gap-3 py-3.5 sm:gap-4">
                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm" style={{ background: k.bg }}>
                         {k.icon}
                       </span>
@@ -95,9 +95,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
                           <span className="text-[11px] font-semibold text-stone-400">{ACTOR[r.actor ?? "sistem"] ?? r.actor}</span>
                           {r.ref && <span className="text-[11px] font-bold" style={{ color: C.pine }}>{r.ref}</span>}
                         </div>
-                        <p className="mt-1 text-sm leading-relaxed text-stone-700">{r.detail}</p>
+                        <p className="mt-1 break-words text-sm leading-relaxed text-stone-700">{r.detail}</p>
                       </div>
-                      <div className="shrink-0 text-right">
+                      <div className="shrink-0 text-right text-[10px] sm:text-xs">
                         <p className="text-[11px] font-semibold text-stone-500">
                           {new Date(r.created_at).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
                         </p>

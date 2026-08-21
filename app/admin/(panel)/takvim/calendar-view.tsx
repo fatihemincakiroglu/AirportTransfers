@@ -49,11 +49,11 @@ export default function CalendarView({ month, trips, months }: { month: string; 
   return (
     <>
       {/* Ay gezinme + hızlı seçim */}
-      <div className="mb-4 flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-1 rounded-full bg-white p-1 shadow-sm ring-1 ring-black/5">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <div className="flex items-center justify-between gap-1 rounded-full bg-white p-1 shadow-sm ring-1 ring-black/5 sm:justify-start">
           <button type="button" onClick={() => go(shift(month, -1))}
             className="flex h-8 w-8 items-center justify-center rounded-full text-stone-500 transition-colors hover:bg-stone-100" aria-label="Önceki ay">‹</button>
-          <span className="min-w-[150px] text-center text-sm font-bold" style={{ color: C.pine }}>
+          <span className="flex-1 text-center text-sm font-bold sm:min-w-[150px] sm:flex-none" style={{ color: C.pine }}>
             {TR_MONTHS[mon - 1]} {year}
           </span>
           <button type="button" onClick={() => go(shift(month, 1))}
@@ -68,7 +68,7 @@ export default function CalendarView({ month, trips, months }: { month: string; 
         <select
           value={months.includes(month) ? month : ""}
           onChange={(e) => { if (e.target.value) { setSelected(null); go(e.target.value); } }}
-          className="ml-auto rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-bold outline-none"
+          className="w-full rounded-full border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold outline-none sm:ml-auto sm:w-auto"
           style={{ color: C.pine }}
         >
           <option value="">Kayıtlı aylar…</option>
@@ -80,8 +80,8 @@ export default function CalendarView({ month, trips, months }: { month: string; 
       </div>
 
       {/* Ay ızgarası */}
-      <Card className="p-3 md:p-5">
-        <div className="grid grid-cols-7 gap-1.5 md:gap-2">
+      <Card className="p-2 sm:p-3 md:p-5">
+        <div className="grid grid-cols-7 gap-1 sm:gap-1.5 md:gap-2">
           {WEEKDAYS.map((w) => (
             <div key={w} className="pb-1 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">{w}</div>
           ))}
@@ -95,7 +95,7 @@ export default function CalendarView({ month, trips, months }: { month: string; 
                 key={day}
                 type="button"
                 onClick={() => setSelected(isSelected ? null : day)}
-                className="flex min-h-[68px] flex-col items-start rounded-xl p-2 text-left transition-all hover:-translate-y-0.5 md:min-h-[84px]"
+                className="flex min-h-[54px] flex-col items-start rounded-lg p-1.5 text-left transition-all hover:-translate-y-0.5 sm:min-h-[68px] sm:rounded-xl sm:p-2 md:min-h-[84px]"
                 style={{
                   background: isSelected ? C.pine : list.length ? "#FBF9F3" : "#FAFAF9",
                   boxShadow: isToday ? `inset 0 0 0 2px ${C.gold}` : "inset 0 0 0 1px rgba(0,0,0,0.04)",
@@ -111,7 +111,8 @@ export default function CalendarView({ month, trips, months }: { month: string; 
                 </span>
                 {list.length > 0 && (
                   <span className="mt-auto text-[10px] font-semibold" style={{ color: isSelected ? "rgba(255,255,255,0.7)" : "#A8A29E" }}>
-                    {list.length} yolculuk
+                    <span className="hidden sm:inline">{list.length} yolculuk</span>
+                    <span className="sm:hidden">{list.length}×</span>
                   </span>
                 )}
               </button>
@@ -141,12 +142,12 @@ export default function CalendarView({ month, trips, months }: { month: string; 
         ) : (
           <div className="space-y-2">
             {shown.map((t) => (
-              <Card key={t.id} className="flex flex-wrap items-center gap-x-5 gap-y-2 py-3.5">
-                <span className="w-16 shrink-0 text-lg font-semibold tabular-nums" style={{ color: STATUS_DOT[t.status] ?? C.pine }}>
+              <Card key={t.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3.5">
+                <span className="w-14 shrink-0 text-base font-semibold tabular-nums sm:w-16 sm:text-lg" style={{ color: STATUS_DOT[t.status] ?? C.pine }}>
                   {t.ride_time || "--:--"}
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-medium text-stone-700">{t.pickup} → {t.dropoff}</span>
+                <span className="min-w-0 flex-1 basis-[60%]">
+                  <span className="block break-words text-sm font-medium text-stone-700">{t.pickup} → {t.dropoff}</span>
                   {t.stops && <span className="block text-xs text-stone-400">Ara durak: {t.stops}</span>}
                 </span>
                 <span className="text-sm text-stone-500">

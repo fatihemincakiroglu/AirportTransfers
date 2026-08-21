@@ -72,12 +72,12 @@ export default async function Page() {
       <PageTitle title="Raporlar" sub="Son 12 ayın performans özeti" />
 
       {/* KPI kartları */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {kpis.map((k) => (
           <div key={k.label} className="relative overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
             <span className="absolute inset-y-0 left-0 w-1" style={{ background: k.accent }} />
             <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">{k.label}</p>
-            <p className="mt-2 text-3xl font-semibold" style={{ color: C.pine }}>{k.value}</p>
+            <p className="mt-2 break-words text-xl font-semibold sm:text-3xl" style={{ color: C.pine }}>{k.value}</p>
             {k.note && <p className="mt-1 text-[11px] font-semibold" style={{ color: k.accent }}>{k.note}</p>}
           </div>
         ))}
@@ -141,13 +141,13 @@ export default async function Page() {
       </Card>
 
       {/* Dışa aktarma */}
-      <div className="mt-6 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/api/admin/export?type=bookings" className="rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide shadow-sm transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
+        <a href="/api/admin/export?type=bookings" className="rounded-full px-5 py-3 text-center text-xs font-extrabold uppercase tracking-wide shadow-sm transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
           ⬇ Rezervasyonları CSV indir
         </a>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/api/admin/export?type=contacts" className="rounded-full bg-white px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-stone-600 shadow-sm ring-1 ring-black/5 transition-transform hover:-translate-y-0.5">
+        <a href="/api/admin/export?type=contacts" className="rounded-full bg-white px-5 py-3 text-center text-xs font-extrabold uppercase tracking-wide text-stone-600 shadow-sm ring-1 ring-black/5 transition-transform hover:-translate-y-0.5">
           ⬇ Mesajları CSV indir
         </a>
       </div>

@@ -69,7 +69,7 @@ export function BarChart({
   const fmt = (n: number) => full(n, kind, suffix);
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-hidden">
       <Tooltip tip={tip} />
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" onMouseLeave={() => setTip(null)}>
         <Defs />
@@ -125,7 +125,7 @@ export function AreaChart({ data, kind = "number", suffix }: { data: { label: st
   const area = `${padL},${padT + innerH} ${line} ${padL + innerW},${padT + innerH}`;
 
   return (
-    <div className="relative">
+    <div className="relative w-full overflow-hidden">
       <Tooltip tip={tip} />
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" onMouseLeave={() => setTip(null)}>
         <Defs />

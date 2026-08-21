@@ -66,8 +66,8 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
   return (
     <>
       {/* Filtre + arama */}
-      <div className="mb-4 flex flex-wrap items-center gap-3">
-        <div className="flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-col gap-3 md:flex-row md:flex-wrap md:items-center">
+        <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible">
           {FILTERS.map(([key, label]) => (
             <button
               key={key}
@@ -84,11 +84,11 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
             </button>
           ))}
         </div>
-        <div className="ml-auto flex flex-wrap items-center gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center md:ml-auto">
           <select
             value={month}
             onChange={(e) => router.push(e.target.value === "all" ? "/admin/rezervasyonlar" : `/admin/rezervasyonlar?ay=${e.target.value}`)}
-            className="rounded-full border border-stone-200 bg-white px-4 py-2 text-xs font-bold outline-none"
+            className="w-full rounded-full border border-stone-200 bg-white px-4 py-2.5 text-xs font-bold outline-none sm:w-auto"
             style={{ color: C.pine }}
           >
             <option value="all">Tüm aylar</option>
@@ -98,7 +98,7 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Ref, isim, e-posta, telefon, uçuş…"
-            className="w-full max-w-xs rounded-full border border-stone-200 bg-white px-4 py-2 text-sm outline-none focus:border-[#C9A24B]"
+            className="w-full rounded-full border border-stone-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-[#C9A24B] sm:max-w-xs"
           />
         </div>
       </div>
@@ -126,7 +126,36 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
                   )}
                 </div>
 
-                <Card className="overflow-x-auto p-0">
+                {/* Mobil: kart listesi */}
+                <div className="space-y-2 md:hidden">
+                  {items.map((r) => (
+                    <button key={r.id} type="button" onClick={() => setOpen(r)}
+                      className="w-full rounded-2xl bg-white p-4 text-left shadow-sm ring-1 ring-black/5 active:scale-[0.99]">
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="min-w-0">
+                          <span className="block text-sm font-bold" style={{ color: C.pine }}>{r.ref}</span>
+                          <span className="block truncate text-xs text-stone-500">
+                            {[r.first_name, r.last_name].filter(Boolean).join(" ") || "—"}
+                          </span>
+                        </span>
+                        <StatusPill status={r.status} />
+                      </div>
+                      <p className="mt-2.5 break-words text-sm text-stone-700">{r.pickup} → {r.dropoff}</p>
+                      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
+                        <span>📅 {r.ride_date} {r.ride_time}</span>
+                        {r.vehicle && <span className="truncate">🚘 {r.vehicle.split("·")[0].trim()}</span>}
+                        {r.price && (
+                          <span className="ml-auto font-bold tabular-nums" style={{ color: C.pine }}>
+                            CHF {Number(r.price).toFixed(2)}
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                {/* Masaüstü: tablo */}
+                <Card className="hidden overflow-x-auto p-0 md:block">
                   <table className="w-full min-w-[860px] text-left text-sm">
                     <thead>
                       <tr className="border-b border-stone-100 text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
@@ -160,8 +189,8 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
 
       {/* Detay */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => setOpen(null)}>
-          <div className="max-h-[88vh] w-full max-w-lg overflow-auto rounded-3xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-0 sm:items-center sm:p-4" onClick={() => setOpen(null)}>
+          <div className="max-h-[92vh] w-full max-w-lg overflow-auto rounded-t-3xl bg-white p-5 shadow-2xl sm:rounded-3xl sm:p-6" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">Rezervasyon</p>
@@ -185,9 +214,9 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
               ] as [string, string | null][])
                 .filter(([, v]) => v && String(v).trim())
                 .map(([k, v]) => (
-                  <div key={k} className="flex gap-4 border-b border-stone-50 pb-2">
-                    <dt className="w-32 shrink-0 text-stone-400">{k}</dt>
-                    <dd className="font-medium text-stone-700">{v}</dd>
+                  <div key={k} className="flex flex-col gap-0.5 border-b border-stone-50 pb-2 sm:flex-row sm:gap-4">
+                    <dt className="shrink-0 text-xs text-stone-400 sm:w-32 sm:text-sm">{k}</dt>
+                    <dd className="break-words font-medium text-stone-700">{v}</dd>
                   </div>
                 ))}
             </dl>
