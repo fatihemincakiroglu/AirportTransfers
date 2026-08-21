@@ -16,9 +16,17 @@ const NAV: [string, string, string][] = [
   ["/admin/loglar", "Sistem Logları", "☰"],
 ];
 
+// Mobil alt çubuk: en sık kullanılan 4 bölüm + "Daha fazla"
+const BOTTOM: [string, string, string][] = [
+  ["/admin", "Özet", "▦"],
+  ["/admin/rezervasyonlar", "Rezervasyon", "🗓"],
+  ["/admin/takvim", "Takvim", "📅"],
+  ["/admin/talepler", "Mesajlar", "✉"],
+];
+
 export default function AdminShell({
-  children, version, nextVersion,
-}: { children: React.ReactNode; version?: string; nextVersion?: string }) {
+  children, version, nextVersion, unread = 0,
+}: { children: React.ReactNode; version?: string; nextVersion?: string; unread?: number }) {
   const path = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,6 +56,12 @@ export default function AdminShell({
           >
             <span className="w-4 text-center opacity-80">{icon}</span>
             <span className="flex-1">{label}</span>
+            {href === "/admin/talepler" && unread > 0 && (
+              <span className="flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-[10px] font-extrabold text-white"
+                    style={{ background: "#DC2626" }}>
+                {unread}
+              </span>
+            )}
             {loading && <span className="h-3.5 w-3.5 shrink-0 animate-spin rounded-full border-2 border-white/25 border-t-white/80" />}
           </Link>
         );
@@ -91,17 +105,6 @@ export default function AdminShell({
             <span className="block truncate text-sm font-bold text-white">{current?.[1] ?? "Panel"}</span>
             <span className="block text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>Airport Zurich Transfer</span>
           </span>
-          <button
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Menüyü aç"
-            className="flex h-10 w-10 shrink-0 flex-col items-center justify-center gap-[5px] rounded-xl"
-            style={{ background: "rgba(255,255,255,0.1)" }}
-          >
-            <span className="block h-[2px] w-5 rounded-full" style={{ background: C.gold }} />
-            <span className="block h-[2px] w-5 rounded-full" style={{ background: C.gold }} />
-            <span className="block h-[2px] w-5 rounded-full" style={{ background: C.gold }} />
-          </button>
         </header>
 
         {/* ── Mobil çekmece menü ── */}
@@ -109,9 +112,11 @@ export default function AdminShell({
           <div className="fixed inset-0 z-50 md:hidden">
             <button type="button" aria-label="Kapat" onClick={() => setMenuOpen(false)}
                     className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
-            <aside className="absolute right-0 top-0 flex h-full w-[80%] max-w-xs flex-col px-3 py-5 shadow-2xl" style={{ background: C.pine }}>
-              <div className="mb-5 flex items-center justify-between px-3">
-                <span className="text-sm font-bold" style={{ color: C.gold }}>Menü</span>
+            <aside className="absolute inset-x-0 bottom-0 flex max-h-[85vh] flex-col overflow-auto rounded-t-3xl px-3 pb-6 pt-4 shadow-2xl"
+                   style={{ background: C.pine, paddingBottom: "calc(env(safe-area-inset-bottom) + 1.5rem)" }}>
+              <span aria-hidden className="mx-auto mb-4 h-1 w-10 rounded-full bg-white/20" />
+              <div className="mb-4 flex items-center justify-between px-3">
+                <span className="text-sm font-bold" style={{ color: C.gold }}>Tüm bölümler</span>
                 <button type="button" onClick={() => setMenuOpen(false)} aria-label="Menüyü kapat"
                         className="flex h-9 w-9 items-center justify-center rounded-full text-lg text-white/70"
                         style={{ background: "rgba(255,255,255,0.1)" }}>✕</button>
@@ -126,7 +131,54 @@ export default function AdminShell({
           </div>
         )}
 
-        <main className="min-w-0 flex-1 overflow-x-hidden p-4 sm:p-5 md:p-8">{children}</main>
+        <main className="min-w-0 flex-1 overflow-x-hidden p-4 pb-28 sm:p-5 sm:pb-28 md:p-8 md:pb-8">{children}</main>
+
+        {/* ── Mobil alt gezinme çubuğu ── */}
+        <nav
+          className="fixed inset-x-0 bottom-0 z-40 flex items-stretch border-t border-white/10 md:hidden"
+          style={{ background: C.pine, paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
+          {BOTTOM.map(([href, label, icon]) => {
+            const active = href === "/admin" ? path === "/admin" : path.startsWith(href);
+            const loading = loadingHref === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setPending({ href, from: path })}
+                className="flex flex-1 flex-col items-center gap-1 py-2.5"
+                style={{ color: active ? C.gold : "rgba(255,255,255,0.55)" }}
+              >
+                <span className="relative text-lg leading-none">
+                  {icon}
+                  {href === "/admin/talepler" && unread > 0 && (
+                    <span className="absolute -right-2.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full px-1 text-[9px] font-extrabold text-white"
+                          style={{ background: "#DC2626" }}>
+                      {unread > 9 ? "9+" : unread}
+                    </span>
+                  )}
+                  {loading && (
+                    <span className="absolute -right-2 -top-1 h-2 w-2 animate-ping rounded-full" style={{ background: C.gold }} />
+                  )}
+                </span>
+                <span className="text-[10px] font-bold">{label}</span>
+                {active && <span className="h-0.5 w-6 rounded-full" style={{ background: C.gold }} />}
+              </Link>
+            );
+          })}
+
+          {/* Daha fazla → çekmece */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            className="flex flex-1 flex-col items-center gap-1 py-2.5"
+            style={{ color: menuOpen ? C.gold : "rgba(255,255,255,0.55)" }}
+          >
+            <span className="text-lg leading-none">⋯</span>
+            <span className="text-[10px] font-bold">Daha fazla</span>
+            {menuOpen && <span className="h-0.5 w-6 rounded-full" style={{ background: C.gold }} />}
+          </button>
+        </nav>
       </div>
     </div>
   );
