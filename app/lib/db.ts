@@ -89,15 +89,27 @@ export async function ensureSchema() {
       ip         TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
+  await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS actor TEXT`; // "panel" | "site" | "sistem"
+  await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS ref   TEXT`; // ilgili rezervasyon referansı
+  await sql`CREATE INDEX IF NOT EXISTS logs_created_idx ON logs (created_at DESC)`;
   schemaChecked = true;
 }
 
-/** Sistem kaydı (giriş denemeleri, durum değişiklikleri vb.) */
-export async function logEvent(kind: string, detail: string, ip?: string) {
+/**
+ * Sistem kaydı. detail insan tarafından okunabilir Türkçe cümle olmalı.
+ * actor: işlemi kimin yaptığı ("panel" = yönetici, "site" = ziyaretçi, "sistem")
+ */
+export async function logEvent(
+  kind: string,
+  detail: string,
+  opts: { ip?: string; actor?: "panel" | "site" | "sistem"; ref?: string } = {},
+) {
   if (!dbReady) return;
   try {
     await ensureSchema();
-    await sql`INSERT INTO logs (kind, detail, ip) VALUES (${kind}, ${detail}, ${ip ?? null})`;
+    await sql`
+      INSERT INTO logs (kind, detail, ip, actor, ref)
+      VALUES (${kind}, ${detail}, ${opts.ip ?? null}, ${opts.actor ?? "sistem"}, ${opts.ref ?? null})`;
   } catch (e) {
     console.error("[db] log yazılamadı", e);
   }

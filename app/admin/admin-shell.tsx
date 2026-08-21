@@ -15,7 +15,9 @@ const NAV: [string, string, string][] = [
   ["/admin/loglar", "Sistem Logları", "☰"],
 ];
 
-export default function AdminShell({ children }: { children: React.ReactNode }) {
+export default function AdminShell({
+  children, version, nextVersion,
+}: { children: React.ReactNode; version?: string; nextVersion?: string }) {
   const path = usePathname();
   const router = useRouter();
 
@@ -54,6 +56,13 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         >
           <span className="w-4 text-center">⏻</span> Çıkış
         </button>
+
+        {/* Sistem bilgisi */}
+        <div className="mt-3 border-t border-white/10 px-3 pt-3 text-[10px] leading-relaxed text-white/35">
+          <p className="font-bold text-white/50">Panel v{version ?? "1.0"}</p>
+          <p>Next.js {nextVersion ?? ""}</p>
+          <p>{new Date().getFullYear()} · Airport Zurich Transfer</p>
+        </div>
       </aside>
 
       {/* Mobil üst şerit */}

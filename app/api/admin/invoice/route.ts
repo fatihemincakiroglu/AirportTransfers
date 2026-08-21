@@ -18,9 +18,10 @@ export async function POST(req: NextRequest) {
     WHERE invoice_no LIKE ${"RE-" + year + "-%"}`) as unknown as { n: number }[];
 
   const no = `RE-${year}-${String(row.n + 1).padStart(4, "0")}`;
+  const [b] = (await sql`SELECT ref, price FROM bookings WHERE id = ${id}`) as unknown as { ref: string; price: string | null }[];
   await sql`
     UPDATE bookings SET invoice_no = ${no}, invoiced_at = now(), updated_at = now()
     WHERE id = ${id} AND invoice_no IS NULL`;
-  await logEvent("invoice", `#${id} → ${no}`);
+  await logEvent("invoice", `${b?.ref ?? "#" + id} için ${no} numaralı fatura oluşturuldu (CHF ${Number(b?.price ?? 0).toFixed(2)})`, { actor: "panel", ref: b?.ref });
   return NextResponse.json({ ok: true, no });
 }

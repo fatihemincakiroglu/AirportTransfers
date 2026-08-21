@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { C, Card, StatusPill, STATUS_LABEL, fmtDate } from "../../ui";
+import { C, Card, StatusPill, STATUS_LABEL, STATUS_STYLE, STATUS_SOLID, fmtDate } from "../../ui";
 
 export type Booking = {
   id: number; ref: string; status: string; lang: string | null; channel: string | null;
@@ -56,7 +56,11 @@ export default function BookingsClient({ rows }: { rows: Booking[] }) {
               type="button"
               onClick={() => setFilter(key)}
               className="rounded-full px-4 py-2 text-xs font-bold transition-colors"
-              style={filter === key ? { background: C.pine, color: "#fff" } : { background: "#fff", color: C.pine }}
+              style={
+                filter === key
+                  ? key === "all" ? { background: C.pine, color: "#fff" } : STATUS_SOLID[key]
+                  : key === "all" ? { background: "#fff", color: C.pine } : STATUS_STYLE[key]
+              }
             >
               {label}
             </button>
@@ -144,8 +148,8 @@ export default function BookingsClient({ rows }: { rows: Booking[] }) {
                     type="button"
                     disabled={busy || open.status === key}
                     onClick={() => update(open.id, { status: key })}
-                    className="rounded-full px-4 py-2 text-xs font-bold transition-opacity disabled:opacity-40"
-                    style={{ background: key === open.status ? C.pine : "#F5F5F4", color: key === open.status ? "#fff" : C.pine }}
+                    className="rounded-full px-4 py-2 text-xs font-bold transition-all hover:-translate-y-0.5 disabled:translate-y-0 disabled:opacity-100"
+                    style={key === open.status ? STATUS_SOLID[key] : STATUS_STYLE[key]}
                   >
                     {label}
                   </button>

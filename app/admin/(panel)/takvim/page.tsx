@@ -1,61 +1,52 @@
 import { sql, ensureSchema, dbReady } from "../../../lib/db";
-import { C, Card, PageTitle, NoDb, StatusPill } from "../../ui";
+import { C, Card, PageTitle, NoDb } from "../../ui";
+import CalendarView, { type Trip } from "./calendar-view";
 
 export const dynamic = "force-dynamic";
 
-type Row = { id: number; ref: string; status: string; ride_date: string | null; ride_time: string | null;
-  pickup: string | null; dropoff: string | null; first_name: string | null; last_name: string | null; vehicle: string | null };
-
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<{ ay?: string }> }) {
   if (!dbReady) return (<><PageTitle title="Takvim" /><NoDb /></>);
   await ensureSchema();
-  const rows = (await sql`
-    SELECT id, ref, status, ride_date, ride_time, pickup, dropoff, first_name, last_name, vehicle
+
+  const { ay } = await searchParams;
+  const now = new Date();
+  const month = /^\d{4}-\d{2}$/.test(ay ?? "")
+    ? (ay as string)
+    : `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+  const trips = (await sql`
+    SELECT id, ref, status, ride_date, ride_time, pickup, dropoff, stops, vehicle, price,
+           first_name, last_name, phone, pax
     FROM bookings
-    WHERE status <> 'cancelled' AND ride_date IS NOT NULL AND ride_date <> ''
-    ORDER BY ride_date, ride_time LIMIT 400`) as unknown as Row[];
+    WHERE ride_date IS NOT NULL AND ride_date <> '' AND ride_date LIKE ${month + "%"}
+    ORDER BY ride_date, ride_time`) as unknown as Trip[];
 
-  // Yolculuk tarihine göre grupla; geçmiş günleri ayır
-  const today = new Date().toISOString().slice(0, 10);
-  const upcoming = rows.filter((r) => (r.ride_date ?? "") >= today);
-  const groups = new Map<string, Row[]>();
-  for (const r of upcoming) {
-    const k = r.ride_date as string;
-    groups.set(k, [...(groups.get(k) ?? []), r]);
-  }
+  const months = (await sql`
+    SELECT DISTINCT substring(ride_date, 1, 7) AS ym
+    FROM bookings
+    WHERE ride_date IS NOT NULL AND ride_date <> ''
+    ORDER BY ym DESC`) as unknown as { ym: string }[];
 
-  const dayLabel = (d: string) =>
-    new Date(d).toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const revenue = trips
+    .filter((t) => t.status === "confirmed" || t.status === "done")
+    .reduce((s, t) => s + Number(t.price ?? 0), 0);
 
   return (
     <>
-      <PageTitle title="Takvim" sub={`${upcoming.length} yaklaşan yolculuk`} />
-      {groups.size === 0 ? (
-        <Card><p className="text-sm text-stone-500">Yaklaşan yolculuk yok.</p></Card>
+      <PageTitle title="Takvim" sub={`${trips.length} yolculuk · onaylı ciro CHF ${revenue.toFixed(2)}`} />
+      {months.length === 0 ? (
+        <Card><p className="text-sm text-stone-500">Henüz tarihli yolculuk yok.</p></Card>
       ) : (
-        <div className="space-y-6">
-          {[...groups.entries()].map(([day, list]) => (
-            <div key={day}>
-              <div className="mb-2 flex items-baseline gap-3">
-                <h2 className="text-sm font-bold" style={{ color: C.pine }}>{dayLabel(day)}</h2>
-                <span className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${C.gold}55, transparent 70%)` }} />
-                <span className="text-xs text-stone-400">{list.length} yolculuk</span>
-              </div>
-              <div className="space-y-2">
-                {list.map((r) => (
-                  <Card key={r.id} className="flex flex-wrap items-center gap-x-5 gap-y-2 py-3.5">
-                    <span className="w-14 shrink-0 text-lg font-semibold tabular-nums" style={{ color: C.pine }}>{r.ride_time || "--:--"}</span>
-                    <span className="min-w-0 flex-1 text-sm text-stone-700">{r.pickup} → {r.dropoff}</span>
-                    <span className="text-sm text-stone-500">{[r.first_name, r.last_name].filter(Boolean).join(" ")}</span>
-                    <span className="text-xs text-stone-400">{r.vehicle}</span>
-                    <StatusPill status={r.status} />
-                  </Card>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <CalendarView month={month} trips={trips} months={months.map((m) => m.ym)} />
       )}
+      <p className="mt-4 text-xs text-stone-400">
+        Renkler durumu gösterir: <span style={{ color: "#D97706" }}>■ yeni</span>{" · "}
+        <span style={{ color: "#1D4ED8" }}>■ onaylı</span>{" · "}
+        <span style={{ color: "#059669" }}>■ tamamlandı</span>{" · "}
+        <span style={{ color: "#DC2626" }}>■ iptal</span>
+        {" — gün kutusuna tıklayınca o günün yolculukları listelenir. "}
+        <span style={{ color: C.pine }}>Bugün</span> altın çerçeveyle işaretlidir.
+      </p>
     </>
   );
 }
