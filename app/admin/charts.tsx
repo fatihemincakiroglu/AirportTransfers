@@ -40,12 +40,23 @@ function Defs() {
 export const compact = (n: number) =>
   n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(".", ",")}k` : String(Math.round(n));
 
+/**
+ * Sunucu bileşeninden fonksiyon geçirilemediği için biçim,
+ * serileştirilebilir bir anahtarla belirtilir.
+ */
+export type Fmt = "number" | "chf";
+const full = (n: number, kind: Fmt = "number", suffix?: string) =>
+  kind === "chf"
+    ? `CHF ${n.toLocaleString("de-CH", { maximumFractionDigits: 0 })}`
+    : `${Math.round(n).toLocaleString("de-CH")}${suffix ? " " + suffix : ""}`;
+
 // ── Sütun grafiği: her sütunun değeri üstünde, hover'da balon ──
 export function BarChart({
-  data, format, unit,
+  data, kind = "number", suffix, unit,
 }: {
   data: { label: string; value: number }[];
-  format?: (n: number) => string;
+  kind?: Fmt;
+  suffix?: string;
   unit?: string;
 }) {
   const [tip, setTip] = useState<Tip>(null);
@@ -55,7 +66,7 @@ export function BarChart({
   const W = 760, H = 250, padL = 40, padB = 32, padT = 26;
   const innerW = W - padL - 12, innerH = H - padB - padT;
   const bw = innerW / data.length;
-  const fmt = format ?? ((n: number) => String(Math.round(n)));
+  const fmt = (n: number) => full(n, kind, suffix);
 
   return (
     <div className="relative">
@@ -100,14 +111,14 @@ export function BarChart({
 }
 
 // ── Alan grafiği: noktaların üstünde değer, hover'da balon ──
-export function AreaChart({ data, format }: { data: { label: string; value: number }[]; format?: (n: number) => string }) {
+export function AreaChart({ data, kind = "number", suffix }: { data: { label: string; value: number }[]; kind?: Fmt; suffix?: string }) {
   const [tip, setTip] = useState<Tip>(null);
   if (data.length < 2) return <p className="py-10 text-center text-sm text-stone-400">Yeterli veri yok.</p>;
 
   const max = Math.max(...data.map((d) => d.value), 1);
   const W = 760, H = 230, padL = 44, padB = 30, padT = 30;
   const innerW = W - padL - 14, innerH = H - padB - padT;
-  const fmt = format ?? ((n: number) => String(Math.round(n)));
+  const fmt = (n: number) => full(n, kind, suffix);
   const px = (i: number) => padL + (i / (data.length - 1)) * innerW;
   const py = (v: number) => padT + innerH - (v / max) * innerH;
   const line = data.map((d, i) => `${px(i)},${py(d.value)}`).join(" ");
@@ -206,10 +217,10 @@ export function DonutChart({ data }: { data: { label: string; value: number; col
 }
 
 // ── Yatay sıralama çubukları ──
-export function RankBars({ rows, format, accent }: { rows: { label: string; value: number }[]; format?: (n: number) => string; accent?: string }) {
+export function RankBars({ rows, kind = "number", suffix, accent }: { rows: { label: string; value: number }[]; kind?: Fmt; suffix?: string; accent?: string }) {
   if (!rows.length) return <p className="py-6 text-sm text-stone-400">Veri yok.</p>;
   const max = Math.max(...rows.map((r) => r.value), 1);
-  const fmt = format ?? ((n: number) => String(n));
+  const fmt = (n: number) => full(n, kind, suffix);
   return (
     <div className="space-y-3.5">
       {rows.map((r, i) => (

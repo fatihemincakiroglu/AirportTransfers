@@ -89,14 +89,14 @@ export default async function Page() {
           <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Ciro trendi</h2>
           <span className="text-xs text-stone-400">onaylı ve tamamlanmış yolculuklar · CHF (k = bin)</span>
         </div>
-        <AreaChart data={monthly.map((m) => ({ label: label(m.ym), value: m.revenue }))} format={(n) => chf(n)} />
+        <AreaChart data={monthly.map((m) => ({ label: label(m.ym), value: m.revenue }))} kind="chf" />
       </Card>
 
       {/* Aylık adet + durum dağılımı */}
       <div className="mt-6 grid gap-5 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <h2 className="mb-1 text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Aylık rezervasyon adedi</h2>
-          <BarChart data={monthly.map((m) => ({ label: label(m.ym), value: m.n }))} format={(n) => `${Math.round(n)} rezervasyon`} />
+          <BarChart data={monthly.map((m) => ({ label: label(m.ym), value: m.n }))} suffix="rezervasyon" />
         </Card>
         <Card>
           <h2 className="mb-4 text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Durum dağılımı</h2>
@@ -117,7 +117,7 @@ export default async function Page() {
         <Card>
           <h2 className="mb-4 text-sm font-bold uppercase tracking-[0.15em] text-stone-400">En çok ciro getiren yerler</h2>
           <RankBars rows={topRoutes.slice().sort((a, b) => b.revenue - a.revenue).map((r) => ({ label: r.label, value: r.revenue }))}
-                    format={(n) => chf(n)} accent={`linear-gradient(90deg, #059669, ${C.gold})`} />
+                    kind="chf" accent={`linear-gradient(90deg, #059669, ${C.gold})`} />
         </Card>
         <Card>
           <h2 className="mb-4 text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Araç sınıfı dağılımı</h2>
@@ -136,7 +136,7 @@ export default async function Page() {
         <h2 className="mb-1 text-sm font-bold uppercase tracking-[0.15em] text-stone-400">Haftanın günlerine göre talep</h2>
         <BarChart
           data={[1, 2, 3, 4, 5, 6, 0].map((d) => ({ label: WD[d], value: byWeekday.find((w) => w.d === d)?.n ?? 0 }))}
-          format={(n) => `${Math.round(n)} talep`}
+          suffix="talep"
         />
       </Card>
 
