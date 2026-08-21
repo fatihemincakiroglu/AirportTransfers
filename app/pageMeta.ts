@@ -4,6 +4,7 @@
 //  böylece tek kaynaktan beslenir ve dil eklenince otomatik genişler.
 // ─────────────────────────────────────────────────────────────
 import { t, pickL, type Lang } from "./i18n";
+import { LANGS, DEFAULT_LANG } from "./paths";
 import { tx } from "./i18nX";
 import { legalPages, type LegalKey } from "./legalContent";
 
@@ -14,7 +15,9 @@ export type PageKey =
   | "faq" | "buchung" | "blog" | "staedte" | "preise" | "events"
   | LegalKey;
 
-export function pageMeta(lang: Lang, key: PageKey): { title: string; description: string } {
+export function pageMeta(rawLang: Lang, key: PageKey): { title: string; description: string } {
+  // Beklenmeyen bir segment gelirse (ör. /favicon.ico) varsayılan dile düş
+  const lang: Lang = (LANGS as readonly string[]).includes(rawLang) ? rawLang : DEFAULT_LANG;
   const L = t[lang];
   const X = tx[lang];
   switch (key) {
