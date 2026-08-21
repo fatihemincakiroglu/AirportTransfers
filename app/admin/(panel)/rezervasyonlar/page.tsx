@@ -5,12 +5,13 @@ import BookingsClient, { type Booking } from "./bookings-client";
 
 export const dynamic = "force-dynamic";
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ ay?: string }> }) {
+export default async function Page({ searchParams }: { searchParams: Promise<{ ay?: string; ref?: string }> }) {
   if (!dbReady) return (<><PageTitle title="Rezervasyonlar" /><NoDb /></>);
   await ensureSchema();
 
-  const { ay } = await searchParams;
-  const month = /^\d{4}-\d{2}$/.test(ay ?? "") ? (ay as string) : "all";
+  const { ay, ref } = await searchParams;
+  // Belirli bir kayda bağlantı geldiyse ay filtresi devre dışı kalır
+  const month = ref ? "all" : (/^\d{4}-\d{2}$/.test(ay ?? "") ? (ay as string) : "all");
 
   const rows = (month === "all"
     ? await sql`
@@ -60,7 +61,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
           + Yeni rezervasyon
         </Link>
       </div>
-      <BookingsClient rows={rows} months={months.map((m) => m.ym)} month={month} drivers={drivers} history={Object.fromEntries(history.map((h) => [h.key, { trips: h.trips, spent: h.spent }]))} />
+      <BookingsClient rows={rows} months={months.map((m) => m.ym)} month={month} openRef={ref ?? null} drivers={drivers} history={Object.fromEntries(history.map((h) => [h.key, { trips: h.trips, spent: h.spent }]))} />
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { C, Card, StatusPill, STATUS_DOT } from "../../ui";
 
@@ -163,7 +164,9 @@ export default function CalendarView({
         ) : (
           <div className="space-y-2">
             {shown.map((t) => (
-              <Card key={t.id} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3.5">
+              <Link key={t.id} href={`/admin/rezervasyonlar?ref=${encodeURIComponent(t.ref)}`}
+                    className="block transition-transform hover:-translate-y-0.5">
+              <Card className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3.5">
                 <span className="w-14 shrink-0 text-base font-semibold tabular-nums sm:w-16 sm:text-lg" style={{ color: STATUS_DOT[t.status] ?? C.pine }}>
                   {t.ride_time || "--:--"}
                 </span>
@@ -183,11 +186,13 @@ export default function CalendarView({
                 <StatusPill status={t.status} />
                 {t.phone && (
                   <a href={`https://wa.me/${t.phone.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer"
+                     onClick={(e) => e.stopPropagation()}
                      className="rounded-full px-3 py-1.5 text-[11px] font-bold text-white" style={{ background: "#25D366" }}>
                     WhatsApp
                   </a>
                 )}
               </Card>
+              </Link>
             ))}
           </div>
         )}

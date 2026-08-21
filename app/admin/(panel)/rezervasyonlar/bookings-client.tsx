@@ -52,13 +52,17 @@ const monthName = (ym: string) => {
 };
 
 export default function BookingsClient({
-  rows, months, month, drivers = [], history = {},
-}: { rows: Booking[]; months: string[]; month: string; drivers?: Driver[]; history?: History }) {
+  rows, months, month, openRef = null, drivers = [], history = {},
+}: {
+  rows: Booking[]; months: string[]; month: string; openRef?: string | null;
+  drivers?: Driver[]; history?: History;
+}) {
   const [filter, setFilter] = useState("all");
   const [edit, setEdit] = useState<Record<string, string> | null>(null);
   const [note, setNote] = useState("");
   const [q, setQ] = useState("");
-  const [open, setOpen] = useState<Booking | null>(null);
+  // Bugün ekranı/takvimden gelen bağlantı doğrudan ilgili kaydı açar
+  const [open, setOpen] = useState<Booking | null>(() => rows.find((r) => r.ref === openRef) ?? null);
   const [busy, setBusy] = useState(false);
   const router = useRouter();
 

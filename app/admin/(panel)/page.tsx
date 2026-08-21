@@ -38,6 +38,8 @@ async function tripsFor(day: string) {
 /** Tek yolculuk satırı (modül seviyesinde — render içinde bileşen tanımlanmaz) */
 function TripRow({ t }: { t: Trip }) {
   return (
+    <Link href={`/admin/rezervasyonlar?ref=${encodeURIComponent(t.ref)}`}
+          className="block transition-transform hover:-translate-y-0.5">
     <Card className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3.5">
       <span className="w-14 shrink-0 text-base font-semibold tabular-nums sm:w-16 sm:text-lg" style={{ color: STATUS_DOT[t.status] ?? C.pine }}>
         {t.ride_time || "--:--"}
@@ -58,9 +60,11 @@ function TripRow({ t }: { t: Trip }) {
       <StatusPill status={t.status} />
       {t.phone && (
         <a href={`https://wa.me/${t.phone.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer"
+           onClick={(e) => e.stopPropagation()}
            className="rounded-full px-3 py-1.5 text-[11px] font-bold text-white" style={{ background: "#25D366" }}>WhatsApp</a>
       )}
     </Card>
+    </Link>
   );
 }
 
@@ -162,15 +166,18 @@ export default async function Dashboard() {
         ) : (
           <div className="space-y-2">
             {pending.map((r) => (
-              <Card key={r.id} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3.5">
-                <span className="text-sm font-bold" style={{ color: C.pine }}>{r.ref}</span>
-                <span className="min-w-0 flex-1 basis-[50%] break-words text-sm text-stone-700">{r.pickup} → {r.dropoff}</span>
-                <span className="text-xs text-stone-500">{r.ride_date} {r.ride_time}</span>
-                {r.price && <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(r.price).toFixed(2)}</span>}
-                <Link href="/admin/rezervasyonlar" className="rounded-full px-3 py-1.5 text-[11px] font-bold" style={{ background: `${C.gold}22`, color: C.pine }}>
-                  İşle →
-                </Link>
-              </Card>
+              <Link key={r.id} href={`/admin/rezervasyonlar?ref=${encodeURIComponent(r.ref)}`}
+                    className="block transition-transform hover:-translate-y-0.5">
+                <Card className="flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3.5">
+                  <span className="text-sm font-bold" style={{ color: C.pine }}>{r.ref}</span>
+                  <span className="min-w-0 flex-1 basis-[50%] break-words text-sm text-stone-700">{r.pickup} → {r.dropoff}</span>
+                  <span className="text-xs text-stone-500">{r.ride_date} {r.ride_time}</span>
+                  {r.price && <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(r.price).toFixed(2)}</span>}
+                  <span className="rounded-full px-3 py-1.5 text-[11px] font-bold" style={{ background: `${C.gold}22`, color: C.pine }}>
+                    İşle →
+                  </span>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
