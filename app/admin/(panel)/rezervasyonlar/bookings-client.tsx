@@ -19,6 +19,18 @@ const FILTERS: [string, string][] = [
 ];
 
 const TR_MONTHS = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+/** Kayıtları yolculuk tarihine (yoksa kayıt tarihine) göre aya böler */
+function groupByMonth(rows: Booking[]): [string, Booking[]][] {
+  const map = new Map<string, Booking[]>();
+  for (const r of rows) {
+    const ym = (r.ride_date && /^\d{4}-\d{2}/.test(r.ride_date))
+      ? r.ride_date.slice(0, 7)
+      : String(r.created_at).slice(0, 7);
+    map.set(ym, [...(map.get(ym) ?? []), r]);
+  }
+  return [...map.entries()].sort((a, b) => b[0].localeCompare(a[0]));
+}
+
 const monthName = (ym: string) => {
   const [y, m] = ym.split("-").map(Number);
   return `${TR_MONTHS[m - 1]} ${y}`;
@@ -91,36 +103,60 @@ export default function BookingsClient({ rows, months, month }: { rows: Booking[
         </div>
       </div>
 
-      <Card className="overflow-x-auto p-0">
-        {list.length === 0 ? (
-          <p className="p-6 text-sm text-stone-500">Kayıt bulunamadı.</p>
-        ) : (
-          <table className="w-full min-w-[860px] text-left text-sm">
-            <thead>
-              <tr className="border-b border-stone-100 text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
-                <th className="px-5 py-3">Ref</th><th className="px-4 py-3">Geliş</th>
-                <th className="px-4 py-3">Müşteri</th><th className="px-4 py-3">Güzergâh</th>
-                <th className="px-4 py-3">Yolculuk</th><th className="px-4 py-3">Araç</th>
-                <th className="px-4 py-3">Tutar</th><th className="px-4 py-3">Durum</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-stone-50">
-              {list.map((r) => (
-                <tr key={r.id} onClick={() => setOpen(r)} className="cursor-pointer hover:bg-stone-50">
-                  <td className="px-5 py-3 font-bold" style={{ color: C.pine }}>{r.ref}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-xs text-stone-500">{fmtDate(r.created_at)}</td>
-                  <td className="px-4 py-3">{[r.first_name, r.last_name].filter(Boolean).join(" ") || "—"}</td>
-                  <td className="px-4 py-3 text-stone-600">{r.pickup} → {r.dropoff}</td>
-                  <td className="px-4 py-3 whitespace-nowrap text-stone-600">{r.ride_date} {r.ride_time}</td>
-                  <td className="px-4 py-3 text-stone-600">{r.vehicle ?? "—"}</td>
-                  <td className="px-4 py-3 tabular-nums">{r.price ? `CHF ${Number(r.price).toFixed(2)}` : "—"}</td>
-                  <td className="px-4 py-3"><StatusPill status={r.status} /></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </Card>
+      {/* Aylara bölünmüş liste */}
+      {list.length === 0 ? (
+        <Card><p className="p-6 text-sm text-stone-500">Kayıt bulunamadı.</p></Card>
+      ) : (
+        <div className="space-y-7">
+          {groupByMonth(list).map(([ym, items]) => {
+            const rev = items
+              .filter((r) => r.status === "confirmed" || r.status === "done")
+              .reduce((sum, r) => sum + Number(r.price ?? 0), 0);
+            return (
+              <div key={ym}>
+                {/* Ay başlığı */}
+                <div className="mb-2.5 flex flex-wrap items-baseline gap-3">
+                  <h2 className="text-sm font-bold" style={{ color: C.pine }}>{monthName(ym)}</h2>
+                  <span className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${C.gold}55, transparent 70%)` }} />
+                  <span className="text-xs font-semibold text-stone-400">{items.length} kayıt</span>
+                  {rev > 0 && (
+                    <span className="rounded-full px-2.5 py-1 text-[11px] font-extrabold" style={{ background: `${C.gold}22`, color: C.pine }}>
+                      CHF {rev.toFixed(2)}
+                    </span>
+                  )}
+                </div>
+
+                <Card className="overflow-x-auto p-0">
+                  <table className="w-full min-w-[860px] text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-stone-100 text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">
+                        <th className="px-5 py-3">Ref</th><th className="px-4 py-3">Geliş</th>
+                        <th className="px-4 py-3">Müşteri</th><th className="px-4 py-3">Güzergâh</th>
+                        <th className="px-4 py-3">Yolculuk</th><th className="px-4 py-3">Araç</th>
+                        <th className="px-4 py-3">Tutar</th><th className="px-4 py-3">Durum</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-stone-50">
+                      {items.map((r) => (
+                        <tr key={r.id} onClick={() => setOpen(r)} className="cursor-pointer hover:bg-stone-50">
+                          <td className="px-5 py-3 font-bold" style={{ color: C.pine }}>{r.ref}</td>
+                          <td className="whitespace-nowrap px-4 py-3 text-xs text-stone-500">{fmtDate(r.created_at)}</td>
+                          <td className="px-4 py-3">{[r.first_name, r.last_name].filter(Boolean).join(" ") || "—"}</td>
+                          <td className="px-4 py-3 text-stone-600">{r.pickup} → {r.dropoff}</td>
+                          <td className="whitespace-nowrap px-4 py-3 text-stone-600">{r.ride_date} {r.ride_time}</td>
+                          <td className="px-4 py-3 text-stone-600">{r.vehicle ?? "—"}</td>
+                          <td className="px-4 py-3 tabular-nums">{r.price ? `CHF ${Number(r.price).toFixed(2)}` : "—"}</td>
+                          <td className="px-4 py-3"><StatusPill status={r.status} /></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Detay */}
       {open && (
