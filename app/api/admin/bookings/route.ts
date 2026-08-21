@@ -1,7 +1,7 @@
 // Panelden durum / not güncelleme.
 import { NextRequest, NextResponse } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
-import { sql, ensureSchema, logEvent, BOOKING_STATUSES } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, logEvent, BOOKING_STATUSES } from "../../../lib/db";
 
 export const runtime = "nodejs";
 

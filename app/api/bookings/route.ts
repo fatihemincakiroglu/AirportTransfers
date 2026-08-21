@@ -1,6 +1,6 @@
 // Siteden gelen rezervasyon talebini kaydeder (WhatsApp/e-posta akışına ek olarak).
 import { NextRequest, NextResponse } from "next/server";
-import { sql, ensureSchema, dbReady, logEvent } from "../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../lib/db";
 import { sendBookingMail } from "../../lib/mail";
 
 export const runtime = "nodejs";

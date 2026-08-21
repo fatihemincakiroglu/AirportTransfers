@@ -1,4 +1,4 @@
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import Link from "next/link";
 import { PageTitle, NoDb } from "../../ui";
 import BookingsClient, { type Booking } from "./bookings-client";
@@ -36,7 +36,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
       SELECT substring(ride_date, 1, 7) FROM bookings WHERE ride_date IS NOT NULL AND ride_date <> ''
     ) x WHERE ym IS NOT NULL ORDER BY ym DESC`) as unknown as { ym: string }[];
 
-  const drivers = (await sql`SELECT id, name FROM drivers WHERE active ORDER BY name`) as unknown as { id: number; name: string }[];
+  const drivers = (await sql`SELECT id, name FROM drivers WHERE active ORDER BY name`.catch(() => [])) as unknown as { id: number; name: string }[];
 
   // Müşteri geçmişi: telefon/e-posta bazında toplam yolculuk ve ciro
   const history = (await sql`

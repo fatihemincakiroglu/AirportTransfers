@@ -1,6 +1,6 @@
 // İletişim formu talebini kaydeder.
 import { NextRequest, NextResponse } from "next/server";
-import { sql, ensureSchema, dbReady, logEvent } from "../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../lib/db";
 
 export const runtime = "nodejs";
 const str = (v: unknown, max = 2000) => (typeof v === "string" ? v.slice(0, max) : null);

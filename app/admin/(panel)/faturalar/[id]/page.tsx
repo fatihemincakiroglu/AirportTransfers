@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { sql, ensureSchema, dbReady, VAT_RATE } from "../../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady, VAT_RATE } from "../../../../lib/db";
 import { COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS, CONTACT_EMAIL, PHONE_DISPLAY } from "../../../../config";
 import PrintButton from "./print-button";
 

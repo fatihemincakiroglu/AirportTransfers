@@ -1,4 +1,4 @@
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { PageTitle, NoDb } from "../../ui";
 import ContactsClient, { type Contact } from "./contacts-client";
 

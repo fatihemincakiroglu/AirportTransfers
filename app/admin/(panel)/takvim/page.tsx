@@ -1,4 +1,4 @@
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { C, Card, PageTitle, NoDb } from "../../ui";
 import CalendarView, { type Trip } from "./calendar-view";
 
@@ -22,7 +22,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
     WHERE b.ride_date IS NOT NULL AND b.ride_date <> '' AND b.ride_date LIKE ${month + "%"}
     ORDER BY b.ride_date, b.ride_time`) as unknown as Trip[];
 
-  const drivers = (await sql`SELECT id, name FROM drivers WHERE active ORDER BY name`) as unknown as { id: number; name: string }[];
+  const drivers = (await sql`SELECT id, name FROM drivers WHERE active ORDER BY name`.catch(() => [])) as unknown as { id: number; name: string }[];
 
   const months = (await sql`
     SELECT DISTINCT substring(ride_date, 1, 7) AS ym

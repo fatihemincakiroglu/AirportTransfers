@@ -29,11 +29,36 @@ export const sql =
 
 if (process.env.NODE_ENV !== "production") g.__sql = sql;
 
-let schemaChecked = false;
+let schemaPromise: Promise<void> | null = null;
 
-/** Tabloları oluşturur (varsa dokunmaz). Her sorgudan önce bir kez çalışır. */
-export async function ensureSchema() {
-  if (schemaChecked || !dbReady) return;
+/**
+ * Tabloları oluşturur (varsa dokunmaz).
+ * Aynı anda birden fazla sayfa çağırabildiği için tek bir söz (promise)
+ * paylaşılır; ayrıca danışma kilidi ile eşzamanlı DDL çakışması önlenir.
+ */
+export async function ensureSchema(): Promise<void> {
+  if (!dbReady) return;
+  if (!schemaPromise) {
+    schemaPromise = runSchema().catch((e) => {
+      // Başarısız olursa bir sonraki istekte tekrar denensin
+      schemaPromise = null;
+      throw e;
+    });
+  }
+  return schemaPromise;
+}
+
+async function runSchema() {
+  // Aynı anda çalışan örneklerin birbirini bozmaması için kilit
+  await sql`SELECT pg_advisory_lock(918273645)`;
+  try {
+    await createTables();
+  } finally {
+    await sql`SELECT pg_advisory_unlock(918273645)`;
+  }
+}
+
+async function createTables() {
   await sql`
     CREATE TABLE IF NOT EXISTS bookings (
       id           SERIAL PRIMARY KEY,
@@ -107,7 +132,6 @@ export async function ensureSchema() {
   await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS actor TEXT`; // "panel" | "site" | "sistem"
   await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS ref   TEXT`; // ilgili rezervasyon referansı
   await sql`CREATE INDEX IF NOT EXISTS logs_created_idx ON logs (created_at DESC)`;
-  schemaChecked = true;
 }
 
 /**
@@ -135,3 +159,15 @@ export type BookingStatus = (typeof BOOKING_STATUSES)[number];
 
 /** İsviçre KDV oranı (yolcu taşımacılığı, normal oran) */
 export const VAT_RATE = 0.081;
+
+/**
+ * Panel sayfaları için: şema hazırlığı başarısız olsa bile sayfa açılsın.
+ * (Tablolar zaten varsa sorgular normal çalışmaya devam eder.)
+ */
+export async function ensureSchemaSafe(): Promise<void> {
+  try {
+    await ensureSchema();
+  } catch (e) {
+    console.error("[db] şema hazırlanamadı", e);
+  }
+}

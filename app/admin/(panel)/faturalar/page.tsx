@@ -1,4 +1,4 @@
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { C, Card, PageTitle, NoDb, StatusPill, fmtDate } from "../../ui";
 import InvoiceActions from "./invoice-actions";
 

@@ -1,4 +1,4 @@
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import Link from "next/link";
 import { C, Card, PageTitle, NoDb } from "../../ui";
 

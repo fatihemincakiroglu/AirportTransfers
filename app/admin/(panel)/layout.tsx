@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import pkg from "../../../package.json";
-import { sql, ensureSchema, dbReady } from "../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../lib/db";
 import { isLoggedIn } from "../../lib/auth";
 import AdminShell from "../admin-shell";
 

@@ -1,7 +1,7 @@
 // Fatura numarası atar: RE-YYYY-0001 (yıl içinde sıralı)
 import { NextRequest, NextResponse } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
-import { sql, ensureSchema, logEvent, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, logEvent, dbReady } from "../../../lib/db";
 
 export const runtime = "nodejs";
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { sql, ensureSchema, dbReady } from "../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../lib/db";
 import { C, Card, PageTitle, StatusPill, NoDb, STATUS_DOT } from "../ui";
 
 export const dynamic = "force-dynamic";
@@ -26,13 +26,18 @@ function todayAndTomorrow() {
 
 /** Belirli bir günün yolculukları (şoför adıyla birlikte) */
 async function tripsFor(day: string) {
-  return (await sql`
+  try {
+    return (await sql`
     SELECT b.id, b.ref, b.status, b.ride_time, b.ride_date, b.pickup, b.dropoff, b.stops,
            b.vehicle, b.price, b.pax, b.flight, b.first_name, b.last_name, b.phone,
            d.name AS driver_name
     FROM bookings b LEFT JOIN drivers d ON d.id = b.driver_id
     WHERE b.ride_date = ${day} AND b.status <> 'cancelled'
     ORDER BY b.ride_time`) as unknown as Trip[];
+  } catch (e) {
+    console.error("[dashboard] yolculuklar okunamadı", e);
+    return [] as Trip[];
+  }
 }
 
 /** Tek yolculuk satırı (modül seviyesinde — render içinde bileşen tanımlanmaz) */

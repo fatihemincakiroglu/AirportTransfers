@@ -1,7 +1,7 @@
 // Panelden CSV dışa aktarma (Excel uyumlu: BOM + noktalı virgül)
 import { NextRequest, NextResponse } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 
 export const runtime = "nodejs";
 

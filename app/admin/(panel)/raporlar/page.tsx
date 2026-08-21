@@ -1,4 +1,4 @@
-import { sql, ensureSchema, dbReady } from "../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { C, Card, PageTitle, NoDb, STATUS_DOT, STATUS_LABEL } from "../../ui";
 import { BarChart, AreaChart, DonutChart, RankBars } from "../../charts";
 
