@@ -88,6 +88,10 @@ async function createTables() {
       created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
+  // Kabul / ret kararı
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS reject_reason TEXT`;
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS decided_at    TIMESTAMPTZ`;
+
   // Şoför ataması ve kaynak bilgisi
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS driver_id INT`;
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS source    TEXT DEFAULT 'site'`; // site | panel
@@ -154,7 +158,7 @@ export async function logEvent(
   }
 }
 
-export const BOOKING_STATUSES = ["new", "confirmed", "done", "cancelled"] as const;
+export const BOOKING_STATUSES = ["new", "confirmed", "done", "cancelled", "rejected"] as const;
 export type BookingStatus = (typeof BOOKING_STATUSES)[number];
 
 /** İsviçre KDV oranı (yolcu taşımacılığı, normal oran) */

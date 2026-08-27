@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { C, Card, StatusPill, STATUS_LABEL, STATUS_STYLE, STATUS_SOLID, fmtDate } from "../../ui";
+import DecisionButtons from "../../decision-buttons";
 
 export type Booking = {
   id: number; ref: string; status: string; lang: string | null; channel: string | null;
@@ -12,7 +13,13 @@ export type Booking = {
   first_name: string | null; last_name: string | null; email: string | null; phone: string | null;
   flight: string | null; nameboard: string | null; extras: string | null;
   notes: string | null; admin_note: string | null; created_at: string;
-  driver_id?: number | null; source?: string | null;
+  driver_id?: number | null; source?: string | null; reject_reason?: string | null;
+};
+
+/** Ret sebebi anahtarı → Türkçe etiket */
+const REJECT_LABEL: Record<string, string> = {
+  busy: "Araç o saatte dolu", distance: "Konum hizmet alanı dışında", service: "Araç bakımda",
+  capacity: "Kapasite yetersiz", short: "Talep çok kısa sürede", other: "Diğer",
 };
 
 type Driver = { id: number; name: string };
@@ -325,6 +332,19 @@ export default function BookingsClient({
               className="mt-4 w-full rounded-xl bg-stone-100 py-3 text-xs font-extrabold uppercase tracking-wide text-stone-600">
               ✎ Kaydı düzenle
             </button>
+
+            {open.status === "new" && !edit && (
+              <div className="mt-5">
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">Talebi değerlendir</p>
+                <DecisionButtons b={open} />
+              </div>
+            )}
+
+            {open.reject_reason && (
+              <p className="mt-4 rounded-xl px-4 py-3 text-sm" style={{ background: "#FEE2E2", color: "#B91C1C" }}>
+                <b>Ret sebebi:</b> {REJECT_LABEL[open.reject_reason] ?? open.reject_reason}
+              </p>
+            )}
 
             <div className="mt-5">
               <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">Durumu değiştir</p>

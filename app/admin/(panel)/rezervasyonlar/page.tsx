@@ -17,12 +17,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
     ? await sql`
         SELECT id, ref, status, lang, channel, pickup, dropoff, stops, ride_date, ride_time,
                pax, luggage, vehicle, price, payment, first_name, last_name, email, phone,
-               flight, nameboard, extras, notes, admin_note, created_at, driver_id, source
+               flight, nameboard, extras, notes, admin_note, created_at, driver_id, source, reject_reason
         FROM bookings ORDER BY created_at DESC LIMIT 500`
     : await sql`
         SELECT id, ref, status, lang, channel, pickup, dropoff, stops, ride_date, ride_time,
                pax, luggage, vehicle, price, payment, first_name, last_name, email, phone,
-               flight, nameboard, extras, notes, admin_note, created_at, driver_id, source
+               flight, nameboard, extras, notes, admin_note, created_at, driver_id, source, reject_reason
         FROM bookings
         WHERE to_char(created_at, 'YYYY-MM') = ${month} OR ride_date LIKE ${month + "%"}
         ORDER BY created_at DESC LIMIT 500`

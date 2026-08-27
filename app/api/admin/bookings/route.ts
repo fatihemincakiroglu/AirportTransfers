@@ -36,6 +36,7 @@ export async function PATCH(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const { id, status, adminNote, fields } = body as {
     id?: number; status?: string; adminNote?: string; fields?: Record<string, unknown>;
+    rejectReason?: string;
   };
   if (!id) return NextResponse.json({ ok: false }, { status: 400 });
 
@@ -43,6 +44,23 @@ export async function PATCH(req: NextRequest) {
   const [cur] = (await sql`SELECT ref, status, first_name, last_name, dropoff FROM bookings WHERE id = ${id}`) as unknown as
     { ref: string; status: string; first_name: string | null; last_name: string | null; dropoff: string | null }[];
   const who = [cur?.first_name, cur?.last_name].filter(Boolean).join(" ") || "müşteri";
+
+  // Kabul / ret kararı
+  if (status === "confirmed" || status === "rejected") {
+    const reason = typeof body.rejectReason === "string" ? body.rejectReason.slice(0, 60) : null;
+    await sql`
+      UPDATE bookings
+      SET status = ${status}, decided_at = now(), reject_reason = ${status === "rejected" ? reason : null}, updated_at = now()
+      WHERE id = ${id}`;
+    await logEvent(
+      status === "confirmed" ? "booking_accept" : "booking_reject",
+      status === "confirmed"
+        ? `${cur?.ref ?? "#" + id} talebi KABUL edildi (${who} · ${cur?.dropoff ?? "—"})`
+        : `${cur?.ref ?? "#" + id} talebi REDDEDİLDİ (${who} · ${cur?.dropoff ?? "—"}) — sebep: ${reason ?? "belirtilmedi"}`,
+      { actor: "panel", ref: cur?.ref },
+    );
+    return NextResponse.json({ ok: true });
+  }
 
   if (status) {
     if (!(BOOKING_STATUSES as readonly string[]).includes(status)) {

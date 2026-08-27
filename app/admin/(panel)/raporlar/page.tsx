@@ -41,8 +41,8 @@ export default async function Page() {
     FROM bookings GROUP BY 1 ORDER BY 1`) as unknown as { d: number; n: number }[];
 
   const [lost] = (await sql`
-    SELECT COALESCE(SUM(price) FILTER (WHERE status = 'cancelled'), 0)::float AS lost_revenue,
-           COUNT(*) FILTER (WHERE status = 'cancelled')::int AS lost_count,
+    SELECT COALESCE(SUM(price) FILTER (WHERE status IN ('cancelled','rejected')), 0)::float AS lost_revenue,
+           COUNT(*) FILTER (WHERE status IN ('cancelled','rejected'))::int AS lost_count,
            COALESCE(SUM(price) FILTER (WHERE status = 'new'), 0)::float AS pending_revenue,
            COUNT(*) FILTER (WHERE status = 'new')::int AS pending_count
     FROM bookings`) as unknown as { lost_revenue: number; lost_count: number; pending_revenue: number; pending_count: number }[];
@@ -71,7 +71,7 @@ export default async function Page() {
     { label: "Toplam rezervasyon", value: String(tot.n), note: trend ? `${trend > 0 ? "▲" : "▼"} geçen aya göre %${Math.abs(trend)}` : undefined, accent: C.pine },
     { label: "Kazanılan ciro", value: chf(tot.revenue), note: `${tot.won} onaylı/tamamlanmış yolculuk`, accent: "#059669" },
     { label: "Ortalama sepet", value: chf(tot.avg_price), accent: C.gold },
-    { label: "Kayıp ciro", value: chf(lost.lost_revenue), note: `${lost.lost_count} iptal edilen talep`, accent: "#DC2626" },
+    { label: "Kayıp ciro", value: chf(lost.lost_revenue), note: `${lost.lost_count} reddedilen / iptal edilen`, accent: "#DC2626" },
     { label: "Bekleyen ciro", value: chf(lost.pending_revenue), note: `${lost.pending_count} yanıt bekleyen`, accent: "#D97706" },
     { label: "Dönüşüm oranı", value: `%${convRate}`, note: "kazanılan / toplam talep", accent: "#1D4ED8" },
   ];

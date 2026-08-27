@@ -2,6 +2,7 @@ import Link from "next/link";
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../lib/db";
 import { C, Card, PageTitle, NoDb } from "../ui";
 import TripRow, { type Trip } from "./trip-row";
+import DecisionButtons, { type DecisionBooking } from "../decision-buttons";
 
 export const dynamic = "force-dynamic";
 
@@ -45,8 +46,9 @@ export default async function Dashboard() {
   const tomorrowTrips = await tripsFor(tomorrow);
 
   const pending = (await sql`
-    SELECT id, ref, pickup, dropoff, ride_date, ride_time, price, first_name, last_name, created_at
-    FROM bookings WHERE status = 'new' ORDER BY created_at DESC LIMIT 6`) as unknown as Record<string, string>[];
+    SELECT id, ref, lang, pickup, dropoff, ride_date, ride_time, price, vehicle,
+           first_name, last_name, phone, email, created_at
+    FROM bookings WHERE status = 'new' ORDER BY created_at DESC LIMIT 6`) as unknown as (DecisionBooking & { created_at: string })[];
 
   const [msg] = (await sql`SELECT COUNT(*) FILTER (WHERE status = 'new')::int AS n FROM contacts`) as unknown as { n: number }[];
 
@@ -133,18 +135,19 @@ export default async function Dashboard() {
         ) : (
           <div className="space-y-2">
             {pending.map((r) => (
-              <Link key={r.id} href={`/admin/rezervasyonlar?ref=${encodeURIComponent(r.ref)}`}
-                    className="block transition-transform hover:-translate-y-0.5">
-                <Card className="flex flex-wrap items-center gap-x-4 gap-y-1.5 py-3.5">
-                  <span className="text-sm font-bold" style={{ color: C.pine }}>{r.ref}</span>
-                  <span className="min-w-0 flex-1 basis-[50%] break-words text-sm text-stone-700">{r.pickup} → {r.dropoff}</span>
-                  <span className="text-xs text-stone-500">{r.ride_date} {r.ride_time}</span>
-                  {r.price && <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(r.price).toFixed(2)}</span>}
-                  <span className="rounded-full px-3 py-1.5 text-[11px] font-bold" style={{ background: `${C.gold}22`, color: C.pine }}>
-                    İşle →
-                  </span>
-                </Card>
-              </Link>
+              <Card key={r.id}>
+                <Link href={`/admin/rezervasyonlar?ref=${encodeURIComponent(r.ref)}`} className="block">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                    <span className="text-sm font-bold" style={{ color: C.pine }}>{r.ref}</span>
+                    <span className="min-w-0 flex-1 basis-[50%] break-words text-sm text-stone-700">{r.pickup} → {r.dropoff}</span>
+                    <span className="text-xs text-stone-500">{r.ride_date} {r.ride_time}</span>
+                    {r.price && <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(r.price).toFixed(2)}</span>}
+                  </div>
+                </Link>
+                <div className="mt-3 border-t border-stone-100 pt-3">
+                  <DecisionButtons b={r} compact />
+                </div>
+              </Card>
             ))}
           </div>
         )}
