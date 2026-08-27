@@ -19,6 +19,7 @@ export type DecisionBooking = {
  */
 export default function DecisionButtons({ b, compact = false }: { b: DecisionBooking; compact?: boolean }) {
   const [mode, setMode] = useState<"idle" | "reject" | "sent">("idle");
+  const [decision, setDecision] = useState<"confirmed" | "rejected" | null>(null);
   const [reason, setReason] = useState(REJECT_REASONS[0].key);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
@@ -37,6 +38,7 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
     });
     setBusy(false);
 
+    setDecision(status);
     setMessage(
       status === "confirmed"
         ? acceptMessage(b.lang, {
@@ -47,6 +49,12 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
         : rejectMessage(b.lang, reasonKey ?? "other", { name: who, route, when }),
     );
     setMode("sent");
+    // Not: liste burada yenilenmez; yenilenirse bu kayıt "bekleyenler"den
+    // düşer ve mesaj kutusu ekrandan kaybolur. Yenileme kapatınca yapılır.
+  };
+
+  const closeAndRefresh = () => {
+    setMode("idle");
     router.refresh();
   };
 
@@ -60,15 +68,21 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
   // ── Karar sonrası: hazır mesaj ──
   if (mode === "sent") {
     return (
-      <div className="rounded-2xl border border-stone-200 bg-white p-4">
-        <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">
+      <div className="rounded-2xl border p-4"
+           style={decision === "confirmed"
+             ? { borderColor: "#A7F3D0", background: "#ECFDF5" }
+             : { borderColor: "#FECACA", background: "#FEF2F2" }}>
+        <p className="text-sm font-bold" style={{ color: decision === "confirmed" ? "#065F46" : "#B91C1C" }}>
+          {decision === "confirmed" ? "✓ Talep kabul edildi" : "✕ Talep reddedildi"}
+        </p>
+        <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">
           Müşteriye gönderilecek mesaj ({(b.lang ?? "de").toUpperCase()})
         </p>
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           rows={9}
-          className="mt-2 w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-3 text-sm outline-none focus:border-[#C9A24B]"
+          className="mt-2 w-full rounded-xl border border-stone-200 bg-white px-3.5 py-3 text-sm outline-none focus:border-[#C9A24B]"
         />
         <div className="mt-3 flex flex-wrap gap-2">
           {waHref && (
@@ -88,7 +102,7 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
             className="rounded-full bg-stone-100 px-4 py-2.5 text-xs font-extrabold uppercase tracking-wide text-stone-600">
             Kopyala
           </button>
-          <button type="button" onClick={() => setMode("idle")}
+          <button type="button" onClick={closeAndRefresh}
             className="ml-auto rounded-full px-4 py-2.5 text-xs font-bold text-stone-400">
             Kapat
           </button>
