@@ -125,6 +125,20 @@ async function createTables() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
 
+  // Ziyaretçi sayaçları — kişisel veri (IP) SAKLANMAZ, yalnızca toplamlar
+  await sql`
+    CREATE TABLE IF NOT EXISTS visits (
+      day     DATE NOT NULL,
+      country TEXT NOT NULL DEFAULT '??',
+      city    TEXT NOT NULL DEFAULT '',
+      region  TEXT NOT NULL DEFAULT '',
+      lang    TEXT NOT NULL DEFAULT '',
+      page    TEXT NOT NULL DEFAULT '',
+      hits    INT  NOT NULL DEFAULT 0,
+      PRIMARY KEY (day, country, city, region, lang, page)
+    )`;
+  await sql`CREATE INDEX IF NOT EXISTS visits_day_idx ON visits (day DESC)`;
+
   await sql`
     CREATE TABLE IF NOT EXISTS logs (
       id         SERIAL PRIMARY KEY,

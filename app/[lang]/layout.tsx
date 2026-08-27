@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { LangProvider } from "../providers";
+import VisitTracker from "../visit-tracker";
 import { SITE_URL } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
 import { t, type Lang } from "../i18n";
@@ -96,7 +97,8 @@ export default async function RootLayout({
         {jsonLd.map((obj, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
         ))}
-        <LangProvider lang={safeLang}>{children}</LangProvider>
+        <LangProvider lang={safeLang}>
+          <VisitTracker />{children}</LangProvider>
       </body>
     </html>
   );
