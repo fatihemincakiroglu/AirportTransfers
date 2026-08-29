@@ -122,6 +122,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Prenotazione a ore: ${h} ore – autista a disposizione`,
   },
   stops: { add: "Aggiungi una tappa", ph: "Tappa – indirizzo", remove: "Rimuovi", label: "Tappe intermedie:" },
+  busy: { title: "I nostri veicoli sono occupati in questo orario", text: "In questa fascia oraria è già previsto un transfer. Scelga un altro orario o ci contatti: troveremo una soluzione insieme.", cta: "Parla con il servizio clienti", next: "Prossimo orario libero:" },
   done: { title: "Richiesta inviata!", body: (r: string) => `La sua richiesta di transfer ${r} è stata creata e aperta in WhatsApp o via e-mail. Invii il messaggio – di norma confermiamo entro 15 minuti.`, hint: "Grazie per la sua richiesta! Controlli anche la posta in arrivo o la cartella spam.", payment: "Metodo di pagamento", home: "Torna alla home" },
   dest: {
     crumb: "Destinazioni",

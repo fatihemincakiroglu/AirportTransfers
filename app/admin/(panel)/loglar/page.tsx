@@ -14,6 +14,7 @@ const KIND: Record<string, { label: string; icon: string; bg: string; fg: string
   booking_status: { label: "Durum değişikliği",icon: "🔄", bg: "#DBEAFE", fg: "#1E40AF" },
   booking_accept: { label: "Talep kabul",      icon: "✅", bg: "#D1FAE5", fg: "#065F46" },
   booking_reject: { label: "Talep ret",        icon: "🚫", bg: "#FEE2E2", fg: "#B91C1C" },
+  booking_cancel: { label: "İptal",            icon: "⊘", bg: "#F3F4F6", fg: "#6B7280" },
   booking_manual: { label: "Manuel kayıt",     icon: "➕", bg: "#EDE9FE", fg: "#5B21B6" },
   booking_edit:   { label: "Kayıt düzenleme",  icon: "✎", bg: "#F5F5F4", fg: "#57534E" },
   driver_new:     { label: "Şoför eklendi",    icon: "👤", bg: "#E0F2FE", fg: "#075985" },

@@ -8,6 +8,7 @@ import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   mailHref, localName, inputCls, labelCls, norm, ExtrasCounter,
+  waHref,
 } from "../../components";
 
 // Talep referans numarası (tıklama anında üretilir)
@@ -21,6 +22,8 @@ export default function Buchung() {
   const [stops, setStops] = useState<string[]>([]); // URL'den gelen ara duraklar
   const [doneRef, setDoneRef] = useState<string | null>(null); // talep gönderildi ekranı (referans no)
   const draftRef = useRef<string | null>(null); // son adımda oluşturulan taslak referansı
+  // 3 saatlik boşluk kuralı: seçilen saatte araç dolu mu?
+  const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null }>({ busy: false, nextFree: null });
 
   // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
   const saveBooking = (ref: string, channel: "whatsapp" | "email" | "taslak") => {
@@ -172,6 +175,27 @@ export default function Buchung() {
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [XH, XS]);
 
+  // Seçilen tarih/saat için müsaitlik sorgusu (harici sistemle senkron)
+  useEffect(() => {
+    let alive = true;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (!date || !time) {
+      setSlot({ busy: false, nextFree: null });
+      return;
+    }
+    (async () => {
+      try {
+        const res = await fetch(`/api/availability?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`);
+        const d = await res.json();
+        if (alive) setSlot({ busy: !!d.busy, nextFree: d.nextFree ?? null });
+      } catch {
+        if (alive) setSlot({ busy: false, nextFree: null });
+      }
+    })();
+    /* eslint-enable react-hooks/set-state-in-effect */
+    return () => { alive = false; };
+  }, [date, time]);
+
   const route = routeIdx !== null ? routes[routeIdx] : null;
   const n = route ? localName(route.to, lang) : "";
   const origin = L.routesSec.origin;
@@ -199,7 +223,7 @@ export default function Buchung() {
   const total = hasTrip && chosen ? basePrice * chosen.mult : 0;
 
   const step1Ready = hasTrip && date && time;
-  const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight;
+  const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight && !slot.busy;
 
   const message = () => {
     const c = chosen!;
@@ -441,6 +465,27 @@ export default function Buchung() {
                   <button onClick={() => go(2)} className="rounded-full border px-6 py-3 text-sm font-bold" style={{ borderColor: C.pine, color: C.pine }}>
                     ← {D.back}
                   </button>
+                  {slot.busy && (
+                    <div className="mb-4 rounded-2xl border p-4" style={{ borderColor: "#FDE68A", background: "#FFFBEB" }}>
+                      <p className="text-sm font-bold" style={{ color: "#92400E" }}>⚠ {X.busy.title}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#92400E" }}>{X.busy.text}</p>
+                      {slot.nextFree && (
+                        <p className="mt-1.5 text-sm font-semibold" style={{ color: "#92400E" }}>
+                          {X.busy.next} {slot.nextFree}
+                        </p>
+                      )}
+                      <a
+                        href={waHref(`${X.busy.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `Flughafen Zürich (ZRH) → ${n}`}`)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"
+                        style={{ background: "#25D366" }}
+                      >
+                        💬 {X.busy.cta}
+                      </a>
+                    </div>
+                  )}
+
                   <a
                     href={ready ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(message())}` : undefined}
                     target="_blank"

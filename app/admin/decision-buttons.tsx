@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { REJECT_REASONS, acceptMessage, rejectMessage } from "./decisionMessages";
+import { REJECT_REASONS, CANCEL_REASONS, acceptMessage, rejectMessage, cancelMessage } from "./decisionMessages";
 
 export type DecisionBooking = {
-  id: number; ref: string; lang: string | null;
+  id: number; ref: string; lang: string | null; status?: string;
   pickup: string | null; dropoff: string | null;
   ride_date: string | null; ride_time: string | null;
   price: string | null; vehicle: string | null;
@@ -18,9 +18,10 @@ export type DecisionBooking = {
  * Karar verildikten sonra müşteriye gönderilecek hazır mesaj gösterilir.
  */
 export default function DecisionButtons({ b, compact = false }: { b: DecisionBooking; compact?: boolean }) {
-  const [mode, setMode] = useState<"idle" | "reject" | "sent">("idle");
-  const [decision, setDecision] = useState<"confirmed" | "rejected" | null>(null);
+  const [mode, setMode] = useState<"idle" | "reject" | "cancel" | "sent">("idle");
+  const [decision, setDecision] = useState<"confirmed" | "rejected" | "cancelled" | null>(null);
   const [reason, setReason] = useState(REJECT_REASONS[0].key);
+  const [cancelReason, setCancelReason] = useState(CANCEL_REASONS[0].key);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
   const router = useRouter();
@@ -29,7 +30,7 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
   const route = `${b.pickup ?? "—"} → ${b.dropoff ?? "—"}`;
   const when = `${b.ride_date ?? ""} ${b.ride_time ?? ""}`.trim();
 
-  const decide = async (status: "confirmed" | "rejected", reasonKey?: string) => {
+  const decide = async (status: "confirmed" | "rejected" | "cancelled", reasonKey?: string) => {
     setBusy(true);
     await fetch("/api/admin/bookings", {
       method: "PATCH",
@@ -46,7 +47,9 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
             price: b.price ? `CHF ${Number(b.price).toFixed(2)}` : "—",
             vehicle: b.vehicle ?? "—",
           })
-        : rejectMessage(b.lang, reasonKey ?? "other", { name: who, route, when }),
+        : status === "cancelled"
+          ? cancelMessage(b.lang, reasonKey ?? "other", { name: who, route, when })
+          : rejectMessage(b.lang, reasonKey ?? "other", { name: who, route, when }),
     );
     setMode("sent");
     // Not: liste burada yenilenmez; yenilenirse bu kayıt "bekleyenler"den
@@ -73,7 +76,9 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
              ? { borderColor: "#A7F3D0", background: "#ECFDF5" }
              : { borderColor: "#FECACA", background: "#FEF2F2" }}>
         <p className="text-sm font-bold" style={{ color: decision === "confirmed" ? "#065F46" : "#B91C1C" }}>
-          {decision === "confirmed" ? "✓ Talep kabul edildi" : "✕ Talep reddedildi"}
+          {decision === "confirmed" ? "✓ Talep kabul edildi"
+            : decision === "cancelled" ? "⊘ Rezervasyon iptal edildi"
+            : "✕ Talep reddedildi"}
         </p>
         <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">
           Müşteriye gönderilecek mesaj ({(b.lang ?? "de").toUpperCase()})
@@ -139,6 +144,46 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
           </button>
         </div>
       </div>
+    );
+  }
+
+  // ── İptal sebebi seçimi (kabul edilmiş rezervasyon için) ──
+  if (mode === "cancel") {
+    return (
+      <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
+        <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-stone-500">İptal sebebi</p>
+        <div className="mt-2.5 space-y-1.5">
+          {CANCEL_REASONS.map((r) => (
+            <label key={r.key} className="flex cursor-pointer items-center gap-2.5 text-sm text-stone-700">
+              <input type="radio" name={`cancel-${b.id}`} checked={cancelReason === r.key}
+                     onChange={() => setCancelReason(r.key)} className="accent-[#6B7280]" />
+              {r.label}
+            </label>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button type="button" disabled={busy} onClick={() => decide("cancelled", cancelReason)}
+            className="rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white disabled:opacity-40"
+            style={{ background: "#6B7280" }}>
+            {busy ? "Kaydediliyor…" : "İptal et ve mesaj hazırla"}
+          </button>
+          <button type="button" onClick={() => setMode("idle")}
+            className="rounded-full bg-white px-5 py-2.5 text-xs font-bold text-stone-500 ring-1 ring-black/5">
+            Vazgeç
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Kabul edilmiş rezervasyon: iptal düğmesi ──
+  if (b.status === "confirmed" || b.status === "done") {
+    return (
+      <button type="button" onClick={() => setMode("cancel")}
+        className="rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-wide transition-transform hover:-translate-y-0.5"
+        style={{ background: "#F3F4F6", color: "#6B7280" }}>
+        ⊘ Rezervasyonu iptal et
+      </button>
     );
   }
 

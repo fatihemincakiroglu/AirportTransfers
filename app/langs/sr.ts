@@ -122,6 +122,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Rezervacija po satu: ${h} sati – vozač na raspolaganju`,
   },
   stops: { add: "Dodaj stajanje", ph: "Usputna stanica – adresa", remove: "Ukloni", label: "Usputne stanice:" },
+  busy: { title: "U ovom terminu su naša vozila zauzeta", text: "U ovom vremenskom okviru već je planiran transfer. Izaberite drugo vreme ili nas kontaktirajte – naći ćemo rešenje.", cta: "Razgovarajte sa korisničkom podrškom", next: "Sledeći slobodan termin:" },
   done: { title: "Zahtev poslat!", body: (r: string) => `Vaš zahtev za transfer ${r} je kreiran i otvoren u WhatsApp-u ili e-pošti. Pošaljite poruku – obično potvrđujemo u roku od 15 minuta.`, hint: "Hvala na zahtevu! Proverite i prijemno sanduče ili spam fasciklu.", payment: "Način plaćanja", home: "Nazad na početnu" },
   dest: {
     crumb: "Destinacije",

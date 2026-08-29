@@ -122,6 +122,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Saatlik rezervasyon: ${h} saat – şoför emrinizde`,
   },
   stops: { add: "Durak ekle", ph: "Ara durak – adres", remove: "Kaldır", label: "Ara duraklar:" },
+  busy: { title: "Bu saatte araçlarımız dolu", text: "Bu zaman aralığında planlanmış bir transfer var. Lütfen başka bir saat seçin ya da bizimle iletişime geçin – birlikte çözüm buluruz.", cta: "Müşteri hizmetleriyle görüşün", next: "En yakın uygun saat:" },
   done: { title: "Talep alındı!", body: (r: string) => `${r} numaralı transfer talebiniz oluşturuldu ve WhatsApp ya da e-posta ile açıldı. Lütfen mesajı gönderin – genellikle 15 dakika içinde onaylıyoruz.`, hint: "Talebiniz için teşekkürler! Lütfen gelen kutunuzu veya spam klasörünüzü de kontrol edin.", payment: "Ödeme türü", home: "Ana sayfaya dön" },
   dest: {
     crumb: "Destinasyonlar",

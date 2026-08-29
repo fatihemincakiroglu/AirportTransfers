@@ -122,6 +122,7 @@ const tx: DictX = {
     bookingNote: (h: string) => `Réservation à l'heure : ${h} heures – chauffeur à disposition`,
   },
   stops: { add: "Ajouter un arrêt", ph: "Arrêt – adresse", remove: "Supprimer", label: "Arrêts intermédiaires :" },
+  busy: { title: "Nos véhicules sont occupés à cette heure", text: "Un transfert est déjà prévu sur ce créneau. Choisissez un autre horaire ou contactez-nous : nous trouverons une solution.", cta: "Parler au service client", next: "Prochain créneau libre :" },
   done: { title: "Demande envoyée !", body: (r: string) => `Votre demande de transfert ${r} a été créée et ouverte dans WhatsApp ou par e-mail. Envoyez le message – nous confirmons en général sous 15 minutes.`, hint: "Merci pour votre demande ! Pensez à vérifier votre boîte de réception ou vos spams.", payment: "Mode de paiement", home: "Retour à l'accueil" },
   dest: {
     crumb: "Destinations",

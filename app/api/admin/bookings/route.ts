@@ -5,6 +5,7 @@ import { sql, ensureSchemaSafe as ensureSchema, logEvent, BOOKING_STATUSES } fro
 
 export const runtime = "nodejs";
 
+
 /** Panelden manuel rezervasyon oluşturma */
 export async function POST(req: NextRequest) {
   if (!(await isLoggedIn())) return NextResponse.json({ ok: false }, { status: 401 });
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
       ${b.admin_note ?? null}, ${num(b.driver_id)})`;
 
   await logEvent("booking_manual", `Panelden manuel rezervasyon eklendi: ${ref} · ${b.pickup ?? "—"} → ${b.dropoff ?? "—"}`, { actor: "panel", ref });
+
   return NextResponse.json({ ok: true, ref });
 }
 
@@ -46,17 +48,19 @@ export async function PATCH(req: NextRequest) {
   const who = [cur?.first_name, cur?.last_name].filter(Boolean).join(" ") || "müşteri";
 
   // Kabul / ret kararı
-  if (status === "confirmed" || status === "rejected") {
+  if (status === "confirmed" || status === "rejected" || status === "cancelled") {
     const reason = typeof body.rejectReason === "string" ? body.rejectReason.slice(0, 60) : null;
     await sql`
       UPDATE bookings
-      SET status = ${status}, decided_at = now(), reject_reason = ${status === "rejected" ? reason : null}, updated_at = now()
+      SET status = ${status}, decided_at = now(),
+          reject_reason = ${status === "confirmed" ? null : reason}, updated_at = now()
       WHERE id = ${id}`;
+    const kind = status === "confirmed" ? "booking_accept" : status === "cancelled" ? "booking_cancel" : "booking_reject";
+    const verb = status === "confirmed" ? "KABUL edildi" : status === "cancelled" ? "İPTAL edildi" : "REDDEDİLDİ";
     await logEvent(
-      status === "confirmed" ? "booking_accept" : "booking_reject",
-      status === "confirmed"
-        ? `${cur?.ref ?? "#" + id} talebi KABUL edildi (${who} · ${cur?.dropoff ?? "—"})`
-        : `${cur?.ref ?? "#" + id} talebi REDDEDİLDİ (${who} · ${cur?.dropoff ?? "—"}) — sebep: ${reason ?? "belirtilmedi"}`,
+      kind,
+      `${cur?.ref ?? "#" + id} rezervasyonu ${verb} (${who} · ${cur?.dropoff ?? "—"})` +
+        (status === "confirmed" ? "" : ` — sebep: ${reason ?? "belirtilmedi"}`),
       { actor: "panel", ref: cur?.ref },
     );
     return NextResponse.json({ ok: true });
@@ -98,5 +102,6 @@ export async function PATCH(req: NextRequest) {
     await sql`UPDATE bookings SET admin_note = ${adminNote.slice(0, 1000)}, updated_at = now() WHERE id = ${id}`;
     await logEvent("booking_note", `${cur?.ref ?? "#" + id} kaydına panel notu eklendi`, { actor: "panel", ref: cur?.ref });
   }
+
   return NextResponse.json({ ok: true });
 }

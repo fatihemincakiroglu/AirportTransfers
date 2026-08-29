@@ -20,6 +20,7 @@ export type Booking = {
 const REJECT_LABEL: Record<string, string> = {
   busy: "Araç o saatte dolu", distance: "Konum hizmet alanı dışında", service: "Araç bakımda",
   capacity: "Kapasite yetersiz", short: "Talep çok kısa sürede", other: "Diğer",
+  customer: "Müşteri isteği", reschedule: "Müşteri tarihi değiştirdi", driver: "Şoför müsait değil",
 };
 
 type Driver = { id: number; name: string };
@@ -333,16 +334,18 @@ export default function BookingsClient({
               ✎ Kaydı düzenle
             </button>
 
-            {open.status === "new" && !edit && (
+            {!edit && (open.status === "new" || open.status === "confirmed" || open.status === "done") && (
               <div className="mt-5">
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">Talebi değerlendir</p>
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">
+                  {open.status === "new" ? "Talebi değerlendir" : "Rezervasyon işlemleri"}
+                </p>
                 <DecisionButtons b={open} />
               </div>
             )}
 
             {open.reject_reason && (
               <p className="mt-4 rounded-xl px-4 py-3 text-sm" style={{ background: "#FEE2E2", color: "#B91C1C" }}>
-                <b>Ret sebebi:</b> {REJECT_LABEL[open.reject_reason] ?? open.reject_reason}
+                <b>{open.status === "cancelled" ? "İptal sebebi:" : "Ret sebebi:"}</b> {REJECT_LABEL[open.reject_reason] ?? open.reject_reason}
               </p>
             )}
 
