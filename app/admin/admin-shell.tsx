@@ -12,7 +12,6 @@ const NAV: [string, string, string][] = [
   ["/admin/ziyaretciler", "Ziyaretçiler", "🌍"],
   ["/admin/rezervasyonlar", "Rezervasyonlar", "🗓"],
   ["/admin/takvim", "Takvim", "📅"],
-  ["/admin/soforler", "Şoförler", "👤"],
   ["/admin/faturalar", "Faturalar", "🧾"],
   ["/admin/talepler", "İletişim Talepleri", "✉"],
   ["/admin/loglar", "Sistem Logları", "☰"],
@@ -95,7 +94,7 @@ export default function AdminShell({
     <div className="flex min-h-screen" style={{ background: C.ivory }}>
       {/* ── Masaüstü yan menü ── */}
       <aside
-        className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col overflow-y-auto border-r border-black/5 px-3 py-5 md:flex"
+        className="fixed inset-y-0 left-0 z-30 hidden w-60 flex-col overflow-y-auto border-r border-black/5 px-3 py-5 md:flex print:!hidden"
         style={{ background: C.pine }}
       >
         <Link href="/" className="mb-6 block px-3">
@@ -108,9 +107,9 @@ export default function AdminShell({
         {sysInfo}
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col md:ml-60">
+      <div className="flex min-w-0 flex-1 flex-col md:ml-60 print:ml-0">
         {/* ── Mobil üst çubuk: başlık + hamburger ── */}
-        <header className="sticky top-0 z-40 flex items-center gap-3 px-4 py-3 md:hidden" style={{ background: C.pine }}>
+        <header className="sticky top-0 z-40 flex items-center gap-3 px-4 py-3 md:hidden print:!hidden" style={{ background: C.pine }}>
           <span className="min-w-0 flex-1">
             <span className="block truncate text-sm font-bold text-white">{current?.[1] ?? "Panel"}</span>
             <span className="block text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>Zurich Taxi · Airport Transfer</span>
@@ -141,11 +140,11 @@ export default function AdminShell({
           </div>
         )}
 
-        <main className="min-w-0 flex-1 overflow-x-hidden p-4 pb-28 sm:p-5 sm:pb-28 md:p-8 md:pb-8">{children}</main>
+        <main className="min-w-0 flex-1 overflow-x-hidden p-4 pb-28 sm:p-5 sm:pb-28 md:p-8 md:pb-8 print:p-0">{children}</main>
 
         {/* ── Mobil alt gezinme çubuğu ── */}
         <nav
-          className="fixed inset-x-0 bottom-0 z-40 flex items-stretch border-t border-white/10 md:hidden"
+          className="fixed inset-x-0 bottom-0 z-40 flex items-stretch border-t border-white/10 md:hidden print:!hidden"
           style={{ background: C.pine, paddingBottom: "env(safe-area-inset-bottom)" }}
         >
           {BOTTOM.map(([href, label, icon]) => {

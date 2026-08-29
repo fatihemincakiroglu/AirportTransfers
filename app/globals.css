@@ -59,4 +59,7 @@ html, body {
 }
 @media print {
   body { background: #fff; }
+  /* Panel gezinme öğeleri faturaya karışmasın */
+  aside, header, nav { display: none !important; }
+  main { padding: 0 !important; margin: 0 !important; }
 }
