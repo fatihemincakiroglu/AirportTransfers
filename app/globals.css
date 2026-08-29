@@ -51,3 +51,12 @@ html, body {
   50%  { transform: translateX(60%); }
   100% { transform: translateX(260%); }
 }
+
+/* ── Fatura yazdırma ── */
+@page {
+  size: A4;
+  margin: 14mm;
+}
+@media print {
+  body { background: #fff; }
+}

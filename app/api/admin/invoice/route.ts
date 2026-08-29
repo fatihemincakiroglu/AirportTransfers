@@ -12,12 +12,13 @@ export async function POST(req: NextRequest) {
   if (!id) return NextResponse.json({ ok: false }, { status: 400 });
 
   await ensureSchema();
-  const year = new Date().getFullYear();
+  const now = new Date();
+  const ym = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}`;
   const [row] = (await sql`
     SELECT COUNT(*)::int AS n FROM bookings
-    WHERE invoice_no LIKE ${"RE-" + year + "-%"}`) as unknown as { n: number }[];
+    WHERE invoice_no LIKE ${"INV-" + ym + "-%"}`) as unknown as { n: number }[];
 
-  const no = `RE-${year}-${String(row.n + 1).padStart(4, "0")}`;
+  const no = `INV-${ym}-${String(row.n + 1).padStart(8, "0")}`;
   const [b] = (await sql`SELECT ref, price FROM bookings WHERE id = ${id}`) as unknown as { ref: string; price: string | null }[];
   await sql`
     UPDATE bookings SET invoice_no = ${no}, invoiced_at = now(), updated_at = now()

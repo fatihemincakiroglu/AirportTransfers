@@ -105,7 +105,7 @@ export default async function Page() {
       </Card>
 
       <p className="mt-4 text-xs leading-relaxed text-stone-400">
-        Faturalar CHF cinsinden, KDV dahil tutar üzerinden hesaplanır (İsviçre yolcu taşımacılığı oranı %8.1).
+        Faturalar CHF cinsinden, KDV dahil tutar üzerinden hesaplanır (İsviçre yolcu taşımacılığı oranı %8.1). Numara biçimi: INV-YYYYAA-00000001.
         Fatura ekranından tarayıcının yazdır menüsüyle PDF olarak kaydedebilirsiniz.
       </p>
     </>

@@ -13,6 +13,18 @@ export const COMPANY_NAME = "Kula-ZATK";
 export const COMPANY_REG = "Handelsregister-Nr.: CH-020.1.089.436-5";
 export const COMPANY_ADDRESS = "Industristrasse 14, 8302 Kloten, Switzerland";
 
+// ── Fatura bilgileri (panelde kullanılır) ──
+export const COMPANY_ADDRESS_LINES = ["Industristrasse 14,", "8302 Kloten"];
+/** Banka bilgileri — faturada gösterilir. Doğruluğunu kontrol edin. */
+export const BANK = {
+  name: "PostFinance AG",
+  city: "3030 Bern",
+  iban: "CH98 0900 0000 1584 9473 3",
+  account: "120 087 111 031",
+};
+/** Fatura numarası öneki */
+export const INVOICE_PREFIX = "INV";
+
 // Hero slider görselleri (public/hero/ içinde — pakette hazır geliyor)
 export const HERO_IMAGES = ["/hero/hero-1.jpg", "/hero/hero-2.jpg", "/hero/hero-3.jpg"];
 export const SLIDE_MS = 6000;
