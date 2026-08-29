@@ -30,8 +30,9 @@ export default function LoginClient() {
       style={{ background: C.ivory }}
     >
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5">
-        <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>Airport Zurich Transfer</p>
-        <h1 className="mt-1 text-2xl font-semibold" style={{ color: C.pine }}>Panel girişi</h1>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="Zurich Taxi" className="h-8 w-auto" />
+        <h1 className="mt-4 text-2xl font-semibold" style={{ color: C.pine }}>Panel girişi</h1>
 
         <input
           type="password"
