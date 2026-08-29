@@ -113,10 +113,19 @@ export const galleryAlts: string[] = [
   "Kurpark Bad Ragaz mit Alpenblick",
 ];
 
+/** Hero slider görselleri için alt metinler */
+const heroAlts: Record<string, string> = {
+  "hero-1": "Flughafen Zürich (ZRH) – Terminal mit SWISS Flugzeugen am Gate",
+  "hero-2": "Flughafen Zürich – Ankunftsbereich und Abholzone am Terminal",
+  "hero-3": "Flughafen Zürich bei Nacht – beleuchteter Terminaleingang",
+};
+
 /** Görsel yoluna göre alt metni bul: "/gallery/4.jpg" → Zermatt … */
 export function altFor(src: string, fallback = "AirportTransfers Zürich"): string {
   const m = src.match(/\/gallery\/(\d+)\.jpg/);
   if (m) return galleryAlts[Number(m[1]) - 1] ?? fallback;
+  const h = src.match(/\/hero\/(hero-\d)\.jpg/);
+  if (h) return heroAlts[h[1]] ?? fallback;
   return fallback;
 }
 
