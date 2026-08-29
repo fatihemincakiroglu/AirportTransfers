@@ -31,7 +31,7 @@ export default function LoginClient() {
     >
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-xl ring-1 ring-black/5">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/logo.png" alt="Zurich Taxi" className="h-8 w-auto" />
+        <img src="/logo.png" alt="Zurich Taxi · Airport Transfer" className="h-8 w-auto" />
         <h1 className="mt-4 text-2xl font-semibold" style={{ color: C.pine }}>Panel girişi</h1>
 
         <input

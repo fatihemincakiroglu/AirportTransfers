@@ -144,7 +144,7 @@ export function SiteHeader({ active }: { active?: string }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-3 sm:gap-3 sm:px-5 sm:py-4">
         <a href={P("/")} className="flex min-w-0 flex-1 items-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Zurich Taxi · Flughafen Transfer" className="h-8 w-auto sm:h-10" />
+          <img src="/logo.png" alt="Zurich Taxi · Airport Transfer" className="h-8 w-auto sm:h-10" />
         </a>
 
         <nav className="hidden items-center gap-8 text-[12px] font-bold uppercase tracking-[0.18em] text-stone-600 lg:flex">
@@ -714,7 +714,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       <div className="relative mx-auto grid grid-cols-2 gap-x-6 gap-y-10 max-w-7xl px-5 py-12 md:grid-cols-5 md:gap-8 md:py-16">
         <div className="col-span-2 md:col-span-1">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-light.png" alt="Zurich Taxi · Flughafen Transfer" className="h-10 w-auto" />
+          <img src="/logo-light.png" alt="Zurich Taxi · Airport Transfer" className="h-10 w-auto" />
           <p className="mt-4 text-sm leading-relaxed">{L.footer.about}</p>
           <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/50">{L.footer.follow}</p>
           <div className="mt-2 flex gap-2">
