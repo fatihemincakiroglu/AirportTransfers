@@ -467,19 +467,15 @@ export default function Buchung() {
                   </button>
                   {slot.busy && (
                     <div className="mb-4 rounded-2xl border p-4" style={{ borderColor: "#FDE68A", background: "#FFFBEB" }}>
-                      <p className="text-sm font-bold" style={{ color: "#92400E" }}>
-                        ⚠ {slot.reason === "night" ? X.night.title : X.busy.title}
-                      </p>
-                      <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#92400E" }}>
-                        {slot.reason === "night" ? X.night.text : X.busy.text}
-                      </p>
+                      <p className="text-sm font-bold" style={{ color: "#92400E" }}>⚠ {X.night.title}</p>
+                      <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#92400E" }}>{X.night.text}</p>
                       {slot.nextFree && (
                         <p className="mt-1.5 text-sm font-semibold" style={{ color: "#92400E" }}>
-                          {slot.reason === "night" ? X.night.earliest : X.busy.next} {slot.nextFree}
+                          {X.night.earliest} {slot.nextFree}
                         </p>
                       )}
                       <a
-                        href={waHref(`${slot.reason === "night" ? X.night.title : X.busy.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `Flughafen Zürich (ZRH) → ${n}`}`)}
+                        href={waHref(`${X.night.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `Flughafen Zürich (ZRH) → ${n}`}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"

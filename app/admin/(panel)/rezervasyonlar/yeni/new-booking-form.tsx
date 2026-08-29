@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { C, Card } from "../../../ui";
 
@@ -39,26 +39,8 @@ export default function NewBookingForm({ drivers }: { drivers: { id: number; nam
   const [f, setF] = useState(EMPTY);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
-  const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null }>({ busy: false, nextFree: null });
-  // Not: gece kuralı yalnızca site ziyaretçileri için geçerlidir
   const router = useRouter();
   const set = (k: keyof typeof EMPTY, v: string) => setF((s) => ({ ...s, [k]: v }));
-
-  // 3 saat kuralı: seçilen saatte başka iş var mı?
-  useEffect(() => {
-    let alive = true;
-    /* eslint-disable react-hooks/set-state-in-effect */
-    if (!f.ride_date || !f.ride_time) { setSlot({ busy: false, nextFree: null }); return; }
-    (async () => {
-      try {
-        const res = await fetch(`/api/availability?date=${f.ride_date}&time=${f.ride_time}`);
-        const d = await res.json();
-        if (alive) setSlot({ busy: d.reason === "gap", nextFree: d.nextFree ?? null });
-      } catch { /* sessizce geç */ }
-    })();
-    /* eslint-enable react-hooks/set-state-in-effect */
-    return () => { alive = false; };
-  }, [f.ride_date, f.ride_time]);
 
   const swap = () => setF((s) => ({ ...s, pickup: s.dropoff, dropoff: s.pickup }));
 
@@ -164,17 +146,6 @@ export default function NewBookingForm({ drivers }: { drivers: { id: number; nam
           </label>
         </div>
       </Card>
-
-      {slot.busy && (
-        <div className="rounded-2xl border p-4" style={{ borderColor: "#FDE68A", background: "#FFFBEB" }}>
-          <p className="text-sm font-bold" style={{ color: "#92400E" }}>⚠ Bu saatte başka bir yolculuk var</p>
-          <p className="mt-1 text-sm" style={{ color: "#92400E" }}>
-            İki rezervasyon arasında en az 3 saat olmalı.
-            {slot.nextFree ? ` En yakın uygun saat: ${slot.nextFree}.` : ""}
-            {" "}Yine de kaydetmek isterseniz devam edebilirsiniz.
-          </p>
-        </div>
-      )}
 
       {err && <p className="text-sm font-semibold text-red-600">{err}</p>}
 
