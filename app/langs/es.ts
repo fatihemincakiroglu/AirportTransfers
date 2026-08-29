@@ -123,6 +123,7 @@ const tx: DictX = {
   },
   stops: { add: "Añadir una parada", ph: "Parada – dirección", remove: "Eliminar", label: "Paradas intermedias:" },
   busy: { title: "Nuestros vehículos están ocupados a esta hora", text: "Ya hay un traslado programado en esta franja. Elija otra hora o contáctenos: encontraremos una solución.", cta: "Hablar con atención al cliente", next: "Próxima hora libre:" },
+  night: { title: "Reserva nocturna de última hora no disponible", text: "En horario nocturno no aceptamos automáticamente viajes con menos de 2 horas de antelación. Elija una hora posterior o contáctenos directamente: comprobaremos la disponibilidad personalmente.", earliest: "Lo antes posible a partir de:" },
   done: { title: "¡Solicitud enviada!", body: (r: string) => `Su solicitud de traslado ${r} se ha creado y abierto en WhatsApp o por correo. Envíe el mensaje – normalmente confirmamos en 15 minutos.`, hint: "¡Gracias por su solicitud! Revise también su bandeja de entrada o carpeta de spam.", payment: "Método de pago", home: "Volver al inicio" },
   dest: {
     crumb: "Destinos",

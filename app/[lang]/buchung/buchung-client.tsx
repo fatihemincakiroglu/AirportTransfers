@@ -23,7 +23,7 @@ export default function Buchung() {
   const [doneRef, setDoneRef] = useState<string | null>(null); // talep gönderildi ekranı (referans no)
   const draftRef = useRef<string | null>(null); // son adımda oluşturulan taslak referansı
   // 3 saatlik boşluk kuralı: seçilen saatte araç dolu mu?
-  const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null }>({ busy: false, nextFree: null });
+  const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null; reason: string | null }>({ busy: false, nextFree: null, reason: null });
 
   // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
   const saveBooking = (ref: string, channel: "whatsapp" | "email" | "taslak") => {
@@ -180,16 +180,16 @@ export default function Buchung() {
     let alive = true;
     /* eslint-disable react-hooks/set-state-in-effect */
     if (!date || !time) {
-      setSlot({ busy: false, nextFree: null });
+      setSlot({ busy: false, nextFree: null, reason: null });
       return;
     }
     (async () => {
       try {
         const res = await fetch(`/api/availability?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`);
         const d = await res.json();
-        if (alive) setSlot({ busy: !!d.busy, nextFree: d.nextFree ?? null });
+        if (alive) setSlot({ busy: !!d.busy, nextFree: d.nextFree ?? null, reason: d.reason ?? null });
       } catch {
-        if (alive) setSlot({ busy: false, nextFree: null });
+        if (alive) setSlot({ busy: false, nextFree: null, reason: null });
       }
     })();
     /* eslint-enable react-hooks/set-state-in-effect */
@@ -467,15 +467,19 @@ export default function Buchung() {
                   </button>
                   {slot.busy && (
                     <div className="mb-4 rounded-2xl border p-4" style={{ borderColor: "#FDE68A", background: "#FFFBEB" }}>
-                      <p className="text-sm font-bold" style={{ color: "#92400E" }}>⚠ {X.busy.title}</p>
-                      <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#92400E" }}>{X.busy.text}</p>
+                      <p className="text-sm font-bold" style={{ color: "#92400E" }}>
+                        ⚠ {slot.reason === "night" ? X.night.title : X.busy.title}
+                      </p>
+                      <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#92400E" }}>
+                        {slot.reason === "night" ? X.night.text : X.busy.text}
+                      </p>
                       {slot.nextFree && (
                         <p className="mt-1.5 text-sm font-semibold" style={{ color: "#92400E" }}>
-                          {X.busy.next} {slot.nextFree}
+                          {slot.reason === "night" ? X.night.earliest : X.busy.next} {slot.nextFree}
                         </p>
                       )}
                       <a
-                        href={waHref(`${X.busy.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `Flughafen Zürich (ZRH) → ${n}`}`)}
+                        href={waHref(`${slot.reason === "night" ? X.night.title : X.busy.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `Flughafen Zürich (ZRH) → ${n}`}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"

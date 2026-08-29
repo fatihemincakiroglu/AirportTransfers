@@ -40,6 +40,7 @@ export default function NewBookingForm({ drivers }: { drivers: { id: number; nam
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null }>({ busy: false, nextFree: null });
+  // Not: gece kuralı yalnızca site ziyaretçileri için geçerlidir
   const router = useRouter();
   const set = (k: keyof typeof EMPTY, v: string) => setF((s) => ({ ...s, [k]: v }));
 
@@ -52,7 +53,7 @@ export default function NewBookingForm({ drivers }: { drivers: { id: number; nam
       try {
         const res = await fetch(`/api/availability?date=${f.ride_date}&time=${f.ride_time}`);
         const d = await res.json();
-        if (alive) setSlot({ busy: !!d.busy, nextFree: d.nextFree ?? null });
+        if (alive) setSlot({ busy: d.reason === "gap", nextFree: d.nextFree ?? null });
       } catch { /* sessizce geç */ }
     })();
     /* eslint-enable react-hooks/set-state-in-effect */

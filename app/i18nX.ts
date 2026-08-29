@@ -39,6 +39,7 @@ const baseX = {
     },
     stops: { add: "Zwischenstopp hinzufügen", ph: "Zwischenstopp – Adresse", remove: "Entfernen", label: "Zwischenstopps:" },
     busy: { title: "Zu dieser Zeit sind unsere Fahrzeuge belegt", text: "In diesem Zeitfenster ist bereits ein Transfer geplant. Bitte wählen Sie eine andere Uhrzeit oder kontaktieren Sie uns – wir finden gemeinsam eine Lösung.", cta: "Mit dem Kundendienst sprechen", next: "Nächste freie Zeit:" },
+    night: { title: "Kurzfristige Nachtbuchung nicht möglich", text: "In den Nachtstunden nehmen wir Fahrten mit weniger als 2 Stunden Vorlaufzeit nicht automatisch an. Bitte wählen Sie eine spätere Uhrzeit oder kontaktieren Sie uns direkt – wir prüfen die Verfügbarkeit persönlich.", earliest: "Frühestens ab:" },
     done: { title: "Anfrage übermittelt!", body: (r: string) => `Ihre Transferanfrage ${r} wurde erstellt und in WhatsApp bzw. E-Mail geöffnet. Bitte senden Sie die Nachricht ab – wir bestätigen in der Regel innerhalb von 15 Minuten.`, hint: "Vielen Dank für Ihre Anfrage! Bitte prüfen Sie auch Ihren Posteingang bzw. Spam-Ordner.", payment: "Zahlungsart", home: "Zur Startseite" },
     dest: {
       crumb: "Reiseziele",
@@ -128,6 +129,7 @@ const baseX = {
     },
     stops: { add: "Add a stop", ph: "Stop – address", remove: "Remove", label: "Stops:" },
     busy: { title: "Our vehicles are booked at this time", text: "A transfer is already scheduled in this time window. Please choose another time or contact us – we will find a solution together.", cta: "Talk to customer service", next: "Next available time:" },
+    night: { title: "Short-notice night booking not possible", text: "During night hours we cannot automatically accept rides with less than 2 hours' notice. Please choose a later time or contact us directly – we will check availability personally.", earliest: "Earliest from:" },
     done: { title: "Request submitted!", body: (r: string) => `Your transfer request ${r} has been created and opened in WhatsApp or e-mail. Please send the message – we usually confirm within 15 minutes.`, hint: "Thank you for your request! Please also check your inbox or spam folder.", payment: "Payment method", home: "Back to homepage" },
     dest: {
       crumb: "Destinations",
