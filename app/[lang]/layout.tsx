@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { LangProvider } from "../providers";
 import VisitTracker from "../visit-tracker";
-import Analytics from "../analytics";
-import { SITE_URL, GA_ID } from "../config";
+import { GtmScript, GtmNoScript } from "../gtm";
+import { SITE_URL, GTM_ID } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
 import { t, type Lang } from "../i18n";
 import "../globals.css";
@@ -97,12 +97,13 @@ export default async function RootLayout({
   return (
     <html lang={safeLang} dir={RTL_LANGS.includes(safeLang) ? "rtl" : "ltr"}>
       <body className={`${sans.variable} ${serif.variable}`}>
+        <GtmNoScript id={GTM_ID} />
         {jsonLd.map((obj, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
         ))}
         <LangProvider lang={safeLang}>
           <VisitTracker />
-          <Analytics id={GA_ID} />
+          <GtmScript id={GTM_ID} />
           {children}
         </LangProvider>
       </body>

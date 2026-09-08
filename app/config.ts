@@ -7,8 +7,13 @@ export const SITE_URL = "https://zrhairporttaxi.ch";
 /** Marka adı — meta, yapısal veri ve footer'da kullanılır */
 export const SITE_NAME = "ZRH Airport Taxi";
 
-/** Google Analytics 4 ölçüm kimliği (boş bırakılırsa ölçüm yüklenmez) */
-export const GA_ID = "G-VYKV4VNKT7";
+/**
+ * Google Tag Manager kimliği (boş bırakılırsa yüklenmez).
+ * GA4, Ads dönüşümleri ve diğer tüm etiketler GTM panelinden yönetilir —
+ * siteye ayrıca etiket kodu eklenmez.
+ * GA4 ölçüm kimliği: G-VYKV4VNKT7 (GTM içinde tanımlı)
+ */
+export const GTM_ID = "GTM-KD6XZ6G9";
 
 export const WHATSAPP_NUMBER = "905325766383"; // TEST — canlıya almadan önce müşteri numarasıyla değiştir
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
