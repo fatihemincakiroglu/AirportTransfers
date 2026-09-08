@@ -4,6 +4,9 @@
 // Sitenin tam adresi — kendi domainini bağlayınca burayı güncelle:
 export const SITE_URL = "https://zrhairporttaxi.ch";
 
+/** Google Analytics 4 ölçüm kimliği (boş bırakılırsa ölçüm yüklenmez) */
+export const GA_ID = "G-VYKV4VNKT7";
+
 export const WHATSAPP_NUMBER = "905325766383"; // TEST — canlıya almadan önce müşteri numarasıyla değiştir
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
 export const BOOKING_WHATSAPP_NUMBER = "905325766383"; // +90 532 576 63 83
