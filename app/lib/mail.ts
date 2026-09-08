@@ -1,11 +1,33 @@
 // ─────────────────────────────────────────────────────────────
-//  E-POSTA BİLDİRİMİ — Resend (harici paket yok, REST ile)
+//  E-POSTA BİLDİRİMİ — Google Workspace (Gmail SMTP)
 //  Ortam değişkenleri (yoksa bildirim sessizce atlanır):
-//    RESEND_API_KEY  → Resend API anahtarı
-//    MAIL_TO         → bildirimin gideceği adres (info@zrhairporttaxi.ch)
-//    MAIL_FROM       → gönderen, doğrulanmış alan adından olmalı
+//    GMAIL_USER          → gönderen adres, ör. info@zrhairporttaxi.ch
+//    GMAIL_APP_PASSWORD  → Google hesabından üretilen uygulama şifresi
+//    MAIL_TO             → bildirimin gideceği adres (boşsa GMAIL_USER)
 // ─────────────────────────────────────────────────────────────
+import nodemailer, { type Transporter } from "nodemailer";
 import { actionToken } from "./actionToken";
+
+export const mailReady = () =>
+  Boolean(process.env.GMAIL_USER && process.env.GMAIL_APP_PASSWORD);
+
+/** Bağlantı havuzu — sunucusuz ortamda örnek başına bir kez kurulur */
+let transporter: Transporter | null = null;
+function getTransporter() {
+  if (!mailReady()) return null;
+  if (!transporter) {
+    transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: (process.env.GMAIL_APP_PASSWORD ?? "").replace(/\s/g, ""), // boşluklu yapıştırmaya tolerans
+      },
+    });
+  }
+  return transporter;
+}
 
 const C = { pine: "#0C2E25", gold: "#C9A24B" };
 
@@ -19,10 +41,10 @@ function row(label: string, v: unknown) {
 
 /** Yeni rezervasyon talebi bildirimi — kabul/ret düğmeleriyle */
 export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
-  const key = process.env.RESEND_API_KEY;
-  const to = process.env.MAIL_TO;
-  const from = process.env.MAIL_FROM ?? "ZRH Airport Taxi <onboarding@resend.dev>";
-  if (!key || !to) return;
+  const tx = getTransporter();
+  if (!tx) return;
+  const user = process.env.GMAIL_USER!;
+  const to = process.env.MAIL_TO || user;
 
   const site = process.env.SITE_URL ?? "https://zrhairporttaxi.ch";
   const who = [b.firstName, b.lastName].filter(Boolean).join(" ") || "—";
@@ -80,16 +102,12 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
   </div>`;
 
   try {
-    await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from,
-        to: [to],
-        replyTo: typeof b.email === "string" && b.email ? b.email : undefined,
-        subject: `Yeni rezervasyon ${b.ref ?? ""} — ${b.dropoff ?? ""} (${b.date ?? ""} ${b.time ?? ""})`,
-        html,
-      }),
+    await tx.sendMail({
+      from: `"ZRH Airport Taxi" <${user}>`,
+      to,
+      replyTo: typeof b.email === "string" && b.email ? b.email : undefined,
+      subject: `Yeni rezervasyon ${b.ref ?? ""} — ${b.dropoff ?? ""} (${b.date ?? ""} ${b.time ?? ""})`,
+      html,
     });
   } catch (e) {
     console.error("[mail] gönderilemedi", e);

@@ -38,14 +38,23 @@ Tablolar ilk istekte otomatik oluşur; ayrı migration adımı yok.
 `http://localhost:3000/admin` → parola ile giriş.
 Canlıda: `https://alanadin.ch/admin`
 
-## E-posta bildirimi (opsiyonel — Faz 2)
-1. https://resend.com → ücretsiz hesap (ayda 3.000 mail).
-2. **API Keys** → Create → anahtarı kopyala.
-3. Ortam değişkenlerine ekle: `RESEND_API_KEY`, `MAIL_TO` (bildirimin geleceği adres).
-4. Kendi alan adından göndermek istersen Resend'de alan adını doğrula ve `MAIL_FROM` ekle.
-   Doğrulamadan da test edebilirsin: varsayılan gönderen `onboarding@resend.dev`.
+## E-posta bildirimi (Google Workspace)
+Yeni rezervasyon geldiğinde `info@zrhairporttaxi.ch` adresine bildirim gider.
+Mailde tek tıkla **Kabul et / Reddet** düğmeleri bulunur.
 
-Bu değişkenler yoksa bildirim sessizce atlanır; rezervasyon kaydı normal çalışır.
+1. `info@zrhairporttaxi.ch` hesabıyla giriş yapın → https://myaccount.google.com/security
+2. **2 adımlı doğrulama**yı açın (uygulama şifresi için zorunlu).
+3. https://myaccount.google.com/apppasswords → uygulama adı: `Website` → **Oluştur**.
+   16 haneli şifreyi kopyalayın (boşluklar önemsiz).
+4. Ortam değişkenlerini tanımlayın:
+   - `GMAIL_USER` = `info@zrhairporttaxi.ch`
+   - `GMAIL_APP_PASSWORD` = üretilen 16 haneli şifre
+   - `MAIL_TO` = bildirimin gideceği adres (boş bırakılırsa `GMAIL_USER` kullanılır)
+
+> Uygulama şifresi seçeneği görünmüyorsa: Google Workspace Admin → Security →
+> Authentication → **Less secure apps / App passwords** iznini açın.
+
+Değişkenler tanımlı değilse bildirim sessizce atlanır; panel ve site normal çalışır.
 
 ## Sayfalar
 - **Kontrol Paneli** — özet sayılar + son rezervasyonlar
