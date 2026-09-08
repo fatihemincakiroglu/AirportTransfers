@@ -88,6 +88,9 @@ async function createTables() {
       created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
+  // Google Takvim senkronu
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS google_event_id TEXT`;
+
   // Kabul / ret kararı
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS reject_reason TEXT`;
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS decided_at    TIMESTAMPTZ`;

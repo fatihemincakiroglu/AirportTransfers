@@ -59,7 +59,10 @@ export async function POST(req: NextRequest) {
     );
 
     // Bildirim e-postası yalnızca müşteri talebi gönderdiğinde
-    if (!isDraft) await sendBookingMail(b);
+    if (!isDraft) {
+      const [saved] = (await sql`SELECT id FROM bookings WHERE ref = ${ref}`) as unknown as { id: number }[];
+      await sendBookingMail(b, saved?.id);
+    }
 
     return NextResponse.json({ ok: true });
   } catch (e) {

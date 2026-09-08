@@ -1,5 +1,7 @@
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { C, Card, PageTitle, NoDb } from "../../ui";
+import { gcalReady } from "../../../lib/gcal";
+import GcalSync from "./gcal-sync";
 import CalendarView, { type Trip } from "./calendar-view";
 
 export const dynamic = "force-dynamic";
@@ -36,7 +38,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
 
   return (
     <>
-      <PageTitle title="Takvim" sub={`${trips.length} yolculuk · onaylı ciro CHF ${revenue.toFixed(2)}`} />
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+        <PageTitle title="Takvim" sub={`${trips.length} yolculuk · onaylı ciro CHF ${revenue.toFixed(2)}`} />
+        <GcalSync ready={gcalReady()} />
+      </div>
       {months.length === 0 ? (
         <Card><p className="text-sm text-stone-500">Henüz tarihli yolculuk yok.</p></Card>
       ) : (

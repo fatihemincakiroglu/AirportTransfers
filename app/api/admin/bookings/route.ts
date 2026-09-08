@@ -2,8 +2,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
 import { sql, ensureSchemaSafe as ensureSchema, logEvent, BOOKING_STATUSES } from "../../../lib/db";
+import { syncBooking, removeBooking, type CalBooking } from "../../../lib/gcal";
 
 export const runtime = "nodejs";
+
+/** Kaydı Google Takvim'e yazar (kabul/tamamlandı) ya da siler (ret/iptal) */
+async function syncToCalendar(id: number) {
+  const [b] = (await sql`
+    SELECT id, ref, status, pickup, dropoff, stops, ride_date, ride_time, pax, luggage,
+           vehicle, price, payment, first_name, last_name, phone, email, flight,
+           notes, admin_note, google_event_id
+    FROM bookings WHERE id = ${id}`) as unknown as CalBooking[];
+  if (!b) return;
+
+  if (b.status === "rejected" || b.status === "cancelled") {
+    await removeBooking(b.google_event_id);
+    if (b.google_event_id) await sql`UPDATE bookings SET google_event_id = NULL WHERE id = ${id}`;
+    return;
+  }
+  if (b.status !== "confirmed" && b.status !== "done") return;
+
+  const eventId = await syncBooking(b);
+  if (eventId && eventId !== b.google_event_id) {
+    await sql`UPDATE bookings SET google_event_id = ${eventId} WHERE id = ${id}`;
+  }
+}
 
 
 /** Panelden manuel rezervasyon oluşturma */
@@ -29,6 +52,9 @@ export async function POST(req: NextRequest) {
       ${b.admin_note ?? null}, ${num(b.driver_id)})`;
 
   await logEvent("booking_manual", `Panelden manuel rezervasyon eklendi: ${ref} · ${b.pickup ?? "—"} → ${b.dropoff ?? "—"}`, { actor: "panel", ref });
+
+  const [created] = (await sql`SELECT id FROM bookings WHERE ref = ${ref}`) as unknown as { id: number }[];
+  if (created) await syncToCalendar(created.id);
 
   return NextResponse.json({ ok: true, ref });
 }
@@ -63,6 +89,7 @@ export async function PATCH(req: NextRequest) {
         (status === "confirmed" ? "" : ` — sebep: ${reason ?? "belirtilmedi"}`),
       { actor: "panel", ref: cur?.ref },
     );
+    await syncToCalendar(id);
     return NextResponse.json({ ok: true });
   }
 
@@ -103,5 +130,7 @@ export async function PATCH(req: NextRequest) {
     await logEvent("booking_note", `${cur?.ref ?? "#" + id} kaydına panel notu eklendi`, { actor: "panel", ref: cur?.ref });
   }
 
+  // Her değişiklikten sonra takvimi güncelle
+  await syncToCalendar(id);
   return NextResponse.json({ ok: true });
 }
