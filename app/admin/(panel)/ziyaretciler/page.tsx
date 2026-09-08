@@ -18,8 +18,7 @@ const flag = (c: string) => COUNTRY[c]?.[0] ?? "🏳️";
 const cname = (c: string) => COUNTRY[c]?.[1] ?? (c === "??" ? "Bilinmiyor" : c);
 
 const LANG_TR: Record<string, string> = {
-  de: "Almanca", en: "İngilizce", it: "İtalyanca", pt: "Portekizce", fr: "Fransızca", es: "İspanyolca",
-  tr: "Türkçe", sr: "Sırpça", hr: "Hırvatça", ar: "Arapça", ru: "Rusça",
+  de: "Almanca", en: "İngilizce",
 };
 const COLORS = ["#0C2E25", "#C9A24B", "#1D4ED8", "#059669", "#D97706", "#7C3AED", "#DC2626", "#0891B2"];
 

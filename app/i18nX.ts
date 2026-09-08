@@ -4,15 +4,6 @@
 // ─────────────────────────────────────────────────────────────
 
 import type { Lang } from "./i18n";
-import { it } from "./langs/it";
-import { pt } from "./langs/pt";
-import { fr } from "./langs/fr";
-import { es } from "./langs/es";
-import { tr } from "./langs/tr";
-import { sr } from "./langs/sr";
-import { hr } from "./langs/hr";
-import { ar } from "./langs/ar";
-import { ru } from "./langs/ru";
 
 const baseX = {
   de: {
@@ -199,8 +190,4 @@ const baseX = {
 
 export type DictX = typeof baseX.de;
 
-export const tx: Record<Lang, DictX> = {
-  ...baseX,
-  it: it.tx, pt: pt.tx, fr: fr.tx, es: es.tx, tr: tr.tx,
-  sr: sr.tx, hr: hr.tx, ar: ar.tx, ru: ru.tx,
-};
+export const tx: Record<Lang, DictX> = baseX;

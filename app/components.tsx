@@ -65,7 +65,6 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 // ── Üst şerit ──────────────────────────────────────────────────
 export function TopBar() {
   const { lang, setLang } = useLang();
-  const [open, setOpen] = useState(false);
   return (
     <div style={{ background: C.pine }} className="text-white/80">
       <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
@@ -76,42 +75,23 @@ export function TopBar() {
           ✈ Airport Zurich Transfer
         </span>
 
-        {/* Dil seçici — 11 dil, açılır menü */}
-        <div className="relative">
-          <button
-            type="button"
-            onClick={() => setOpen((o) => !o)}
-            onBlur={() => setTimeout(() => setOpen(false), 150)}
-            aria-label="Language"
-            className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors sm:text-xs"
-            style={{ background: "rgba(201,162,75,0.15)", boxShadow: `inset 0 0 0 1px ${C.gold}55`, color: C.gold }}
-          >
-            🌐 {lang}
-            <span className={`text-[9px] transition-transform duration-200 ${open ? "rotate-180" : ""}`}>▾</span>
-          </button>
-          {open && (
-            <ul className="absolute right-0 z-[60] mt-2 max-h-[70vh] w-44 overflow-auto rounded-xl bg-white py-1.5 text-stone-800 shadow-xl ring-1 ring-black/5" dir="ltr">
-              {LANGS.map((c) => {
-                const active = lang === c;
-                return (
-                  <li key={c}>
-                    <button
-                      type="button"
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => { setOpen(false); setLang(c); }}
-                      className="flex w-full items-center justify-between px-4 py-2 text-left text-sm font-semibold transition-colors hover:bg-stone-50"
-                      style={active ? { color: C.pine } : undefined}
-                    >
-                      {LANG_NAMES[c]}
-                      <span className="text-[10px] font-bold uppercase" style={{ color: active ? C.gold : "#d6d3d1" }}>
-                        {active ? "✓" : c}
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+        {/* Dil geçişi — DE | EN */}
+        <div className="flex items-center gap-1 rounded-full p-0.5" style={{ background: "rgba(255,255,255,0.08)" }}>
+          {LANGS.map((c) => {
+            const active = lang === c;
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setLang(c)}
+                aria-label={LANG_NAMES[c]}
+                className="rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors sm:text-xs"
+                style={active ? { background: C.gold, color: C.pine } : { color: "rgba(255,255,255,0.6)" }}
+              >
+                {c}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -61,8 +61,7 @@ export default async function Page() {
   const convRate = tot.n ? Math.round((tot.won / tot.n) * 100) : 0;
 
   const LANG_TR: Record<string, string> = {
-    de: "Almanca", en: "İngilizce", it: "İtalyanca", pt: "Portekizce", fr: "Fransızca", es: "İspanyolca",
-    tr: "Türkçe", sr: "Sırpça", hr: "Hırvatça", ar: "Arapça", ru: "Rusça",
+    de: "Almanca", en: "İngilizce",
   };
   const LANG_COLORS = ["#0C2E25", "#C9A24B", "#1D4ED8", "#059669", "#D97706", "#7C3AED", "#DC2626", "#0891B2", "#65A30D", "#DB2777", "#78716C"];
   const WD = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];

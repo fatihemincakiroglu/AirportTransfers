@@ -1,13 +1,4 @@
 import type { LangCode } from "./paths";
-import { it } from "./langs/it";
-import { pt } from "./langs/pt";
-import { fr } from "./langs/fr";
-import { es } from "./langs/es";
-import { tr } from "./langs/tr";
-import { sr } from "./langs/sr";
-import { hr } from "./langs/hr";
-import { ar } from "./langs/ar";
-import { ru } from "./langs/ru";
 
 export type Lang = LangCode;
 
@@ -323,11 +314,7 @@ const base = {
 /** Bir dilin tam sözlük tipi (Almanca referans alınır) */
 export type Dict = typeof base.de;
 
-export const t: Record<Lang, Dict> = {
-  ...base,
-  it: it.t, pt: pt.t, fr: fr.t, es: es.t, tr: tr.t,
-  sr: sr.t, hr: hr.t, ar: ar.t, ru: ru.t,
-};
+export const t: Record<Lang, Dict> = base;
 
 /**
  * Yalnızca de/en içeren eski içerik nesneleri için güvenli seçim:
