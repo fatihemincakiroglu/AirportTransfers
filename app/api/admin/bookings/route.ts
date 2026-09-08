@@ -59,6 +59,28 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ok: true, ref });
 }
 
+/** Kaydı kalıcı olarak siler (takvim etkinliği de kaldırılır) */
+export async function DELETE(req: NextRequest) {
+  if (!(await isLoggedIn())) return NextResponse.json({ ok: false }, { status: 401 });
+  const { id } = await req.json().catch(() => ({}));
+  if (!id) return NextResponse.json({ ok: false }, { status: 400 });
+
+  await ensureSchema();
+  const [b] = (await sql`
+    SELECT ref, first_name, last_name, dropoff, google_event_id FROM bookings WHERE id = ${id}`) as unknown as
+    { ref: string; first_name: string | null; last_name: string | null; dropoff: string | null; google_event_id: string | null }[];
+  if (!b) return NextResponse.json({ ok: false }, { status: 404 });
+
+  await removeBooking(b.google_event_id);
+  await sql`DELETE FROM bookings WHERE id = ${id}`;
+  await logEvent(
+    "booking_delete",
+    `${b.ref} kaydı kalıcı olarak silindi (${[b.first_name, b.last_name].filter(Boolean).join(" ") || "—"} · ${b.dropoff ?? "—"})`,
+    { actor: "panel", ref: b.ref },
+  );
+  return NextResponse.json({ ok: true });
+}
+
 export async function PATCH(req: NextRequest) {
   if (!(await isLoggedIn())) return NextResponse.json({ ok: false }, { status: 401 });
   const body = await req.json().catch(() => ({}));

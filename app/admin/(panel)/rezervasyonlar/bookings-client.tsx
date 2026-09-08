@@ -82,6 +82,19 @@ export default function BookingsClient({
     return hay.includes(q.toLowerCase());
   });
 
+  const remove = async (id: number, ref: string) => {
+    if (!confirm(`${ref} kaydı kalıcı olarak silinecek. Emin misiniz?`)) return;
+    setBusy(true);
+    await fetch("/api/admin/bookings", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    setBusy(false);
+    setOpen(null);
+    router.refresh();
+  };
+
   const update = async (id: number, patch: { status?: string; adminNote?: string; fields?: Record<string, string> }) => {
     setBusy(true);
     await fetch("/api/admin/bookings", {
@@ -370,7 +383,16 @@ export default function BookingsClient({
               </>
             )}
 
-            <div className="mt-5 flex justify-end gap-2">
+            <div className="mt-5 flex flex-wrap items-center justify-end gap-2">
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => remove(open.id, open.ref)}
+                className="mr-auto rounded-full px-4 py-2 text-xs font-bold transition-colors disabled:opacity-40"
+                style={{ background: "#FEE2E2", color: "#B91C1C" }}
+              >
+                🗑 Kaydı sil
+              </button>
               {open.phone && (
                 <a href={`https://wa.me/${open.phone.replace(/[^0-9]/g, "")}`} target="_blank" rel="noopener noreferrer"
                    className="rounded-full px-4 py-2 text-xs font-bold text-white" style={{ background: "#25D366" }}>
