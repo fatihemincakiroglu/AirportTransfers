@@ -34,6 +34,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     metadataBase: new URL(SITE_URL),
     title: m.title,
     description: m.desc,
+    // Google Search Console site doğrulaması
+    verification: { google: "WqaGGesj4DvZ12x-xnsRZ1ZhD-iLoww5GYFGXgXDvJc" },
     robots: {
       index: true,
       follow: true,
