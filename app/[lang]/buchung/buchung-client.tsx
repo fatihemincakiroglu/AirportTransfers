@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER, CUSTOM_BASE_PRICE } from "../../config";
+import { C, routes, fleet, CUSTOM_BASE_PRICE } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  mailHref, localName, inputCls, labelCls, norm, ExtrasCounter,
+  localName, inputCls, labelCls, norm, ExtrasCounter,
   waHref,
 } from "../../components";
 
@@ -25,10 +25,28 @@ export default function Buchung() {
   // 3 saatlik boşluk kuralı: seçilen saatte araç dolu mu?
   const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null; reason: string | null }>({ busy: false, nextFree: null, reason: null });
 
-  // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
-  const saveBooking = (ref: string, channel: "whatsapp" | "email" | "taslak") => {
+  const [sending, setSending] = useState(false);
+
+  /** Talebi sunucuya gönderir; kayıt oluşur ve bildirim e-postası gider */
+  const submitBooking = async () => {
+    if (!ready || sending) return;
+    setSending(true);
+    const r = draftRef.current ?? makeRef();
     try {
-      const payload = {
+      await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bookingPayload(r, "site")),
+      });
+    } catch {
+      /* ağ hatası olsa da müşteriye onay gösterilir; kayıt taslaktan mevcuttur */
+    }
+    setSending(false);
+    setDoneRef(r);
+  };
+
+  // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
+  const bookingPayload = (ref: string, channel: "site" | "taslak") => ({
         ref, channel, lang,
         pickup: showCustom ? custom!.from : reversed ? n : "Flughafen Zürich (ZRH)",
         dropoff: showCustom ? custom!.to : reversed ? "Flughafen Zürich (ZRH)" : n,
@@ -46,9 +64,12 @@ export default function Buchung() {
           extras.child ? `${D.child[0]}: ${extras.child}` : "",
           extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
         ].filter(Boolean).join(", "),
-        notes: f.notes,
-      };
-      const body = JSON.stringify(payload);
+    notes: f.notes,
+  });
+
+  const saveBooking = (ref: string, channel: "site" | "taslak") => {
+    try {
+      const body = JSON.stringify(bookingPayload(ref, channel));
       // sendBeacon: yeni sekme açılırken isteğin kesilmemesi için
       if (navigator.sendBeacon) {
         navigator.sendBeacon("/api/bookings", new Blob([body], { type: "application/json" }));
@@ -225,28 +246,6 @@ export default function Buchung() {
   const step1Ready = hasTrip && date && time;
   const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight && !slot.busy;
 
-  const message = () => {
-    const c = chosen!;
-    const extrasTxt = [
-      extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
-      extras.child ? `${D.child[0]}: ${extras.child}` : "",
-      extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
-    ].filter(Boolean).join("\n");
-    return (
-      `${L.msg.title}\n\n` +
-      `${D.pickupLoc}: ${pickupLabel}\n${D.dropoffLoc}: ${dropoffLabel}\n` +
-      `${L.form.date}: ${date}\n${L.form.time}: ${time}\n\n` +
-      `${D.vehicle}: ${localName(c.name, lang)} – ${c.car}\n` +
-      `${D.total}: CHF ${total.toFixed(2)}${showCustom ? (lang === "de" ? " (provisorisch)" : " (provisional)") : ""}\n` +
-      `${D.payTitle}: ${D.payOptions[pay][0]}\n\n` +
-      `${D.name}: ${f.name} ${f.surname}\n${D.email}: ${f.email}\n${D.phone}: ${f.phone}\n` +
-      `${D.flight}: ${f.flight}\n` +
-      (f.nameboard ? `${D.nameboard}: ${f.nameboard}\n` : "") +
-      `${L.form.pax}: ${f.pax} · ${D.luggage}: ${f.luggage}\n` +
-      (extrasTxt ? `\n${extrasTxt}\n` : "") +
-      (f.notes ? `\n${D.notes}: ${f.notes}` : "")
-    );
-  };
 
   const go = (s: 1 | 2 | 3) => {
     // Son adıma geçerken talebi şimdiden kaydet: müşteri tarayıcıyı
@@ -486,23 +485,19 @@ export default function Buchung() {
                     </div>
                   )}
 
-                  <a
-                    href={ready ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(message())}` : undefined}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-disabled={!ready}
-                    className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-all ${ready ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"}`}
-                    style={{ background: ready ? "#25D366" : "#9ca3af" }}
-                    onClick={(e) => { if (!ready) { e.preventDefault(); return; } const r = draftRef.current ?? makeRef(); saveBooking(r, "whatsapp"); setDoneRef(r); }}
+                  <button
+                    type="button"
+                    disabled={!ready || sending}
+                    onClick={submitBooking}
+                    className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider transition-all ${
+                      ready && !sending ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"
+                    }`}
+                    style={{ background: C.gold, color: C.pine }}
                   >
-                    💬 {D.continueWa} — CHF {total.toFixed(2)}
-                  </a>
+                    {sending ? `${D.sending}…` : `${L.hero.cta1} — CHF ${total.toFixed(2)}`}
+                  </button>
                 </div>
-                {ready && (
-                  <a href={mailHref(L.msg.subject, message())} onClick={() => { const r = draftRef.current ?? makeRef(); saveBooking(r, "email"); setDoneRef(r); }} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
-                    {D.continueMail}
-                  </a>
-                )}
+
                 <p className="mt-3 text-center text-xs text-stone-500">{D.confirmNote}</p>
               </div>
             </>

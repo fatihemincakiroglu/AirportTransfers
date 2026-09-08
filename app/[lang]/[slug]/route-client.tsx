@@ -4,19 +4,24 @@ import Image from "next/image";
 
 import { useMemo, useState } from "react";
 
-import { C, routes, fleet, BOOKING_WHATSAPP_NUMBER } from "../../config";
+import { C, routes, fleet } from "../../config";
 import { t, pickL } from "../../i18n";
+import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import { routeContent } from "../../routeContent";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  mailHref, localName, inputCls, labelCls,
+  localName, inputCls, labelCls,
   RouteCard, ExtrasCounter,
 } from "../../components";
+
+// Talep referans numarası (tıklama anında üretilir)
+const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase();
 
 export default function RouteClient({ slug }: { slug: string }) {
   const { lang, P } = useLang();
   const L = t[lang];
+  const X = tx[lang];
   const D = L.detail;
   
 
@@ -25,6 +30,8 @@ export default function RouteClient({ slug }: { slug: string }) {
   // Adım 1: tarih/saat + araç seçimi · Adım 2: yolcu bilgileri
   const [step, setStep] = useState<1 | 2>(1);
   const [reversed, setReversed] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sentRef, setSentRef] = useState<string | null>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [car, setCar] = useState<number | null>(null);
@@ -69,31 +76,45 @@ export default function RouteClient({ slug }: { slug: string }) {
   const chosen = car !== null ? sorted[car] : null;
   const total = chosen ? priceOf(chosen.mult) : 0;
 
-  const message = () => {
-    const c = chosen!;
-    const extrasTxt = [
-      extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
-      extras.child ? `${D.child[0]}: ${extras.child}` : "",
-      extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
-    ].filter(Boolean).join("\n");
-    return (
-      `${L.msg.title}\n\n` +
-      `${D.pickupLoc}: ${pickupLabel}\n${D.dropoffLoc}: ${dropoffLabel}\n` +
-      `${L.form.date}: ${date}\n${L.form.time}: ${time}\n\n` +
-      `${D.vehicle}: ${localName(c.name, lang)} – ${c.car}\n` +
-      `${D.total}: CHF ${total.toFixed(2)}\n` +
-      `${D.payTitle}: ${D.payOptions[pay][0]}\n\n` +
-      `${D.name}: ${f.name} ${f.surname}\n${D.email}: ${f.email}\n${D.phone}: ${f.phone}\n` +
-      `${D.flight}: ${f.flight}\n` +
-      (f.nameboard ? `${D.nameboard}: ${f.nameboard}\n` : "") +
-      `${L.form.pax}: ${f.pax} · ${D.luggage}: ${f.luggage}\n` +
-      (extrasTxt ? `\n${extrasTxt}\n` : "") +
-      (f.notes ? `\n${D.notes}: ${f.notes}` : "")
-    );
-  };
 
   const ready =
     accepted && f.name && f.surname && f.email && f.phone && f.flight && date && time;
+
+  /** Talebi sunucuya gönderir: panele kaydolur ve bildirim e-postası gider */
+  const submitBooking = async () => {
+    if (!ready || sending) return;
+    setSending(true);
+    const ref = makeRef();
+    try {
+      await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ref, channel: "site", lang,
+          pickup: reversed ? n : "Flughafen Zürich (ZRH)",
+          dropoff: reversed ? "Flughafen Zürich (ZRH)" : n,
+          date, time,
+          pax: Number(f.pax) || null,
+          luggage: Number(f.luggage) || null,
+          vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
+          price: total || null,
+          payment: D.payOptions[pay]?.[0] ?? null,
+          firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone,
+          flight: f.flight, nameboard: f.nameboard,
+          extras: [
+            extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
+            extras.child ? `${D.child[0]}: ${extras.child}` : "",
+            extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
+          ].filter(Boolean).join(", "),
+          notes: f.notes,
+        }),
+      });
+    } catch {
+      /* ağ hatası olsa da müşteriye onay gösterilir */
+    }
+    setSending(false);
+    setSentRef(ref);
+  };
 
   // ── Sağ taraftaki özet kartı ─────────────────────────────
   // JSX döndüren yardımcı — bileşen değil, fonksiyon olarak çağrılır (remount olmaz)
@@ -314,22 +335,26 @@ export default function RouteClient({ slug }: { slug: string }) {
                   >
                     ← {D.back}
                   </button>
-                  <a
-                    href={ready ? `https://wa.me/${BOOKING_WHATSAPP_NUMBER}?text=${encodeURIComponent(message())}` : undefined}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-disabled={!ready}
-                    className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-all ${ready ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"}`}
-                    style={{ background: ready ? "#25D366" : "#9ca3af" }}
-                    onClick={(e) => { if (!ready) e.preventDefault(); }}
+                  <button
+                    type="button"
+                    disabled={!ready || sending}
+                    onClick={submitBooking}
+                    className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider transition-all ${
+                      ready && !sending ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"
+                    }`}
+                    style={{ background: C.gold, color: C.pine }}
                   >
-                    💬 {D.continueWa} — CHF {total.toFixed(2)}
-                  </a>
+                    {sending ? `${D.sending}…` : `${L.hero.cta1} — CHF ${total.toFixed(2)}`}
+                  </button>
                 </div>
-                {ready && (
-                  <a href={mailHref(L.msg.subject, message())} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
-                    {D.continueMail}
-                  </a>
+
+                {sentRef && (
+                  <div className="mt-4 rounded-2xl border p-4 text-center" style={{ borderColor: "#A7F3D0", background: "#ECFDF5" }}>
+                    <p className="text-sm font-bold" style={{ color: "#065F46" }}>
+                      ✓ {X.done.title}
+                    </p>
+                    <p className="mt-1.5 text-sm" style={{ color: "#065F46" }}>{X.done.body(sentRef)}</p>
+                  </div>
                 )}
                 <p className="mt-3 text-center text-xs text-stone-500">{D.confirmNote}</p>
               </div>
