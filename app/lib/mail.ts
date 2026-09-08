@@ -113,3 +113,25 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
     console.error("[mail] gönderilemedi", e);
   }
 }
+
+/** Panelden çalıştırılan SMTP testi — gerçek hatayı geri döndürür */
+export async function sendTestMail(): Promise<{ ok: boolean; reason?: string; to?: string }> {
+  const tx = getTransporter();
+  if (!tx) return { ok: false, reason: "GMAIL_USER veya GMAIL_APP_PASSWORD tanımlı değil" };
+
+  const user = process.env.GMAIL_USER!;
+  const to = process.env.MAIL_TO || user;
+  try {
+    await tx.verify(); // kimlik doğrulamayı ayrıca sına
+    await tx.sendMail({
+      from: `"ZRH Airport Taxi" <${user}>`,
+      to,
+      subject: "Test — bildirim sistemi çalışıyor",
+      html: `<p style="font-family:sans-serif">Bu bir test mesajıdır. E-posta bildirimleri düzgün yapılandırılmış.</p>
+             <p style="font-family:sans-serif;color:#78716c;font-size:13px">Gönderen: ${user} · Alıcı: ${to}</p>`,
+    });
+    return { ok: true, to };
+  } catch (e) {
+    return { ok: false, reason: e instanceof Error ? e.message : String(e), to };
+  }
+}

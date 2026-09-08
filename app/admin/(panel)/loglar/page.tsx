@@ -1,6 +1,7 @@
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import Link from "next/link";
 import { C, Card, PageTitle, NoDb } from "../../ui";
+import MailTest from "./mail-test";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
 
   return (
     <>
-      <PageTitle title="Sistem Logları" sub="Sitede ve panelde olan biten her şey" />
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+        <PageTitle title="Sistem Logları" sub="Sitede ve panelde olan biten her şey" />
+        <MailTest />
+      </div>
 
       {/* Tür filtreleri */}
       <div className="-mx-1 mb-5 flex gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible">
