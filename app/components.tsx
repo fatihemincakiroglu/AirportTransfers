@@ -794,7 +794,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       </div>
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row">
-          <span>© {new Date().getFullYear()} <b className="text-white">AirportTransfers Zürich</b> · {L.footer.rights}</span>
+          <span>© {new Date().getFullYear()} <b className="text-white">ZRH Airport Taxi</b> · {L.footer.rights}</span>
         </div>
       </div>
     </footer>

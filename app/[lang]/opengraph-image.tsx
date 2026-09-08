@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 // Site geneli sosyal paylaşım kartı (WhatsApp, LinkedIn, X...)
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "AirportTransfers Zürich – Private Airport Transfers at Fixed Prices";
+export const alt = "ZRH Airport Taxi – Private Airport Transfers at Fixed Prices";
 
 export default async function OgImage() {
   return new ImageResponse(
@@ -28,7 +28,7 @@ export default async function OgImage() {
           </div>
         </div>
         <div style={{ marginTop: 36, fontSize: 84, fontWeight: 600, lineHeight: 1.05, display: "flex" }}>
-          AirportTransfers Zürich
+          ZRH Airport Taxi
         </div>
         <div style={{ marginTop: 28, fontSize: 34, color: "rgba(250,250,247,0.75)", display: "flex" }}>
           VIP Mercedes · Festpreis · Meet &amp; Greet · 24/7

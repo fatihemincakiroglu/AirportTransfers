@@ -8,7 +8,7 @@ import { LANGS, DEFAULT_LANG } from "./paths";
 import { tx } from "./i18nX";
 import { legalPages, type LegalKey } from "./legalContent";
 
-const BRAND = "AirportTransfers Zürich";
+const BRAND = "ZRH Airport Taxi";
 
 export type PageKey =
   | "home" | "strecken" | "fahrzeuge" | "galerie" | "kontakt" | "ueber-uns"

@@ -13,7 +13,7 @@ const A = {
     title: "Über uns",
     lead: "Ihr verlässlicher Partner für Flughafentransfers in Zürich",
     intro: [
-      "AirportTransfers Zürich steht für zuverlässige, effiziente Transferservices von und zum Flughafen Zürich. Unser Team professioneller Chauffeure sorgt dafür, dass jede Fahrt komfortabel und stressfrei verläuft – vom Moment der Landung bis zur Ankunft an Ihrer Zieladresse.",
+      "ZRH Airport Taxi steht für zuverlässige, effiziente Transferservices von und zum Flughafen Zürich. Unser Team professioneller Chauffeure sorgt dafür, dass jede Fahrt komfortabel und stressfrei verläuft – vom Moment der Landung bis zur Ankunft an Ihrer Zieladresse.",
       "Ob Geschäftsreise mit engem Terminplan, Familienurlaub mit Skigepäck oder VIP-Service mit höchster Diskretion: Mit unserer gepflegten Mercedes-Flotte und Festpreisen ohne Überraschungen bringen wir Sie sicher und pünktlich ans Ziel – in die ganze Schweiz, rund um die Uhr.",
     ],
     promiseTitle: "Unser Versprechen",
@@ -25,7 +25,7 @@ const A = {
       ["🕐", "24/7 verfügbar", "Frühflug um 5 Uhr oder Landung nach Mitternacht: Wir fahren, wann immer Sie uns brauchen."],
       ["👶", "Familien willkommen", "Baby- und Kindersitze sowie Skitaschen kostenlos – sagen Sie uns einfach, was Sie brauchen."],
     ],
-    pillarsEyebrow: "Warum AirportTransfers Zürich",
+    pillarsEyebrow: "Warum ZRH Airport Taxi",
     pillarsTitle: "Unser Anspruch an Exzellenz",
     pillars: [
       {
@@ -128,7 +128,7 @@ export default function UeberUns() {
       <section className="mx-auto max-w-7xl px-5 py-14 md:py-20">
         <div className="grid items-center gap-10 lg:grid-cols-2">
           <div>
-            <Eyebrow>AirportTransfers Zürich</Eyebrow>
+            <Eyebrow>ZRH Airport Taxi</Eyebrow>
             <h2 className="font-display text-3xl font-semibold leading-tight md:text-4xl" style={{ color: C.pine }}>
               {lang === "de" ? "Mehr als eine Fahrt – ein Empfang." : "More than a ride – a welcome."}
             </h2>

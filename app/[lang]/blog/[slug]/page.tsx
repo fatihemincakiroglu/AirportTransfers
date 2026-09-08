@@ -10,10 +10,10 @@ type Params = { params: Promise<{ lang: string; slug: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) return { title: "Blog | AirportTransfers Zürich" };
+  if (!post) return { title: "Blog | ZRH Airport Taxi" };
   const c = pickL(post, lang as never);
   return {
-    title: `${c.title} | AirportTransfers Zürich Blog`,
+    title: `${c.title} | ZRH Airport Taxi Blog`,
     description: c.excerpt,
     alternates: {
       canonical: `/${lang}/blog/${slug}`,
@@ -47,8 +47,8 @@ export default async function Page({ params }: Params) {
       wordCount: words,
       timeRequired: `PT${Math.max(2, Math.ceil(words / 180))}M`,
       inLanguage: lang === "de" ? "de" : "en",
-      author: { "@type": "Organization", name: "AirportTransfers Zürich" },
-      publisher: { "@type": "Organization", name: "AirportTransfers Zürich", logo: { "@type": "ImageObject", url: "/icon.png" } },
+      author: { "@type": "Organization", name: "ZRH Airport Taxi" },
+      publisher: { "@type": "Organization", name: "ZRH Airport Taxi", logo: { "@type": "ImageObject", url: "/icon.png" } },
       mainEntityOfPage: `/${lang}/blog/${slug}`,
     });
     jsonLd.push({

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       const X = tx[safe];
       const n = dest.d.name;
       return {
-        title: `${X.dest.hero(n)} | AirportTransfers Zürich`,
+        title: `${X.dest.hero(n)} | ZRH Airport Taxi`,
         description: X.dest.heroSub(n),
         alternates: {
           canonical: `/${lang}/${slug}`,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
         },
       };
     }
-    return { title: "AirportTransfers Zürich" };
+    return { title: "ZRH Airport Taxi" };
   }
   const n = nameOf(route.to, lang);
   const safe: Lang = (LANGS as readonly string[]).includes(lang) ? (lang as Lang) : DEFAULT_LANG;
@@ -73,7 +73,7 @@ export default async function Page({ params }: Params) {
         areaServed: "Switzerland",
         provider: {
           "@type": "LocalBusiness",
-          name: "AirportTransfers Zürich",
+          name: "ZRH Airport Taxi",
           telephone: "+41763020326",
           address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
         },
@@ -100,7 +100,7 @@ export default async function Page({ params }: Params) {
       areaServed: "Switzerland",
       provider: {
         "@type": "LocalBusiness",
-        name: "AirportTransfers Zürich",
+        name: "ZRH Airport Taxi",
         telephone: "+41763020326",
         address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       },

@@ -22,7 +22,7 @@ export default function Page() {
   const jsonLd: object[] = [{
     "@context": "https://schema.org",
     "@type": "TaxiService",
-    name: "AirportTransfers Zürich",
+    name: "ZRH Airport Taxi",
     telephone: "+41763020326",
     priceRange: "CHF 88 - CHF 1000",
     address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },

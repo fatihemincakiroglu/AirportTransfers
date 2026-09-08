@@ -13,7 +13,7 @@ type Ctx = {
 };
 
 const LangContext = createContext<Ctx>({
-  lang: "de",
+  lang: "en",
   setLang: () => {},
   P: (p) => p,
 });

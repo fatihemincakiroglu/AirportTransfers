@@ -1,11 +1,12 @@
 // ─────────────────────────────────────────────────────────────
 //  DİLLER + DİLE GÖRE URL SEGMENTLERİ
-//  Varsayılan dil: Almanca. Yeni sayfa eklersen SEGMENTS'e satır ekle.
+//  Varsayılan dil: İngilizce (kök adres /en'e yönlenir, Almanca /de).
+//  Yeni sayfa eklersen SEGMENTS'e satır ekle.
 // ─────────────────────────────────────────────────────────────
 
 export const LANGS = ["de", "en"] as const;
 export type LangCode = (typeof LANGS)[number];
-export const DEFAULT_LANG: LangCode = "de";
+export const DEFAULT_LANG: LangCode = "en";
 
 /** Dil değiştiricide gösterilen yerel adlar */
 export const LANG_NAMES: Record<LangCode, string> = {
@@ -65,8 +66,8 @@ export function findInternalKey(publicSeg: string): string | null {
 }
 
 /**
- * hreflang alternates — kullanıcı tercihi: Almanca x-default olarak verilir,
- * ayrı bir "de" kırılımı YAZILMAZ; diğer 10 dil tek tek listelenir.
+ * hreflang alternates — varsayılan dil (İngilizce) x-default olarak verilir,
+ * diğer diller ayrıca listelenir.
  */
 export function langAlternates(internalPath: string): Record<string, string> {
   const out: Record<string, string> = {};

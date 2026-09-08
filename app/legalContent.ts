@@ -13,7 +13,7 @@ export const legalPages: Record<
     de: {
       title: "Datenschutzerklärung",
       body: [
-        "Der Schutz Ihrer persönlichen Daten ist uns wichtig. AirportTransfers Zürich (Kula-ZATK, Industristrasse 14, 8302 Kloten) erhebt und verarbeitet personenbezogene Daten ausschliesslich zur Abwicklung Ihrer Transferbuchung – etwa Name, Kontaktdaten, Flugnummer und Fahrtdetails.",
+        "Der Schutz Ihrer persönlichen Daten ist uns wichtig. ZRH Airport Taxi (Kula-ZATK, Industristrasse 14, 8302 Kloten) erhebt und verarbeitet personenbezogene Daten ausschliesslich zur Abwicklung Ihrer Transferbuchung – etwa Name, Kontaktdaten, Flugnummer und Fahrtdetails.",
         "Ihre Daten werden vertraulich behandelt, nicht an Dritte verkauft und nur so lange gespeichert, wie es für die Auftragsabwicklung und gesetzliche Aufbewahrungspflichten erforderlich ist.",
         "Die vollständige Datenschutzerklärung wird in Kürze an dieser Stelle veröffentlicht. Bei Fragen erreichen Sie uns jederzeit per WhatsApp oder Telefon.",
       ],
@@ -49,7 +49,7 @@ export const legalPages: Record<
     de: {
       title: "Allgemeine Geschäftsbedingungen (AGB)",
       body: [
-        "Diese Allgemeinen Geschäftsbedingungen regeln die Buchung und Durchführung von Transferleistungen der AirportTransfers Zürich (Kula-ZATK). Mit Abschluss einer Buchung akzeptieren Sie diese Bedingungen.",
+        "Diese Allgemeinen Geschäftsbedingungen regeln die Buchung und Durchführung von Transferleistungen der ZRH Airport Taxi (Kula-ZATK). Mit Abschluss einer Buchung akzeptieren Sie diese Bedingungen.",
         "Alle angegebenen Preise sind Festpreise pro Fahrzeug inkl. MwSt., sofern nicht anders vermerkt. Die Bezahlung erfolgt bequem im Fahrzeug – bar, mit Karte oder TWINT.",
         "Die vollständigen AGB werden in Kürze an dieser Stelle veröffentlicht. Bei Fragen kontaktieren Sie uns gerne vor Ihrer Buchung.",
       ],

@@ -4,6 +4,9 @@
 // Sitenin tam adresi — kendi domainini bağlayınca burayı güncelle:
 export const SITE_URL = "https://zrhairporttaxi.ch";
 
+/** Marka adı — meta, yapısal veri ve footer'da kullanılır */
+export const SITE_NAME = "ZRH Airport Taxi";
+
 /** Google Analytics 4 ölçüm kimliği (boş bırakılırsa ölçüm yüklenmez) */
 export const GA_ID = "G-VYKV4VNKT7";
 
@@ -124,7 +127,7 @@ const heroAlts: Record<string, string> = {
 };
 
 /** Görsel yoluna göre alt metni bul: "/gallery/4.jpg" → Zermatt … */
-export function altFor(src: string, fallback = "AirportTransfers Zürich"): string {
+export function altFor(src: string, fallback = "ZRH Airport Taxi"): string {
   const m = src.match(/\/gallery\/(\d+)\.jpg/);
   if (m) return galleryAlts[Number(m[1]) - 1] ?? fallback;
   const h = src.match(/\/hero\/(hero-\d)\.jpg/);

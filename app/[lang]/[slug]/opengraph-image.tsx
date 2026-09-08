@@ -67,7 +67,7 @@ export default async function OgImage({
             </div>
           ) : null}
           <div style={{ fontSize: 24, color: "rgba(250,250,247,0.6)", display: "flex" }}>
-            AirportTransfers Zürich · 24/7
+            ZRH Airport Taxi · 24/7
           </div>
         </div>
       </div>

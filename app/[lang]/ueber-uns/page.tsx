@@ -23,10 +23,10 @@ export default async function Page({ params }: Params) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    name: lang === "de" ? "Über uns – AirportTransfers Zürich" : "About Us – AirportTransfers Zurich",
+    name: lang === "de" ? "Über uns – ZRH Airport Taxi" : "About Us – AirportTransfers Zurich",
     mainEntity: {
       "@type": "TaxiService",
-      name: "AirportTransfers Zürich",
+      name: "ZRH Airport Taxi",
       legalName: "Kula-ZATK",
       telephone: "+41763020326",
       areaServed: { "@type": "Country", name: "Switzerland" },

@@ -48,9 +48,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
         "max-video-preview": -1,
       },
     },
-    authors: [{ name: "AirportTransfers Zürich", url: SITE_URL }],
-    creator: "AirportTransfers Zürich",
-    publisher: "AirportTransfers Zürich",
+    authors: [{ name: "ZRH Airport Taxi", url: SITE_URL }],
+    creator: "ZRH Airport Taxi",
+    publisher: "ZRH Airport Taxi",
     alternates: {
       canonical: `/${lang}`,
       languages: langAlternates("/"),
@@ -72,7 +72,7 @@ export default async function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "AirportTransfers Zürich",
+      name: "ZRH Airport Taxi",
       legalName: "Kula-ZATK",
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
@@ -88,7 +88,7 @@ export default async function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      name: "AirportTransfers Zürich",
+      name: "ZRH Airport Taxi",
       url: SITE_URL,
       inLanguage: [...LANGS],
     },
