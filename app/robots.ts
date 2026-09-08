@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "./config";
+import { LANGS } from "./paths";
 
 // robots.txt — tüm botlara açık, yapay zekâ botları açıkça izinli.
 export default function robots(): MetadataRoute.Robots {
@@ -13,8 +14,7 @@ export default function robots(): MetadataRoute.Robots {
     ],
     sitemap: [
       `${SITE_URL}/sitemap.xml`,
-      `${SITE_URL}/sitemap-en.xml`,
-      `${SITE_URL}/sitemap-de.xml`,
+      ...LANGS.map((l) => `${SITE_URL}/sitemap-${l}.xml`),
     ],
   };
 }

@@ -21,8 +21,23 @@ const nextConfig: NextConfig = {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
   async redirects() {
-    // Touren bölümü kaldırıldı — eski URL'ler ana sayfaya yönlenir
     return [
+      // ── Eski alan adları → zrhairporttaxi.ch (kalıcı 301) ──
+      // Google'daki birikim ve mevcut bağlantılar yeni adrese aktarılır.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "(www\\.)?zurichairport-taxi\\.ch" }],
+        destination: "https://zrhairporttaxi.ch/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "airport-transfers-gamma\\.vercel\\.app" }],
+        destination: "https://zrhairporttaxi.ch/:path*",
+        permanent: true,
+      },
+
+      // Touren bölümü kaldırıldı — eski URL'ler ana sayfaya yönlenir
       { source: "/:lang/touren/:path*", destination: "/:lang", permanent: true },
       { source: "/:lang/tours/:path*", destination: "/:lang", permanent: true },
       { source: "/:lang/touren", destination: "/:lang", permanent: true },

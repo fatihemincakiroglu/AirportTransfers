@@ -2,13 +2,13 @@
 //  TEK AYAR DOSYASI — iletişim bilgilerini sadece burada değiştir
 // ─────────────────────────────────────────────────────────────
 // Sitenin tam adresi — kendi domainini bağlayınca burayı güncelle:
-export const SITE_URL = "https://airport-transfers-gamma.vercel.app";
+export const SITE_URL = "https://zrhairporttaxi.ch";
 
 export const WHATSAPP_NUMBER = "905325766383"; // TEST — canlıya almadan önce müşteri numarasıyla değiştir
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
 export const BOOKING_WHATSAPP_NUMBER = "905325766383"; // +90 532 576 63 83
 export const PHONE_DISPLAY = "+90 532 576 63 83"; // TEST — canlıya almadan önce değiştir
-export const CONTACT_EMAIL = "info@airporttransfers.ch"; // kendi e-postanı yaz
+export const CONTACT_EMAIL = "info@zrhairporttaxi.ch"; // e-posta kutusu açılınca aktif olur
 export const COMPANY_NAME = "Kula-ZATK";
 export const COMPANY_REG = "Handelsregister-Nr.: CH-020.1.089.436-5";
 export const COMPANY_ADDRESS = "Industristrasse 14, 8302 Kloten, Switzerland";
