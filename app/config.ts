@@ -15,10 +15,10 @@ export const SITE_NAME = "ZRH Airport Taxi";
  */
 export const GTM_ID = "GTM-KD6XZ6G9";
 
-export const WHATSAPP_NUMBER = "905325766383"; // TEST — canlıya almadan önce müşteri numarasıyla değiştir
+export const WHATSAPP_NUMBER = "41794551572"; // + ve boşluk olmadan
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
-export const BOOKING_WHATSAPP_NUMBER = "905325766383"; // +90 532 576 63 83
-export const PHONE_DISPLAY = "+90 532 576 63 83"; // TEST — canlıya almadan önce değiştir
+export const BOOKING_WHATSAPP_NUMBER = "41794551572"; // +41 79 455 15 72
+export const PHONE_DISPLAY = "+41 79 455 15 72";
 export const CONTACT_EMAIL = "info@zrhairporttaxi.ch"; // e-posta kutusu açılınca aktif olur
 export const COMPANY_NAME = "Kula-ZATK";
 export const COMPANY_REG = "Handelsregister-Nr.: CH-020.1.089.436-5";

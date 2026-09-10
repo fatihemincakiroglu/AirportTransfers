@@ -23,7 +23,7 @@ export default function Page() {
     "@context": "https://schema.org",
     "@type": "TaxiService",
     name: "ZRH Airport Taxi",
-    telephone: "+41763020326",
+    telephone: "+41794551572",
     priceRange: "CHF 88 - CHF 1000",
     address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
     areaServed: { "@type": "Country", name: "Switzerland" },

@@ -28,7 +28,7 @@ export default async function Page({ params }: Params) {
       "@type": "TaxiService",
       name: "ZRH Airport Taxi",
       legalName: "Kula-ZATK",
-      telephone: "+41763020326",
+      telephone: "+41794551572",
       areaServed: { "@type": "Country", name: "Switzerland" },
       address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       knowsLanguage: ["de", "en"],

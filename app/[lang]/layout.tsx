@@ -76,7 +76,7 @@ export default async function RootLayout({
       legalName: "Kula-ZATK",
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
-      telephone: "+41763020326",
+      telephone: "+41794551572",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Industristrasse 14",
