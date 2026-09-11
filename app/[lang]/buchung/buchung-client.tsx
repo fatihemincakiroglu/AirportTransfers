@@ -86,6 +86,8 @@ export default function Buchung() {
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [routeIdx, setRouteIdx] = useState<number | null>(null);
+  // Ana sayfadan gelen özel güzergâhta rota seçimi gizlenir; "değiştir" ile açılır
+  const [pickRoute, setPickRoute] = useState(false);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [car, setCar] = useState<number | null>(null);
@@ -171,6 +173,8 @@ export default function Buchung() {
         // Listede olmayan uç — özel güzergâh olarak göster
         customPlan = { from: from || "", to: to || "" };
         notes = `${from || "?"} → ${to || "?"}`;
+        // İki uç ve zaman belliyse burada da araç seçimine geç
+        step2 = Boolean(from && to && d && tm);
       }
     }
 
@@ -315,32 +319,42 @@ export default function Buchung() {
           {step === 1 && (
             <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 md:p-6">
               <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>{B.steps[0]}</h2>
-              {showCustom && (
-                <div className="mb-3 flex items-center justify-between rounded-xl px-4 py-3 text-sm" style={{ background: "#FBF7EE" }}>
-                  <span>
-                    <b style={{ color: C.pine }}>{custom!.from} → {custom!.to}</b>
+              {/* Güzergâh ana sayfadan geldiyse tekrar sorulmaz; değiştirmek isteyen açabilir */}
+              {showCustom && !pickRoute ? (
+                <div className="flex items-start justify-between gap-3 rounded-xl px-4 py-3.5 text-sm" style={{ background: "#FBF7EE" }}>
+                  <span className="min-w-0">
+                    <b className="block break-words" style={{ color: C.pine }}>{custom!.from} → {custom!.to}</b>
                     <span className="block text-[11px] text-stone-500">
                       {lang === "de" ? "Individuelle Strecke – Endpreis wird bestätigt" : "Custom route – final price to be confirmed"}
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => setPickRoute(true)}
+                      className="mt-1.5 text-[11px] font-bold underline-offset-2 hover:underline"
+                      style={{ color: C.pine }}
+                    >
+                      {lang === "de" ? "Strecke ändern" : "Change route"}
+                    </button>
                   </span>
-                  <span className="text-base" style={{ color: C.gold }}>✓</span>
+                  <span className="shrink-0 text-base" style={{ color: C.gold }}>✓</span>
+                </div>
+              ) : (
+                <div>
+                  <label className={labelCls}>📍 {B.route}</label>
+                  <select
+                    className={inputCls}
+                    value={routeIdx ?? ""}
+                    onChange={(e) => setRouteIdx(e.target.value === "" ? null : Number(e.target.value))}
+                  >
+                    <option value="">{B.choose}</option>
+                    {routes.map((r, i) => (
+                      <option key={r.slug} value={i}>
+                        ZRH → {localName(r.to, lang)} · {L.routesSec.from} CHF {r.price.toFixed(2)}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               )}
-              <div>
-                <label className={labelCls}>📍 {B.route}</label>
-                <select
-                  className={inputCls}
-                  value={routeIdx ?? ""}
-                  onChange={(e) => setRouteIdx(e.target.value === "" ? null : Number(e.target.value))}
-                >
-                  <option value="">{B.choose}</option>
-                  {routes.map((r, i) => (
-                    <option key={r.slug} value={i}>
-                      ZRH → {localName(r.to, lang)} · {L.routesSec.from} CHF {r.price.toFixed(2)}
-                    </option>
-                  ))}
-                </select>
-              </div>
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div>
                   <label className={labelCls}>📅 {L.form.date}</label>
