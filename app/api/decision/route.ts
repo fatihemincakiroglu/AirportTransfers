@@ -7,6 +7,7 @@ import { NextRequest } from "next/server";
 import { sql, ensureSchemaSafe as ensureSchema, logEvent, dbReady } from "../../lib/db";
 import { verifyActionToken, type MailAction } from "../../lib/actionToken";
 import { syncBooking, removeBooking, type CalBooking } from "../../lib/gcal";
+import { refundPayment } from "../../lib/stripe";
 
 export const runtime = "nodejs";
 
@@ -96,6 +97,20 @@ export async function GET(req: NextRequest) {
       }
     } else {
       await removeBooking(full.google_event_id);
+
+      // Ödeme alınmışsa otomatik iade
+      const [pay] = (await sql`
+        SELECT payment_status, stripe_intent, price FROM bookings WHERE id = ${id}`) as unknown as
+        { payment_status: string | null; stripe_intent: string | null; price: string | null }[];
+      if (pay?.payment_status === "paid" && pay.stripe_intent) {
+        const refund = await refundPayment(pay.stripe_intent);
+        if (refund) {
+          await sql`UPDATE bookings SET payment_status = 'refunded', refunded_at = now() WHERE id = ${id}`;
+          await logEvent("payment_refund", `${b.ref} için CHF ${Number(pay.price ?? 0).toFixed(2)} iade edildi`, { actor: "panel", ref: b.ref });
+        } else {
+          await logEvent("payment_refund_failed", `${b.ref} iadesi BAŞARISIZ — Stripe panelinden kontrol edin`, { actor: "panel", ref: b.ref });
+        }
+      }
     }
   }
 

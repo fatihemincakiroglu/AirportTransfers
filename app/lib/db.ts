@@ -88,6 +88,13 @@ async function createTables() {
       created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
+  // Stripe online ödeme
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status  TEXT DEFAULT 'none'`; // none|pending|paid|refunded
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS stripe_session  TEXT`;
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS stripe_intent   TEXT`;
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS paid_at         TIMESTAMPTZ`;
+  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS refunded_at     TIMESTAMPTZ`;
+
   // Google Takvim senkronu
   await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS google_event_id TEXT`;
 

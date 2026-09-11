@@ -3,8 +3,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
 import { sql, ensureSchemaSafe as ensureSchema, logEvent, BOOKING_STATUSES } from "../../../lib/db";
 import { syncBooking, removeBooking, type CalBooking } from "../../../lib/gcal";
+import { refundPayment } from "../../../lib/stripe";
 
 export const runtime = "nodejs";
+
+/** Ret/iptal durumunda ödenmiş tutarı otomatik iade eder */
+async function refundIfPaid(id: number) {
+  const [b] = (await sql`
+    SELECT ref, price, payment_status, stripe_intent FROM bookings WHERE id = ${id}`) as unknown as
+    { ref: string; price: string | null; payment_status: string | null; stripe_intent: string | null }[];
+
+  if (!b || b.payment_status !== "paid" || !b.stripe_intent) return;
+
+  const refund = await refundPayment(b.stripe_intent);
+  if (refund) {
+    await sql`UPDATE bookings SET payment_status = 'refunded', refunded_at = now() WHERE id = ${id}`;
+    await logEvent("payment_refund", `${b.ref} için CHF ${Number(b.price ?? 0).toFixed(2)} iade edildi`, { actor: "panel", ref: b.ref });
+  } else {
+    await logEvent("payment_refund_failed", `${b.ref} iadesi BAŞARISIZ — Stripe panelinden manuel kontrol edin`, { actor: "panel", ref: b.ref });
+  }
+}
 
 /** Kaydı Google Takvim'e yazar (kabul/tamamlandı) ya da siler (ret/iptal) */
 async function syncToCalendar(id: number) {
@@ -111,6 +129,7 @@ export async function PATCH(req: NextRequest) {
         (status === "confirmed" ? "" : ` — sebep: ${reason ?? "belirtilmedi"}`),
       { actor: "panel", ref: cur?.ref },
     );
+    if (status === "rejected" || status === "cancelled") await refundIfPaid(id);
     await syncToCalendar(id);
     return NextResponse.json({ ok: true });
   }

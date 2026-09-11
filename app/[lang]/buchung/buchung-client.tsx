@@ -26,20 +26,46 @@ export default function Buchung() {
   const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null; reason: string | null }>({ busy: false, nextFree: null, reason: null });
 
   const [sending, setSending] = useState(false);
+  // Stripe'tan dönüş: ödeme başarılıysa onay ekranı, iptalse uyarı
+  const [payResult] = useState(() => {
+    if (typeof window === "undefined") return { paidRef: null as string | null, canceled: false };
+    const q = new URLSearchParams(window.location.search);
+    return { paidRef: q.get("paid"), canceled: q.get("canceled") === "1" };
+  });
 
-  /** Talebi sunucuya gönderir; kayıt oluşur ve bildirim e-postası gider */
+  /**
+   * Talebi kaydeder ve Stripe ödeme sayfasına yönlendirir.
+   * Ödeme yapılandırılmamışsa eski akışa (kayıt + bildirim) düşer.
+   */
   const submitBooking = async () => {
     if (!ready || sending) return;
     setSending(true);
     const r = draftRef.current ?? makeRef();
+    const payload = bookingPayload(r, "site");
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data?.ok && data.url) {
+        window.location.assign(data.url); // Stripe ödeme sayfası
+        return;
+      }
+    } catch {
+      /* ödeme başlatılamadı — talep yine de iletilir */
+    }
+
     try {
       await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bookingPayload(r, "site")),
+        body: JSON.stringify(payload),
       });
     } catch {
-      /* ağ hatası olsa da müşteriye onay gösterilir; kayıt taslaktan mevcuttur */
+      /* ağ hatası olsa da müşteriye onay gösterilir */
     }
     setSending(false);
     setDoneRef(r);
@@ -508,11 +534,12 @@ export default function Buchung() {
                     }`}
                     style={{ background: C.gold, color: C.pine }}
                   >
-                    {sending ? `${D.sending}…` : `${L.hero.cta1} — CHF ${total.toFixed(2)}`}
+                    {sending ? `${D.sending}…` : `${X.pay.cta} — CHF ${total.toFixed(2)}`}
                   </button>
                 </div>
 
-                <p className="mt-3 text-center text-xs text-stone-500">{D.confirmNote}</p>
+                <p className="mt-3 text-center text-xs text-stone-500">🔒 {X.pay.note}</p>
+                <p className="mt-1.5 text-center text-xs text-stone-500">{D.confirmNote}</p>
               </div>
             </>
           )}
@@ -615,8 +642,17 @@ export default function Buchung() {
         </aside>
       </section>
 
+      {/* Stripe ödemesi iptal edildiyse uyarı */}
+      {payResult.canceled && !doneRef && (
+        <div className="mx-auto max-w-7xl px-5 pt-4">
+          <p className="rounded-2xl border px-4 py-3 text-sm" style={{ borderColor: "#FDE68A", background: "#FFFBEB", color: "#92400E" }}>
+            ⚠ {X.pay.canceled}
+          </p>
+        </div>
+      )}
+
       {/* ── Talep gönderildi — bilgilendirme ekranı ── */}
-      {doneRef && chosen && (
+      {(doneRef || payResult.paidRef) && (
         <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
           <div className="relative w-full max-w-md rounded-3xl bg-white p-7 text-center shadow-2xl md:p-9">
             <button
@@ -627,17 +663,21 @@ export default function Buchung() {
             >✕</button>
 
             <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-2xl text-emerald-600">✓</span>
-            <h3 className="font-display mt-4 text-2xl font-semibold" style={{ color: C.pine }}>{X.done.title}</h3>
+            <h3 className="font-display mt-4 text-2xl font-semibold" style={{ color: C.pine }}>
+              {payResult.paidRef ? X.pay.success : X.done.title}
+            </h3>
             <p className="mt-3 text-sm leading-relaxed text-stone-600">
-              {X.done.body(doneRef).split(doneRef).map((part, i, arr) => (
-                <span key={i}>{part}{i < arr.length - 1 && <b style={{ color: C.pine }}>{doneRef}</b>}</span>
-              ))}
+              {payResult.paidRef ? X.pay.successText : X.done.body(doneRef!)}
+            </p>
+            <p className="mt-2 text-sm font-bold" style={{ color: C.pine }}>
+              {payResult.paidRef ?? doneRef}
             </p>
 
             <div className="mt-4 rounded-xl border px-4 py-3 text-sm font-medium" style={{ background: "#FFFBEB", borderColor: "#FDE68A", color: "#92400E" }}>
               {X.done.hint}
             </div>
 
+            {chosen && (
             <div className="mt-4 space-y-2 rounded-xl bg-stone-50 p-4 text-sm">
               <div className="flex items-center justify-between gap-4">
                 <span className="text-stone-500">{D.vehicle}</span>
@@ -649,9 +689,10 @@ export default function Buchung() {
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-stone-500">{X.done.payment}</span>
-                <b>{D.payOptions[pay][1]}</b>
+                <b>{payResult.paidRef ? "Online ✓" : D.payOptions[pay][1]}</b>
               </div>
             </div>
+            )}
 
             <a
               href={P("/")}

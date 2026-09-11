@@ -56,6 +56,22 @@ Mailde tek tıkla **Kabul et / Reddet** düğmeleri bulunur.
 
 Değişkenler tanımlı değilse bildirim sessizce atlanır; panel ve site normal çalışır.
 
+## Stripe online ödeme
+Müşteri rezervasyon talebini gönderirken öder. Talebi reddeder veya iptal ederseniz
+ödeme **otomatik olarak tam iade** edilir (panelden veya e-postadaki düğmeden).
+
+1. https://dashboard.stripe.com → hesap açın, İsviçre şirket bilgileri ve IBAN ile doğrulayın.
+2. **Settings → Payment methods** → **Card**, **TWINT**, Apple/Google Pay'i etkinleştirin.
+3. **Developers → API keys** → `Secret key` (`sk_live_...`) kopyalayın → `STRIPE_SECRET_KEY`
+4. **Developers → Webhooks → Add endpoint**
+   - URL: `https://zrhairporttaxi.ch/api/stripe/webhook`
+   - Olay: `checkout.session.completed`
+   - Oluşunca verilen `whsec_...` değerini `STRIPE_WEBHOOK_SECRET` olarak ekleyin.
+5. Vercel'e iki değişkeni ekleyin ve **Redeploy** yapın.
+
+> Test için `sk_test_...` anahtarı ve Stripe'ın test kartı `4242 4242 4242 4242` kullanılabilir.
+> Değişkenler tanımlı değilse ödeme adımı atlanır; talep eskisi gibi kayıt + bildirim olarak işlenir.
+
 ## Sayfalar
 - **Kontrol Paneli** — özet sayılar + son rezervasyonlar
 - **Raporlar** — aylık rezervasyon/ciro grafikleri, en çok gidilen yerler, araç ve dil dağılımı, CSV indirme

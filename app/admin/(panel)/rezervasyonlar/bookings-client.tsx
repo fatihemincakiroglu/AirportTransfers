@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { C, Card, StatusPill, STATUS_LABEL, STATUS_STYLE, STATUS_SOLID, fmtDate } from "../../ui";
+import { C, Card, StatusPill, PayPill, PAY_LABEL, STATUS_LABEL, STATUS_STYLE, STATUS_SOLID, fmtDate } from "../../ui";
 import DecisionButtons from "../../decision-buttons";
 
 export type Booking = {
@@ -13,7 +13,8 @@ export type Booking = {
   first_name: string | null; last_name: string | null; email: string | null; phone: string | null;
   flight: string | null; nameboard: string | null; extras: string | null;
   notes: string | null; admin_note: string | null; created_at: string;
-  driver_id?: number | null; source?: string | null; reject_reason?: string | null;
+  source?: string | null; reject_reason?: string | null;
+  payment_status?: string | null; paid_at?: string | null; refunded_at?: string | null;
 };
 
 /** Ret sebebi anahtarı → Türkçe etiket */
@@ -117,7 +118,6 @@ export default function BookingsClient({
   const startEdit = (b: Booking) => {
     const init: Record<string, string> = {};
     for (const [k] of EDIT_FIELDS) init[k as string] = b[k] == null ? "" : String(b[k]);
-    init.driver_id = b.driver_id ? String(b.driver_id) : "";
     setEdit(init);
     setNote(b.admin_note ?? "");
   };
@@ -234,7 +234,12 @@ export default function BookingsClient({
                           <td className="whitespace-nowrap px-4 py-3 text-stone-600">{r.ride_date} {r.ride_time}</td>
                           <td className="px-4 py-3 text-stone-600">{r.vehicle ?? "—"}</td>
                           <td className="px-4 py-3 tabular-nums">{r.price ? `CHF ${Number(r.price).toFixed(2)}` : "—"}</td>
-                          <td className="px-4 py-3"><StatusPill status={r.status} /></td>
+                          <td className="px-4 py-3">
+                            <StatusPill status={r.status} />
+                            {r.payment_status && r.payment_status !== "none" && (
+                              <span className="mt-1 block"><PayPill status={r.payment_status} /></span>
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -324,9 +329,11 @@ export default function BookingsClient({
                 ["Ara duraklar", open.stops], ["Tarih / saat", `${open.ride_date ?? ""} ${open.ride_time ?? ""}`],
                 ["Yolcu / bagaj", `${open.pax ?? "—"} / ${open.luggage ?? "—"}`],
                 ["Araç", open.vehicle],
-                ["Şoför", drivers.find((d) => d.id === open.driver_id)?.name ?? null],
                 ["Tutar", open.price ? `CHF ${Number(open.price).toFixed(2)}` : null],
-                ["Ödeme", open.payment], ["Uçuş", open.flight], ["İsim tabelası", open.nameboard],
+                ["Ödeme", open.payment],
+                ["Ödeme durumu", open.payment_status && open.payment_status !== "none" ? PAY_LABEL[open.payment_status] : null],
+                ["Ödeme tarihi", open.paid_at ? fmtDate(open.paid_at) : null],
+                ["İade tarihi", open.refunded_at ? fmtDate(open.refunded_at) : null], ["Uçuş", open.flight], ["İsim tabelası", open.nameboard],
                 ["Ekstralar", open.extras], ["Müşteri notu", open.notes],
                 ["Panel notu", open.admin_note],
                 ["Kaynak", open.source === "panel" ? "Panelden eklendi" : "Siteden geldi"],

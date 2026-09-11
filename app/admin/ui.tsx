@@ -63,3 +63,25 @@ export function NoDb() {
 
 export const fmtDate = (d: Date | string) =>
   new Date(d).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+
+/** Ödeme durumu etiketleri ve renkleri */
+export const PAY_LABEL: Record<string, string> = {
+  none: "Araçta ödeme", pending: "Ödeme bekliyor", paid: "Ödendi", refunded: "İade edildi",
+};
+export const PAY_STYLE: Record<string, { background: string; color: string }> = {
+  none:     { background: "#F5F5F4", color: "#57534E" },
+  pending:  { background: "#FEF3C7", color: "#92400E" },
+  paid:     { background: "#D1FAE5", color: "#065F46" },
+  refunded: { background: "#E0E7FF", color: "#3730A3" },
+};
+
+export function PayPill({ status }: { status?: string | null }) {
+  const key = status ?? "none";
+  if (key === "none") return null;
+  const st = PAY_STYLE[key] ?? PAY_STYLE.none;
+  return (
+    <span className="inline-block whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-extrabold" style={st}>
+      {PAY_LABEL[key] ?? key}
+    </span>
+  );
+}
