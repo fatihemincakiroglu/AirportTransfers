@@ -1,15 +1,53 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { C, routes, fleet, CUSTOM_BASE_PRICE } from "../../config";
+import { C, routes, fleet, CUSTOM_BASE_PRICE, MAX_PAX } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls, norm, ExtrasCounter,
-  waHref,
+  waHref, PlaceField, SelectField, fieldWrap, fieldInput,
 } from "../../components";
+
+const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
+
+/**
+ * Serbest metin uçları sabit rotayla eşleştirir (aksan duyarsız, iki dilde).
+ * Eşleşme yoksa özel güzergâh döner. Hem URL ön-doldurmada hem de
+ * adım 1'deki "İleri" düğmesinde kullanılır.
+ */
+function resolveTrip(from: string, to: string): { idx: number; rev: boolean; custom: { from: string; to: string } | null } {
+  const isAirport = (s: string) => /zrh|flughafen|airport/.test(norm(s));
+  const findIdx = (s: string) =>
+    s
+      ? routes.findIndex((r) => {
+          const names = typeof r.to === "string" ? [r.to] : [r.to.de, r.to.en];
+          return names.some((nm) => norm(s).includes(norm(nm)) || norm(nm).includes(norm(s)));
+        })
+      : -1;
+  const fromAir = isAirport(from);
+  const toAir = isAirport(to);
+  let idx = -1;
+  let rev = false;
+  if (from && to && !fromAir && !toAir) {
+    // İki uç da havalimanı değil → sabit rota yok, özel güzergâh
+    return { idx: -1, rev: false, custom: { from, to } };
+  }
+  if (toAir && from) {
+    idx = findIdx(from);            // Basel → ZRH
+    if (idx >= 0) rev = true;
+  } else if (to) {
+    idx = findIdx(to);              // ZRH → Basel
+  } else if (from && !fromAir) {
+    idx = findIdx(from);            // sadece kalkış yazılmış: şehir → ZRH varsay
+    if (idx >= 0) rev = true;
+  }
+  if (idx >= 0) return { idx, rev, custom: null };
+  if (from || to) return { idx: -1, rev: false, custom: { from: from || "", to: to || "" } };
+  return { idx: -1, rev: false, custom: null };
+}
 
 // Talep referans numarası (tıklama anında üretilir)
 const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase();
@@ -112,8 +150,13 @@ export default function Buchung() {
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [routeIdx, setRouteIdx] = useState<number | null>(null);
-  // Ana sayfadan gelen özel güzergâhta rota seçimi gizlenir; "değiştir" ile açılır
-  const [pickRoute, setPickRoute] = useState(false);
+  // Adım 1 formu — ana sayfadaki kartla aynı alanlar (serbest uçlar + duraklar)
+  const [trip, setTrip] = useState({ from: AIRPORT, to: "" });
+  const [hourly, setHourly] = useState(false); // saatlik kiralama (URL'den)
+  const setTripField = (k: "from" | "to", v: string) => setTrip((s) => ({ ...s, [k]: v }));
+  const swapTrip = () => setTrip((s) => ({ from: s.to, to: s.from }));
+  const setStop = (i: number, v: string) => setStops((a) => a.map((x, j) => (j === i ? v : x)));
+  const removeStop = (i: number) => setStops((a) => a.filter((_, j) => j !== i));
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [car, setCar] = useState<number | null>(null);
@@ -149,6 +192,7 @@ export default function Buchung() {
       if (tm) setTime(tm);
       if (paxH) setF((s) => ({ ...s, pax: String(Math.min(7, paxH)) }));
       setCustom({ from: "Flughafen Zürich (ZRH)", to: `${XH.bookingLabel} · ${h}h` });
+      setHourly(true);
       setF((s) => ({ ...s, notes: XH.bookingNote(h) }));
       if (d && tm) setStep(2);
       return;
@@ -156,53 +200,13 @@ export default function Buchung() {
     const paxN = parseInt(g("pax") || "0", 10) || 0;
     const kidsN = parseInt(g("kids") || "0", 10) || 0;
 
-    // Konum metnini rotayla eşleştir (aksan duyarsız, iki dilde)
-    const isAirport = (s: string) => /zrh|flughafen|airport/.test(norm(s));
-    const findIdx = (s: string) =>
-      s
-        ? routes.findIndex((r) => {
-            const names = typeof r.to === "string" ? [r.to] : [r.to.de, r.to.en];
-            return names.some((nm) => norm(s).includes(norm(nm)) || norm(nm).includes(norm(s)));
-          })
-        : -1;
-
-    const fromAir = isAirport(from);
-    const toAir = isAirport(to);
-
     const stopsParam = g("stops");
 
     // ── Önce tüm hedef durum hesaplanır, sonra TEK blokta uygulanır ──
-    let idx = -1;
-    let rev = false;
-    let customPlan: { from: string; to: string } | null = null;
-    let notes = "";
-    let step2 = false;
-
-    if (from && to && !fromAir && !toAir) {
-      // İki uç da dolu ve İKİSİ DE havalimanı değilse: sabit rota YOK → özel güzergâh
-      customPlan = { from, to };
-      notes = `${from} → ${to}`;
-      step2 = Boolean(d && tm); // özel güzergâhta da araç seçimine geç
-    } else {
-      if (toAir && from) {
-        idx = findIdx(from);            // Basel → ZRH
-        if (idx >= 0) rev = true;
-      } else if (to) {
-        idx = findIdx(to);              // ZRH → Basel
-      } else if (from && !fromAir) {
-        idx = findIdx(from);            // sadece kalkış yazılmış: şehir → ZRH varsay
-        if (idx >= 0) rev = true;
-      }
-      if (idx >= 0) {
-        step2 = Boolean(d && tm);       // → doğrudan araç seçimi
-      } else if (from || to) {
-        // Listede olmayan uç — özel güzergâh olarak göster
-        customPlan = { from: from || "", to: to || "" };
-        notes = `${from || "?"} → ${to || "?"}`;
-        // İki uç ve zaman belliyse burada da araç seçimine geç
-        step2 = Boolean(from && to && d && tm);
-      }
-    }
+    const { idx, rev, custom: customPlan } = resolveTrip(from, to);
+    let notes = customPlan ? `${from || "?"} → ${to || "?"}` : "";
+    // Rota ya da iki uçlu özel güzergâh + zaman belliyse doğrudan araç seçimine geç
+    const step2 = Boolean(d && tm) && (idx >= 0 || Boolean(customPlan && from && to));
 
     // URL → state senkronu mount'ta bir kez çalışır; React tüm bu çağrıları
     // tek render'da toplar (otomatik batching). Bu, dokümante edilmiş
@@ -222,6 +226,7 @@ export default function Buchung() {
     if (notes) setF((s) => ({ ...s, notes }));
     if (idx >= 0) setRouteIdx(idx);
     if (rev) setReversed(true);
+    if (from || to) setTrip({ from: from || AIRPORT, to });
     if (step2) setStep(2);
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [XH, XS]);
@@ -273,7 +278,29 @@ export default function Buchung() {
   const hasTrip = route !== null || (showCustom && !!custom!.from && !!custom!.to);
   const total = hasTrip && chosen ? basePrice * chosen.mult : 0;
 
-  const step1Ready = hasTrip && date && time;
+  const step1Ready = (hourly || (trip.from.trim() && trip.to.trim())) && date && time;
+
+  // Adım 1 → 2: serbest uçları rotayla eşleştir, özel güzergâh/durak notlarını kur
+  const applyTrip = () => {
+    if (!step1Ready) return;
+    if (!hourly) {
+      const from = trip.from.trim();
+      const to = trip.to.trim();
+      const r = resolveTrip(from, to);
+      setRouteIdx(r.idx >= 0 ? r.idx : null);
+      setReversed(r.rev);
+      setCustom(r.custom);
+      setCar(null);
+      const cleanStops = stops.map((x) => x.trim()).filter(Boolean);
+      setStops(cleanStops);
+      const lines = [
+        r.custom ? `${from} → ${to}` : "",
+        cleanStops.length ? `${XS.label} ${cleanStops.join(", ")}` : "",
+      ].filter(Boolean);
+      setF((s) => ({ ...s, notes: lines.join("\n") }));
+    }
+    go(2);
+  };
   const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight && !slot.busy;
 
 
@@ -345,54 +372,94 @@ export default function Buchung() {
           {step === 1 && (
             <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 md:p-6">
               <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>{B.steps[0]}</h2>
-              {/* Güzergâh ana sayfadan geldiyse tekrar sorulmaz; değiştirmek isteyen açabilir */}
-              {showCustom && !pickRoute ? (
+              {hourly ? (
                 <div className="flex items-start justify-between gap-3 rounded-xl px-4 py-3.5 text-sm" style={{ background: "#FBF7EE" }}>
                   <span className="min-w-0">
                     <b className="block break-words" style={{ color: C.pine }}>{custom!.from} → {custom!.to}</b>
-                    <span className="block text-[11px] text-stone-500">
-                      {lang === "de" ? "Individuelle Strecke – Endpreis wird bestätigt" : "Custom route – final price to be confirmed"}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setPickRoute(true)}
-                      className="mt-1.5 text-[11px] font-bold underline-offset-2 hover:underline"
-                      style={{ color: C.pine }}
-                    >
-                      {lang === "de" ? "Strecke ändern" : "Change route"}
-                    </button>
+                    <span className="block text-[11px] text-stone-500">{XH.note}</span>
                   </span>
                   <span className="shrink-0 text-base" style={{ color: C.gold }}>✓</span>
                 </div>
               ) : (
-                <div>
-                  <label className={labelCls}>📍 {B.route}</label>
-                  <select
-                    className={inputCls}
-                    value={routeIdx ?? ""}
-                    onChange={(e) => setRouteIdx(e.target.value === "" ? null : Number(e.target.value))}
-                  >
-                    <option value="">{B.choose}</option>
-                    {routes.map((r, i) => (
-                      <option key={r.slug} value={i}>
-                        ZRH → {localName(r.to, lang)} · {L.routesSec.from} CHF {r.price.toFixed(2)}
-                      </option>
-                    ))}
-                  </select>
+                <div className="space-y-4">
+                  {/* Nereden / Nereye + değiştir düğmesi */}
+                  <div className="relative grid gap-4 md:grid-cols-[1fr_auto_1fr]">
+                    <PlaceField label={L.form.from} icon="🚗" value={trip.from} placeholder={L.form.fromPh} onChange={(v) => setTripField("from", v)} />
+                    <button
+                      type="button"
+                      onClick={swapTrip}
+                      aria-label="swap"
+                      className="hidden h-9 w-9 items-center justify-center self-center rounded-full border bg-white text-sm shadow-md transition-all hover:rotate-180 hover:shadow-lg md:mt-5 md:flex"
+                      style={{ borderColor: C.gold, color: C.pine }}
+                    >⇆</button>
+                    <PlaceField label={L.form.to} icon="📍" value={trip.to} placeholder={L.form.toPh} onChange={(v) => setTripField("to", v)} />
+                  </div>
+
+                  {/* Ara duraklar */}
+                  {stops.map((sv, i) => (
+                    <div key={i} className="flex items-end gap-2">
+                      <div className="min-w-0 flex-1">
+                        <PlaceField label={`${i + 1}. ${XS.ph}`} icon="🚏" value={sv} placeholder={XS.ph} onChange={(v) => setStop(i, v)} />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeStop(i)}
+                        aria-label={XS.remove}
+                        className="mb-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-600"
+                      >✕</button>
+                    </div>
+                  ))}
+                  {stops.length < 3 && (
+                    <button
+                      type="button"
+                      onClick={() => setStops((a) => [...a, ""])}
+                      className="flex items-center gap-2 text-sm font-bold transition-colors hover:opacity-80"
+                      style={{ color: C.pine }}
+                    >
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full text-[11px]" style={{ background: `${C.gold}22`, color: C.gold }}>+</span>
+                      {XS.add}
+                    </button>
+                  )}
                 </div>
               )}
+
+              {/* Tarih / Saat */}
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div>
                   <label className={labelCls}>📅 {L.form.date}</label>
-                  <input type="date" className={inputCls} value={date} onChange={(e) => setDate(e.target.value)} />
+                  <div className={fieldWrap}>
+                    <input type="date" className={fieldInput} value={date} onChange={(e) => setDate(e.target.value)} />
+                  </div>
                 </div>
                 <div>
                   <label className={labelCls}>🕐 {L.form.time}</label>
-                  <input type="time" className={inputCls} value={time} onChange={(e) => setTime(e.target.value)} />
+                  <div className={fieldWrap}>
+                    <input type="time" className={fieldInput} value={time} onChange={(e) => setTime(e.target.value)} />
+                  </div>
                 </div>
               </div>
+
+              {/* Yolcu / Çocuk */}
+              {!hourly && (
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <SelectField
+                    label={L.form.pax}
+                    icon="👥"
+                    value={f.pax}
+                    options={Array.from({ length: MAX_PAX }, (_, i) => i + 1)}
+                    onChange={(v) => set("pax", v)}
+                  />
+                  <SelectField
+                    label={L.form.kids}
+                    icon="🧒"
+                    value={String(extras.child)}
+                    options={[0, 1, 2, 3, 4]}
+                    onChange={(v) => setExtras((s) => ({ ...s, child: Number(v) }))}
+                  />
+                </div>
+              )}
               <button
-                onClick={() => step1Ready && go(2)}
+                onClick={applyTrip}
                 disabled={!step1Ready}
                 className={`mt-6 w-full rounded-full px-6 py-3.5 text-sm font-extrabold uppercase tracking-wider text-white transition-all ${step1Ready ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"}`}
                 style={{ background: step1Ready ? C.pine : "#9ca3af" }}

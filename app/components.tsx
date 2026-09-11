@@ -262,9 +262,9 @@ export function BookingBar() {
 
 // ── Dikey rezervasyon kartı (ana sayfa hero) ──────────────────
 /* ── Premium form alanları ─────────────────────────────── */
-const fieldWrap =
+export const fieldWrap =
   "group relative flex h-12 items-center gap-2.5 rounded-xl border border-stone-200 bg-[#FAF9F4] px-3.5 transition-all focus-within:border-[#C9A24B] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#C9A24B]/15";
-const fieldInput =
+export const fieldInput =
   "w-full bg-transparent text-sm font-semibold text-stone-800 outline-none placeholder:font-normal placeholder:text-stone-400";
 
 /** Aksan/harf duyarsız arama: "zurich" → "Zürich" bulur */
@@ -273,7 +273,7 @@ export const norm = (s: string) =>
    .replace(/é|è|ê/g, "e").replace(/â|à/g, "a").replace(/î/g, "i");
 
 /** İsviçre yerleri için otomatik tamamlamalı alan */
-function PlaceField({ label, icon, value, placeholder, onChange }: {
+export function PlaceField({ label, icon, value, placeholder, onChange }: {
   label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -326,7 +326,7 @@ function PlaceField({ label, icon, value, placeholder, onChange }: {
 }
 
 /** Özel açılır menü — tarayıcı select'i yerine markalı liste */
-function SelectField({ label, icon, value, options, onChange, suffix }: {
+export function SelectField({ label, icon, value, options, onChange, suffix }: {
   label: string; icon: string; value: string; options: (string | number)[]; onChange: (v: string) => void; suffix?: string;
 }) {
   const [open, setOpen] = useState(false);
