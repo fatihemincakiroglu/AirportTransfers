@@ -8,7 +8,7 @@ import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, BookingBar,
   waHref, mailHref,
 } from "../../components";
-import { pushEvent, newId } from "../../lib/analytics";
+import { pushEvent, newId, captureIdentity } from "../../lib/analytics";
 
 const FORM_ID = "contact_main";
 
@@ -45,8 +45,11 @@ export default function Kontakt() {
       }, { id: `form_error_${errId}` });
     };
     try {
-      const body = JSON.stringify({ lang, ...form });
-      fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
+      captureIdentity()
+        .then((measurement) => fetch("/api/contact", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lang, ...form, measurement }), keepalive: true,
+        }))
         .then(async (res) => {
           const d = await res.json().catch(() => null);
           if (res.ok && d?.ok && d.id != null) {

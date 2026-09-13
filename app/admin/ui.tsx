@@ -3,7 +3,7 @@ export const C = { pine: "#0C2E25", gold: "#C9A24B", ivory: "#FAFAF7" };
 
 export const STATUS_LABEL: Record<string, string> = {
   new: "Yeni", confirmed: "Kabul edildi", done: "Tamamlandı",
-  rejected: "Reddedildi", cancelled: "İptal",
+  rejected: "Reddedildi", cancelled: "İptal", no_show: "Gelmedi",
 };
 export const STATUS_STYLE: Record<string, { background: string; color: string }> = {
   new:       { background: "#FEF3C7", color: "#92400E" }, // amber
@@ -11,6 +11,7 @@ export const STATUS_STYLE: Record<string, { background: string; color: string }>
   done:      { background: "#D1FAE5", color: "#065F46" }, // yeşil
   cancelled: { background: "#F3F4F6", color: "#6B7280" }, // gri — müşteri iptali
   rejected:  { background: "#FEE2E2", color: "#B91C1C" }, // kırmızı — biz reddettik
+  no_show:   { background: "#EDE9FE", color: "#5B21B6" }, // mor — müşteri gelmedi
 };
 
 /** Seçili durum düğmesinin dolu (koyu) hâli */
@@ -20,12 +21,13 @@ export const STATUS_SOLID: Record<string, { background: string; color: string }>
   done:      { background: "#059669", color: "#fff" },
   cancelled: { background: "#6B7280", color: "#fff" },
   rejected:  { background: "#DC2626", color: "#fff" },
+  no_show:   { background: "#7C3AED", color: "#fff" },
 };
 
 /** Takvimde gün noktası / sol şerit rengi */
 export const STATUS_DOT: Record<string, string> = {
   new: "#D97706", confirmed: "#1D4ED8", done: "#059669",
-  cancelled: "#6B7280", rejected: "#DC2626",
+  cancelled: "#6B7280", rejected: "#DC2626", no_show: "#7C3AED",
 };
 
 export function StatusPill({ status }: { status: string }) {

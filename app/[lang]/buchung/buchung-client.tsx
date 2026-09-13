@@ -10,7 +10,7 @@ import {
   localName, inputCls, labelCls, norm, ExtrasCounter,
   waHref, PlaceField, SelectField, fieldWrap, fieldInput,
 } from "../../components";
-import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId } from "../../lib/analytics";
+import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 
 const PAY_TYPES = ["twint", "cash", "card"] as const; // D.payOptions sırasıyla
 const STEP_NAMES = { 1: "route", 2: "vehicle", 3: "contact" } as const;
@@ -83,7 +83,9 @@ export default function Buchung() {
     if (!ready || sending) return;
     setSending(true);
     const r = draftRef.current ?? makeRef();
-    const payload = bookingPayload(r, "site");
+    // Ölçüm kimliği (GA client id, _fbp/_fbc) — sunucu yalnızca onay varsa saklar
+    const measurement = await captureIdentity();
+    const payload = { ...bookingPayload(r, "site"), measurement };
 
     // Ölçüm: doğrulama geçti, API isteği hemen ardından (spec §14.2A) — satış DEĞİL
     pushEvent("booking_submit", {

@@ -208,3 +208,47 @@ export function trackLanguageChange(from: string, to: string) {
   if (from === to) return;
   pushEvent("language_change", { language: { from_language: from, to_language: to } }, { idPrefix: "language" });
 }
+
+// ── Backend olayları için kimlik yakalama (spec §19.4 / §17.5) ─────────
+// Rezervasyon/iletişim kaydından hemen önce çağrılır; sunucu bunları yalnızca
+// ilgili onay verilmişse saklar. En fazla 500 ms bekler; kayıt akışını asla engellemez.
+export type Identity = { ga_client_id?: string; ga_session_id?: string; fbp?: string; fbc?: string };
+
+const cookie = (name: string) => {
+  const m = typeof document !== "undefined" ? document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`)) : null;
+  return m ? decodeURIComponent(m[1]) : undefined;
+};
+
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
+export async function captureIdentity(timeoutMs = 500): Promise<Identity> {
+  const out: Identity = {};
+  if (typeof window === "undefined") return out;
+  const fbp = cookie("_fbp"), fbc = cookie("_fbc");
+  if (fbp) out.fbp = fbp;
+  if (fbc) out.fbc = fbc;
+
+  // GA4 client/session id: yalnızca destekli gtag('get') ile (çerez ayrıştırma yok)
+  const gaId = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
+  if (!gaId) return out;
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag !== "function") {
+    // Kuyruk şimi: GTM'in yüklediği Google etiketi bu komutları aynı dataLayer'dan işler
+    // eslint-disable-next-line prefer-rest-params
+    window.gtag = function () { window.dataLayer!.push(arguments as unknown as Record<string, unknown>); };
+  }
+  const get = (field: string) => new Promise<string | undefined>((resolve) => {
+    const t = setTimeout(() => resolve(undefined), timeoutMs);
+    try {
+      window.gtag!("get", gaId, field, (v: unknown) => { clearTimeout(t); resolve(v == null ? undefined : String(v)); });
+    } catch { clearTimeout(t); resolve(undefined); }
+  });
+  const [cid, sid] = await Promise.all([get("client_id"), get("session_id")]);
+  if (cid) out.ga_client_id = cid;
+  if (sid && /^\d+$/.test(sid)) out.ga_session_id = sid;
+  return out;
+}

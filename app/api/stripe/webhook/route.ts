@@ -1,8 +1,9 @@
 // Stripe ödeme bildirimi: ödeme tamamlanınca kaydı "ödendi" yapar
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { sql, ensureSchemaSafe as ensureSchema, logEvent, dbReady } from "../../../lib/db";
 import { verifyWebhook } from "../../../lib/stripe";
 import { sendBookingMail } from "../../../lib/mail";
+import { emitBookingEvent } from "../../../lib/measurement";
 
 export const runtime = "nodejs";
 
@@ -33,6 +34,7 @@ export async function POST(req: NextRequest) {
     FROM bookings WHERE ref = ${ref}`) as unknown as Record<string, unknown>[];
 
   await logEvent("payment_paid", `${ref} için ödeme alındı (CHF ${Number(b?.price ?? 0).toFixed(2)})`, { actor: "site", ref: String(ref) });
+  if (b) after(() => emitBookingEvent("payment_success", Number(b.id)));
 
   // Ödeme tamamlandığında bildirim maili (kabul/ret düğmeleriyle)
   if (b) {

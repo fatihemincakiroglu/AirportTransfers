@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../lib/db";
 import { sendBookingMail } from "../../lib/mail";
+import { captureMeasurement } from "../../lib/measurement";
 
 export const runtime = "nodejs";
 
@@ -16,19 +17,31 @@ export async function POST(req: NextRequest) {
     if (!ref) return NextResponse.json({ ok: false }, { status: 400 });
 
     await ensureSchema();
+    const mm = captureMeasurement(req, b); // onay + kimlik anlık görüntüsü (yalnızca izinli alanlar)
     await sql`
       INSERT INTO bookings (
         ref, lang, channel, pickup, dropoff, stops, ride_date, ride_time,
         pax, luggage, vehicle, price, payment,
-        first_name, last_name, email, phone, flight, nameboard, extras, notes
+        first_name, last_name, email, phone, flight, nameboard, extras, notes,
+        ga_client_id, ga_session_id, fbp, fbc, client_ip, client_ua, consent, source_url
       ) VALUES (
         ${ref}, ${str(b.lang, 5)}, ${str(b.channel, 20)}, ${str(b.pickup)}, ${str(b.dropoff)},
         ${str(b.stops)}, ${str(b.date, 20)}, ${str(b.time, 10)},
         ${num(b.pax)}, ${num(b.luggage)}, ${str(b.vehicle, 120)}, ${num(b.price)}, ${str(b.payment, 40)},
         ${str(b.firstName, 80)}, ${str(b.lastName, 80)}, ${str(b.email, 160)}, ${str(b.phone, 40)},
-        ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)}
+        ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)},
+        ${mm.ga_client_id}, ${mm.ga_session_id}, ${mm.fbp}, ${mm.fbc}, ${mm.client_ip}, ${mm.client_ua},
+        ${sql.json(mm.consent)}, ${mm.source_url}
       )
       ON CONFLICT (ref) DO UPDATE SET
+        ga_client_id = COALESCE(bookings.ga_client_id, EXCLUDED.ga_client_id),
+        ga_session_id= COALESCE(bookings.ga_session_id, EXCLUDED.ga_session_id),
+        fbp          = COALESCE(bookings.fbp, EXCLUDED.fbp),
+        fbc          = COALESCE(bookings.fbc, EXCLUDED.fbc),
+        client_ip    = COALESCE(bookings.client_ip, EXCLUDED.client_ip),
+        client_ua    = COALESCE(bookings.client_ua, EXCLUDED.client_ua),
+        consent      = COALESCE(bookings.consent, EXCLUDED.consent),
+        source_url   = COALESCE(bookings.source_url, EXCLUDED.source_url),
         channel   = EXCLUDED.channel,
         pickup    = COALESCE(EXCLUDED.pickup, bookings.pickup),
         dropoff   = COALESCE(EXCLUDED.dropoff, bookings.dropoff),

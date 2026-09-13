@@ -1,9 +1,10 @@
 // Panelden durum / not güncelleme.
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, after } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
 import { sql, ensureSchemaSafe as ensureSchema, logEvent, BOOKING_STATUSES } from "../../../lib/db";
 import { syncBooking, removeBooking, type CalBooking } from "../../../lib/gcal";
 import { refundPayment } from "../../../lib/stripe";
+import { emitBookingEvent } from "../../../lib/measurement";
 
 export const runtime = "nodejs";
 
@@ -19,6 +20,7 @@ async function refundIfPaid(id: number) {
   if (refund) {
     await sql`UPDATE bookings SET payment_status = 'refunded', refunded_at = now() WHERE id = ${id}`;
     await logEvent("payment_refund", `${b.ref} için CHF ${Number(b.price ?? 0).toFixed(2)} iade edildi`, { actor: "panel", ref: b.ref });
+    after(() => emitBookingEvent("booking_refunded", id));
   } else {
     await logEvent("payment_refund_failed", `${b.ref} iadesi BAŞARISIZ — Stripe panelinden manuel kontrol edin`, { actor: "panel", ref: b.ref });
   }
@@ -129,6 +131,10 @@ export async function PATCH(req: NextRequest) {
         (status === "confirmed" ? "" : ` — sebep: ${reason ?? "belirtilmedi"}`),
       { actor: "panel", ref: cur?.ref },
     );
+    // Ölçüm: kabul = Purchase; onaylıyken iptal/ret = cancelled (gelir geri alınır); onaysızken ret = declined
+    const wasConfirmed = cur?.status === "confirmed" || cur?.status === "done";
+    if (status === "confirmed") after(() => emitBookingEvent("booking_complete", id));
+    else after(() => emitBookingEvent(wasConfirmed ? "booking_cancelled" : "booking_declined", id));
     if (status === "rejected" || status === "cancelled") await refundIfPaid(id);
     await syncToCalendar(id);
     return NextResponse.json({ ok: true });
@@ -139,7 +145,9 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
     await sql`UPDATE bookings SET status = ${status}, updated_at = now() WHERE id = ${id}`;
-    const TR: Record<string, string> = { new: "Yeni", confirmed: "Onaylandı", done: "Tamamlandı", cancelled: "İptal edildi" };
+    const TR: Record<string, string> = { new: "Yeni", confirmed: "Onaylandı", done: "Tamamlandı", cancelled: "İptal edildi", no_show: "Gelmedi" };
+    if (status === "done") after(() => emitBookingEvent("booking_completed", id));
+    if (status === "no_show") after(() => emitBookingEvent("booking_no_show", id));
     await logEvent(
       "booking_status",
       `${cur?.ref ?? "#" + id} (${who} · ${cur?.dropoff ?? "—"}) durumu "${TR[cur?.status] ?? cur?.status}" → "${TR[status] ?? status}" olarak değiştirildi`,

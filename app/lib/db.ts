@@ -160,6 +160,51 @@ async function createTables() {
   await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS actor TEXT`; // "panel" | "site" | "sistem"
   await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS ref   TEXT`; // ilgili rezervasyon referansı
   await sql`CREATE INDEX IF NOT EXISTS logs_created_idx ON logs (created_at DESC)`;
+
+  // ── Ölçüm (Data Layer spec v1.3.5, Faz 2: backend hattı) ──
+  // Rezervasyon/lead kaydında yakalanan kimlik ve onay anlık görüntüsü (yalnızca izinli alanlar)
+  for (const table of ["bookings", "contacts"]) {
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS ga_client_id  TEXT`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS ga_session_id TEXT`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS fbp           TEXT`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS fbc           TEXT`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS client_ip     TEXT`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS client_ua     TEXT`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS consent       JSONB`;
+    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS source_url    TEXT`;
+  }
+  // İş olayı kutusu: her yaşam döngüsü olayı bir kez, değişmez
+  await sql`
+    CREATE TABLE IF NOT EXISTS analytics_outbox (
+      id          SERIAL PRIMARY KEY,
+      environment TEXT NOT NULL,
+      event_name  TEXT NOT NULL,
+      event_id    TEXT NOT NULL,
+      occurred_at TIMESTAMPTZ NOT NULL,
+      ref         TEXT,
+      payload     JSONB NOT NULL,
+      match       JSONB,
+      created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+      UNIQUE (environment, event_id)
+    )`;
+  // Hedef başına teslimat durumu (ga4 | meta_capi)
+  await sql`
+    CREATE TABLE IF NOT EXISTS analytics_delivery (
+      id               SERIAL PRIMARY KEY,
+      outbox_id        INT NOT NULL REFERENCES analytics_outbox(id) ON DELETE CASCADE,
+      destination      TEXT NOT NULL,
+      status           TEXT NOT NULL DEFAULT 'pending',
+      reason           TEXT,
+      attempt_count    INT NOT NULL DEFAULT 0,
+      next_attempt_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+      last_attempt_at  TIMESTAMPTZ,
+      accepted_at      TIMESTAMPTZ,
+      last_http_status INT,
+      last_error       TEXT,
+      expires_at       TIMESTAMPTZ NOT NULL,
+      UNIQUE (outbox_id, destination)
+    )`;
+  await sql`CREATE INDEX IF NOT EXISTS analytics_delivery_due_idx ON analytics_delivery (status, next_attempt_at)`;
 }
 
 /**
@@ -182,7 +227,7 @@ export async function logEvent(
   }
 }
 
-export const BOOKING_STATUSES = ["new", "confirmed", "done", "cancelled", "rejected"] as const;
+export const BOOKING_STATUSES = ["new", "confirmed", "done", "cancelled", "rejected", "no_show"] as const;
 export type BookingStatus = (typeof BOOKING_STATUSES)[number];
 
 /** İsviçre KDV oranı (yolcu taşımacılığı, normal oran) */

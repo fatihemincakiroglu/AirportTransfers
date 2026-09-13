@@ -13,9 +13,14 @@ const ST: Record<string, { label: string; bg: string; fg: string }> = {
   new:     { label: "Yeni",       bg: "#FEF3C7", fg: "#92400E" },
   read:    { label: "Okundu",     bg: "#E0F2FE", fg: "#075985" },
   replied: { label: "Yanıtlandı", bg: "#D1FAE5", fg: "#065F46" },
+  // Lead niteliği (ölçüm: lead_status_changed)
+  qualified: { label: "Nitelikli", bg: "#EDE9FE", fg: "#5B21B6" },
+  converted: { label: "Dönüştü",   bg: "#DCFCE7", fg: "#166534" },
+  invalid:   { label: "Geçersiz",  bg: "#F3F4F6", fg: "#6B7280" },
 };
+const ALL_STATUSES = ["new", "read", "replied", "qualified", "converted", "invalid"];
 
-const FILTERS: [string, string][] = [["all", "Tümü"], ["new", "Yeni"], ["read", "Okundu"], ["replied", "Yanıtlandı"]];
+const FILTERS: [string, string][] = [["all", "Tümü"], ["new", "Yeni"], ["read", "Okundu"], ["replied", "Yanıtlandı"], ["qualified", "Nitelikli"], ["converted", "Dönüştü"], ["invalid", "Geçersiz"]];
 
 export default function ContactsClient({ rows }: { rows: Contact[] }) {
   const [filter, setFilter] = useState("all");
@@ -91,7 +96,7 @@ export default function ContactsClient({ rows }: { rows: Contact[] }) {
                        className="rounded-full px-4 py-2 text-xs font-bold text-white" style={{ background: "#25D366" }}>WhatsApp</a>
                   )}
                   <span className="flex gap-1.5 sm:ml-auto">
-                    {["new", "read", "replied"].filter((s) => s !== r.status).map((s) => (
+                    {ALL_STATUSES.filter((s) => s !== r.status).map((s) => (
                       <button key={s} type="button" disabled={busy === r.id} onClick={() => setStatus(r.id, s)}
                         className="rounded-full px-3 py-1.5 text-[11px] font-bold transition-opacity disabled:opacity-40"
                         style={{ background: ST[s].bg, color: ST[s].fg }}>

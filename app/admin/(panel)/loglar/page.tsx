@@ -2,6 +2,8 @@ import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db"
 import Link from "next/link";
 import { C, Card, PageTitle, NoDb } from "../../ui";
 import MailTest from "./mail-test";
+import MeasurementQueue from "./measurement-queue";
+import { outboxSummary, measurementConfig } from "../../../lib/measurement";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +31,7 @@ const KIND: Record<string, { label: string; icon: string; bg: string; fg: string
   contact_new:    { label: "Yeni mesaj",       icon: "✉️", bg: "#E0F2FE", fg: "#075985" },
   contact_status: { label: "Mesaj durumu",     icon: "📬", bg: "#E0F2FE", fg: "#075985" },
   invoice:        { label: "Fatura",           icon: "🧾", bg: "#D1FAE5", fg: "#065F46" },
+  measurement:    { label: "Ölçüm",            icon: "📡", bg: "#E0F2FE", fg: "#075985" },
 };
 
 const ACTOR: Record<string, string> = { panel: "Yönetici", site: "Ziyaretçi", sistem: "Sistem" };
@@ -53,6 +56,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
   ) as unknown as Row[];
 
   const counts = (await sql`SELECT kind, COUNT(*)::int AS n FROM logs GROUP BY kind`) as unknown as { kind: string; n: number }[];
+  const outbox = await outboxSummary(40);
   const countOf = (k: string) => counts.find((c) => c.kind === k)?.n ?? 0;
 
   // Günlere göre grupla
@@ -68,6 +72,8 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
         <PageTitle title="Sistem Logları" sub="Sitede ve panelde olan biten her şey" />
         <MailTest />
       </div>
+
+      <MeasurementQueue rows={outbox} config={measurementConfig()} />
 
       {/* Tür filtreleri */}
       <div className="-mx-1 mb-5 flex gap-2 overflow-x-auto px-1 pb-1 md:flex-wrap md:overflow-visible">

@@ -3,11 +3,12 @@
 //  Bildirim e-postasındaki "Kabul et / Reddet" bağlantıları buraya gelir.
 //  Jeton imzalıdır; panele giriş gerekmez ama başkası tetikleyemez.
 // ─────────────────────────────────────────────────────────────
-import { NextRequest } from "next/server";
+import { NextRequest, after } from "next/server";
 import { sql, ensureSchemaSafe as ensureSchema, logEvent, dbReady } from "../../lib/db";
 import { verifyActionToken, type MailAction } from "../../lib/actionToken";
 import { syncBooking, removeBooking, type CalBooking } from "../../lib/gcal";
 import { refundPayment } from "../../lib/stripe";
+import { emitBookingEvent } from "../../lib/measurement";
 
 export const runtime = "nodejs";
 
@@ -89,6 +90,9 @@ export async function GET(req: NextRequest) {
            notes, admin_note, google_event_id
     FROM bookings WHERE id = ${id}`) as unknown as CalBooking[];
 
+  // Ölçüm: kabul = Purchase, ret (henüz onaylanmamış talep) = declined
+  after(() => emitBookingEvent(status === "confirmed" ? "booking_complete" : "booking_declined", id));
+
   if (full) {
     if (status === "confirmed") {
       const eventId = await syncBooking(full);
@@ -107,6 +111,7 @@ export async function GET(req: NextRequest) {
         if (refund) {
           await sql`UPDATE bookings SET payment_status = 'refunded', refunded_at = now() WHERE id = ${id}`;
           await logEvent("payment_refund", `${b.ref} için CHF ${Number(pay.price ?? 0).toFixed(2)} iade edildi`, { actor: "panel", ref: b.ref });
+          after(() => emitBookingEvent("booking_refunded", id));
         } else {
           await logEvent("payment_refund_failed", `${b.ref} iadesi BAŞARISIZ — Stripe panelinden kontrol edin`, { actor: "panel", ref: b.ref });
         }
