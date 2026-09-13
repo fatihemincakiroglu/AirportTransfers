@@ -198,10 +198,8 @@ export async function gcalDiagnose(): Promise<{ ok: boolean; steps: { name: stri
     });
     return { ok: false, steps };
   }
-  const m = (await meta.json()) as { summary?: string; accessRole?: string };
-  const canWrite = m.accessRole === "writer" || m.accessRole === "owner";
-  steps.push({ name: "Takvim erişimi", ok: canWrite, info: `"${m.summary ?? cal}" · yetki: ${m.accessRole ?? "?"}${canWrite ? "" : " — yazma izni yok, paylaşımda 'Etkinlikleri değiştir' seçilmeli"}` });
-  if (!canWrite) return { ok: false, steps };
+  const m = (await meta.json()) as { summary?: string };
+  steps.push({ name: "Takvim erişimi", ok: true, info: `"${m.summary ?? cal}" bulundu` });
 
   const today = new Date().toISOString().slice(0, 10);
   const create = await fetch(`${API}/${calId()}/events`, {
@@ -209,7 +207,13 @@ export async function gcalDiagnose(): Promise<{ ok: boolean; steps: { name: stri
     body: JSON.stringify({ summary: "ZRH panel takvim testi (silinecek)", start: { date: today }, end: { date: today } }),
   });
   if (!create.ok) {
-    steps.push({ name: "Deneme etkinliği", ok: false, info: `oluşturulamadı: HTTP ${create.status} ${(await create.text()).slice(0, 200)}` });
+    const t = (await create.text()).slice(0, 200);
+    steps.push({
+      name: "Deneme etkinliği", ok: false,
+      info: create.status === 403
+        ? "yazma izni yok — takvim paylaşımında servis hesabına 'Değişiklik yapma ve tüm etkinlik ayrıntılarını görme' verilmeli"
+        : `oluşturulamadı: HTTP ${create.status} ${t}`,
+    });
     return { ok: false, steps };
   }
   const ev = (await create.json()) as { id: string };
