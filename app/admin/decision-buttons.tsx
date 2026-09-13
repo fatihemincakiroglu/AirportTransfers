@@ -80,8 +80,11 @@ export default function DecisionButtons({ b, compact = false }: { b: DecisionBoo
             : decision === "cancelled" ? "⊘ Rezervasyon iptal edildi"
             : "✕ Talep reddedildi"}
         </p>
+        <p className="mt-1 text-xs text-stone-500">
+          {b.email ? `📨 ${b.email} adresine ${(b.lang ?? "en").toUpperCase()} e-posta otomatik gönderildi.` : "Müşterinin e-postası yok; aşağıdaki mesajı WhatsApp ile iletin."}
+        </p>
         <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.15em] text-stone-400">
-          Müşteriye gönderilecek mesaj ({(b.lang ?? "de").toUpperCase()})
+          WhatsApp için hazır mesaj ({(b.lang ?? "de").toUpperCase()})
         </p>
         <textarea
           value={message}

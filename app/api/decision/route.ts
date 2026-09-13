@@ -9,6 +9,7 @@ import { verifyActionToken, type MailAction } from "../../lib/actionToken";
 import { syncBooking, removeBooking, type CalBooking } from "../../lib/gcal";
 import { refundPayment } from "../../lib/stripe";
 import { emitBookingEvent } from "../../lib/measurement";
+import { notifyCustomerDecision } from "../../lib/mail";
 
 export const runtime = "nodejs";
 
@@ -92,6 +93,8 @@ export async function GET(req: NextRequest) {
 
   // Ölçüm: kabul = Purchase, ret (henüz onaylanmamış talep) = declined
   after(() => emitBookingEvent(status === "confirmed" ? "booking_complete" : "booking_declined", id));
+  // Müşteriye kendi dilinde karar e-postası (iade notu, ödeme durumuna göre metne girer)
+  after(() => notifyCustomerDecision(id, action === "confirm" ? "accept" : "reject", "other"));
 
   if (full) {
     if (status === "confirmed") {
@@ -120,6 +123,6 @@ export async function GET(req: NextRequest) {
   }
 
   return action === "confirm"
-    ? page("Talep kabul edildi", `${b.ref} onaylandı ve takvime eklendi. Müşteri mesajını panelden gönderebilirsiniz.`, "#059669", b.ref)
-    : page("Talep reddedildi", `${b.ref} reddedildi. Müşteriye bilgi mesajını panelden gönderebilirsiniz.`, "#DC2626", b.ref);
+    ? page("Talep kabul edildi", `${b.ref} onaylandı ve takvime eklendi. Müşteriye onay e-postası gönderiliyor.`, "#059669", b.ref)
+    : page("Talep reddedildi", `${b.ref} reddedildi. Müşteriye bilgi e-postası gönderiliyor; ödeme alınmışsa otomatik iade edilir.`, "#DC2626", b.ref);
 }

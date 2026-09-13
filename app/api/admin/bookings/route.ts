@@ -5,6 +5,7 @@ import { sql, ensureSchemaSafe as ensureSchema, logEvent, BOOKING_STATUSES } fro
 import { syncBooking, removeBooking, type CalBooking } from "../../../lib/gcal";
 import { refundPayment } from "../../../lib/stripe";
 import { emitBookingEvent } from "../../../lib/measurement";
+import { notifyCustomerDecision } from "../../../lib/mail";
 
 export const runtime = "nodejs";
 
@@ -135,6 +136,8 @@ export async function PATCH(req: NextRequest) {
     const wasConfirmed = cur?.status === "confirmed" || cur?.status === "done";
     if (status === "confirmed") after(() => emitBookingEvent("booking_complete", id));
     else after(() => emitBookingEvent(wasConfirmed ? "booking_cancelled" : "booking_declined", id));
+    // Müşteriye kendi dilinde karar e-postası (WhatsApp metni panelde ayrıca sunulur)
+    after(() => notifyCustomerDecision(id, status === "confirmed" ? "accept" : status === "cancelled" ? "cancel" : "reject", reason ?? "other"));
     if (status === "rejected" || status === "cancelled") await refundIfPaid(id);
     await syncToCalendar(id);
     return NextResponse.json({ ok: true });

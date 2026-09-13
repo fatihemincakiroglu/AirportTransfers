@@ -33,6 +33,9 @@ const KIND: Record<string, { label: string; icon: string; bg: string; fg: string
   contact_status: { label: "Mesaj durumu",     icon: "📬", bg: "#E0F2FE", fg: "#075985" },
   invoice:        { label: "Fatura",           icon: "🧾", bg: "#D1FAE5", fg: "#065F46" },
   measurement:    { label: "Ölçüm",            icon: "📡", bg: "#E0F2FE", fg: "#075985" },
+  customer_mail:  { label: "Müşteri e-postası", icon: "📨", bg: "#D1FAE5", fg: "#065F46" },
+  customer_mail_failed:  { label: "E-posta hatası",  icon: "⚠", bg: "#FEE2E2", fg: "#B91C1C" },
+  customer_mail_skipped: { label: "E-posta yok",     icon: "📭", bg: "#F3F4F6", fg: "#6B7280" },
 };
 
 const ACTOR: Record<string, string> = { panel: "Yönetici", site: "Ziyaretçi", sistem: "Sistem" };
