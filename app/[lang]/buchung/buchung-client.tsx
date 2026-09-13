@@ -10,6 +10,10 @@ import {
   localName, inputCls, labelCls, norm, ExtrasCounter,
   waHref, PlaceField, SelectField, fieldWrap, fieldInput,
 } from "../../components";
+import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId } from "../../lib/analytics";
+
+const PAY_TYPES = ["twint", "cash", "card"] as const; // D.payOptions sırasıyla
+const STEP_NAMES = { 1: "route", 2: "vehicle", 3: "contact" } as const;
 
 const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
 
@@ -80,6 +84,11 @@ export default function Buchung() {
     setSending(true);
     const r = draftRef.current ?? makeRef();
     const payload = bookingPayload(r, "site");
+
+    // Ölçüm: doğrulama geçti, API isteği hemen ardından (spec §14.2A) — satış DEĞİL
+    pushEvent("booking_submit", {
+      booking: { booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
+    }, { idPrefix: "submit" });
 
     try {
       const res = await fetch("/api/checkout", {
@@ -153,6 +162,10 @@ export default function Buchung() {
   // Adım 1 formu — ana sayfadaki kartla aynı alanlar (serbest uçlar + duraklar)
   const [trip, setTrip] = useState({ from: AIRPORT, to: "" });
   const [hourly, setHourly] = useState(false); // saatlik kiralama (URL'den)
+  const [hourlyHours, setHourlyHours] = useState<number | null>(null);
+  // Ölçüm: kabul edilen arama kimliği; adım 2'ye ilk geçişte booking_search + results basılır
+  const searchIdRef = useRef<string | null>(null);
+  const pendingSearchRef = useRef(false);
   const setTripField = (k: "from" | "to", v: string) => setTrip((s) => ({ ...s, [k]: v }));
   const swapTrip = () => setTrip((s) => ({ from: s.to, to: s.from }));
   const setStop = (i: number, v: string) => setStops((a) => a.map((x, j) => (j === i ? v : x)));
@@ -193,6 +206,8 @@ export default function Buchung() {
       if (paxH) setF((s) => ({ ...s, pax: String(Math.min(7, paxH)) }));
       setCustom({ from: "Flughafen Zürich (ZRH)", to: `${XH.bookingLabel} · ${h}h` });
       setHourly(true);
+      setHourlyHours(parseInt(h, 10) || null);
+      if (d && tm) pendingSearchRef.current = true;
       setF((s) => ({ ...s, notes: XH.bookingNote(h) }));
       if (d && tm) setStep(2);
       return;
@@ -227,7 +242,7 @@ export default function Buchung() {
     if (idx >= 0) setRouteIdx(idx);
     if (rev) setReversed(true);
     if (from || to) setTrip({ from: from || AIRPORT, to });
-    if (step2) setStep(2);
+    if (step2) { pendingSearchRef.current = true; setStep(2); }
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [XH, XS]);
 
@@ -244,12 +259,19 @@ export default function Buchung() {
         const res = await fetch(`/api/availability?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`);
         const d = await res.json();
         if (alive) setSlot({ busy: !!d.busy, nextFree: d.nextFree ?? null, reason: d.reason ?? null });
+        if (alive && d.busy) {
+          pushEvent("booking_error", {
+            booking: { booking_type: hourly ? "hourly" : "transfer", step: STEP_NAMES[step], booking_channel: "web" },
+            error: { error_code: "SLOT_UNAVAILABLE", error_type: "availability" },
+          }, { idPrefix: "error" });
+        }
       } catch {
         if (alive) setSlot({ busy: false, nextFree: null, reason: null });
       }
     })();
     /* eslint-enable react-hooks/set-state-in-effect */
     return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- hourly/step yalnızca hata olayının etiketi; yeniden sorgu gerektirmez
   }, [date, time]);
 
   const route = routeIdx !== null ? routes[routeIdx] : null;
@@ -278,7 +300,106 @@ export default function Buchung() {
   const hasTrip = route !== null || (showCustom && !!custom!.from && !!custom!.to);
   const total = hasTrip && chosen ? basePrice * chosen.mult : 0;
 
+  // ── Ölçüm yardımcıları (kişisel veri yok; özel adres yalnızca type:"address") ──
+  const bookingType = hourly ? "hourly" : "transfer";
+  const priceFinal = route !== null; // sabit rota = kesin fiyat; özel/saatlik = tahmini
+  const tripLocations = () => {
+    if (hourly) return { pickup: AIRPORT_LOCATION };
+    if (route) return reversed
+      ? { pickup: safeLocation(n), destination: AIRPORT_LOCATION }
+      : { pickup: AIRPORT_LOCATION, destination: safeLocation(n) };
+    return { pickup: safeLocation(cFrom), destination: safeLocation(cTo) };
+  };
+  const money = (gross: number) => {
+    if (!priceFinal) return { price_status: "estimated" as const, estimated_value: Math.round(gross * 100) / 100, currency: "CHF" };
+    const m = splitVat(gross);
+    return { price_status: "final" as const, currency: "CHF", gross_value: m.gross, net_value: m.net, tax_value: m.tax, shipping_value: 0 };
+  };
+  const vehicleItem = (v: (typeof sorted)[number], index: number, gross: number) => ({
+    item_id: `${bookingType}_${v.id}`,
+    item_name: hourly ? "Hourly Chauffeur" : "Private Transfer",
+    item_category: bookingType,
+    item_category2: v.id.replace(/_[a-z]$/, ""),
+    item_variant: v.id,
+    item_list_id: "booking_vehicle_results",
+    item_list_name: "Available Vehicles",
+    index,
+    quantity: 1,
+    ...(priceFinal ? { price: splitVat(gross).net, gross_unit_value: splitVat(gross).gross, tax_unit_value: splitVat(gross).tax } : {}),
+  });
+  const vehicleObj = (v: (typeof sorted)[number], gross: number) => ({
+    vehicle_id: v.id, vehicle_name: v.car, vehicle_class: v.id.replace(/_[a-z]$/, ""),
+    passenger_capacity: v.pax, luggage_capacity: v.bags,
+    ...(priceFinal ? { price: Math.round(gross * 100) / 100, currency: "CHF" } : {}),
+  });
+  const routeObj = route ? { route: { route_id: routeId(route.slug), origin_id: "zrh_airport", destination_id: safeLocation(n).location_id } } : {};
+
   const step1Ready = (hourly || (trip.from.trim() && trip.to.trim())) && date && time;
+
+  // Adım 2'ye yeni bir aramayla gelindiğinde: booking_search → booking_results_view (araç listesi)
+  useEffect(() => {
+    if (step !== 2 || !pendingSearchRef.current || !hasTrip) return;
+    pendingSearchRef.current = false;
+    const searchId = newId("srch");
+    searchIdRef.current = searchId;
+    const loc = tripLocations();
+    pushEvent("booking_search", {
+      booking: {
+        booking_type: bookingType, search_id: searchId, ...loc,
+        pickup_date: date, pickup_time: time,
+        passengers: Number(f.pax) || 1, children: extras.child, stops_count: stops.length,
+        ...(hourly && hourlyHours ? { duration_hours: hourlyHours } : {}),
+        return_trip: false,
+        ...(priceFinal ? {} : { price_status: "estimated", estimated_value: basePrice, currency: "CHF" }),
+        booking_channel: "web",
+      },
+      ...routeObj,
+    }, { id: `search_${searchId}` });
+    const prices = sorted.map((v) => Math.round(basePrice * v.mult * 100) / 100);
+    pushEvent("booking_results_view", {
+      booking: { booking_type: bookingType, search_id: searchId, booking_channel: "web" },
+      results: {
+        available_vehicle_count: sorted.length, currency: "CHF", results_version: 1,
+        ...(route ? { distance_km: route.km, duration_minutes: route.min } : {}),
+        ...(priceFinal ? { lowest_price: Math.min(...prices), highest_price: Math.max(...prices) } : {}),
+      },
+      ecommerce: {
+        currency: "CHF", item_list_id: "booking_vehicle_results", item_list_name: "Available Vehicles",
+        items: sorted.map((v, i) => vehicleItem(v, i, basePrice * v.mult)),
+      },
+    }, { id: `results_${searchId}_1` });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- yalnızca adım 2'ye geçiş anında, o anki durumla
+  }, [step, hasTrip]);
+
+  // Araç seçimi → vehicle_select + booking_begin, sonra adım 3
+  const selectVehicle = (i: number) => {
+    const v = sorted[i];
+    const gross = basePrice * v.mult;
+    const searchId = searchIdRef.current;
+    const base = { booking_type: bookingType, ...(searchId ? { search_id: searchId } : {}), ...money(gross), booking_channel: "web" };
+    pushEvent("vehicle_select", {
+      booking: base, vehicle: vehicleObj(v, gross), ...routeObj,
+      ecommerce: { currency: "CHF", ...(priceFinal ? { value: splitVat(gross).net, tax: splitVat(gross).tax } : {}),
+        item_list_id: "booking_vehicle_results", item_list_name: "Available Vehicles", items: [vehicleItem(v, i, gross)] },
+    }, { idPrefix: "vehicle_sel" });
+    pushEvent("booking_begin", {
+      booking: base, ...routeObj,
+      ecommerce: { currency: "CHF", ...(priceFinal ? { value: splitVat(gross).net, tax: splitVat(gross).tax } : {}), items: [vehicleItem(v, i, gross)] },
+    }, { idPrefix: "begin" });
+    setCar(i);
+    go(3);
+  };
+
+  // Ödeme yöntemi seçimi → booking_payment_info (UI seçimi; doğrulanmış ödeme değil)
+  const selectPay = (i: number) => {
+    setPay(i);
+    if (!chosen) return;
+    pushEvent("booking_payment_info", {
+      booking: { booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
+      payment: { selected_payment_type: PAY_TYPES[i] ?? "other" },
+      ecommerce: { currency: "CHF", ...(priceFinal ? { value: splitVat(total).net, tax: splitVat(total).tax } : {}), items: [vehicleItem(chosen, car ?? 0, total)] },
+    }, { idPrefix: "payment_info" });
+  };
 
   // Adım 1 → 2: serbest uçları rotayla eşleştir, özel güzergâh/durak notlarını kur
   const applyTrip = () => {
@@ -299,6 +420,7 @@ export default function Buchung() {
       ].filter(Boolean);
       setF((s) => ({ ...s, notes: lines.join("\n") }));
     }
+    pendingSearchRef.current = true;
     go(2);
   };
   const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight && !slot.busy;
@@ -492,7 +614,7 @@ export default function Buchung() {
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button
-                        onClick={() => { setCar(i); go(3); }}
+                        onClick={() => selectVehicle(i)}
                         className="w-full rounded-full px-6 py-2.5 text-sm font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
                         style={{ background: C.pine }}
                       >
@@ -517,7 +639,7 @@ export default function Buchung() {
                 {D.payOptions.map(([title, desc], i) => (
                   <button
                     key={i}
-                    onClick={() => setPay(i)}
+                    onClick={() => selectPay(i)}
                     className="rounded-2xl border-2 bg-white p-4 text-center text-xs font-bold uppercase tracking-wide transition-all"
                     style={pay === i ? { borderColor: C.gold, boxShadow: "0 4px 14px rgba(201,162,75,0.25)" } : { borderColor: "#e7e5e4" }}
                   >

@@ -186,7 +186,7 @@ export const BOOKING_STATUSES = ["new", "confirmed", "done", "cancelled", "rejec
 export type BookingStatus = (typeof BOOKING_STATUSES)[number];
 
 /** İsviçre KDV oranı (yolcu taşımacılığı, normal oran) */
-export const VAT_RATE = 0.081;
+export { VAT_RATE } from "../config";
 
 /**
  * Panel sayfaları için: şema hazırlığı başarısız olsa bile sayfa açılsın.

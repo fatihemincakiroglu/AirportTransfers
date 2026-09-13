@@ -15,6 +15,9 @@ export const SITE_NAME = "ZRH Airport Taxi";
  */
 export const GTM_ID = "GTM-KD6XZ6G9";
 
+/** İsviçre KDV oranı (fiyatlar KDV dahil). Fatura ve ölçüm net/KDV ayrımı bunu kullanır. */
+export const VAT_RATE = 0.081;
+
 export const WHATSAPP_NUMBER = "41794551572"; // + ve boşluk olmadan
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
 export const BOOKING_WHATSAPP_NUMBER = "41794551572"; // +41 79 455 15 72
@@ -88,10 +91,11 @@ export const routes: { slug: string; to: LocalName; km: number; min: number; pri
 // Filo — gerçek araçlar. `mult` = fiyat çarpanı (rota Business fiyatı × mult).
 // Çarpanlar rezervasyon ekranınızdaki oranlardan türetildi — gerekirse düzelt:
 // Business 1.00 · Business&Family ≈1.19 · Premium ≈1.87 · VIP 2.20 (tahmin)
-export const fleet: { name: LocalName; car: string; pax: number; bags: number; img: string; mult: number }[] = [
-  { name: "Business Class", car: "Mercedes-Benz E-Class", pax: 2, bags: 2, img: "/fleet/e-class.webp", mult: 1.0 },
-  { name: { de: "Business & Family Class", en: "Business & Family Class" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.webp", mult: 1.19 },
-  { name: "Premium Class", car: "Mercedes-Benz S-Class", pax: 3, bags: 3, img: "/fleet/s-class.webp", mult: 1.87 },
+// `id` = ölçüm için sabit araç kimliği (dataLayer vehicle_id / item_id), görünen ada bağlı değil.
+export const fleet: { id: string; name: LocalName; car: string; pax: number; bags: number; img: string; mult: number }[] = [
+  { id: "business_class_e", name: "Business Class", car: "Mercedes-Benz E-Class", pax: 2, bags: 2, img: "/fleet/e-class.webp", mult: 1.0 },
+  { id: "business_family_v", name: { de: "Business & Family Class", en: "Business & Family Class" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.webp", mult: 1.19 },
+  { id: "premium_s", name: "Premium Class", car: "Mercedes-Benz S-Class", pax: 3, bags: 3, img: "/fleet/s-class.webp", mult: 1.87 },
 ];
 
 // Formlardaki maksimum yolcu sayısı (en büyük araca göre)

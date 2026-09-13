@@ -3,6 +3,9 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { LangProvider } from "../providers";
 import VisitTracker from "../visit-tracker";
 import { GtmScript, GtmNoScript } from "../gtm";
+import AnalyticsPage from "../analytics-page";
+import { ConsentBanner } from "../consent";
+import { consentBootstrapScript } from "../consent-script";
 import { SITE_URL, GTM_ID } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
 import { t, type Lang } from "../i18n";
@@ -97,6 +100,8 @@ export default async function RootLayout({
   return (
     <html lang={safeLang} dir={RTL_LANGS.includes(safeLang) ? "rtl" : "ltr"}>
       <body className={`${sans.variable} ${serif.variable}`}>
+        {/* Ölçüm: dataLayer + çerez onay durumu GTM'den ÖNCE hazır olmalı (spec §7.6) */}
+        <script id="consent-bootstrap" dangerouslySetInnerHTML={{ __html: consentBootstrapScript }} />
         <GtmNoScript id={GTM_ID} />
         {jsonLd.map((obj, i) => (
           <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
@@ -105,6 +110,9 @@ export default async function RootLayout({
           <VisitTracker />
           <GtmScript id={GTM_ID} />
           {children}
+          {/* children'dan SONRA: efekti sayfa efektlerinden sonra çalışır (rezervasyon URL'yi okuduktan sonra temizlenir) */}
+          <AnalyticsPage />
+          <ConsentBanner />
         </LangProvider>
       </body>
     </html>

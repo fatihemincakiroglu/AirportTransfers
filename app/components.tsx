@@ -12,6 +12,7 @@ import { tx } from "./i18nX";
 import { legalPages, LegalKey } from "./legalContent";
 import { LANGS, LANG_NAMES } from "./paths";
 import { useLang } from "./providers";
+import { openConsentSettings } from "./consent";
 
 // ── Yardımcılar ────────────────────────────────────────────────
 export const waHref = (text?: string) =>
@@ -66,7 +67,7 @@ export function Eyebrow({ children }: { children: React.ReactNode }) {
 export function TopBar() {
   const { lang, setLang } = useLang();
   return (
-    <div style={{ background: C.pine }} className="text-white/80">
+    <div style={{ background: C.pine }} className="text-white/80" data-track-location="header">
       <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
         <span
           className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
@@ -775,6 +776,9 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row">
           <span>© {new Date().getFullYear()} <b className="text-white">ZRH Airport Taxi</b> · {L.footer.rights}</span>
+          <button type="button" onClick={openConsentSettings} className="text-white/50 underline-offset-2 hover:text-white hover:underline">
+            {lang === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
+          </button>
         </div>
       </div>
     </footer>
@@ -797,7 +801,7 @@ export function FloatingButtons() {
   return (
     <>
       {/* Masaüstü: sağda buzlu cam dock */}
-      <div className="fixed right-4 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur md:flex">
+      <div data-track-location="floating_button" className="fixed right-4 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur md:flex">
         <a href={waHref()} target="_blank" rel="noopener noreferrer" aria-label={labels.wa} className={btn}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/whatsapp.png" alt="" className={icon} />
@@ -820,6 +824,7 @@ export function FloatingButtons() {
 
       {/* Mobil: altta sabit eylem çubuğu */}
       <div
+        data-track-location="mobile_sticky"
         className="fixed inset-x-0 bottom-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur md:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >

@@ -10,14 +10,16 @@ export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
     await ensureSchema();
-    await sql`
+    const rows = await sql`
       INSERT INTO contacts (lang, name, email, phone, message)
-      VALUES (${str(b.lang, 5)}, ${str(b.name, 120)}, ${str(b.email, 160)}, ${str(b.phone, 40)}, ${str(b.message)})`;
+      VALUES (${str(b.lang, 5)}, ${str(b.name, 120)}, ${str(b.email, 160)}, ${str(b.phone, 40)}, ${str(b.message)})
+      RETURNING id`;
     await logEvent("contact_new", `Yeni iletişim mesajı: ${str(b.name, 120) ?? "isimsiz"} (${str(b.email, 160) ?? "e-posta yok"})`, {
       actor: "site",
       ip: req.headers.get("x-forwarded-for")?.split(",")[0] ?? undefined,
     });
-    return NextResponse.json({ ok: true });
+    // id: ölçüm için kalıcı lead kimliği (contact_form_success → lead_id)
+    return NextResponse.json({ ok: true, id: rows[0]?.id ?? null });
   } catch (e) {
     console.error("[api/contact]", e);
     return NextResponse.json({ ok: false }, { status: 500 });

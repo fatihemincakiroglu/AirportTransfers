@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, COMPANY_ADDRESS } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
@@ -8,6 +8,9 @@ import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, BookingBar,
   waHref, mailHref,
 } from "../../components";
+import { pushEvent, newId } from "../../lib/analytics";
+
+const FORM_ID = "contact_main";
 
 export default function Kontakt() {
   const { lang } = useLang();
@@ -16,20 +19,51 @@ export default function Kontakt() {
 
   const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
 
-  // Mesajı panele kaydeder (WhatsApp/e-posta akışını etkilemez)
+  // Ölçüm kimlikleri (spec §15.8): etkileşim bir kez, deneme her gönderimde
+  const interactionId = useRef<string | null>(null);
+
+  const trackFormStart = () => {
+    if (interactionId.current) return;
+    interactionId.current = newId("FORMINT");
+    pushEvent("contact_form_start", {
+      contact: { form_id: FORM_ID, form_interaction_id: interactionId.current },
+      lead: { source_context: "contact_page" },
+    }, { id: `form_start_${interactionId.current}` });
+  };
+
+  // Mesajı panele kaydeder (WhatsApp/e-posta akışını etkilemez); yanıt lead kimliği taşır
   const saveContact = () => {
+    const attemptId = newId("FORMATT");
+    const interaction = interactionId.current ?? newId("FORMINT");
+    const contactBase = { form_id: FORM_ID, form_interaction_id: interaction, form_attempt_id: attemptId };
+    const fail = (stage: "request_dispatch" | "backend_rejected" | "response_unknown", code: string, type: string) => {
+      const errId = newId("FORMERR");
+      pushEvent("contact_form_error", {
+        contact: { ...contactBase, form_error_id: errId, failure_stage: stage },
+        error: { error_code: code, error_type: type },
+        lead: { source_context: "contact_page" },
+      }, { id: `form_error_${errId}` });
+    };
     try {
       const body = JSON.stringify({ lang, ...form });
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon("/api/contact", new Blob([body], { type: "application/json" }));
-      } else {
-        fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true });
-      }
+      fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true })
+        .then(async (res) => {
+          const d = await res.json().catch(() => null);
+          if (res.ok && d?.ok && d.id != null) {
+            pushEvent("contact_form_success", {
+              contact: { ...contactBase, lead_id: String(d.id) },
+              lead: { source_context: "contact_page" },
+            }, { id: `form_success_${attemptId}` });
+          } else {
+            fail("backend_rejected", "API_FAILED", "booking_api");
+          }
+        })
+        .catch(() => fail("response_unknown", "API_OUTCOME_UNKNOWN", "transport"));
     } catch {
-      /* sessizce geç */
+      fail("request_dispatch", "API_FAILED", "transport");
     }
   };
-  const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
+  const set = (k: string, v: string) => { trackFormStart(); setForm((f) => ({ ...f, [k]: v })); };
 
   const contactMessage = () =>
     `${L.msg.contactTitle}\n\n${L.msg.name}: ${form.name}\n${L.msg.email}: ${form.email}\n${L.msg.phone}: ${form.phone}\n${L.msg.message}: ${form.message}`;
@@ -46,7 +80,7 @@ export default function Kontakt() {
         <BookingBar />
       </PageHero>
 
-      <section className="mx-auto grid max-w-7xl gap-6 px-5 py-14 md:grid-cols-[1.6fr_1fr] md:py-20">
+      <section data-track-location="contact_page" className="mx-auto grid max-w-7xl gap-6 px-5 py-14 md:grid-cols-[1.6fr_1fr] md:py-20">
         {/* Message form */}
         <div className="rounded-3xl bg-white p-6 shadow-md ring-1 ring-black/5 md:p-8">
           <h2 className="font-display text-2xl font-semibold" style={{ color: C.pine }}>{K.formTitle}</h2>
@@ -69,6 +103,7 @@ export default function Kontakt() {
             <textarea rows={6} className={inputCls} value={form.message} onChange={(e) => set("message", e.target.value)} />
           </div>
           <a
+            data-track-skip
             href={waHref(contactMessage())}
             onClick={() => saveContact()}
             target="_blank"
@@ -78,7 +113,7 @@ export default function Kontakt() {
           >
             {K.send}
           </a>
-          <a href={mailHref(L.msg.subject, contactMessage())} onClick={() => saveContact()} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
+          <a data-track-skip href={mailHref(L.msg.subject, contactMessage())} onClick={() => saveContact()} className="mt-3 block text-center text-sm font-semibold text-stone-500 underline-offset-2 hover:underline">
             {K.orMail}
           </a>
         </div>
