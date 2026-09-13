@@ -2,6 +2,7 @@ import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db"
 import Link from "next/link";
 import { C, Card, PageTitle, NoDb } from "../../ui";
 import MailTest from "./mail-test";
+import GcalTest from "./gcal-test";
 import MeasurementQueue from "./measurement-queue";
 import { outboxSummary, measurementConfig } from "../../../lib/measurement";
 
@@ -70,7 +71,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
     <>
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <PageTitle title="Sistem Logları" sub="Sitede ve panelde olan biten her şey" />
-        <MailTest />
+        <div className="flex flex-wrap items-start justify-end gap-2">
+          <GcalTest />
+          <MailTest />
+        </div>
       </div>
 
       <MeasurementQueue rows={outbox} config={measurementConfig()} />

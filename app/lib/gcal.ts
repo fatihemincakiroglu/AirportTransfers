@@ -19,6 +19,7 @@ const b64url = (b: Buffer | string) =>
   Buffer.from(b).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 
 let cachedToken: { value: string; exp: number } | null = null;
+let lastTokenError = "";
 
 async function accessToken(): Promise<string | null> {
   if (!gcalReady()) return null;
@@ -46,7 +47,8 @@ async function accessToken(): Promise<string | null> {
     }),
   });
   if (!res.ok) {
-    console.error("[gcal] jeton alınamadı", await res.text());
+    lastTokenError = (await res.text()).slice(0, 300);
+    console.error("[gcal] jeton alınamadı", lastTokenError);
     return null;
   }
   const data = (await res.json()) as { access_token: string; expires_in: number };
@@ -158,4 +160,60 @@ export async function removeBooking(eventId: string | null | undefined): Promise
   } catch (e) {
     console.error("[gcal] silme hatası", e);
   }
+}
+
+/**
+ * Panel teşhisi: değişkenler → yetki jetonu → takvim erişimi → deneme etkinliği (oluştur + sil).
+ * Her adım Türkçe raporlanır; hangi noktada takıldığı görülür.
+ */
+export async function gcalDiagnose(): Promise<{ ok: boolean; steps: { name: string; ok: boolean; info: string }[] }> {
+  const steps: { name: string; ok: boolean; info: string }[] = [];
+  const email = process.env.GOOGLE_SA_EMAIL ?? "";
+  const key = process.env.GOOGLE_SA_KEY ?? "";
+  const cal = process.env.GOOGLE_CALENDAR_ID ?? "";
+  steps.push({ name: "GOOGLE_SA_EMAIL", ok: /@.+\.iam\.gserviceaccount\.com$/.test(email), info: email ? email : "EKSİK" });
+  steps.push({
+    name: "GOOGLE_SA_KEY", ok: key.includes("BEGIN PRIVATE KEY"),
+    info: !key ? "EKSİK" : key.includes("BEGIN PRIVATE KEY") ? `PEM anahtar (${key.length} karakter)` : "PEM formatında değil — JSON dosyasındaki private_key alanının değeri olmalı",
+  });
+  steps.push({ name: "GOOGLE_CALENDAR_ID", ok: Boolean(cal), info: cal || "EKSİK" });
+  if (steps.some((s) => !s.ok)) return { ok: false, steps };
+
+  cachedToken = null;
+  lastTokenError = "";
+  let token: string | null = null;
+  try { token = await accessToken(); } catch (e) { lastTokenError = String(e).slice(0, 300); }
+  steps.push({ name: "Yetki jetonu", ok: Boolean(token), info: token ? "alındı" : `alınamadı: ${lastTokenError || "anahtar imzalanamadı (PEM bozuk olabilir)"}` });
+  if (!token) return { ok: false, steps };
+
+  const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+  const meta = await fetch(`${API}/${calId()}`, { headers });
+  if (!meta.ok) {
+    const t = await meta.text();
+    steps.push({
+      name: "Takvim erişimi", ok: false,
+      info: meta.status === 404
+        ? "takvim bulunamadı — GOOGLE_CALENDAR_ID yanlış ya da takvim servis hesabıyla PAYLAŞILMAMIŞ"
+        : `HTTP ${meta.status}: ${t.slice(0, 200)}`,
+    });
+    return { ok: false, steps };
+  }
+  const m = (await meta.json()) as { summary?: string; accessRole?: string };
+  const canWrite = m.accessRole === "writer" || m.accessRole === "owner";
+  steps.push({ name: "Takvim erişimi", ok: canWrite, info: `"${m.summary ?? cal}" · yetki: ${m.accessRole ?? "?"}${canWrite ? "" : " — yazma izni yok, paylaşımda 'Etkinlikleri değiştir' seçilmeli"}` });
+  if (!canWrite) return { ok: false, steps };
+
+  const today = new Date().toISOString().slice(0, 10);
+  const create = await fetch(`${API}/${calId()}/events`, {
+    method: "POST", headers,
+    body: JSON.stringify({ summary: "ZRH panel takvim testi (silinecek)", start: { date: today }, end: { date: today } }),
+  });
+  if (!create.ok) {
+    steps.push({ name: "Deneme etkinliği", ok: false, info: `oluşturulamadı: HTTP ${create.status} ${(await create.text()).slice(0, 200)}` });
+    return { ok: false, steps };
+  }
+  const ev = (await create.json()) as { id: string };
+  await fetch(`${API}/${calId()}/events/${ev.id}`, { method: "DELETE", headers });
+  steps.push({ name: "Deneme etkinliği", ok: true, info: "oluşturuldu ve silindi — takvim yazımı çalışıyor" });
+  return { ok: true, steps };
 }
