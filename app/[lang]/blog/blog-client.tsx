@@ -63,7 +63,7 @@ export default function BlogList() {
                     <span className="text-stone-300">·</span>
                     <span className="text-stone-500">🕐 {readingTime(post, lang)} {B.minRead}</span>
                   </p>
-                  <h2 className="font-display mt-2 text-xl font-semibold leading-snug transition-colors group-hover:underline" style={{ color: C.pine }}>
+                  <h2 className="mt-2 text-[17px] font-extrabold leading-snug tracking-tight transition-colors group-hover:underline" style={{ color: C.pine }}>
                     {c.title}
                   </h2>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-stone-600">{c.excerpt}</p>

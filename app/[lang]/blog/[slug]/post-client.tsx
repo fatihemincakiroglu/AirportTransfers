@@ -48,7 +48,7 @@ export default function PostClient({ slug }: { slug: string }) {
             <a href={P("/blog")} className="transition-colors hover:text-[#0C2E25]" style={{ color: C.pine }}>{B.title}</a>
           </nav>
           <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
-          <h1 className="font-display mt-3 text-3xl font-semibold leading-tight md:text-5xl" style={{ color: C.pine }}>{c.title}</h1>
+          <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight md:text-[44px]" style={{ color: C.pine }}>{c.title}</h1>
           <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-stone-500">
             <span style={{ color: C.gold }}>📅</span> {B.published} {formatDate(post.date, lang)}
             <span className="text-stone-300">·</span>
@@ -73,7 +73,7 @@ export default function PostClient({ slug }: { slug: string }) {
         {c.body.map((block, i) => (
           <div key={i} className="mt-8">
             {block.h && (
-              <h2 className="font-display text-2xl font-semibold" style={{ color: C.pine }}>
+              <h2 className="text-xl font-extrabold tracking-tight" style={{ color: C.pine }}>
                 {block.h}
               </h2>
             )}
@@ -85,7 +85,7 @@ export default function PostClient({ slug }: { slug: string }) {
 
         {/* CTA */}
         <div className="mt-12 flex flex-col items-center gap-4 rounded-2xl p-8 text-center text-white" style={{ background: C.pine }}>
-          <p className="font-display text-2xl font-semibold">
+          <p className="text-xl font-extrabold tracking-tight">
             {lang === "de" ? "Bereit für Ihren Transfer?" : "Ready for your transfer?"}
           </p>
           <a
@@ -102,7 +102,7 @@ export default function PostClient({ slug }: { slug: string }) {
       <section className="border-t border-stone-200 bg-white">
         <div className="mx-auto max-w-7xl px-5 py-12 md:py-16">
           <div className="flex items-end justify-between gap-3">
-            <h2 className="font-display text-2xl font-semibold md:text-3xl" style={{ color: C.pine }}>{B.more}</h2>
+            <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl" style={{ color: C.pine }}>{B.more}</h2>
             <a href={P("/blog")} className="text-[12px] font-extrabold uppercase tracking-[0.15em] hover:underline" style={{ color: C.gold }}>
               {B.back} →
             </a>
@@ -123,7 +123,7 @@ export default function PostClient({ slug }: { slug: string }) {
                     <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500">
                       {formatDate(r.date, lang)} · 🕐 {readingTime(r, lang)} {B.minRead}
                     </p>
-                    <h3 className="font-display mt-1.5 flex-1 text-lg font-semibold leading-snug group-hover:underline" style={{ color: C.pine }}>
+                    <h3 className="mt-1.5 flex-1 text-[15px] font-extrabold leading-snug tracking-tight group-hover:underline" style={{ color: C.pine }}>
                       {rc.title}
                     </h3>
                     <span className="mt-3 text-[11px] font-extrabold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
