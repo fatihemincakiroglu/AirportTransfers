@@ -37,8 +37,10 @@ export default function ManualInvoice() {
     router.push(`/admin/faturalar/${d.id}`);
   };
 
-  const label = "block text-[11px] font-bold uppercase tracking-[0.15em] text-stone-500";
-  const input = "mt-1.5 w-full rounded-xl border border-stone-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-[#C9A24B] focus:ring-2 focus:ring-[#C9A24B]/30";
+  const label = "mb-2 block text-[11px] font-bold uppercase tracking-[0.15em] text-stone-500";
+  const input = "block w-full rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#C9A24B] focus:ring-2 focus:ring-[#C9A24B]/30";
+  const field = "block"; // label etiketi blok olmalı; aksi hâlde satır içi kalıp iç içe geçiyor
+  const two = "grid grid-cols-1 gap-5 sm:grid-cols-2";
 
   return (
     <Card className="mb-5">
@@ -56,41 +58,41 @@ export default function ManualInvoice() {
 
       {open && (
         <div className="mt-5 border-t border-stone-100 pt-5">
-          <div className="grid gap-5 md:grid-cols-2">
-            <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>Müşteri bilgileri</p>
-              <div className="grid grid-cols-2 gap-3">
-                <label><span className={label}>Ad *</span><input className={input} value={f.first_name} onChange={(e) => set("first_name", e.target.value)} /></label>
-                <label><span className={label}>Soyad *</span><input className={input} value={f.last_name} onChange={(e) => set("last_name", e.target.value)} /></label>
+          <div className="grid gap-8 md:grid-cols-2 md:gap-10">
+            <div className="space-y-5">
+              <p className="border-b border-stone-100 pb-2 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>Müşteri bilgileri</p>
+              <div className={two}>
+                <label className={field}><span className={label}>Ad *</span><input className={input} value={f.first_name} onChange={(e) => set("first_name", e.target.value)} /></label>
+                <label className={field}><span className={label}>Soyad *</span><input className={input} value={f.last_name} onChange={(e) => set("last_name", e.target.value)} /></label>
               </div>
-              <label><span className={label}>E-posta *</span><input type="email" className={input} value={f.email} onChange={(e) => set("email", e.target.value)} /></label>
-              <label><span className={label}>Telefon *</span><input type="tel" className={input} value={f.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+41 79 …" /></label>
-              <div className="grid grid-cols-2 gap-3">
-                <label><span className={label}>Ödeme tipi *</span>
+              <label className={field}><span className={label}>E-posta *</span><input type="email" className={input} value={f.email} onChange={(e) => set("email", e.target.value)} /></label>
+              <label className={field}><span className={label}>Telefon *</span><input type="tel" className={input} value={f.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+41 79 …" /></label>
+              <div className={two}>
+                <label className={field}><span className={label}>Ödeme tipi *</span>
                   <select className={input} value={f.payment} onChange={(e) => set("payment", e.target.value)}>
                     <option value="">Seçin</option>
                     {PAYMENTS.map((p) => <option key={p} value={p}>{p}</option>)}
                   </select>
                 </label>
-                <label><span className={label}>Toplam tutar (CHF, KDV dahil) *</span>
+                <label className={field}><span className={label}>Toplam tutar (CHF, KDV dahil) *</span>
                   <input type="number" min="0" step="0.05" inputMode="decimal" className={input} value={f.price} onChange={(e) => set("price", e.target.value)} placeholder="189.75" />
                 </label>
               </div>
             </div>
 
-            <div className="space-y-3">
-              <p className="text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>Transfer bilgileri</p>
-              <label><span className={label}>Araç *</span>
+            <div className="space-y-5">
+              <p className="border-b border-stone-100 pb-2 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>Transfer bilgileri</p>
+              <label className={field}><span className={label}>Araç *</span>
                 <select className={input} value={f.vehicle} onChange={(e) => set("vehicle", e.target.value)}>
                   <option value="">Araç seçin</option>
                   {VEHICLES.map((v) => <option key={v} value={v}>{v}</option>)}
                 </select>
               </label>
-              <label><span className={label}>Alış konumu *</span><input className={input} value={f.pickup} onChange={(e) => set("pickup", e.target.value)} placeholder="Flughafen Zürich (ZRH)" /></label>
-              <label><span className={label}>Bırakış konumu *</span><input className={input} value={f.dropoff} onChange={(e) => set("dropoff", e.target.value)} placeholder="Luzern, Schweizerhofquai 3" /></label>
-              <div className="grid grid-cols-2 gap-3">
-                <label><span className={label}>Alış tarihi *</span><input type="date" className={input} value={f.ride_date} onChange={(e) => set("ride_date", e.target.value)} /></label>
-                <label><span className={label}>Alış saati *</span><input type="time" className={input} value={f.ride_time} onChange={(e) => set("ride_time", e.target.value)} /></label>
+              <label className={field}><span className={label}>Alış konumu *</span><input className={input} value={f.pickup} onChange={(e) => set("pickup", e.target.value)} placeholder="Flughafen Zürich (ZRH)" /></label>
+              <label className={field}><span className={label}>Bırakış konumu *</span><input className={input} value={f.dropoff} onChange={(e) => set("dropoff", e.target.value)} placeholder="Luzern, Schweizerhofquai 3" /></label>
+              <div className={two}>
+                <label className={field}><span className={label}>Alış tarihi *</span><input type="date" className={input} value={f.ride_date} onChange={(e) => set("ride_date", e.target.value)} /></label>
+                <label className={field}><span className={label}>Alış saati *</span><input type="time" className={input} value={f.ride_time} onChange={(e) => set("ride_time", e.target.value)} /></label>
               </div>
             </div>
           </div>
