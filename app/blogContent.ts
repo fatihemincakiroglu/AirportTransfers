@@ -7,7 +7,10 @@ export type BlogBlock = { h?: string; p: string[] };
 export type BlogLang = { title: string; excerpt: string; body: BlogBlock[] };
 export type BlogPost = { slug: string; date: string; img: string; de: BlogLang; en: BlogLang };
 
-export const blogPosts: BlogPost[] = [
+import { airportPosts } from "./blogContentAirport";
+
+/** Temel yazılar (2026 ilkbahar–yaz) */
+const basePosts: BlogPost[] = [
   {
     slug: "ankunft-flughafen-zuerich-fahrer-finden",
     date: "2026-07-21",
@@ -412,3 +415,6 @@ export const blogPosts: BlogPost[] = [
     },
   },
 ];
+
+/** Tüm yazılar — en yeni önce. Yeni seriler ayrı dosyalarda tutulur ve burada birleştirilir. */
+export const blogPosts: BlogPost[] = [...airportPosts, ...basePosts].sort((a, b) => (a.date < b.date ? 1 : -1));
