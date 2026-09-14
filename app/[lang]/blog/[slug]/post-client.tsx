@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import Image from "next/image";
 
 import { C } from "../../../config";
@@ -8,6 +10,28 @@ import { useLang } from "../../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons } from "../../../components";
 import { blogPosts } from "../../../blogContent";
 import { readingTime, formatDate } from "../blog-client";
+
+/**
+ * Paragraf içi hafif biçimlendirme: [metin](/ic-yol) → dile göre yerelleştirilmiş bağlantı,
+ * **metin** → kalın. İç yollar dil bağımsız yazılır (/strecken, /zurich-airport-to-basel, /blog/…).
+ */
+function renderInline(text: string, P: (path: string) => string) {
+  const out: React.ReactNode[] = [];
+  const re = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g;
+  let last = 0, m: RegExpExecArray | null, k = 0;
+  while ((m = re.exec(text))) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m[1]) {
+      const href = m[2].startsWith("/") ? P(m[2]) : m[2];
+      out.push(<a key={k++} href={href} className="font-semibold underline decoration-[#C9A24B] underline-offset-2 hover:text-[#0C2E25]" style={{ color: "#0C2E25" }}>{m[1]}</a>);
+    } else {
+      out.push(<b key={k++}>{m[3]}</b>);
+    }
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
 
 export default function PostClient({ slug }: { slug: string }) {
   const { lang, P } = useLang();
@@ -78,7 +102,7 @@ export default function PostClient({ slug }: { slug: string }) {
               </h2>
             )}
             {block.p.map((para, j) => (
-              <p key={j} className="mt-4 leading-relaxed text-stone-700">{para}</p>
+              <p key={j} className="mt-4 leading-relaxed text-stone-700">{renderInline(para, P)}</p>
             ))}
           </div>
         ))}

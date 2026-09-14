@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 
 import { C, routes, fleet } from "../../config";
-import { t, pickL } from "../../i18n";
+import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
-import { routeContent } from "../../routeContent";
+import { getRouteContent } from "../../routeContent";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls,
@@ -382,8 +382,7 @@ function RouteSeoContent({ slug }: { slug: string }) {
   const route = routes.find((r) => r.slug === slug);
   if (!route) return null;
   const n = localName(route.to, lang);
-  const rcEntry = routeContent[slug];
-  const content = rcEntry ? pickL(rcEntry, lang) : undefined;
+  const content = getRouteContent(slug, lang);
   const dur =
     lang === "de"
       ? route.min < 60 ? `${route.min} Min.` : `${Math.floor(route.min / 60)} Std.${route.min % 60 ? ` ${route.min % 60} Min.` : ""}`

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { langAlternates } from "../../paths";
 import { routes } from "../../config";
-import { routeContent } from "../../routeContent";
+import { getRouteContent } from "../../routeContent";
 import { notFound } from "next/navigation";
 import RouteClient from "./route-client";
 import DestinationClient from "./destination-client";
@@ -88,7 +88,7 @@ export default async function Page({ params }: Params) {
     notFound(); // Gerçek 404 — soft-404 önlenir
   }
   const n = nameOf(route.to, lang);
-  const content = routeContent[slug]?.[lang === "de" ? "de" : "en"];
+  const content = getRouteContent(slug, lang === "de" ? "de" : "en");
 
   const jsonLd: object[] = [];
   {

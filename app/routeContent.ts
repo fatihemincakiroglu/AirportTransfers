@@ -12,6 +12,59 @@ export type RouteContent = {
   faq: [string, string][]; // soru-cevap listesi
 };
 
+import { routes, fleet, type LocalName } from "./config";
+
+const chf = (n: number) => `CHF ${n.toFixed(2)}`;
+const nameOf = (n: LocalName, lang: "de" | "en") => (typeof n === "string" ? n : n[lang]);
+const dur = (min: number, lang: "de" | "en") =>
+  lang === "de"
+    ? min < 60 ? `${min} Minuten` : `${Math.floor(min / 60)} Stunden${min % 60 ? ` ${min % 60} Minuten` : ""}`
+    : min < 60 ? `${min} minutes` : `${Math.floor(min / 60)} hours${min % 60 ? ` ${min % 60} minutes` : ""}`;
+
+/**
+ * Her rota için verilerden üretilen ek SSS (gece, kapasite, dönüş, ödeme, fiyat mantığı).
+ * Elle yazılmış sorulara eklenir; FAQPage şemasına da girer. Rakamlar yalnızca config'ten.
+ */
+export function extraRouteFaq(slug: string, lang: "de" | "en"): [string, string][] {
+  const r = routes.find((x) => x.slug === slug);
+  if (!r) return [];
+  const n = nameOf(r.to, lang);
+  const e = fleet[0], v = fleet[1], sC = fleet[2];
+  const pE = chf(r.price), pV = chf(r.price * v.mult), pS = chf(r.price * sC.mult);
+  const d = dur(r.min, lang);
+  if (lang === "de") return [
+    [`Fahren Sie auch nachts vom Flughafen Zürich nach ${n}?`,
+     `Ja, wir fahren rund um die Uhr – auch bei Landungen nach Mitternacht – zum gleichen Festpreis ohne Nachtzuschlag. Wichtig: Anfragen, die zwischen 23:00 und 06:00 Uhr eingehen und innerhalb der nächsten zwei Stunden starten sollen, können wir online nicht annehmen; buchen Sie Nachtfahrten deshalb im Voraus oder kontaktieren Sie uns per WhatsApp.`],
+    [`Wie viele Personen und Koffer passen ins Fahrzeug nach ${n}?`,
+     `Business Class (${e.car}): bis ${e.pax} Personen und ${e.bags} Koffer ab ${pE}. Business & Family Class (${v.car}): bis ${v.pax} Personen und ${v.bags} Koffer ab ${pV}. Premium Class (${sC.car}): bis ${sC.pax} Personen und ${sC.bags} Koffer ab ${pS}. Handgepäck zählt in der Regel nicht mit; Skitaschen befördern wir kostenlos (max. 4 pro Fahrzeug).`],
+    [`Bieten Sie auch die Rückfahrt von ${n} zum Flughafen Zürich an?`,
+     `Ja, zum gleichen Festpreis. Ihr Chauffeur holt Sie an Ihrer Adresse in ${n} ab und bringt Sie in rund ${d} zum Abflugterminal. Bei der Buchung wählen Sie einfach ${n} als Abholort und den Flughafen als Ziel – oder buchen Sie Hin- und Rückfahrt direkt nacheinander.`],
+    [`Ist der Preis nach ${n} pro Person oder pro Fahrzeug?`,
+     `Pro Fahrzeug – unabhängig davon, ob eine oder ${e.pax} Personen mitfahren (bzw. ${v.pax} im Van). Im Festpreis enthalten sind Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und die Mehrwertsteuer. Es gibt keine Gebühren für Gepäck, Nacht oder Wochenende.`],
+    [`Wie bezahle ich den Transfer nach ${n} und kann ich stornieren?`,
+     `Sie bezahlen sicher online per Karte während der Buchung und erhalten eine Rechnung mit ausgewiesener Mehrwertsteuer. Bis 24 Stunden vor der Abholung stornieren Sie kostenlos; der volle Betrag wird automatisch zurückerstattet.`],
+  ];
+  return [
+    [`Do you also drive from Zurich Airport to ${n} at night?`,
+     `Yes, we operate around the clock – including landings after midnight – at the same fixed price with no night surcharge. Important: requests received between 11 pm and 6 am for journeys due to start within the next two hours cannot be accepted online; please book night transfers in advance or contact us via WhatsApp.`],
+    [`How many people and suitcases fit in the vehicle to ${n}?`,
+     `Business Class (${e.car}): up to ${e.pax} people and ${e.bags} suitcases from ${pE}. Business & Family Class (${v.car}): up to ${v.pax} people and ${v.bags} suitcases from ${pV}. Premium Class (${sC.car}): up to ${sC.pax} people and ${sC.bags} suitcases from ${pS}. Hand luggage does not usually count; ski bags travel free (max. 4 per vehicle).`],
+    [`Do you also offer the return journey from ${n} to Zurich Airport?`,
+     `Yes, at the same fixed price. Your chauffeur collects you at your address in ${n} and brings you to the departures terminal in around ${d}. When booking, simply choose ${n} as pickup and the airport as destination – or book outbound and return one after the other.`],
+    [`Is the price to ${n} per person or per vehicle?`,
+     `Per vehicle – whether one or ${e.pax} people travel (or ${v.pax} in the van). The fixed price includes meet & greet in the arrivals hall, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. There are no fees for luggage, night or weekend.`],
+    [`How do I pay for the transfer to ${n}, and can I cancel?`,
+     `You pay securely online by card during booking and receive an invoice with VAT shown. Up to 24 hours before pickup you can cancel free of charge; the full amount is refunded automatically.`],
+  ];
+}
+
+/** Rota içeriği + üretilmiş ek SSS (sayfa ve şema aynı listeyi kullanır) */
+export function getRouteContent(slug: string, lang: "de" | "en"): RouteContent | undefined {
+  const c = routeContent[slug]?.[lang];
+  if (!c) return undefined;
+  return { ...c, faq: [...c.faq, ...extraRouteFaq(slug, lang)] };
+}
+
 export const routeContent: Record<string, { de: RouteContent; en: RouteContent }> = {
   "zurich-airport-to-zug": {
     de: {
