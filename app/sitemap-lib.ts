@@ -29,6 +29,7 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/kontakt", "yearly", 0.6],
   ["/ueber-uns", "yearly", 0.6],
   ["/datenschutz", "yearly", 0.3],
+  ["/impressum", "yearly", 0.3],
   ["/cookies", "yearly", 0.3],
   ["/agb", "yearly", 0.3],
   ["/rueckerstattung", "yearly", 0.3],

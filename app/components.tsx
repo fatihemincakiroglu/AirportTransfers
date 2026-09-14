@@ -653,8 +653,22 @@ export function LegalPage({ pageKey }: { pageKey: LegalKey }) {
       <section className="mx-auto max-w-3xl px-5 py-12 md:py-16">
         <div className="rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5 md:p-10">
           <span className="block h-0.5 w-10" style={{ background: C.gold }} />
-          <div className="mt-6 space-y-5 leading-relaxed text-stone-700">
-            {c.body.map((p, i) => <p key={i}>{p}</p>)}
+          <div className="mt-6 space-y-4 leading-relaxed text-stone-700">
+            {c.body.map((p, i) => {
+              if (p.startsWith("## ")) {
+                return <h2 key={i} className="pt-4 text-lg font-extrabold tracking-tight" style={{ color: C.pine }}>{p.slice(3)}</h2>;
+              }
+              if (p === "[[cookie-settings]]") {
+                return (
+                  <button key={i} type="button" onClick={openConsentSettings}
+                    className="rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5"
+                    style={{ background: C.gold, color: C.pine }}>
+                    {lang === "de" ? "Cookie-Einstellungen öffnen" : "Open cookie settings"}
+                  </button>
+                );
+              }
+              return <p key={i}>{p}</p>;
+            })}
           </div>
           <p className="mt-8 border-t border-stone-100 pt-5 text-sm text-stone-500">
             {lang === "de" ? "Fragen? Wir sind rund um die Uhr erreichbar:" : "Questions? We're available around the clock:"}{" "}
@@ -727,6 +741,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             <li><a href={P("/cookies")} className="hover:text-white">{lang === "de" ? "Cookie-Richtlinie" : "Cookie Policy"}</a></li>
             <li><a href={P("/agb")} className="hover:text-white">{lang === "de" ? "AGB" : "Terms & Conditions"}</a></li>
             <li><a href={P("/rueckerstattung")} className="hover:text-white">{lang === "de" ? "Rückerstattung" : "Refund Policy"}</a></li>
+            <li><a href={P("/impressum")} className="hover:text-white">{lang === "de" ? "Impressum" : "Imprint"}</a></li>
           </ul>
         </div>
         <div>

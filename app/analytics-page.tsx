@@ -28,6 +28,7 @@ const PAGE_TYPES: Record<string, PageType> = {
   cookies: "legal",
   agb: "legal",
   rueckerstattung: "legal",
+  impressum: "legal",
 };
 
 function describePage(pathname: string, lang: string): PageContext {

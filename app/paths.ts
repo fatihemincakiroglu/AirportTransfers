@@ -26,6 +26,7 @@ export const SEGMENTS: Record<string, Seg> = {
   cookies:         seg("cookie-richtlinie", "cookie-policy"),
   agb:             seg("agb", "terms-and-conditions"),
   rueckerstattung: seg("rueckerstattung", "refund-policy"),
+  impressum:       seg("impressum", "imprint"),
   strecken:        seg("strecken", "routes"),
   fahrzeuge:       seg("fahrzeuge", "vehicles"),
   galerie:         seg("galerie", "gallery"),
