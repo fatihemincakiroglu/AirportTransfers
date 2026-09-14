@@ -111,7 +111,7 @@ export function SiteHeader({ active }: { active?: string }) {
     { href: "/preise", key: "preise", label: X.nav.prices },
     { href: "/events", key: "events", label: X.nav.events },
     { href: "/fahrzeuge", key: "fahrzeuge", label: L.nav.fleet },
-    { href: "/galerie", key: "galerie", label: L.nav.gallery },
+    { href: "/blog", key: "blog", label: L.blogSec.title },
     { href: "/kontakt", key: "kontakt", label: L.nav.contact },
   ];
 
