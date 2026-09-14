@@ -1,6 +1,7 @@
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { C, Card, PageTitle, NoDb, StatusPill, fmtDate } from "../../ui";
 import InvoiceActions from "./invoice-actions";
+import ManualInvoice from "./manual-invoice";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,8 @@ export default async function Page() {
   return (
     <>
       <PageTitle title="Faturalar" sub="Onaylı ve tamamlanmış yolculuklar için fatura oluşturun" />
+
+      <ManualInvoice />
 
       <div className="mb-5 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
         {([

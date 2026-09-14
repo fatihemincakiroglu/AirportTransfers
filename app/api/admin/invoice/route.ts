@@ -1,7 +1,8 @@
-// Fatura numarası atar: RE-YYYY-0001 (yıl içinde sıralı)
+// Mevcut rezervasyona fatura numarası atar
 import { NextRequest, NextResponse } from "next/server";
 import { isLoggedIn } from "../../../lib/auth";
-import { sql, ensureSchemaSafe as ensureSchema, logEvent, dbReady } from "../../../lib/db";
+import { ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
+import { assignInvoiceNo } from "../../../lib/invoice";
 
 export const runtime = "nodejs";
 
@@ -10,19 +11,7 @@ export async function POST(req: NextRequest) {
   if (!dbReady) return NextResponse.json({ ok: false }, { status: 503 });
   const { id } = await req.json().catch(() => ({}));
   if (!id) return NextResponse.json({ ok: false }, { status: 400 });
-
   await ensureSchema();
-  const now = new Date();
-  const ym = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, "0")}`;
-  const [row] = (await sql`
-    SELECT COUNT(*)::int AS n FROM bookings
-    WHERE invoice_no LIKE ${"INV-" + ym + "-%"}`) as unknown as { n: number }[];
-
-  const no = `INV-${ym}-${String(row.n + 1).padStart(8, "0")}`;
-  const [b] = (await sql`SELECT ref, price FROM bookings WHERE id = ${id}`) as unknown as { ref: string; price: string | null }[];
-  await sql`
-    UPDATE bookings SET invoice_no = ${no}, invoiced_at = now(), updated_at = now()
-    WHERE id = ${id} AND invoice_no IS NULL`;
-  await logEvent("invoice", `${b?.ref ?? "#" + id} için ${no} numaralı fatura oluşturuldu (CHF ${Number(b?.price ?? 0).toFixed(2)})`, { actor: "panel", ref: b?.ref });
-  return NextResponse.json({ ok: true, no });
+  const no = await assignInvoiceNo(Number(id));
+  return NextResponse.json({ ok: Boolean(no), no });
 }
