@@ -145,7 +145,7 @@ export default function Buchung() {
         stops: stops.join(" | "),
         date, time,
         pax: Number(f.pax) || null,
-        luggage: Number(f.luggage) || null,
+        luggage: Number(f.pax) || null, // bagaj sorulmuyor; yolcu sayısı kadar varsayılır
         vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
         price: total || null,
         payment: D.payOptions[pay]?.[0] ?? null,
@@ -672,14 +672,15 @@ export default function Buchung() {
 
               <h2 className="font-display mb-3 text-2xl font-semibold" style={{ color: C.pine }}>{D.paxTitle}</h2>
               <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 md:p-6">
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
                   <input className={inputCls} placeholder={`${D.name} *`} value={f.name} onChange={(e) => set("name", e.target.value)} />
                   <input className={inputCls} placeholder={`${D.surname} *`} value={f.surname} onChange={(e) => set("surname", e.target.value)} />
                   <input type="email" className={inputCls} placeholder={`${D.email} *`} value={f.email} onChange={(e) => set("email", e.target.value)} />
-                  <div className="flex gap-2">
+                  <div className="flex w-full min-w-0 gap-2">
                     <select
                       aria-label="country code"
-                      className={`${inputCls} w-[118px] shrink-0 px-2`}
+                      className={`${inputCls.replace("w-full", "")} shrink-0 px-2`}
+                      style={{ width: 104 }}
                       value={dial}
                       onChange={(e) => setDial(e.target.value)}
                     >
@@ -688,7 +689,7 @@ export default function Buchung() {
                     <input
                       type="tel"
                       inputMode="tel"
-                      className={`${inputCls} min-w-0 flex-1`}
+                      className={`${inputCls} w-full min-w-0 flex-1`}
                       placeholder={`${D.phone} *`}
                       value={f.phone}
                       onChange={(e) => set("phone", e.target.value.replace(/[^\d\s]/g, ""))}
@@ -705,13 +706,6 @@ export default function Buchung() {
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <input className={inputCls} placeholder={`${D.flight} (${lang === "de" ? "optional, für Flugverfolgung" : "optional, for flight tracking"})`} value={f.flight} onChange={(e) => set("flight", e.target.value)} />
                   <input className={inputCls} placeholder={D.nameboard} value={f.nameboard} onChange={(e) => set("nameboard", e.target.value)} />
-                  {/* Yolcu sayısı 1. adımda seçildi; bagaj sayısı şoförün bagaj alanını hazırlaması için kalır */}
-                  <div className="sm:col-span-2">
-                    <label className={labelCls}>🧳 {D.luggage}</label>
-                    <select className={inputCls} value={f.luggage} onChange={(e) => set("luggage", e.target.value)}>
-                      {Array.from({ length: chosen.bags + 1 }, (_, i) => i).map((x) => <option key={x}>{x}</option>)}
-                    </select>
-                  </div>
                 </div>
 
                 <textarea rows={4} className={`${inputCls} mt-4`} placeholder={D.notes} value={f.notes} onChange={(e) => set("notes", e.target.value)} />
