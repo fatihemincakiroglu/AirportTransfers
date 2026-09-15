@@ -144,7 +144,7 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
   const to = process.env.MAIL_TO || user;
   const site = SITE();
   const who = [b.firstName, b.lastName].filter(Boolean).join(" ") || "—";
-  const paid = typeof b.payment === "string" && /online/i.test(b.payment);
+  const paid = b.payment_status === "paid" || (typeof b.payment === "string" && /stripe/i.test(b.payment));
   const v = vehicleOf(b.vehicle);
 
   const actions = id

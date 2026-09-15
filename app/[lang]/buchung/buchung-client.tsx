@@ -12,7 +12,8 @@ import {
 } from "../../components";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 
-const PAY_TYPES = ["twint", "cash", "card"] as const; // D.payOptions sırasıyla
+const PAY_TYPES = ["twint", "cash", "card", "online"] as const; // D.payOptions sırasıyla
+const ONLINE_PAY = 3; // Stripe Checkout seçeneğinin dizini
 const STEP_NAMES = { 1: "route", 2: "vehicle", 3: "contact" } as const;
 
 const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
@@ -92,19 +93,24 @@ export default function Buchung() {
       booking: { booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
     }, { idPrefix: "submit" });
 
-    try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (data?.ok && data.url) {
-        window.location.assign(data.url); // Stripe ödeme sayfası
-        return;
+    // Yalnızca "Online bezahlen" seçildiyse Stripe; araç içi ödemelerde talep doğrudan iletilir
+    if (pay === ONLINE_PAY) {
+      try {
+        const res = await fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data?.ok && data.url) {
+          window.location.assign(data.url); // Stripe ödeme sayfası
+          return;
+        }
+      } catch {
+        /* ödeme başlatılamadı — talep yine de iletilir */
       }
-    } catch {
-      /* ödeme başlatılamadı — talep yine de iletilir */
+      // Stripe açılamadı: kayıt "ödeme bekliyor" olarak iletilir, e-posta ödendi demez
+      payload.payment = lang === "de" ? "Online (Zahlung ausstehend)" : "Online (payment pending)";
     }
 
     try {
@@ -637,7 +643,7 @@ export default function Buchung() {
             <>
 
               <h2 className="font-display mb-3 text-2xl font-semibold" style={{ color: C.pine }}>{D.payTitle}</h2>
-              <div className="mb-8 grid grid-cols-3 gap-3">
+              <div className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
                 {D.payOptions.map(([title, desc], i) => (
                   <button
                     key={i}
@@ -645,7 +651,7 @@ export default function Buchung() {
                     className="rounded-2xl border-2 bg-white p-4 text-center text-xs font-bold uppercase tracking-wide transition-all"
                     style={pay === i ? { borderColor: C.gold, boxShadow: "0 4px 14px rgba(201,162,75,0.25)" } : { borderColor: "#e7e5e4" }}
                   >
-                    <span className="mb-1 block text-xl">{["📱", "💵", "💳"][i]}</span>
+                    <span className="mb-1 block text-xl">{["📱", "💵", "💳", "🔒"][i]}</span>
                     {title}
                     <span className="mt-1 block text-[10px] font-medium normal-case text-stone-500">{desc}</span>
                   </button>
@@ -725,11 +731,11 @@ export default function Buchung() {
                     }`}
                     style={{ background: C.gold, color: C.pine }}
                   >
-                    {sending ? `${D.sending}…` : `${X.pay.cta} — CHF ${total.toFixed(2)}`}
+                    {sending ? `${D.sending}…` : `${pay === ONLINE_PAY ? X.pay.cta : D.bookCta} — CHF ${total.toFixed(2)}`}
                   </button>
                 </div>
 
-                <p className="mt-3 text-center text-xs text-stone-500">🔒 {X.pay.note}</p>
+                {pay === ONLINE_PAY && <p className="mt-3 text-center text-xs text-stone-500">🔒 {X.pay.note}</p>}
                 <p className="mt-1.5 text-center text-xs text-stone-500">{D.confirmNote}</p>
               </div>
             </>

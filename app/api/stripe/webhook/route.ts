@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         ref: b.ref, lang: b.lang, channel: "online ödeme",
         pickup: b.pickup, dropoff: b.dropoff, stops: b.stops,
         date: b.ride_date, time: b.ride_time, pax: b.pax, luggage: b.luggage,
-        vehicle: b.vehicle, price: b.price, payment: "Online ödendi ✓",
+        vehicle: b.vehicle, price: b.price, payment: "Online ödendi ✓ (Stripe)", payment_status: "paid",
         firstName: b.first_name, lastName: b.last_name, email: b.email, phone: b.phone,
         flight: b.flight, extras: b.extras, notes: b.notes,
       },
