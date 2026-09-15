@@ -16,6 +16,17 @@ const PAY_TYPES = ["twint", "cash", "card", "online"] as const; // D.payOptions 
 const ONLINE_PAY = 3; // Stripe Checkout seçeneğinin dizini
 const STEP_NAMES = { 1: "route", 2: "vehicle", 3: "contact" } as const;
 
+/** Telefon ülke kodları — en sık gelen ülkeler önde */
+const DIAL_CODES: [string, string, string][] = [
+  ["🇨🇭", "+41", "CH"], ["🇩🇪", "+49", "DE"], ["🇦🇹", "+43", "AT"], ["🇫🇷", "+33", "FR"], ["🇮🇹", "+39", "IT"],
+  ["🇬🇧", "+44", "GB"], ["🇺🇸", "+1", "US/CA"], ["🇳🇱", "+31", "NL"], ["🇧🇪", "+32", "BE"], ["🇪🇸", "+34", "ES"],
+  ["🇵🇹", "+351", "PT"], ["🇱🇮", "+423", "LI"], ["🇱🇺", "+352", "LU"], ["🇩🇰", "+45", "DK"], ["🇸🇪", "+46", "SE"],
+  ["🇳🇴", "+47", "NO"], ["🇵🇱", "+48", "PL"], ["🇨🇿", "+420", "CZ"], ["🇹🇷", "+90", "TR"], ["🇬🇷", "+30", "GR"],
+  ["🇮🇱", "+972", "IL"], ["🇦🇪", "+971", "AE"], ["🇸🇦", "+966", "SA"], ["🇶🇦", "+974", "QA"], ["🇮🇳", "+91", "IN"],
+  ["🇨🇳", "+86", "CN"], ["🇯🇵", "+81", "JP"], ["🇸🇬", "+65", "SG"], ["🇦🇺", "+61", "AU"], ["🇧🇷", "+55", "BR"],
+  ["🇷🇺", "+7", "RU"], ["🇿🇦", "+27", "ZA"],
+];
+
 const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
 
 /**
@@ -138,7 +149,7 @@ export default function Buchung() {
         vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
         price: total || null,
         payment: D.payOptions[pay]?.[0] ?? null,
-        firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone,
+        firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone ? `${dial} ${f.phone.trim()}` : "",
         flight: f.flight, nameboard: f.nameboard,
         extras: [
           extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
@@ -171,6 +182,7 @@ export default function Buchung() {
   const [trip, setTrip] = useState({ from: AIRPORT, to: "" });
   const [hourly, setHourly] = useState(false); // saatlik kiralama (URL'den)
   const [hourlyHours, setHourlyHours] = useState<number | null>(null);
+  const [dial, setDial] = useState("+41"); // telefon ülke kodu; kayda "+41 79 …" olarak gider
   // Ölçüm: kabul edilen arama kimliği; adım 2'ye ilk geçişte booking_search + results basılır
   const searchIdRef = useRef<string | null>(null);
   const pendingSearchRef = useRef(false);
@@ -431,7 +443,7 @@ export default function Buchung() {
     pendingSearchRef.current = true;
     go(2);
   };
-  const ready = accepted && f.name && f.surname && f.email && f.phone && f.flight && !slot.busy;
+  const ready = accepted && f.name && f.surname && f.email && f.phone.trim() && !slot.busy; // uçuş numarası isteğe bağlı
 
 
   const go = (s: 1 | 2 | 3) => {
@@ -664,7 +676,24 @@ export default function Buchung() {
                   <input className={inputCls} placeholder={`${D.name} *`} value={f.name} onChange={(e) => set("name", e.target.value)} />
                   <input className={inputCls} placeholder={`${D.surname} *`} value={f.surname} onChange={(e) => set("surname", e.target.value)} />
                   <input type="email" className={inputCls} placeholder={`${D.email} *`} value={f.email} onChange={(e) => set("email", e.target.value)} />
-                  <input type="tel" className={inputCls} placeholder={`${D.phone} * (+41 …)`} value={f.phone} onChange={(e) => set("phone", e.target.value)} />
+                  <div className="flex gap-2">
+                    <select
+                      aria-label="country code"
+                      className={`${inputCls} w-[118px] shrink-0 px-2`}
+                      value={dial}
+                      onChange={(e) => setDial(e.target.value)}
+                    >
+                      {DIAL_CODES.map(([flag, code, cc]) => <option key={code + cc} value={code}>{flag} {code}</option>)}
+                    </select>
+                    <input
+                      type="tel"
+                      inputMode="tel"
+                      className={`${inputCls} min-w-0 flex-1`}
+                      placeholder={`${D.phone} *`}
+                      value={f.phone}
+                      onChange={(e) => set("phone", e.target.value.replace(/[^\d\s]/g, ""))}
+                    />
+                  </div>
                 </div>
 
                 <div className="mt-4">
@@ -674,18 +703,13 @@ export default function Buchung() {
                 </div>
 
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                  <input className={inputCls} placeholder={`${D.flight} *`} value={f.flight} onChange={(e) => set("flight", e.target.value)} />
+                  <input className={inputCls} placeholder={`${D.flight} (${lang === "de" ? "optional, für Flugverfolgung" : "optional, for flight tracking"})`} value={f.flight} onChange={(e) => set("flight", e.target.value)} />
                   <input className={inputCls} placeholder={D.nameboard} value={f.nameboard} onChange={(e) => set("nameboard", e.target.value)} />
-                  <div>
-                    <label className={labelCls}>👥 {L.form.pax}</label>
-                    <select className={inputCls} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-                      {Array.from({ length: chosen.pax }, (_, i) => i + 1).map((x) => <option key={x}>{x}</option>)}
-                    </select>
-                  </div>
-                  <div>
+                  {/* Yolcu sayısı 1. adımda seçildi; bagaj sayısı şoförün bagaj alanını hazırlaması için kalır */}
+                  <div className="sm:col-span-2">
                     <label className={labelCls}>🧳 {D.luggage}</label>
                     <select className={inputCls} value={f.luggage} onChange={(e) => set("luggage", e.target.value)}>
-                      {Array.from({ length: chosen.bags }, (_, i) => i + 1).map((x) => <option key={x}>{x}</option>)}
+                      {Array.from({ length: chosen.bags + 1 }, (_, i) => i).map((x) => <option key={x}>{x}</option>)}
                     </select>
                   </div>
                 </div>
