@@ -68,8 +68,8 @@ export type CheckoutInput = {
 export async function createCheckout(i: CheckoutInput): Promise<{ id: string; url: string } | null> {
   const res = await call<{ id: string; url: string }>("/checkout/sessions", {
     mode: "payment",
-    // Kart + TWINT (Stripe panelinde etkinleştirilmiş yöntemler otomatik gelir)
-    automatic_payment_methods: { enabled: true },
+    // Ödeme yöntemleri Stripe panelindeki ayarlardan gelir (kart, TWINT, Apple/Google Pay…);
+    // payment_method_types verilmediğinde Checkout etkin olanları otomatik gösterir.
     currency: "chf",
     locale: i.lang === "de" ? "de" : "en",
     customer_email: i.email || undefined,
