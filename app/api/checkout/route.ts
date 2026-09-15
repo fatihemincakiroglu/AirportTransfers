@@ -17,7 +17,13 @@ export async function POST(req: NextRequest) {
   try {
     const b = await req.json();
     const ref = str(b.ref, 32);
-    const amount = num(b.price);
+    const realPrice = num(b.price);
+    let amount = realPrice;
+    // Canlı ödeme testi: CHECKOUT_TEST_EMAIL tanımlıysa ve müşteri e-postası ona eşitse Stripe'a CHF 1.00 gider.
+    // Kayıt gerçek fiyatla tutulur; log satırı bunu belirtir. Test bitince Vercel'den değişkeni sil.
+    const testEmail = (process.env.CHECKOUT_TEST_EMAIL ?? "").trim().toLowerCase();
+    const isTestPayment = Boolean(testEmail) && typeof b.email === "string" && b.email.trim().toLowerCase() === testEmail;
+    if (isTestPayment) amount = 1;
     if (!ref || !amount || amount <= 0) return NextResponse.json({ ok: false }, { status: 400 });
 
     await ensureSchema();
@@ -33,7 +39,7 @@ export async function POST(req: NextRequest) {
       ) VALUES (
         ${ref}, ${str(b.lang, 5)}, 'site', 'pending', ${str(b.pickup)}, ${str(b.dropoff)}, ${str(b.stops)},
         ${str(b.date, 20)}, ${str(b.time, 10)}, ${num(b.pax)}, ${num(b.luggage)},
-        ${str(b.vehicle, 120)}, ${amount}, 'Online (Stripe)',
+        ${str(b.vehicle, 120)}, ${realPrice}, 'Online (Stripe)',
         ${str(b.firstName, 80)}, ${str(b.lastName, 80)}, ${str(b.email, 160)}, ${str(b.phone, 40)},
         ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)},
         ${mm.ga_client_id}, ${mm.ga_session_id}, ${mm.fbp}, ${mm.fbc}, ${mm.client_ip}, ${mm.client_ua},
@@ -76,7 +82,7 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ ok: false, reason: "stripe-error" }, { status: 200 });
 
     await sql`UPDATE bookings SET stripe_session = ${session.id} WHERE ref = ${ref}`;
-    await logEvent("payment_start", `${ref} için ödeme sayfası açıldı (CHF ${amount.toFixed(2)})`, { actor: "site", ref });
+    await logEvent("payment_start", `${ref} için ödeme sayfası açıldı (CHF ${amount.toFixed(2)})${isTestPayment ? " — TEST ÖDEMESİ (CHECKOUT_TEST_EMAIL)" : ""}`, { actor: "site", ref });
 
     return NextResponse.json({ ok: true, url: session.url });
   } catch (e) {
