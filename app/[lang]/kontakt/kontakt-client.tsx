@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, COMPANY_ADDRESS } from "../../config";
+import { C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, COMPANY_ADDRESS, COMPANY_MAPS_URL, COMPANY_MAPS_EMBED } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
@@ -150,7 +150,7 @@ export default function Kontakt() {
               <span className="flex h-11 w-11 items-center justify-center rounded-xl text-lg" style={{ background: "rgba(201,162,75,0.12)", color: C.gold }}>📍</span>
               <span>
                 <span className="block text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">{K.lblAddress}</span>
-                <span className="text-sm font-bold" style={{ color: C.pine }}>{COMPANY_ADDRESS}</span>
+                <a href={COMPANY_MAPS_URL} target="_blank" rel="noopener noreferrer" className="text-sm font-bold hover:underline" style={{ color: C.pine }}>{COMPANY_ADDRESS}</a>
               </span>
             </li>
             <li className="py-4">
@@ -158,6 +158,24 @@ export default function Kontakt() {
               <span className="font-bold" style={{ color: C.pine }}>{K.always}</span>
             </li>
           </ul>
+
+          {/* Harita: Google Maps gömme, API anahtarı gerektirmez; tıklayınca Maps'te açılır */}
+          <div className="mt-5 overflow-hidden rounded-2xl ring-1 ring-black/5">
+            <iframe
+              title="ZRH Airport Taxi – Ifangstrasse 12, 8302 Kloten"
+              src={COMPANY_MAPS_EMBED}
+              width="100%"
+              height="260"
+              style={{ border: 0, display: "block" }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <a href={COMPANY_MAPS_URL} target="_blank" rel="noopener noreferrer"
+               className="flex items-center justify-between px-4 py-3 text-xs font-bold hover:underline" style={{ color: C.pine, background: "#FBF7EE" }}>
+              <span>📍 {lang === "de" ? "In Google Maps öffnen" : "Open in Google Maps"}</span><span>→</span>
+            </a>
+          </div>
         </div>
       </section>
 

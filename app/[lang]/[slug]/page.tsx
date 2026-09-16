@@ -75,7 +75,7 @@ export default async function Page({ params }: Params) {
           "@type": "LocalBusiness",
           name: "ZRH Airport Taxi",
           telephone: "+41794551572",
-          address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
+          address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
         },
       };
       return (
@@ -102,7 +102,7 @@ export default async function Page({ params }: Params) {
         "@type": "LocalBusiness",
         name: "ZRH Airport Taxi",
         telephone: "+41794551572",
-        address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
+        address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       },
       offers: { "@type": "Offer", price: route.price.toFixed(2), priceCurrency: "CHF" },
     });

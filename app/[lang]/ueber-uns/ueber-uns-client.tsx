@@ -205,7 +205,7 @@ export default function UeberUns() {
           <div className="rounded-3xl border border-white/10 bg-white/5 p-7 backdrop-blur">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>Kula-ZATK</p>
             <ul className="mt-4 space-y-3 text-sm text-white/80">
-              <li className="flex gap-3"><span style={{ color: C.gold }}>📍</span> Industristrasse 14, 8302 Kloten</li>
+              <li className="flex gap-3"><span style={{ color: C.gold }}>📍</span> Ifangstrasse 12, Stock 2, 8302 Kloten</li>
               <li className="flex gap-3"><span style={{ color: C.gold }}>🏛</span> CH-020.1.089.436-5</li>
               <li className="flex gap-3"><span style={{ color: C.gold }}>✈️</span> {lang === "de" ? "5 Minuten vom Flughafen Zürich" : "5 minutes from Zurich Airport"}</li>
               <li className="flex gap-3"><span style={{ color: C.gold }}>🇨🇭</span> {lang === "de" ? "Schweizer Unternehmen" : "Swiss company"}</li>

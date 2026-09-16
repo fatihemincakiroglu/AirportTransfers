@@ -82,7 +82,7 @@ export default async function RootLayout({
       telephone: "+41794551572",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "Industristrasse 14",
+        streetAddress: "Ifangstrasse 12, Stock 2",
         postalCode: "8302",
         addressLocality: "Kloten",
         addressCountry: "CH",

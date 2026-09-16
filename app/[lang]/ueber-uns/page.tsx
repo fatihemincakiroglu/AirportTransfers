@@ -30,7 +30,7 @@ export default async function Page({ params }: Params) {
       legalName: "Kula-ZATK",
       telephone: "+41794551572",
       areaServed: { "@type": "Country", name: "Switzerland" },
-      address: { "@type": "PostalAddress", streetAddress: "Industristrasse 14", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
+      address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       knowsLanguage: ["de", "en"],
       slogan: lang === "de" ? "Privater Flughafentransfer zum Festpreis" : "Private airport transfers at fixed prices",
     },
