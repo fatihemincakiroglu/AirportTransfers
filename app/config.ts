@@ -31,7 +31,8 @@ export const COMPANY_MAPS_URL = "https://maps.app.goo.gl/NbtdxkVoerMpN7hF6";
 export const COMPANY_MAPS_EMBED = "https://www.google.com/maps?q=Ifangstrasse+12,+8302+Kloten,+Switzerland&output=embed&z=16";
 
 // ── Fatura bilgileri (panelde kullanılır) ──
-export const COMPANY_ADDRESS_LINES = ["Ifangstrasse 12, Stock 2", "8302 Kloten"];
+/** Faturadaki resmi (Handelsregister) adres — sitedeki adresten farklıdır, yalnızca fatura şablonunda kullanılır */
+export const COMPANY_ADDRESS_LINES = ["c/o Erkan Kula", "Dorfstrasse 56", "8302 Kloten", "Switzerland"];
 /** Banka bilgileri — faturada gösterilir. Doğruluğunu kontrol edin. */
 export const BANK = {
   name: "PostFinance AG",

@@ -233,7 +233,7 @@ export const basePosts: BlogPost[] = [
       excerpt: "Gesperrte Strassen, Sicherheitszonen, knappe Kapazitäten und enge Zeitfenster: So funktioniert der Transfer vom Flughafen Zürich nach Davos während des Weltwirtschaftsforums – und was Sie Monate vorher tun sollten.",
       body: [
         { p: [
-          "Eine Woche im Januar verwandelt Davos in den am besten gesicherten Ort Europas. Für Delegationen, Unternehmen und Medien beginnt das Weltwirtschaftsforum lange vor der ersten Sitzung – mit der Frage, wie man überhaupt hinkommt. Dieser Guide erklärt, was den Transfer in der WEF-Woche von einer normalen Fahrt nach Davos unterscheidet. Die Eventseite mit Daten und Anfrage finden Sie unter [WEF Davos](/events/wef-davos).",
+          "Eine Woche im Januar verwandelt Davos in den am besten gesicherten Ort Europas. Für Delegationen, Unternehmen und Medien beginnt das Weltwirtschaftsforum lange vor der ersten Sitzung – mit der Frage, wie man überhaupt hinkommt. Dieser Guide erklärt, was den Transfer in der WEF-Woche von einer normalen Fahrt nach Davos unterscheidet. Die Eventseite mit Daten und Anfrage finden Sie unter [WEF Davos](/events).",
         ]},
         { h: "Die Strecke ausserhalb der WEF-Woche", p: [
           "Normalerweise dauert der [Transfer Flughafen Zürich–Davos](/zurich-airport-to-davos) über die A3 und A13 via Landquart und die Prättigauerstrasse rund 3 Stunden 15 Minuten; der Festpreis beginnt in der Business Class bei CHF 484.50 pro Fahrzeug. Während des WEF gelten für die letzte Etappe andere Regeln.",
@@ -257,7 +257,7 @@ export const basePosts: BlogPost[] = [
       excerpt: "Closed roads, security zones, scarce capacity and tight time windows: how the transfer from Zurich Airport to Davos works during the World Economic Forum – and what to do months in advance.",
       body: [
         { p: [
-          "One week in January turns Davos into the best-secured place in Europe. For delegations, companies and media, the World Economic Forum begins long before the first session – with the question of how to get there at all. This guide explains what distinguishes the transfer in WEF week from a normal journey to Davos. The event page with dates and enquiry is at [WEF Davos](/events/wef-davos).",
+          "One week in January turns Davos into the best-secured place in Europe. For delegations, companies and media, the World Economic Forum begins long before the first session – with the question of how to get there at all. This guide explains what distinguishes the transfer in WEF week from a normal journey to Davos. The event page with dates and enquiry is at [WEF Davos](/events).",
         ]},
         { h: "The route outside WEF week", p: [
           "Normally the [Zurich Airport–Davos transfer](/zurich-airport-to-davos) via the A3 and A13 through Landquart and the Prättigau road takes around 3 hours 15 minutes; the fixed price starts at CHF 484.50 per vehicle in the Business Class. During the WEF, different rules apply to the final stage.",

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { sql, ensureSchemaSafe as ensureSchema, dbReady, VAT_RATE } from "../../../../lib/db";
 import {
-  COMPANY_NAME, COMPANY_REG, COMPANY_ADDRESS_LINES, CONTACT_EMAIL, PHONE_DISPLAY, BANK,
+  COMPANY_NAME, COMPANY_ADDRESS_LINES, CONTACT_EMAIL, BANK,
 } from "../../../../config";
 import PrintButton from "./print-button";
 
@@ -66,10 +66,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             <div>
               <h1 className="text-2xl font-extrabold tracking-tight">{COMPANY_NAME.toUpperCase()}</h1>
               <div className="mt-3 space-y-1 text-sm" style={{ color: MUTED }}>
+                {/* Yalnızca resmi adres; HR no / e-posta / telefon şirket bloğunda gösterilmez */}
                 {COMPANY_ADDRESS_LINES.map((l) => <p key={l}>{l}</p>)}
-                <p>{COMPANY_REG}</p>
-                <p>{CONTACT_EMAIL}</p>
-                <p>{PHONE_DISPLAY}</p>
               </div>
             </div>
 
