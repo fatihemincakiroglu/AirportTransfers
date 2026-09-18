@@ -101,9 +101,46 @@ export default function PostClient({ slug }: { slug: string }) {
                 {block.h}
               </h2>
             )}
+            {block.h3 && (
+              <h3 className="mt-5 text-base font-extrabold tracking-tight" style={{ color: C.pine }}>
+                {block.h3}
+              </h3>
+            )}
             {block.p.map((para, j) => (
               <p key={j} className="mt-4 leading-relaxed text-stone-700">{renderInline(para, P)}</p>
             ))}
+            {block.ul && (
+              <ul className="mt-4 space-y-2 pl-1">
+                {block.ul.map((item, j) => (
+                  <li key={j} className="flex gap-3 leading-relaxed text-stone-700">
+                    <span className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: C.gold }} />
+                    <span>{renderInline(item, P)}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {block.table && (
+              <div className="mt-5 overflow-x-auto rounded-2xl ring-1 ring-black/5">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr style={{ background: C.pine }}>
+                      {block.table.head.map((h, j) => (
+                        <th key={j} className="px-4 py-3 text-left text-[11px] font-extrabold uppercase tracking-wider text-white">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {block.table.rows.map((row, r) => (
+                      <tr key={r} className={r % 2 ? "bg-[#FBF9F3]" : "bg-white"}>
+                        {row.map((cell, j) => (
+                          <td key={j} className="px-4 py-3 align-top leading-relaxed text-stone-700">{renderInline(cell, P)}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         ))}
 

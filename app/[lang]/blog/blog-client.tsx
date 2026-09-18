@@ -12,7 +12,7 @@ import type { Lang } from "../../i18n";
 // Okuma süresi: kelime sayısı / 180
 export function readingTime(post: BlogPost, lang: Lang) {
   const c = pickL(post, lang);
-  const words = [c.title, c.excerpt, ...c.body.flatMap((b) => [b.h ?? "", ...b.p])]
+  const words = [c.title, c.excerpt, ...c.body.flatMap((b) => [b.h ?? "", b.h3 ?? "", ...b.p, ...(b.ul ?? []), ...(b.table?.rows.flat() ?? [])])]
     .join(" ")
     .split(/\s+/).length;
   return Math.max(2, Math.ceil(words / 180));
