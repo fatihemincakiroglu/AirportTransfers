@@ -200,7 +200,7 @@ export default function RouteClient({ slug }: { slug: string }) {
           </nav>
           <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
           <h1 className="font-display mt-3 text-3xl font-semibold md:text-5xl" style={{ color: C.pine }}>
-            Flughafen Zürich (ZRH) → {n}
+            {lang === "de" ? "Flughafen Zürich (ZRH)" : "Zurich Airport (ZRH)"} → {n}
           </h1>
           <p className="mt-3 flex flex-wrap items-center gap-4 text-sm text-stone-600">
             <span>🛣 {route.km} km</span>

@@ -7,6 +7,7 @@ import RouteClient from "./route-client";
 import DestinationClient from "./destination-client";
 import { findDestination, allDestinationSlugs } from "../../destinations";
 import { tx } from "../../i18nX";
+import { routeMeta } from "../../routeMeta";
 import type { Lang } from "../../i18n";
 import { LANGS, DEFAULT_LANG } from "../../paths";
 
@@ -38,9 +39,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const n = nameOf(route.to, lang);
   const safe: Lang = (LANGS as readonly string[]).includes(lang) ? (lang as Lang) : DEFAULT_LANG;
   const X = tx[safe];
+  // SEO meta: rota başına elle yazılmış başlık/açıklama (routeMeta.ts); yoksa şablon
+  const rm = routeMeta[slug]?.[safe];
   return {
-    title: `${X.dest.hero(n)} | ${X.dest.fixed} ${route.price.toFixed(2)} – ${route.km} km`,
-    description: `${X.dest.routeKnown(n, route.price.toFixed(2))} ${X.dest.heroSub(n)}`,
+    title: rm?.title ?? `${X.dest.hero(n)} | ${X.dest.fixed} ${route.price.toFixed(2)} – ${route.km} km`,
+    description: rm?.description ?? `${X.dest.routeKnown(n, route.price.toFixed(2))} ${X.dest.heroSub(n)}`,
     alternates: {
       canonical: `/${lang}/${slug}`,
       languages: langAlternates(`/${slug}`),
