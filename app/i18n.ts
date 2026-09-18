@@ -5,8 +5,8 @@ export type Lang = LangCode;
 const base = {
   de: {
     meta: {
-      title: "Zürich Airport Taxi - Flughafen Zürich Taxi & Chauffeurservice Schweiz",
-      desc: "Premium Flughafentransfer ab Zürich (ZRH) in die ganze Schweiz – Festpreise, professionelle Fahrer & Flugverfolgung. Jetzt Transfer in 1 Minute buchen!",
+      title: "Zürich Airport Taxi – Flughafen Zürich Taxi & Chauffeurservice",
+      desc: "Premium Flughafentransfer ab Zürich (ZRH) zu Festpreisen – professionelle Chauffeure, Flugverfolgung, Meet & Greet. Jetzt Transfer in 1 Minute buchen!",
     },
     topbar: "Zürich · Private Transfer",
     nav: {
@@ -159,8 +159,8 @@ const base = {
   },
   en: {
     meta: {
-      title: "Zürich Airport Taxi - Zurich Airport Taxi & Chauffeur Service Switzerland",
-      desc: "Premium airport transfers from Zurich (ZRH) across all of Switzerland – fixed prices, professional drivers & flight tracking. Book your transfer in 1 minute!",
+      title: "Zürich Airport Taxi – Zurich Airport Taxi & Chauffeur Service",
+      desc: "Premium airport transfers from Zurich (ZRH) at fixed prices – professional chauffeurs, flight tracking, meet & greet. Book your transfer in 1 minute!",
     },
     topbar: "Zurich · Private Transfer",
     nav: {

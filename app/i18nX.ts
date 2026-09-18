@@ -35,7 +35,7 @@ const baseX = {
     done: { title: "Anfrage übermittelt!", body: (r: string) => `Ihre Transferanfrage ${r} ist bei uns eingegangen. Wir prüfen die Verfügbarkeit und melden uns in der Regel innerhalb von 2 Minuten per E-Mail oder Telefon.`, hint: "Vielen Dank für Ihre Anfrage! Bitte prüfen Sie auch Ihren Posteingang bzw. Spam-Ordner.", payment: "Zahlungsart", home: "Zur Startseite" },
     dest: {
       crumb: "Reiseziele",
-      pageTitle: "Transfers in der ganzen Schweiz",
+      pageTitle: "Über 300 Ziele ab Flughafen Zürich",
       pageSub: "Vom Flughafen Zürich zu jeder Stadt und jedem Bergdorf. Wählen Sie Ihre Destination oder buchen Sie direkt.",
       popular: "Beliebte Orte",
       searchPh: "Ort suchen …",
@@ -91,7 +91,7 @@ const baseX = {
     },
     events: {
       crumb: "Events",
-      title: "Events in der Schweiz – Ihr privater Transfer",
+      title: "Events & Kongresse – Ihr privater Transfer",
       sub: "Reservieren Sie Ihren Chauffeur zu den bekanntesten Messen, Festivals und Panoramafahrten der Schweiz.",
       all: "Alle",
       book: "Transfer buchen",
@@ -126,7 +126,7 @@ const baseX = {
     done: { title: "Request submitted!", body: (r: string) => `Your transfer request ${r} has reached us. We are checking availability and will get back to you by e-mail or phone, usually within 2 minutes.`, hint: "Thank you for your request! Please also check your inbox or spam folder.", payment: "Payment method", home: "Back to homepage" },
     dest: {
       crumb: "Destinations",
-      pageTitle: "Transfers across all of Switzerland",
+      pageTitle: "300+ destinations from Zurich Airport",
       pageSub: "From Zurich Airport to every city and mountain village. Pick your destination or book directly.",
       popular: "Popular places",
       searchPh: "Search a place …",
@@ -182,7 +182,7 @@ const baseX = {
     },
     events: {
       crumb: "Events",
-      title: "Events in Switzerland – your private transfer",
+      title: "Events & congresses – your private transfer",
       sub: "Reserve your chauffeur for Switzerland's best-known fairs, festivals and panoramic journeys.",
       all: "All",
       book: "Book transfer",
