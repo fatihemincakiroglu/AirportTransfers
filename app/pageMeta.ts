@@ -8,7 +8,7 @@ import { LANGS, DEFAULT_LANG } from "./paths";
 import { tx } from "./i18nX";
 import { legalPages, type LegalKey } from "./legalContent";
 
-const BRAND = "ZRH Airport Taxi";
+const BRAND = "Zürich Airport Taxi"; // meta başlık eki: aranan kelime "Zürich", marka kısaltması değil
 
 export type PageKey =
   | "home" | "strecken" | "fahrzeuge" | "galerie" | "kontakt" | "ueber-uns"

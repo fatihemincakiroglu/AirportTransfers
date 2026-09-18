@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       const X = tx[safe];
       const n = dest.d.name;
       return {
-        title: `${X.dest.hero(n)} | ZRH Airport Taxi`,
+        title: `${X.dest.hero(n)} | Zürich Airport Taxi`,
         description: X.dest.heroSub(n),
         alternates: {
           canonical: `/${lang}/${res.canonical}`,

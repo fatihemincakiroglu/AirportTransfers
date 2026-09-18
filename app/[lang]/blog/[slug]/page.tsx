@@ -10,10 +10,10 @@ type Params = { params: Promise<{ lang: string; slug: string }> };
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang, slug } = await params;
   const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) return { title: "Blog | ZRH Airport Taxi" };
+  if (!post) return { title: "Blog | Zürich Airport Taxi" };
   const c = pickL(post, lang as never);
   return {
-    title: `${c.title} | ZRH Airport Taxi Blog`,
+    title: `${c.title} | Zürich Airport Taxi`,
     description: c.excerpt,
     alternates: {
       canonical: `/${lang}/blog/${slug}`,
