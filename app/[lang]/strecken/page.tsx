@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import { routes } from "../../config";
+import { routeSlug } from "../../slugs";
 import Strecken from "./strecken-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -34,7 +35,7 @@ export default async function Page({ params }: Params) {
           "@type": "Service",
           serviceType: "Airport transfer",
           name: `Zurich Airport (ZRH) → ${nameOf(r.to, lang)}`,
-          url: `/${lang}/${r.slug}`,
+          url: `/${lang}/${routeSlug(r.slug, lang as "de" | "en")}`,
           offers: { "@type": "Offer", price: r.price.toFixed(2), priceCurrency: "CHF" },
         },
       })),

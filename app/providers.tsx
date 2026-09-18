@@ -4,6 +4,7 @@ import { createContext, useContext } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { Lang } from "./i18n";
 import { localizePath, internalizePath, LANGS } from "./paths";
+import { localizeSlugPath } from "./slugs";
 
 type Ctx = {
   lang: Lang;
@@ -27,12 +28,12 @@ export function LangProvider({ lang, children }: { lang: Lang; children: React.R
     // /en/contact → (iç) /kontakt → /de/kontakt
     const rest = pathname.replace(new RegExp(`^/(${LANGS.join("|")})(?=/|$)`), "") || "/";
     const internal = internalizePath(rest, lang);
-    const target = localizePath(internal, l);
+    const target = localizeSlugPath(localizePath(internal, l), l);
     router.push(`/${l}${target === "/" ? "" : target}`);
   };
 
   const P = (path: string) => {
-    const pub = localizePath(path, lang);
+    const pub = localizeSlugPath(localizePath(path, lang), lang); // segment + rota/hedef slug'ı dile göre
     return pub === "/" ? `/${lang}` : `/${lang}${pub}`;
   };
 

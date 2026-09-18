@@ -5,6 +5,7 @@ import { SITE_URL, routes } from "./config";
 import { allDestinationSlugs } from "./destinations";
 import { blogPosts } from "./blogContent";
 import { localizePath, LANGS, DEFAULT_LANG, type LangCode } from "./paths";
+import { localizeSlugPath } from "./slugs";
 
 export type L = LangCode;
 
@@ -46,7 +47,7 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
 ];
 
 const pub = (internal: string, lang: L) => {
-  const p = localizePath(internal, lang);
+  const p = localizeSlugPath(localizePath(internal, lang), lang);
   return `${SITE_URL}/${lang}${p === "/" ? "" : p}`;
 };
 

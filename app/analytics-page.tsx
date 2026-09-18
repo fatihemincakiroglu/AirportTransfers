@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { useLang } from "./providers";
 import { internalizePath, LANGS } from "./paths";
-import { routes } from "./config";
+import { resolveSlug } from "./slugs";
 import {
   pushPageContext, sanitizeBrowserUrl, safeReferrer, pageLocation,
   trackContactClick, trackLanguageChange, routeId, type PageType, type PageContext,
@@ -40,9 +40,10 @@ function describePage(pathname: string, lang: string): PageContext {
   let page_id: string | undefined;
 
   if (parts.length === 1 && !(key in PAGE_TYPES)) {
-    // Kök seviyede sabit rota sayfası: /en/zurich-airport-to-basel
-    const r = routes.find((x) => x.slug === key);
-    if (r) { page_type = "route_detail"; page_id = routeId(r.slug); }
+    // Kök seviyede rota ya da hedef sayfası (dile göre slug, anahtar üzerinden çözülür)
+    const r = resolveSlug(key, lang as "de" | "en");
+    if (r?.kind === "route") { page_type = "route_detail"; page_id = routeId(r.key); }
+    else if (r?.kind === "dest") { page_type = "destination_detail"; page_id = `destination_${r.key.replace(/^flughafentransfer-/, "")}`; }
   } else if (parts.length >= 2) {
     if (key === "staedte") { page_type = "destination_detail"; page_id = `destination_${parts[1]}`; }
     else if (key === "events") { page_type = "event_detail"; page_id = `event_${parts[1]}`; }

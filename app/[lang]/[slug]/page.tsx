@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { langAlternates } from "../../paths";
 import { routes } from "../../config";
 import { getRouteContent } from "../../routeContent";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import RouteClient from "./route-client";
 import DestinationClient from "./destination-client";
-import { findDestination, allDestinationSlugs } from "../../destinations";
+import { findDestination } from "../../destinations";
+import { resolveSlug, slugAlternates, canonicalSlugParams } from "../../slugs";
 import { tx } from "../../i18nX";
 import { routeMeta } from "../../routeMeta";
 import type { Lang } from "../../i18n";
@@ -17,7 +17,10 @@ const nameOf = (to: string | { de: string; en: string }, lang: string) =>
 type Params = { params: Promise<{ lang: string; slug: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { lang, slug } = await params;
+  const { lang, slug: rawSlug } = await params;
+  const res = resolveSlug(rawSlug, lang as Lang);
+  if (!res) return { title: "ZRH Airport Taxi" };
+  const slug = res.key; // iç anahtar; URL'ler dile göre üretilir
   const route = routes.find((r) => r.slug === slug);
   if (!route) {
     const dest = findDestination(slug);
@@ -29,8 +32,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
         title: `${X.dest.hero(n)} | ZRH Airport Taxi`,
         description: X.dest.heroSub(n),
         alternates: {
-          canonical: `/${lang}/${slug}`,
-          languages: langAlternates(`/${slug}`),
+          canonical: `/${lang}/${res.canonical}`,
+          languages: slugAlternates(slug),
         },
       };
     }
@@ -45,8 +48,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: rm?.title ?? `${X.dest.hero(n)} | ${X.dest.fixed} ${route.price.toFixed(2)} – ${route.km} km`,
     description: rm?.description ?? `${X.dest.routeKnown(n, route.price.toFixed(2))} ${X.dest.heroSub(n)}`,
     alternates: {
-      canonical: `/${lang}/${slug}`,
-      languages: langAlternates(`/${slug}`),
+      canonical: `/${lang}/${res.canonical}`,
+      languages: slugAlternates(slug),
     },
     openGraph: {
       title: X.dest.hero(n),
@@ -55,15 +58,18 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
+/** Her dil için yalnızca kanonik slug'lar derlenir; eski/yanlış dildeki biçimler istek anında yönlendirilir */
 export function generateStaticParams() {
-  return [
-    ...routes.map((r) => ({ slug: r.slug })),
-    ...allDestinationSlugs().map((slug) => ({ slug })),
-  ];
+  return canonicalSlugParams();
 }
 
 export default async function Page({ params }: Params) {
-  const { lang, slug } = await params;
+  const { lang, slug: rawSlug } = await params;
+  const res = resolveSlug(rawSlug, lang as Lang);
+  if (!res) notFound();
+  // Eski slug ya da diğer dilin slug'ı → kalıcı yönlendirme (SEO: sıralama kanonik URL'ye taşınır)
+  if (res.canonical !== rawSlug) permanentRedirect(`/${lang}/${res.canonical}`);
+  const slug = res.key;
   const route = routes.find((r) => r.slug === slug);
   if (!route) {
     const dest = findDestination(slug);
@@ -115,7 +121,7 @@ export default async function Page({ params }: Params) {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: `/${lang}` },
         { "@type": "ListItem", position: 2, name: lang === "de" ? "Strecken" : "Routes", item: lang === "de" ? "/de/strecken" : "/en/routes" },
-        { "@type": "ListItem", position: 3, name: `ZRH → ${n}`, item: `/${lang}/${slug}` },
+        { "@type": "ListItem", position: 3, name: `ZRH → ${n}`, item: `/${lang}/${res.canonical}` },
       ],
     });
     if (content) {
