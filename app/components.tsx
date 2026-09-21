@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
-  COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES,
+  COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES, GOOGLE_BUSINESS_URL,
 } from "./config";
 import { t, Lang, pickL } from "./i18n";
 import { tx } from "./i18nX";
@@ -791,9 +791,14 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       <div className="relative border-t border-white/10">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 text-xs md:flex-row">
           <span>© {new Date().getFullYear()} <b className="text-white">ZRH Airport Taxi</b> · {L.footer.rights}</span>
-          <button type="button" onClick={openConsentSettings} className="text-white/50 underline-offset-2 hover:text-white hover:underline">
-            {lang === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
-          </button>
+          <span className="flex items-center gap-4">
+            <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="text-white/50 underline-offset-2 hover:text-white hover:underline">
+              {lang === "de" ? "★ Auf Google bewerten" : "★ Review us on Google"}
+            </a>
+            <button type="button" onClick={openConsentSettings} className="text-white/50 underline-offset-2 hover:text-white hover:underline">
+              {lang === "de" ? "Cookie-Einstellungen" : "Cookie settings"}
+            </button>
+          </span>
         </div>
       </div>
     </footer>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WHATSAPP_NUMBER } from "../../config";
+import { WHATSAPP_NUMBER, GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL } from "../../config";
 import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import Kontakt from "./kontakt-client";
@@ -23,6 +23,7 @@ export default function Page() {
   const jsonLd: object[] = [{ "@context": "https://schema.org", "@type": "ContactPage", name: "Kontakt – ZRH Airport Taxi", about: {
     "@context": "https://schema.org",
     "@type": "TaxiService",
+    sameAs: [GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL],
     name: "ZRH Airport Taxi",
     telephone: `+${WHATSAPP_NUMBER}`,
     priceRange: "CHF 88 - CHF 1000",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, COMPANY_ADDRESS, COMPANY_MAPS_URL, COMPANY_MAPS_EMBED } from "../../config";
+import { C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, COMPANY_ADDRESS, COMPANY_MAPS_URL, COMPANY_MAPS_EMBED, GOOGLE_BUSINESS_URL } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import {
@@ -176,6 +176,27 @@ export default function Kontakt() {
               <span>📍 {lang === "de" ? "In Google Maps öffnen" : "Open in Google Maps"}</span><span>→</span>
             </a>
           </div>
+
+          {/* Google İşletme Profili: bul, yorum bırak */}
+          <a
+            href={GOOGLE_BUSINESS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track-location="contact_page"
+            className="mt-4 flex items-center gap-4 rounded-2xl bg-white p-4 shadow-md ring-1 ring-black/5 transition-transform hover:-translate-y-0.5"
+          >
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-2xl" style={{ background: "#FBF7EE" }}>★</span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[10px] font-bold uppercase tracking-[0.15em] text-stone-400">Google</span>
+              <span className="block text-sm font-bold" style={{ color: C.pine }}>
+                {lang === "de" ? "ZRH Airport Taxi auf Google – Bewertungen & Profil" : "ZRH Airport Taxi on Google – reviews & profile"}
+              </span>
+              <span className="block text-xs text-stone-500">
+                {lang === "de" ? "Waren Sie zufrieden? Eine Bewertung hilft uns sehr." : "Happy with your ride? A review helps us a lot."}
+              </span>
+            </span>
+            <span className="shrink-0 text-lg" style={{ color: C.gold }}>→</span>
+          </a>
         </div>
       </section>
 

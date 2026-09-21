@@ -27,6 +27,8 @@ export const COMPANY_NAME = "Kula-ZATK";
 export const COMPANY_REG = "Handelsregister-Nr.: CH-020.1.089.436-5";
 export const COMPANY_ADDRESS = "Ifangstrasse 12, Stock 2, 8302 Kloten, Switzerland";
 export const COMPANY_MAPS_URL = "https://maps.app.goo.gl/NbtdxkVoerMpN7hF6";
+/** Google Business Profile (İşletme Profili) — iletişim sayfası, footer ve yapısal veri sameAs */
+export const GOOGLE_BUSINESS_URL = "https://share.google/lgVZZl2iY9Y65RCpb";
 /** Google Maps gömme (API anahtarı gerektirmez) */
 export const COMPANY_MAPS_EMBED = "https://www.google.com/maps?q=Ifangstrasse+12,+8302+Kloten,+Switzerland&output=embed&z=16";
 

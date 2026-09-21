@@ -6,7 +6,7 @@ import { GtmScript, GtmNoScript } from "../gtm";
 import AnalyticsPage from "../analytics-page";
 import { ConsentBanner } from "../consent";
 import { consentBootstrapScript } from "../consent-script";
-import { SITE_URL, GTM_ID, WHATSAPP_NUMBER } from "../config";
+import { SITE_URL, GTM_ID, WHATSAPP_NUMBER, GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
 import { t, type Lang } from "../i18n";
 import "../globals.css";
@@ -78,6 +78,7 @@ export default async function RootLayout({
       name: "ZRH Airport Taxi",
       legalName: "Kula-ZATK",
       url: SITE_URL,
+      sameAs: [GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL],
       logo: `${SITE_URL}/icon.png`,
       telephone: `+${WHATSAPP_NUMBER}`,
       address: {
