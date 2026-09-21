@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { WHATSAPP_NUMBER } from "../../config";
 import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import UeberUns from "./ueber-uns-client";
@@ -28,7 +29,7 @@ export default async function Page({ params }: Params) {
       "@type": "TaxiService",
       name: "ZRH Airport Taxi",
       legalName: "Kula-ZATK",
-      telephone: "+41794551572",
+      telephone: `+${WHATSAPP_NUMBER}`,
       areaServed: { "@type": "Country", name: "Switzerland" },
       address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       knowsLanguage: ["de", "en"],

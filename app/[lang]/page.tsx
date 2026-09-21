@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { WHATSAPP_NUMBER } from "../config";
 import { pageMeta } from "../pageMeta";
 import { langAlternates, localizePath } from "../paths";
 import Home from "./home-client";
@@ -23,7 +24,7 @@ export default function Page() {
     "@context": "https://schema.org",
     "@type": "TaxiService",
     name: "ZRH Airport Taxi",
-    telephone: "+41794551572",
+    telephone: `+${WHATSAPP_NUMBER}`,
     priceRange: "CHF 88 - CHF 1000",
     address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
     areaServed: { "@type": "Country", name: "Switzerland" },

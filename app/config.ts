@@ -18,10 +18,10 @@ export const GTM_ID = "GTM-KD6XZ6G9";
 /** İsviçre KDV oranı (fiyatlar KDV dahil). Fatura ve ölçüm net/KDV ayrımı bunu kullanır. */
 export const VAT_RATE = 0.081;
 
-export const WHATSAPP_NUMBER = "41794551572"; // + ve boşluk olmadan
+export const WHATSAPP_NUMBER = "41764961324"; // + ve boşluk olmadan
 // Rota rezervasyonlarının (son adım) gönderildiği WhatsApp numarası:
-export const BOOKING_WHATSAPP_NUMBER = "41794551572"; // +41 79 455 15 72
-export const PHONE_DISPLAY = "+41 79 455 15 72";
+export const BOOKING_WHATSAPP_NUMBER = "41764961324"; // +41 76 496 13 24
+export const PHONE_DISPLAY = "+41 76 496 13 24";
 export const CONTACT_EMAIL = "info@zrhairporttaxi.ch"; // e-posta kutusu açılınca aktif olur
 export const COMPANY_NAME = "Kula-ZATK";
 export const COMPANY_REG = "Handelsregister-Nr.: CH-020.1.089.436-5";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { routes } from "../../config";
+import { routes, WHATSAPP_NUMBER } from "../../config";
 import { getRouteContent } from "../../routeContent";
 import { notFound, permanentRedirect } from "next/navigation";
 import RouteClient from "./route-client";
@@ -83,7 +83,7 @@ export default async function Page({ params }: Params) {
         provider: {
           "@type": "LocalBusiness",
           name: "ZRH Airport Taxi",
-          telephone: "+41794551572",
+          telephone: `+${WHATSAPP_NUMBER}`,
           address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
         },
       };
@@ -110,7 +110,7 @@ export default async function Page({ params }: Params) {
       provider: {
         "@type": "LocalBusiness",
         name: "ZRH Airport Taxi",
-        telephone: "+41794551572",
+        telephone: `+${WHATSAPP_NUMBER}`,
         address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       },
       offers: { "@type": "Offer", price: route.price.toFixed(2), priceCurrency: "CHF" },

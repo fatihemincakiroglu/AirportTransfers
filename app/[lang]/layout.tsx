@@ -6,7 +6,7 @@ import { GtmScript, GtmNoScript } from "../gtm";
 import AnalyticsPage from "../analytics-page";
 import { ConsentBanner } from "../consent";
 import { consentBootstrapScript } from "../consent-script";
-import { SITE_URL, GTM_ID } from "../config";
+import { SITE_URL, GTM_ID, WHATSAPP_NUMBER } from "../config";
 import { LANGS, DEFAULT_LANG, RTL_LANGS, langAlternates } from "../paths";
 import { t, type Lang } from "../i18n";
 import "../globals.css";
@@ -79,7 +79,7 @@ export default async function RootLayout({
       legalName: "Kula-ZATK",
       url: SITE_URL,
       logo: `${SITE_URL}/icon.png`,
-      telephone: "+41794551572",
+      telephone: `+${WHATSAPP_NUMBER}`,
       address: {
         "@type": "PostalAddress",
         streetAddress: "Ifangstrasse 12, Stock 2",
