@@ -85,7 +85,7 @@ const base = {
       sub: "Antworten auf die wichtigsten Fragen zu Buchung, Preisen und Ablauf.",
       list: [
         ["Wie buche ich einen Transfer?", "Am schnellsten über den Buchungsassistenten auf dieser Website oder direkt per WhatsApp. Sie erhalten Ihre Bestätigung in der Regel innert 2 Minuten."],
-        ["Sind die Preise wirklich fix?", "Ja. Der bei der Buchung genannte Preis gilt pro Fahrzeug und ändert sich nicht – unabhängig von Verkehr, Wetter oder Tageszeit. Es gibt keine Nacht- oder Gepäckzuschläge."],
+        ["Sind die Preise wirklich fix?", "Ja. Der bei der Buchung genannte Preis gilt pro Fahrzeug und ändert sich nicht – unabhängig von Verkehr oder Wetter. Gepäck kostet nichts extra. Einziger Zuschlag: Zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von 20 % (Stundenbuchungen 30 %), der bei der Buchung sofort im Preis enthalten ist."],
         ["Was passiert bei einer Flugverspätung?", "Wir überwachen Ihren Flug in Echtzeit und passen die Abholzeit automatisch an. Die Wartezeit nach der Landung ist kostenlos."],
         ["Wo treffe ich meinen Fahrer am Flughafen?", "Ihr Chauffeur erwartet Sie mit Namensschild direkt in der Ankunftshalle (Meet & Greet) und begleitet Sie zum Fahrzeug."],
         ["Wie kann ich bezahlen?", "Bequem im Fahrzeug: bar, mit Kreditkarte oder TWINT. Firmenkunden erhalten auf Wunsch eine Sammelrechnung."],
@@ -239,7 +239,7 @@ const base = {
       sub: "Answers to the most important questions about booking, prices and procedure.",
       list: [
         ["How do I book a transfer?", "Fastest via the booking assistant on this website or directly via WhatsApp. You usually receive your confirmation within 2 minutes."],
-        ["Are the prices really fixed?", "Yes. The price quoted at booking applies per vehicle and does not change – regardless of traffic, weather or time of day. There are no night or luggage surcharges."],
+        ["Are the prices really fixed?", "Yes. The price quoted at booking applies per vehicle and does not change – regardless of traffic or weather. Luggage is free. The only extra: between midnight and 6 am a night tariff of 20 % applies (hourly bookings 30 %), included in the price shown when booking."],
         ["What happens if my flight is delayed?", "We monitor your flight in real time and adjust the pickup automatically. Waiting time after landing is free."],
         ["Where do I meet my driver at the airport?", "Your chauffeur awaits you with a name sign right in the arrivals hall (meet & greet) and walks you to the vehicle."],
         ["How can I pay?", "Conveniently in the vehicle: cash, credit card or TWINT. Corporate clients can receive a consolidated invoice on request."],

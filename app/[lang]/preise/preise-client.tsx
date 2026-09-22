@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { C, routes, fleet } from "../../config";
+import { C, routes, fleet, transferPrice, hourlyPrice, HOURLY, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY } from "../../config";
 import { tx } from "../../i18nX";
 import { pickL } from "../../i18n";
 import { useLang } from "../../providers";
@@ -26,8 +26,8 @@ export default function PreiseClient() {
   const X = tx[lang];
   const PR = X.prices;
 
-  // En ucuz rota (Business referans fiyatı) — sınıf kartlarındaki "ab CHF"
-  const minBase = Math.min(...routes.map((r) => r.price));
+  // En kısa rota — sınıf kartlarındaki "ab CHF" her araç için kendi tarifesiyle
+  const minKm = Math.min(...routes.map((r) => r.km));
 
   const dur = (min: number) =>
     lang === "de"
@@ -83,7 +83,7 @@ export default function PreiseClient() {
                 <p className="mt-4 flex items-baseline gap-2">
                   <span className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{PR.from}</span>
                   <span className="font-display text-3xl font-semibold" style={{ color: C.pine }}>
-                    CHF {Math.round(minBase * v.mult)}
+                    CHF {Math.round(transferPrice(minKm, v.id))}
                   </span>
                 </p>
                 <p className="text-xs text-stone-400">{PR.perVehicle}</p>
@@ -125,7 +125,7 @@ export default function PreiseClient() {
                     <td className="px-4 py-4 text-stone-500">{dur(r.min)}</td>
                     {fleet.map((v, i) => (
                       <td key={v.car} className={`px-4 py-4 text-right tabular-nums last:px-6 ${i === 0 ? "font-bold" : "font-medium text-stone-600"}`} style={i === 0 ? { color: C.pine } : undefined}>
-                        {Math.round(r.price * v.mult)}.–
+                        {Math.round(transferPrice(r.km, v.id))}.–
                       </td>
                     ))}
                   </tr>
@@ -179,6 +179,45 @@ export default function PreiseClient() {
           >
             {X.dest.ctaBtn} →
           </a>
+        </div>
+
+        {/* Saatlik tarife + gece tarifesi */}
+        <div className="mt-14 grid gap-6 md:grid-cols-[1.4fr_1fr]">
+          <div className="rounded-2xl bg-white p-6 shadow-md ring-1 ring-black/5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
+              {lang === "de" ? "Stundenbuchung" : "Hourly booking"}
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-tight" style={{ color: C.pine }}>
+              {lang === "de" ? "Chauffeur zur freien Verfügung" : "Chauffeur at your disposal"}
+            </h2>
+            <p className="mt-2 text-sm text-stone-600">
+              {lang === "de"
+                ? `Erste Stunde CHF ${HOURLY.firstHour}, jede weitere Stunde CHF ${HOURLY.extraHour}. Inklusive ${HOURLY.kmPerHour} km pro Stunde; bei längeren Strecken gilt der Kilometerpreis der Fahrzeugklasse. Beispiele für 3 Stunden:`
+                : `First hour CHF ${HOURLY.firstHour}, each additional hour CHF ${HOURLY.extraHour}. Includes ${HOURLY.kmPerHour} km per hour; for longer distances the class kilometre rate applies. Examples for 3 hours:`}
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+              {fleet.map((v) => (
+                <div key={v.id} className="rounded-xl px-4 py-3" style={{ background: "#FBF7EE" }}>
+                  <p className="text-xs font-bold text-stone-500">{typeof v.name === "string" ? v.name : v.name[lang]}</p>
+                  <p className="font-mono text-lg font-extrabold" style={{ color: C.pine }}>CHF {hourlyPrice(3, v.id)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl p-6 text-white" style={{ background: C.pine }}>
+            <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
+              {lang === "de" ? "Nachttarif" : "Night tariff"}
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold tracking-tight">00:00 – 06:00</h2>
+            <p className="mt-2 text-sm text-white/80">
+              {lang === "de"
+                ? `Für Fahrten mit Abholung zwischen Mitternacht und 6 Uhr gilt ein Zuschlag von ${Math.round(NIGHT_SURCHARGE_TRANSFER * 100)} % (Stundenbuchungen ${Math.round(NIGHT_SURCHARGE_HOURLY * 100)} %). Er wird bei der Buchung sofort im Preis angezeigt – keine Überraschung am Ziel.`
+                : `For pickups between midnight and 6 am a surcharge of ${Math.round(NIGHT_SURCHARGE_TRANSFER * 100)} % applies (hourly bookings ${Math.round(NIGHT_SURCHARGE_HOURLY * 100)} %). It is shown in the price immediately when booking – no surprise at the destination.`}
+            </p>
+            <p className="mt-3 text-xs text-white/60">
+              {lang === "de" ? "Tagsüber, am Wochenende und an Feiertagen: keine Zuschläge." : "Daytime, weekends and public holidays: no surcharges."}
+            </p>
+          </div>
         </div>
       </section>
 

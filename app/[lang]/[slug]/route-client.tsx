@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useMemo, useState } from "react";
 
-import { C, routes, fleet } from "../../config";
+import { C, routes, fleet, KM_RATE, transferPrice } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
@@ -71,10 +71,10 @@ export default function RouteClient({ slug }: { slug: string }) {
       ? route.min < 60 ? `${route.min} Min.` : `${Math.floor(route.min / 60)} Std.${route.min % 60 ? ` ${route.min % 60} Min.` : ""}`
       : route.min < 60 ? `${route.min} mins` : `${Math.floor(route.min / 60)} h${route.min % 60 ? ` ${route.min % 60} mins` : ""}`;
 
-  const sorted = [...fleet].sort((a, b) => a.mult - b.mult);
-  const priceOf = (mult: number) => route.price * mult;
+  const sorted = [...fleet].sort((a, b) => KM_RATE[a.id] - KM_RATE[b.id]);
+  const priceOf = (v: (typeof fleet)[number]) => transferPrice(route.km, v.id); // gündüz fiyatı; gece zammı rezervasyonda
   const chosen = car !== null ? sorted[car] : null;
-  const total = chosen ? priceOf(chosen.mult) : 0;
+  const total = chosen ? priceOf(chosen) : 0;
 
 
   const ready =
@@ -251,7 +251,7 @@ export default function RouteClient({ slug }: { slug: string }) {
                     </div>
                     <div className="text-center sm:text-right">
                       <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                        CHF {priceOf(v.mult).toFixed(2)}
+                        CHF {priceOf(v).toFixed(2)}
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button

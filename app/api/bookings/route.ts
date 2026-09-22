@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../lib/db";
 import { sendBookingMail } from "../../lib/mail";
 import { captureMeasurement } from "../../lib/measurement";
+import { serverPrice } from "../../lib/pricing";
 
 export const runtime = "nodejs";
 
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
       ) VALUES (
         ${ref}, ${str(b.lang, 5)}, ${str(b.channel, 20)}, ${str(b.pickup)}, ${str(b.dropoff)},
         ${str(b.stops)}, ${str(b.date, 20)}, ${str(b.time, 10)},
-        ${num(b.pax)}, ${num(b.luggage)}, ${str(b.vehicle, 120)}, ${num(b.price)}, ${str(b.payment, 40)},
+        ${num(b.pax)}, ${num(b.luggage)}, ${str(b.vehicle, 120)}, ${serverPrice(b) ?? num(b.price)}, ${str(b.payment, 40)},
         ${str(b.firstName, 80)}, ${str(b.lastName, 80)}, ${str(b.email, 160)}, ${str(b.phone, 40)},
         ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)},
         ${mm.ga_client_id}, ${mm.ga_session_id}, ${mm.fbp}, ${mm.fbc}, ${mm.client_ip}, ${mm.client_ua},

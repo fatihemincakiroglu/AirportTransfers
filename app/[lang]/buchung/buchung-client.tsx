@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { C, routes, fleet, CUSTOM_BASE_PRICE, MAX_PAX } from "../../config";
+import { C, routes, fleet, CUSTOM_BASE_PRICE, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, vehicleFactor, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
@@ -144,6 +144,8 @@ export default function Buchung() {
         dropoff: showCustom ? custom!.to : reversed ? "Flughafen Zürich (ZRH)" : n,
         stops: stops.join(" | "),
         date, time,
+        // Sunucu tarafı fiyat doğrulaması için (sabit rota / saatlik: fiyat yeniden hesaplanır)
+        pricing: { routeKey: route?.slug ?? null, vehicleId: chosen?.id ?? null, hours: hourly ? hourlyHours : null },
         pax: Number(f.pax) || null,
         luggage: Number(f.pax) || null, // bagaj sorulmuyor; yolcu sayısı kadar varsayılır
         vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
@@ -313,16 +315,27 @@ export default function Buchung() {
       : route.min < 60 ? `${route.min} mins` : `${Math.floor(route.min / 60)} h${route.min % 60 ? ` ${route.min % 60} mins` : ""}`
     : "";
 
-  const sorted = [...fleet].sort((a, b) => a.mult - b.mult);
+  const sorted = [...fleet].sort((a, b) => KM_RATE[a.id] - KM_RATE[b.id]);
   const chosen = car !== null ? sorted[car] : null;
-  // Fiyat tabanı: sabit rota fiyatı ya da (geçici) özel güzergâh taban fiyatı
-  const basePrice = route ? route.price : showCustom && custom!.from && custom!.to ? CUSTOM_BASE_PRICE : 0;
   const hasTrip = route !== null || (showCustom && !!custom!.from && !!custom!.to);
-  const total = hasTrip && chosen ? basePrice * chosen.mult : 0;
+  const night = isNightTime(time);
+  /**
+   * Araç fiyatı (KDV dahil, yolculuk saatine göre gece zammıyla):
+   *  sabit rota → km tarifesi · saatlik → saatlik tarife · özel güzergâh → tahmini taban × araç oranı
+   */
+  const priceFor = (v: (typeof fleet)[number]): number => {
+    if (!hasTrip) return 0;
+    if (hourly) return hourlyPrice(hourlyHours ?? 1, v.id, time);
+    if (route) return transferPrice(route.km, v.id, time);
+    const est = CUSTOM_BASE_PRICE * vehicleFactor(v.id) * (night ? 1 + NIGHT_SURCHARGE_TRANSFER : 1);
+    return Math.round(est * 100) / 100;
+  };
+  const basePrice = chosen ? priceFor(chosen) : hasTrip ? priceFor(sorted[0]) : 0; // ölçüm: tahmini değer için
+  const total = hasTrip && chosen ? priceFor(chosen) : 0;
 
   // ── Ölçüm yardımcıları (kişisel veri yok; özel adres yalnızca type:"address") ──
   const bookingType = hourly ? "hourly" : "transfer";
-  const priceFinal = route !== null; // sabit rota = kesin fiyat; özel/saatlik = tahmini
+  const priceFinal = route !== null || hourly; // sabit rota ve saatlik = kesin; özel güzergâh = tahmini
   const tripLocations = () => {
     if (hourly) return { pickup: AIRPORT_LOCATION };
     if (route) return reversed
@@ -375,7 +388,7 @@ export default function Buchung() {
       },
       ...routeObj,
     }, { id: `search_${searchId}` });
-    const prices = sorted.map((v) => Math.round(basePrice * v.mult * 100) / 100);
+    const prices = sorted.map((v) => priceFor(v));
     pushEvent("booking_results_view", {
       booking: { booking_type: bookingType, search_id: searchId, booking_channel: "web" },
       results: {
@@ -385,7 +398,7 @@ export default function Buchung() {
       },
       ecommerce: {
         currency: "CHF", item_list_id: "booking_vehicle_results", item_list_name: "Available Vehicles",
-        items: sorted.map((v, i) => vehicleItem(v, i, basePrice * v.mult)),
+        items: sorted.map((v, i) => vehicleItem(v, i, priceFor(v))),
       },
     }, { id: `results_${searchId}_1` });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- yalnızca adım 2'ye geçiş anında, o anki durumla
@@ -394,7 +407,7 @@ export default function Buchung() {
   // Araç seçimi → vehicle_select + booking_begin, sonra adım 3
   const selectVehicle = (i: number) => {
     const v = sorted[i];
-    const gross = basePrice * v.mult;
+    const gross = priceFor(v);
     const searchId = searchIdRef.current;
     const base = { booking_type: bookingType, ...(searchId ? { search_id: searchId } : {}), ...money(gross), booking_channel: "web" };
     pushEvent("vehicle_select", {
@@ -630,7 +643,7 @@ export default function Buchung() {
                     </div>
                     <div className="text-center sm:text-right">
                       <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                        CHF {(basePrice * v.mult).toFixed(2)}
+                        CHF {priceFor(v).toFixed(2)}
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button
@@ -844,13 +857,20 @@ export default function Buchung() {
                 <b style={{ color: C.gold }}>{D.total}</b>
                 <span className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
                   CHF {total.toFixed(2)}
-              {showCustom && (
+                </span>
+              </div>
+              {showCustom && !hourly && (
                 <p className="mt-1 text-right text-[11px] text-stone-500">
                   {lang === "de" ? "Individuelle Strecke – Endpreis wird per WhatsApp bestätigt." : "Custom route – final price confirmed via WhatsApp."}
                 </p>
               )}
-                </span>
-              </div>
+              {night && (
+                <p className="mt-1 text-right text-[11px] font-semibold" style={{ color: C.gold }}>
+                  🌙 {lang === "de"
+                    ? `Nachttarif 00–06 Uhr enthalten (+${Math.round((hourly ? NIGHT_SURCHARGE_HOURLY : NIGHT_SURCHARGE_TRANSFER) * 100)} %)`
+                    : `Night tariff 00–06 included (+${Math.round((hourly ? NIGHT_SURCHARGE_HOURLY : NIGHT_SURCHARGE_TRANSFER) * 100)}%)`}
+                </p>
+              )}
               <p className="mt-1 text-xs text-stone-500">{D.priceNote}</p>
             </div>
           )}

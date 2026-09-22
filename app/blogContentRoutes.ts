@@ -13,13 +13,13 @@ export const routePosts: BlogPost[] = [
     img: "/gallery/20.jpg",
     de: {
       title: "Flughafen Zürich–Basel: Was der Transfer kostet, wie lange er dauert und wann er sich gegenüber dem Zug lohnt",
-      excerpt: "Festpreis ab CHF 258.50, rund 1 Stunde 45 Minuten Fahrt, Tür-zu-Tür ohne Umsteigen: Der ehrliche Vergleich für die Strecke Zürich Flughafen–Basel – für Messebesucher, Familien und Pharma-Reisende.",
+      excerpt: "Festpreis ab CHF 261.36, rund 1 Stunde 45 Minuten Fahrt, Tür-zu-Tür ohne Umsteigen: Der ehrliche Vergleich für die Strecke Zürich Flughafen–Basel – für Messebesucher, Familien und Pharma-Reisende.",
       body: [
         { p: [
           "Basel ist nach Zürich das zweite grosse Tor der Schweiz – Sitz der Pharmaindustrie, Messestadt (Art Basel, Baselworld-Nachfolger, Swissbau) und Dreiländereck mit Deutschland und Frankreich. Trotz des eigenen EuroAirports landen viele Reisende in Zürich, weil dort die Langstrecken und die meisten Direktflüge ankommen. Dieser Guide beantwortet die drei Fragen, die dann folgen: Was kostet der Transfer, wie lange dauert er, und wann ist er dem Zug vorzuziehen?",
         ]},
         { h: "Preis: Festpreis pro Fahrzeug, keine Überraschungen", p: [
-          "Unser [Transfer Flughafen Zürich–Basel](/zurich-airport-to-basel) kostet in der Business Class (Mercedes-Benz E-Klasse, bis 2 Personen und 2 Koffer) ab **CHF 258.50** – pro Fahrzeug, nicht pro Person, inklusive Mehrwertsteuer, Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung und Flugverfolgung. Für Familien und Gruppen bis 7 Personen zeigt der Buchungsprozess den Preis der Business & Family Class (V-Klasse) transparent an; wer maximalen Komfort möchte, wählt die Premium Class (S-Klasse). Alle Fahrzeugklassen finden Sie auf der [Fahrzeugseite](/fahrzeuge), die vollständige Preisliste auf der [Preisseite](/preise).",
+          "Unser [Transfer Flughafen Zürich–Basel](/zurich-airport-to-basel) kostet in der Business Class (Mercedes-Benz E-Klasse, bis 2 Personen und 2 Koffer) ab **CHF 261.36** – pro Fahrzeug, nicht pro Person, inklusive Mehrwertsteuer, Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung und Flugverfolgung. Für Familien und Gruppen bis 7 Personen zeigt der Buchungsprozess den Preis der Business & Family Class (V-Klasse) transparent an; wer maximalen Komfort möchte, wählt die Premium Class (S-Klasse). Alle Fahrzeugklassen finden Sie auf der [Fahrzeugseite](/fahrzeuge), die vollständige Preisliste auf der [Preisseite](/preise).",
           "Der Preis gilt bei Tag und Nacht, am Wochenende und an Feiertagen. Es gibt keinen Zuschlag für Gepäck, keinen für Kindersitze und keinen, wenn Ihr Flug Verspätung hat.",
         ]},
         { h: "Dauer: rund 1 Stunde 45 Minuten über die A3", p: [
@@ -36,13 +36,13 @@ export const routePosts: BlogPost[] = [
     },
     en: {
       title: "Zurich Airport to Basel: What the Transfer Costs, How Long It Takes and When It Beats the Train",
-      excerpt: "Fixed price from CHF 258.50, around 1 hour 45 minutes, door to door without changes: the honest comparison for the Zurich Airport–Basel route – for trade-fair visitors, families and pharma travellers.",
+      excerpt: "Fixed price from CHF 261.36, around 1 hour 45 minutes, door to door without changes: the honest comparison for the Zurich Airport–Basel route – for trade-fair visitors, families and pharma travellers.",
       body: [
         { p: [
           "Basel is Switzerland's second great gateway after Zurich – home of the pharmaceutical industry, trade-fair city (Art Basel, Swissbau) and tri-border area with Germany and France. Despite its own EuroAirport, many travellers land in Zurich because that is where the long-haul flights and most direct connections arrive. This guide answers the three questions that follow: what does the transfer cost, how long does it take, and when is it preferable to the train?",
         ]},
         { h: "Price: fixed per vehicle, no surprises", p: [
-          "Our [Zurich Airport–Basel transfer](/zurich-airport-to-basel) costs from **CHF 258.50** in the Business Class (Mercedes-Benz E-Class, up to 2 people and 2 suitcases) – per vehicle, not per person, including VAT, meet & greet in the arrivals hall, 60 minutes of waiting time after landing and flight tracking. For families and groups of up to 7, the booking process shows the Business & Family Class (V-Class) price transparently; for maximum comfort choose the Premium Class (S-Class). All vehicle classes are on the [vehicles page](/fahrzeuge), the full price list on the [prices page](/preise).",
+          "Our [Zurich Airport–Basel transfer](/zurich-airport-to-basel) costs from **CHF 261.36** in the Business Class (Mercedes-Benz E-Class, up to 2 people and 2 suitcases) – per vehicle, not per person, including VAT, meet & greet in the arrivals hall, 60 minutes of waiting time after landing and flight tracking. For families and groups of up to 7, the booking process shows the Business & Family Class (V-Class) price transparently; for maximum comfort choose the Premium Class (S-Class). All vehicle classes are on the [vehicles page](/fahrzeuge), the full price list on the [prices page](/preise).",
           "The price applies day and night, at weekends and on public holidays. There is no surcharge for luggage, none for child seats and none if your flight is delayed.",
         ]},
         { h: "Duration: around 1 hour 45 minutes via the A3", p: [
@@ -65,13 +65,13 @@ export const routePosts: BlogPost[] = [
     img: "/gallery/18.jpg",
     de: {
       title: "Flughafen Zürich–Bern: Festpreis, Fahrzeit und die beste Anreise in die Bundesstadt",
-      excerpt: "Rund 2 Stunden 20 Minuten über die A1, Festpreis ab CHF 352.50 pro Fahrzeug, Tür zu Tür in die UNESCO-Altstadt oder ins Bundeshaus-Viertel: So planen Sie den Transfer nach Bern.",
+      excerpt: "Rund 2 Stunden 20 Minuten über die A1, Festpreis ab CHF 349.00 pro Fahrzeug, Tür zu Tür in die UNESCO-Altstadt oder ins Bundeshaus-Viertel: So planen Sie den Transfer nach Bern.",
       body: [
         { p: [
           "Bern hat keinen eigenen Flughafen mit nennenswertem Linienverkehr – wer in die Bundesstadt reist, landet in Zürich oder Genf. Von Zürich ist der Weg kürzer, und mit einem privaten Transfer wird er zur ruhigsten Etappe der Reise: Sie steigen in der Ankunftshalle ein und vor dem Hotel, der Botschaft oder dem Firmensitz wieder aus. Hier alles, was Sie zu Preis, Dauer und Ablauf wissen sollten.",
         ]},
         { h: "Preis und Fahrzeit", p: [
-          "Der [Transfer Flughafen Zürich–Bern](/zurich-airport-to-bern) kostet in der Business Class ab **CHF 352.50** pro Fahrzeug – für die 117 km lange Strecke über die A1 mit einer Fahrzeit von rund 141 Minuten bei normalem Verkehr. Im Preis enthalten: Meet & Greet, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und Mehrwertsteuer. Grössere Gruppen bis 7 Personen wählen im Buchungsprozess die Business & Family Class; die Details zu allen Klassen stehen auf der [Fahrzeugseite](/fahrzeuge).",
+          "Der [Transfer Flughafen Zürich–Bern](/zurich-airport-to-bern) kostet in der Business Class ab **CHF 349.00** pro Fahrzeug – für die 117 km lange Strecke über die A1 mit einer Fahrzeit von rund 141 Minuten bei normalem Verkehr. Im Preis enthalten: Meet & Greet, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und Mehrwertsteuer. Grössere Gruppen bis 7 Personen wählen im Buchungsprozess die Business & Family Class; die Details zu allen Klassen stehen auf der [Fahrzeugseite](/fahrzeuge).",
         ]},
         { h: "Für wen sich der Transfer nach Bern besonders lohnt", p: [
           "Für Delegationen und Geschäftsreisende mit Terminen im Bundeshaus-Viertel oder in Ittigen, Köniz und Wankdorf, wo der Bahnhof nicht der Zielpunkt ist. Für Familien auf dem Weg ins Berner Oberland, die Bern als Zwischenstopp einplanen – von dort sind [Thun](/zurich-airport-to-thun) und [Interlaken](/zurich-airport-to-interlaken) nur noch eine kurze Fahrt. Und für alle, die mit Gepäck für längere Aufenthalte reisen; unser Beitrag [Wie viele Koffer passen wirklich?](/blog/wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse) hilft bei der Fahrzeugwahl.",
@@ -86,13 +86,13 @@ export const routePosts: BlogPost[] = [
     },
     en: {
       title: "Zurich Airport to Bern: Fixed Price, Driving Time and the Best Way Into the Federal City",
-      excerpt: "Around 2 hours 20 minutes via the A1, fixed price from CHF 352.50 per vehicle, door to door into the UNESCO old town or the parliament district: how to plan the transfer to Bern.",
+      excerpt: "Around 2 hours 20 minutes via the A1, fixed price from CHF 349.00 per vehicle, door to door into the UNESCO old town or the parliament district: how to plan the transfer to Bern.",
       body: [
         { p: [
           "Bern has no airport with significant scheduled traffic – anyone travelling to the federal city lands in Zurich or Geneva. From Zurich the journey is shorter, and with a private transfer it becomes the calmest leg of the trip: you get in at the arrivals hall and out in front of the hotel, the embassy or the company headquarters. Here is everything you should know about price, duration and procedure.",
         ]},
         { h: "Price and driving time", p: [
-          "The [Zurich Airport–Bern transfer](/zurich-airport-to-bern) costs from **CHF 352.50** per vehicle in the Business Class – for the 117 km route via the A1 with a driving time of around 141 minutes in normal traffic. Included: meet & greet, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. Larger groups of up to 7 choose the Business & Family Class in the booking process; details of all classes are on the [vehicles page](/fahrzeuge).",
+          "The [Zurich Airport–Bern transfer](/zurich-airport-to-bern) costs from **CHF 349.00** per vehicle in the Business Class – for the 117 km route via the A1 with a driving time of around 141 minutes in normal traffic. Included: meet & greet, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. Larger groups of up to 7 choose the Business & Family Class in the booking process; details of all classes are on the [vehicles page](/fahrzeuge).",
         ]},
         { h: "Who benefits most from the transfer to Bern", p: [
           "Delegations and business travellers with appointments in the parliament district or in Ittigen, Köniz and Wankdorf, where the station is not the destination. Families on the way to the Bernese Oberland who plan Bern as a stopover – from there [Thun](/zurich-airport-to-thun) and [Interlaken](/zurich-airport-to-interlaken) are only a short drive. And anyone travelling with luggage for longer stays; our article [How many suitcases really fit?](/blog/wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse) helps with the vehicle choice.",
@@ -112,14 +112,14 @@ export const routePosts: BlogPost[] = [
     date: "2026-09-08",
     img: "/gallery/17.jpg",
     de: {
-      title: "Flughafen Zürich–Luzern: Festpreis ab CHF 189.75, rund 75 Minuten, direkt ans Seeufer",
+      title: "Flughafen Zürich–Luzern: Festpreis ab CHF 197.24, rund 75 Minuten, direkt ans Seeufer",
       excerpt: "Die meistgebuchte Strecke ab Flughafen Zürich im Detail: Preis, Fahrzeit über die A4 und A14, was für Familien und Gruppen gilt und warum Luzern der ideale Startpunkt für die Zentralschweiz ist.",
       body: [
         { p: [
           "Luzern ist für viele Gäste der erste echte Schweiz-Moment: die Kapellbrücke, das Seebecken, Pilatus und Rigi am Horizont. Entsprechend ist die Strecke vom Flughafen Zürich nach Luzern eine der gefragtesten überhaupt – von Touristen, Kongressbesuchern und Familien auf dem Weg in die Zentralschweizer Berge. Dieser Beitrag fasst zusammen, was Sie über Preis, Dauer und Ablauf wissen müssen.",
         ]},
         { h: "Preis und Fahrzeit", p: [
-          "Unser [Transfer Flughafen Zürich–Luzern](/zurich-airport-to-luzern) kostet in der Business Class ab **CHF 189.75** pro Fahrzeug. Die 63 km lange Strecke über die A4 und A14 dauert bei normalem Verkehr rund 76 Minuten. Enthalten sind Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und Mehrwertsteuer. Für bis zu 7 Personen zeigt der Buchungsprozess den Preis der Business & Family Class – wie sich das im Vergleich zu zwei Taxis rechnet, zeigt unser Beitrag [5 bis 7 Personen ab Flughafen Zürich](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug).",
+          "Unser [Transfer Flughafen Zürich–Luzern](/zurich-airport-to-luzern) kostet in der Business Class ab **CHF 197.24** pro Fahrzeug. Die 63 km lange Strecke über die A4 und A14 dauert bei normalem Verkehr rund 76 Minuten. Enthalten sind Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und Mehrwertsteuer. Für bis zu 7 Personen zeigt der Buchungsprozess den Preis der Business & Family Class – wie sich das im Vergleich zu zwei Taxis rechnet, zeigt unser Beitrag [5 bis 7 Personen ab Flughafen Zürich](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug).",
         ]},
         { h: "Luzern als Ausgangspunkt", p: [
           "Wer in Luzern ankommt, hat die Zentralschweiz vor der Tür: Vitznau und Weggis am Vierwaldstättersee, die Rigi, der Bürgenstock, Engelberg mit dem Titlis. Für Hotels ausserhalb der Stadt – etwa am Bürgenstock oder in Weggis – geben Sie im Buchungsformular einfach die Adresse an; wir bestätigen den Preis, bevor Sie sich festlegen. Nach [Engelberg](/zurich-airport-to-engelberg) bieten wir eine eigene feste Strecke an. Was Sie in Luzern an einem Tag sehen können, steht in [Tagesausflug Luzern](/blog/luzern-tagesausflug-ab-zuerich).",
@@ -133,14 +133,14 @@ export const routePosts: BlogPost[] = [
       ],
     },
     en: {
-      title: "Zurich Airport to Lucerne: Fixed Price From CHF 189.75, Around 75 Minutes, Straight to the Lakeshore",
+      title: "Zurich Airport to Lucerne: Fixed Price From CHF 197.24, Around 75 Minutes, Straight to the Lakeshore",
       excerpt: "The most-booked route from Zurich Airport in detail: price, driving time via the A4 and A14, what applies to families and groups and why Lucerne is the ideal starting point for Central Switzerland.",
       body: [
         { p: [
           "For many guests, Lucerne is the first real Switzerland moment: the Chapel Bridge, the lake basin, Pilatus and Rigi on the horizon. Accordingly, the route from Zurich Airport to Lucerne is one of the most requested of all – by tourists, congress visitors and families on their way to the Central Swiss mountains. This article summarises what you need to know about price, duration and procedure.",
         ]},
         { h: "Price and driving time", p: [
-          "Our [Zurich Airport–Lucerne transfer](/zurich-airport-to-luzern) costs from **CHF 189.75** per vehicle in the Business Class. The 63 km route via the A4 and A14 takes around 76 minutes in normal traffic. Included are meet & greet in the arrivals hall, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. For up to 7 people the booking process shows the Business & Family Class price – how that compares to two taxis is shown in our article [5 to 7 people from Zurich Airport](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug).",
+          "Our [Zurich Airport–Lucerne transfer](/zurich-airport-to-luzern) costs from **CHF 197.24** per vehicle in the Business Class. The 63 km route via the A4 and A14 takes around 76 minutes in normal traffic. Included are meet & greet in the arrivals hall, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. For up to 7 people the booking process shows the Business & Family Class price – how that compares to two taxis is shown in our article [5 to 7 people from Zurich Airport](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug).",
         ]},
         { h: "Lucerne as a base", p: [
           "Arriving in Lucerne puts Central Switzerland on your doorstep: Vitznau and Weggis on Lake Lucerne, the Rigi, the Bürgenstock, Engelberg with the Titlis. For hotels outside the city – on the Bürgenstock or in Weggis, for example – simply enter the address in the booking form; we confirm the price before you commit. To [Engelberg](/zurich-airport-to-engelberg) we offer a dedicated fixed route. What you can see in Lucerne in one day is in [Lucerne day trip](/blog/luzern-tagesausflug-ab-zuerich).",
@@ -161,13 +161,13 @@ export const routePosts: BlogPost[] = [
     img: "/gallery/14.jpg",
     de: {
       title: "Flughafen Zürich–St. Gallen: Transfer in die Ostschweiz – Preis, Dauer und Weiterreise ins Appenzell und nach Vorarlberg",
-      excerpt: "Rund 1 Stunde 40 Minuten über die A1, Festpreis ab CHF 243.50 pro Fahrzeug, Tür zu Tür zur Olma, zur Universität oder ins Appenzellerland: Der Guide für die Strecke nach St. Gallen.",
+      excerpt: "Rund 1 Stunde 40 Minuten über die A1, Festpreis ab CHF 247.36 pro Fahrzeug, Tür zu Tür zur Olma, zur Universität oder ins Appenzellerland: Der Guide für die Strecke nach St. Gallen.",
       body: [
         { p: [
           "St. Gallen ist das Zentrum der Ostschweiz – Universitätsstadt, Messestandort (Olma, OFFA) und Tor zum Appenzellerland, zum Bodensee und nach Vorarlberg. Der Flughafen Zürich ist der nächste internationale Flughafen; die Anreise mit privatem Transfer ist die direkteste Verbindung. Was sie kostet und wie sie abläuft, lesen Sie hier.",
         ]},
         { h: "Preis und Fahrzeit", p: [
-          "Der [Transfer Flughafen Zürich–St. Gallen](/zurich-airport-to-st-gallen) kostet in der Business Class ab **CHF 243.50** pro Fahrzeug. Die 81 km über die A1 via Winterthur und Wil dauern bei normalem Verkehr rund 97 Minuten. Enthalten sind Meet & Greet, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und Mehrwertsteuer. Alle Preise und Klassen: [Preisseite](/preise).",
+          "Der [Transfer Flughafen Zürich–St. Gallen](/zurich-airport-to-st-gallen) kostet in der Business Class ab **CHF 247.36** pro Fahrzeug. Die 81 km über die A1 via Winterthur und Wil dauern bei normalem Verkehr rund 97 Minuten. Enthalten sind Meet & Greet, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und Mehrwertsteuer. Alle Preise und Klassen: [Preisseite](/preise).",
         ]},
         { h: "Weiterreise ab St. Gallen", p: [
           "Von St. Gallen aus sind Appenzell, Herisau und der Säntis nah; Rorschach und Arbon am Bodensee ebenso. Für Ziele jenseits der Grenze – Bregenz, Dornbirn, Lindau oder das Montafon – erstellen wir ein individuelles Angebot, und der Fahrer bringt Sie ohne Umsteigen über die Grenze. Was beim Grenzübertritt zu beachten ist, erklärt unser Beitrag [Transfer nach Deutschland und Österreich](/blog/transfer-flughafen-zuerich-deutschland-oesterreich-grenze).",
@@ -182,13 +182,13 @@ export const routePosts: BlogPost[] = [
     },
     en: {
       title: "Zurich Airport to St. Gallen: Transfer to Eastern Switzerland – Price, Duration and Onward Travel to Appenzell and Vorarlberg",
-      excerpt: "Around 1 hour 40 minutes via the A1, fixed price from CHF 243.50 per vehicle, door to door to the Olma fair, the university or the Appenzell region: the guide to the St. Gallen route.",
+      excerpt: "Around 1 hour 40 minutes via the A1, fixed price from CHF 247.36 per vehicle, door to door to the Olma fair, the university or the Appenzell region: the guide to the St. Gallen route.",
       body: [
         { p: [
           "St. Gallen is the centre of Eastern Switzerland – university city, trade-fair venue (Olma, OFFA) and gateway to the Appenzell region, Lake Constance and Vorarlberg. Zurich Airport is the nearest international airport; arriving by private transfer is the most direct connection. What it costs and how it works is explained here.",
         ]},
         { h: "Price and driving time", p: [
-          "The [Zurich Airport–St. Gallen transfer](/zurich-airport-to-st-gallen) costs from **CHF 243.50** per vehicle in the Business Class. The 81 km via the A1 through Winterthur and Wil take around 97 minutes in normal traffic. Included are meet & greet, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. All prices and classes: [prices page](/preise).",
+          "The [Zurich Airport–St. Gallen transfer](/zurich-airport-to-st-gallen) costs from **CHF 247.36** per vehicle in the Business Class. The 81 km via the A1 through Winterthur and Wil take around 97 minutes in normal traffic. Included are meet & greet, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. All prices and classes: [prices page](/preise).",
         ]},
         { h: "Onward travel from St. Gallen", p: [
           "From St. Gallen, Appenzell, Herisau and the Säntis are close; so are Rorschach and Arbon on Lake Constance. For destinations across the border – Bregenz, Dornbirn, Lindau or the Montafon – we prepare an individual quote, and the driver takes you across the border without changing vehicles. What to consider at the border is explained in our article [Transfer to Germany and Austria](/blog/transfer-flughafen-zuerich-deutschland-oesterreich-grenze).",
@@ -216,7 +216,7 @@ export const routePosts: BlogPost[] = [
           "Der Rheinfall bei Neuhausen am Rheinfall ist mit rund 150 Metern Breite der grösste Wasserfall Europas – und er liegt näher am Flughafen Zürich als die meisten Reisenden vermuten. Über unsere feste Strecke nach [Schaffhausen](/zurich-airport-to-schaffhausen) sind Sie in unter einer Stunde dort. Dieser Beitrag zeigt, wie sich der Besuch als Halbtagesausflug, als Abstecher bei der Anreise oder sogar während einer längeren Zwischenlandung planen lässt.",
         ]},
         { h: "Anreise und Dauer", p: [
-          "Die 49 km vom Flughafen führen über die A4 nach Norden; wir planen mit rund 59 Minuten. Der Festpreis für die Strecke nach Schaffhausen beginnt in der Business Class bei **CHF 148.50** pro Fahrzeug; der Rheinfall liegt direkt am Weg. Für einen Ausflug mit Wartezeit und Rückfahrt zum Flughafen oder in die Stadt ist unsere Stundenbuchung die passende Form: Fahrzeug und Chauffeur stehen Ihnen für die gewünschte Dauer zur Verfügung, das Gepäck bleibt im Kofferraum.",
+          "Die 49 km vom Flughafen führen über die A4 nach Norden; wir planen mit rund 59 Minuten. Der Festpreis für die Strecke nach Schaffhausen beginnt in der Business Class bei **CHF 153.60** pro Fahrzeug; der Rheinfall liegt direkt am Weg. Für einen Ausflug mit Wartezeit und Rückfahrt zum Flughafen oder in die Stadt ist unsere Stundenbuchung die passende Form: Fahrzeug und Chauffeur stehen Ihnen für die gewünschte Dauer zur Verfügung, das Gepäck bleibt im Kofferraum.",
         ]},
         { h: "Was Sie am Rheinfall erwartet", p: [
           "Zwei Seiten, zwei Perspektiven. Auf der Südseite thront Schloss Laufen mit Aussichtsplattformen, die bis unmittelbar an das tosende Wasser führen – der spektakulärste Blick. Auf der Nordseite, beim Schlössli Wörth, starten die Boote: zur Felsplattform mitten im Fall oder auf eine kurze Rundfahrt im Becken. Wer beides sehen will, plant zwei bis drei Stunden ein. Der Rheinfall ist ganzjährig zugänglich; im Frühsommer nach der Schneeschmelze führt er am meisten Wasser.",
@@ -237,7 +237,7 @@ export const routePosts: BlogPost[] = [
           "The Rhine Falls at Neuhausen am Rheinfall, around 150 metres wide, are Europe's largest waterfall – and they lie closer to Zurich Airport than most travellers expect. Via our fixed route to [Schaffhausen](/zurich-airport-to-schaffhausen) you are there in under an hour. This article shows how the visit can be planned as a half-day trip, a detour on arrival or even during a longer layover.",
         ]},
         { h: "Getting there and duration", p: [
-          "The 49 km from the airport run north via the A4; we plan around 59 minutes. The fixed price for the Schaffhausen route starts at **CHF 148.50** per vehicle in the Business Class; the Rhine Falls are right on the way. For an excursion with waiting time and a return to the airport or the city, our hourly booking is the right format: vehicle and chauffeur are at your disposal for the desired duration, the luggage stays in the boot.",
+          "The 49 km from the airport run north via the A4; we plan around 59 minutes. The fixed price for the Schaffhausen route starts at **CHF 153.60** per vehicle in the Business Class; the Rhine Falls are right on the way. For an excursion with waiting time and a return to the airport or the city, our hourly booking is the right format: vehicle and chauffeur are at your disposal for the desired duration, the luggage stays in the boot.",
         ]},
         { h: "What awaits you at the Rhine Falls", p: [
           "Two sides, two perspectives. On the south side, Laufen Castle towers with viewing platforms that lead right up to the roaring water – the most spectacular view. On the north side, at Schlössli Wörth, the boats depart: to the rock platform in the middle of the falls or on a short round trip in the basin. If you want both, allow two to three hours. The Rhine Falls are accessible all year round; in early summer after the snowmelt they carry the most water.",
@@ -264,7 +264,7 @@ export const routePosts: BlogPost[] = [
           "Zermatt ist eines der bekanntesten Ziele der Schweiz – und eines der wenigen, das man nicht mit dem Auto erreicht. Das Dorf am Fuss des Matterhorns ist seit Jahrzehnten autofrei; jeder Transfer endet in Täsch, fünf Kilometer talauswärts. Wer das vorher weiss, plant entspannt. Dieser Beitrag erklärt den Ablauf von der Ankunftshalle in Zürich bis zur Hoteltür in Zermatt.",
         ]},
         { h: "Die Fahrt: rund 4 Stunden 45 Minuten bis Täsch", p: [
-          "Unser [Transfer Flughafen Zürich–Zermatt](/zurich-airport-to-zermatt) führt über die A2 durch die Zentralschweiz, entweder durch den Gotthard und über die Furka-Verladung oder – je nach Saison und Verkehr – über Bern und den Lötschberg ins Wallis. Die rund 237 km dauern bei normalem Verkehr etwa 284 Minuten. Der Festpreis beginnt in der Business Class bei **CHF 711.00** pro Fahrzeug; für Familien und Skigruppen bis 7 Personen zeigt der Buchungsprozess den Preis der Business & Family Class. Unterwegs macht der Fahrer auf Wunsch eine Pause – sagen Sie es einfach.",
+          "Unser [Transfer Flughafen Zürich–Zermatt](/zurich-airport-to-zermatt) führt über die A2 durch die Zentralschweiz, entweder durch den Gotthard und über die Furka-Verladung oder – je nach Saison und Verkehr – über Bern und den Lötschberg ins Wallis. Die rund 237 km dauern bei normalem Verkehr etwa 284 Minuten. Der Festpreis beginnt in der Business Class bei **CHF 683.60** pro Fahrzeug; für Familien und Skigruppen bis 7 Personen zeigt der Buchungsprozess den Preis der Business & Family Class. Unterwegs macht der Fahrer auf Wunsch eine Pause – sagen Sie es einfach.",
         ]},
         { h: "Täsch: der Umstieg in wenigen Minuten", p: [
           "In Täsch bringt Sie der Fahrer direkt zum Matterhorn Terminal. Dort fährt der Shuttle-Zug in dichtem Takt nach Zermatt; die Fahrt dauert nur wenige Minuten. Gepäckwagen stehen am Terminal bereit, und viele Zermatter Hotels holen ihre Gäste am Bahnhof mit Elektrotaxi oder Pferdekutsche ab – fragen Sie bei der Hotelbuchung danach. Der Umstieg ist auch mit Skiausrüstung und Kinderwagen gut machbar.",
@@ -285,7 +285,7 @@ export const routePosts: BlogPost[] = [
           "Zermatt is one of Switzerland's best-known destinations – and one of the few you cannot reach by car. The village at the foot of the Matterhorn has been car-free for decades; every transfer ends in Täsch, five kilometres down the valley. Knowing this beforehand makes for relaxed planning. This article explains the procedure from the arrivals hall in Zurich to the hotel door in Zermatt.",
         ]},
         { h: "The drive: around 4 hours 45 minutes to Täsch", p: [
-          "Our [Zurich Airport–Zermatt transfer](/zurich-airport-to-zermatt) runs via the A2 through Central Switzerland, either through the Gotthard and over the Furka car-train or – depending on season and traffic – via Bern and the Lötschberg into the Valais. The roughly 237 km take around 284 minutes in normal traffic. The fixed price starts at **CHF 711.00** per vehicle in the Business Class; for families and ski groups of up to 7 the booking process shows the Business & Family Class price. On request the driver makes a break along the way – just say so.",
+          "Our [Zurich Airport–Zermatt transfer](/zurich-airport-to-zermatt) runs via the A2 through Central Switzerland, either through the Gotthard and over the Furka car-train or – depending on season and traffic – via Bern and the Lötschberg into the Valais. The roughly 237 km take around 284 minutes in normal traffic. The fixed price starts at **CHF 683.60** per vehicle in the Business Class; for families and ski groups of up to 7 the booking process shows the Business & Family Class price. On request the driver makes a break along the way – just say so.",
         ]},
         { h: "Täsch: the change in a few minutes", p: [
           "In Täsch the driver takes you directly to the Matterhorn Terminal. From there the shuttle train runs to Zermatt at frequent intervals; the ride takes only a few minutes. Luggage trolleys are available at the terminal, and many Zermatt hotels collect their guests at the station by electric taxi or horse-drawn carriage – ask when booking the hotel. The change is easily manageable with ski equipment and a pushchair.",
@@ -306,13 +306,13 @@ export const routePosts: BlogPost[] = [
     img: "/gallery/3.jpg",
     de: {
       title: "St. Moritz und Engadin ab Flughafen Zürich: Der Wintertransfer über den Julierpass",
-      excerpt: "Rund 4 Stunden 15 Minuten, Festpreis ab CHF 638.00 pro Fahrzeug, Julier oder Vereina: Wie der Transfer nach St. Moritz, Pontresina, Silvaplana und Sils im Winter zuverlässig funktioniert.",
+      excerpt: "Rund 4 Stunden 15 Minuten, Festpreis ab CHF 615.56 pro Fahrzeug, Julier oder Vereina: Wie der Transfer nach St. Moritz, Pontresina, Silvaplana und Sils im Winter zuverlässig funktioniert.",
       body: [
         { p: [
           "St. Moritz ist der Inbegriff des alpinen Winters – und liegt am Ende einer langen, aber spektakulären Anreise. Vom Flughafen Zürich sind es rund 213 km ins Oberengadin; die letzte Etappe führt über den Julierpass oder mit dem Autozug durch den Vereina-Tunnel. Wer im Winter anreist, sollte die Strecke kennen. Dieser Beitrag erklärt Route, Dauer, Preis und die Planung mit Skigepäck.",
         ]},
         { h: "Route, Dauer, Preis", p: [
-          "Der [Transfer Flughafen Zürich–St. Moritz](/zurich-airport-to-st-moritz) führt über die A3 und A13 durch das Rheintal nach Chur, dann über Thusis und den Julierpass ins Engadin. Bei normalem Verkehr planen wir mit rund 255 Minuten. Der Festpreis beginnt in der Business Class bei **CHF 638.00** pro Fahrzeug, inklusive 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitzen und Mehrwertsteuer. Für Pontresina, Silvaplana, Sils, Celerina oder Samedan geben Sie im Buchungsformular einfach die Adresse an; wir bestätigen den Preis vor der Buchung.",
+          "Der [Transfer Flughafen Zürich–St. Moritz](/zurich-airport-to-st-moritz) führt über die A3 und A13 durch das Rheintal nach Chur, dann über Thusis und den Julierpass ins Engadin. Bei normalem Verkehr planen wir mit rund 255 Minuten. Der Festpreis beginnt in der Business Class bei **CHF 615.56** pro Fahrzeug, inklusive 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitzen und Mehrwertsteuer. Für Pontresina, Silvaplana, Sils, Celerina oder Samedan geben Sie im Buchungsformular einfach die Adresse an; wir bestätigen den Preis vor der Buchung.",
         ]},
         { h: "Julierpass oder Vereina?", p: [
           "Der Julierpass ist ganzjährig geöffnet und im Winter gut geräumt; er ist die Standardroute. Bei starkem Schneefall oder Lawinengefahr weicht der Fahrer auf den Autozug durch den Vereina-Tunnel zwischen Klosters und Sagliains aus – die Entscheidung trifft er tagesaktuell anhand der Strassenlage. Für Sie ändert sich nichts: Der Festpreis bleibt, Sie sitzen im selben Fahrzeug. Ein Zwischenhalt in Chur oder Tiefencastel ist auf Wunsch jederzeit möglich.",
@@ -327,13 +327,13 @@ export const routePosts: BlogPost[] = [
     },
     en: {
       title: "St. Moritz and the Engadin From Zurich Airport: The Winter Transfer Over the Julier Pass",
-      excerpt: "Around 4 hours 15 minutes, fixed price from CHF 638.00 per vehicle, Julier or Vereina: how the transfer to St. Moritz, Pontresina, Silvaplana and Sils works reliably in winter.",
+      excerpt: "Around 4 hours 15 minutes, fixed price from CHF 615.56 per vehicle, Julier or Vereina: how the transfer to St. Moritz, Pontresina, Silvaplana and Sils works reliably in winter.",
       body: [
         { p: [
           "St. Moritz is the epitome of the Alpine winter – and lies at the end of a long but spectacular journey. From Zurich Airport it is around 213 km to the Upper Engadin; the final stage crosses the Julier Pass or uses the car-train through the Vereina tunnel. Anyone arriving in winter should know the route. This article explains route, duration, price and planning with ski luggage.",
         ]},
         { h: "Route, duration, price", p: [
-          "The [Zurich Airport–St. Moritz transfer](/zurich-airport-to-st-moritz) runs via the A3 and A13 through the Rhine Valley to Chur, then via Thusis and the Julier Pass into the Engadin. In normal traffic we plan around 255 minutes. The fixed price starts at **CHF 638.00** per vehicle in the Business Class, including 60 minutes of waiting time after landing, flight tracking, child seats and VAT. For Pontresina, Silvaplana, Sils, Celerina or Samedan simply enter the address in the booking form; we confirm the price before booking.",
+          "The [Zurich Airport–St. Moritz transfer](/zurich-airport-to-st-moritz) runs via the A3 and A13 through the Rhine Valley to Chur, then via Thusis and the Julier Pass into the Engadin. In normal traffic we plan around 255 minutes. The fixed price starts at **CHF 615.56** per vehicle in the Business Class, including 60 minutes of waiting time after landing, flight tracking, child seats and VAT. For Pontresina, Silvaplana, Sils, Celerina or Samedan simply enter the address in the booking form; we confirm the price before booking.",
         ]},
         { h: "Julier Pass or Vereina?", p: [
           "The Julier Pass is open all year and well cleared in winter; it is the standard route. In heavy snowfall or avalanche risk the driver switches to the car-train through the Vereina tunnel between Klosters and Sagliains – he decides on the day based on road conditions. Nothing changes for you: the fixed price remains, you sit in the same vehicle. A stop in Chur or Tiefencastel is possible on request at any time.",

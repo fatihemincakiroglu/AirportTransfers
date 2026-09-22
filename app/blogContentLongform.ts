@@ -36,7 +36,7 @@ export const longformPosts: BlogPost[] = [
           head: ["Kriterium", "Taxi vom Stand", "App (Uber & Co.)", "Privater Transfer"],
           rows: [
             ["Preis bekannt", "Erst am Ziel", "Vor der Fahrt, aber nachfrageabhängig", "Vor der Abreise, fest"],
-            ["Nachtzuschlag", "Ja", "Indirekt (höhere Nachfrage)", "Nein"],
+            ["Nachtzuschlag", "Ja, nach Taxameter", "Indirekt (höhere Nachfrage)", "20 % (00–06 Uhr), vorab bekannt"],
             ["Gepäckgebühr", "Je nach Anbieter", "Nein", "Nein"],
             ["Wartezeit inklusive", "Nein", "Wenige Minuten", "60 Min. nach Landung"],
             ["Rechnung mit MwSt.", "Quittung", "App-Beleg", "Automatisch per E-Mail"],
@@ -59,7 +59,7 @@ export const longformPosts: BlogPost[] = [
         { h: "6. Nachtankunft: der Härtetest", p: [
           "Nachts trennt sich die Spreu vom Weizen. Der Taxistand ist nach 23 Uhr dünner besetzt, die Züge in andere Landesteile fahren nicht mehr, und wer nach Luzern oder St. Gallen muss, beginnt Preisverhandlungen am Strassenrand. Nachttarife sind höher, und ob der Fahrer die lange Strecke überhaupt annimmt, entscheidet er selbst. Das ist legitim – aber es ist nicht planbar.",
           "Apps haben nachts weniger aktive Fahrer und dafür höhere Nachfrage nach den letzten Landungen. Das Ergebnis sind lange Anfahrzeiten, Stornierungen und Preise, die mit jeder Minute steigen. Für eine Fahrt in die Stadt lässt sich das aushalten; für eine Fahrt nach Davos ist es der falsche Moment, um auf Algorithmen zu vertrauen.",
-          "Der private Transfer fährt rund um die Uhr zum gleichen Festpreis, ohne Nachtzuschlag. Voraussetzung ist die Vorabbuchung: Anfragen, die zwischen 23 und 6 Uhr eingehen und innerhalb von zwei Stunden starten sollen, können wir online nicht annehmen, weil ein ausgeruhter Fahrer eingeplant werden muss. Wer seinen Nachttransfer mit dem Flug bucht, hat dieses Problem nie – Details in [Nachtankunft am Flughafen Zürich](/blog/nachtankunft-flughafen-zuerich-nach-23-uhr).",
+          "Der private Transfer fährt rund um die Uhr zum Festpreis; nachts zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von 20 %, der vor der Buchung feststeht – keine Überraschung am Ziel. Voraussetzung ist die Vorabbuchung: Anfragen, die zwischen 23 und 6 Uhr eingehen und innerhalb von zwei Stunden starten sollen, können wir online nicht annehmen, weil ein ausgeruhter Fahrer eingeplant werden muss. Wer seinen Nachttransfer mit dem Flug bucht, hat dieses Problem nie – Details in [Nachtankunft am Flughafen Zürich](/blog/nachtankunft-flughafen-zuerich-nach-23-uhr).",
         ]},
         { h: "7. Wenn der Flug Verspätung hat", p: [
           "Beim Taxi spielt Verspätung keine Rolle, weil Sie erst nach der Landung zum Stand gehen. Das ist der eine echte Vorteil des Spontansystems: Es kann nicht warten, weil es nicht weiss, dass Sie kommen. Der Nachteil zeigt sich erst, wenn die Verspätung Sie in die Nachtstunden schiebt und der Stand leer ist.",
@@ -114,7 +114,7 @@ export const longformPosts: BlogPost[] = [
           head: ["Criterion", "Taxi from the rank", "App (Uber etc.)", "Private transfer"],
           rows: [
             ["Price known", "Only at the destination", "Before the ride, but demand-based", "Before departure, fixed"],
-            ["Night surcharge", "Yes", "Indirectly (higher demand)", "No"],
+            ["Night surcharge", "Yes, by meter", "Indirectly (higher demand)", "20 % (midnight–6 am), known in advance"],
             ["Luggage fee", "Depends on operator", "No", "No"],
             ["Waiting included", "No", "A few minutes", "60 min after landing"],
             ["Invoice with VAT", "Receipt", "App receipt", "Automatically by email"],
@@ -137,7 +137,7 @@ export const longformPosts: BlogPost[] = [
         { h: "6. Night arrival: the stress test", p: [
           "At night the differences become stark. The taxi rank is thinner after 11 pm, trains to other parts of the country have stopped, and anyone heading to Lucerne or St. Gallen starts negotiating at the kerb. Night tariffs are higher, and whether the driver accepts the long journey at all is up to him. That is legitimate – but it is not plannable.",
           "Apps have fewer active drivers at night and higher demand after the last landings. The result is long approach times, cancellations and prices that rise by the minute. For a ride into the city that is bearable; for a ride to Davos it is the wrong moment to trust an algorithm.",
-          "The private transfer runs around the clock at the same fixed price, with no night surcharge. The condition is advance booking: requests received between 11 pm and 6 am for journeys starting within two hours cannot be accepted online, because a rested driver has to be scheduled. Anyone who books the night transfer with the flight never has this problem – details in [Late-night arrival at Zurich Airport](/blog/nachtankunft-flughafen-zuerich-nach-23-uhr).",
+          "The private transfer runs around the clock at a fixed price; at night between midnight and 6 am a night tariff of 20 % applies, fixed before you book – no surprise at the destination. The condition is advance booking: requests received between 11 pm and 6 am for journeys starting within two hours cannot be accepted online, because a rested driver has to be scheduled. Anyone who books the night transfer with the flight never has this problem – details in [Late-night arrival at Zurich Airport](/blog/nachtankunft-flughafen-zuerich-nach-23-uhr).",
         ]},
         { h: "7. When the flight is delayed", p: [
           "With a taxi, delay plays no role because you only go to the rank after landing. That is the one genuine advantage of the spontaneous system: it cannot wait because it does not know you are coming. The downside appears only when the delay pushes you into the night hours and the rank is empty.",

@@ -76,8 +76,8 @@ export const routeMeta: Record<string, { de: RouteMeta; en: RouteMeta }> = {
     en: { title: "Zurich Airport to Chur Taxi – Private Transfer", description: "Taxi from Zurich Airport to Chur gateway to Arosa, Lenzerheide and Flims. Fixed price, ski bags free, winter-ready fleet. Private transfer, book online." },
   },
   "zurich-airport-to-winterthur": {
-    de: { title: "Flughafen Zürich nach Winterthur Taxi – Privater Transfer", description: "Taxi vom Flughafen Zürich nach Winterthur in rund 36 Minuten. Festpreis, kein Nacht- oder Gepäckzuschlag. Privater Transfer, online buchen." },
-    en: { title: "Zurich Airport to Winterthur Taxi – Private Transfer", description: "Taxi from Zurich Airport to Winterthur in about 36 minutes. Fixed price, no night or luggage fees, chauffeur waits. Private transfer, book online." },
+    de: { title: "Flughafen Zürich nach Winterthur Taxi – Privater Transfer", description: "Taxi vom Flughafen Zürich nach Winterthur in rund 36 Minuten. Festpreis, kein Gepäckzuschlag, Chauffeur wartet. Privater Transfer, online buchen." },
+    en: { title: "Zurich Airport to Winterthur Taxi – Private Transfer", description: "Taxi from Zurich Airport to Winterthur in about 36 minutes. Fixed price, no luggage fees, chauffeur waits. Private transfer, book online." },
   },
   "zurich-airport-to-locarno": {
     de: { title: "Flughafen Zürich nach Locarno Taxi – Privater Transfer", description: "Taxi vom Flughafen Zürich nach Locarno und Ascona am Lago Maggiore. Festpreis, Flugverfolgung, Storno bis 24 h gratis. Privater Transfer, online buchen." },
