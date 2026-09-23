@@ -79,7 +79,8 @@ export const KM_TIERS: { upTo: number | null; base: number }[] = [
 ];
 /** Araç başına km ücreti (CHF/km) */
 export const KM_RATE: Record<VehicleId, number> = { business_class_e: 2.8, business_family_v: 3.4, premium_s: 5.5 };
-export const TRANSFER_MIN_PRICE = 80;
+/** Araç başına başlangıç (minimum) fiyatı */
+export const TRANSFER_MIN_PRICE: Record<VehicleId, number> = { business_class_e: 83, business_family_v: 87, premium_s: 80 };
 /** Gece tarifesi 00:00–06:00: transfer %20, saatlik %30 */
 export const NIGHT_FROM = "00:00", NIGHT_TO = "06:00";
 export const NIGHT_SURCHARGE_TRANSFER = 0.20;
@@ -100,7 +101,7 @@ export function transferPrice(km: number, vehicle: VehicleId, time?: string | nu
   const tier = KM_TIERS.find((t) => t.upTo === null || km <= t.upTo) ?? KM_TIERS[KM_TIERS.length - 1];
   let p = tier.base + km * KM_RATE[vehicle];
   if (isNightTime(time)) p *= 1 + NIGHT_SURCHARGE_TRANSFER;
-  return round2(Math.max(TRANSFER_MIN_PRICE, p));
+  return round2(Math.max(TRANSFER_MIN_PRICE[vehicle], p));
 }
 
 /** Saatlik fiyat: max(zaman, saat×25km×ücret), gece zammı, 5 CHF'e yukarı yuvarlama */

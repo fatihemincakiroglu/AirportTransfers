@@ -76,7 +76,7 @@ export default function PreiseClient() {
                   </span>
                   <span className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{lang === "de" ? "pro km" : "per km"}</span>
                 </p>
-                <p className="text-xs text-stone-400">{lang === "de" ? `+ Grundpreis nach Distanz · mind. CHF ${TRANSFER_MIN_PRICE}` : `+ base fare by distance · min. CHF ${TRANSFER_MIN_PRICE}`}</p>
+                <p className="text-xs text-stone-400">{lang === "de" ? `+ Grundpreis nach Distanz · ab CHF ${TRANSFER_MIN_PRICE[v.id]}` : `+ base fare by distance · from CHF ${TRANSFER_MIN_PRICE[v.id]}`}</p>
               </a>
             ))}
           </div>
@@ -125,8 +125,8 @@ export default function PreiseClient() {
           </div>
           <p className="mt-3 text-xs text-stone-500">
             {lang === "de"
-              ? `Kilometerpreis: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Mindestpreis CHF ${TRANSFER_MIN_PRICE}. Alle Preise pro Fahrzeug, inkl. MwSt., Meet & Greet, Flugverfolgung, 60 Min. Wartezeit und Kindersitzen.`
-              : `Kilometre rate: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Minimum fare CHF ${TRANSFER_MIN_PRICE}. All prices per vehicle, incl. VAT, meet & greet, flight tracking, 60 min waiting time and child seats.`}
+              ? `Kilometerpreis: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Mindestpreise: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${TRANSFER_MIN_PRICE[v.id]}`).join(" · ")}. Alle Preise pro Fahrzeug, inkl. MwSt., Meet & Greet, Flugverfolgung, 60 Min. Wartezeit und Kindersitzen.`
+              : `Kilometre rate: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Minimum fares: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${TRANSFER_MIN_PRICE[v.id]}`).join(" · ")}. All prices per vehicle, incl. VAT, meet & greet, flight tracking, 60 min waiting time and child seats.`}
           </p>
           <a href={P("/buchung")} className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
             {lang === "de" ? "Preis für meine Adresse berechnen" : "Calculate the price for my address"} →
