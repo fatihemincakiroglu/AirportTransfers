@@ -307,6 +307,26 @@ export default function Buchung() {
   const chain = (stopsArr: string[], dest: string) =>
     [...stopsArr.map((x) => withCountry(x)), dest].join(" to:");
   const showCustom = !route && custom !== null;
+  // Özel güzergâh: sunucudan yol mesafesi + tarife (Photon + OSRM); gelmezse tahmine düşülür
+  const [quote, setQuote] = useState<{ km: number; prices: Record<string, number> } | null>(null);
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- harici teklif servisiyle senkron; koşul değişince eski teklif temizlenir */
+    if (!showCustom || hourly || !custom?.from || !custom?.to) { setQuote(null); return; }
+    /* eslint-enable react-hooks/set-state-in-effect */
+    let alive = true;
+    const t = setTimeout(async () => {
+      try {
+        const r = await fetch("/api/quote", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ from: reversed ? custom.to : custom.from, to: reversed ? custom.from : custom.to, time, stops }),
+        });
+        const d = await r.json();
+        if (alive) setQuote(d?.ok ? { km: d.km, prices: d.prices } : null);
+      } catch { if (alive) setQuote(null); }
+    }, 150);
+    return () => { alive = false; clearTimeout(t); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- yalnızca uç noktalar, duraklar ve saat değişince
+  }, [showCustom, hourly, custom?.from, custom?.to, reversed, time, stops.join("|")]);
   const cFrom = showCustom ? (reversed ? custom!.to : custom!.from) : "";
   const cTo = showCustom ? (reversed ? custom!.from : custom!.to) : "";
   const pickupLabel = showCustom ? (cFrom || "—") : reversed ? n : origin;
@@ -329,6 +349,7 @@ export default function Buchung() {
     if (!hasTrip) return 0;
     if (hourly) return hourlyPrice(hourlyHours ?? 1, v.id, time);
     if (route) return transferPrice(route.km, v.id, time);
+    if (quote?.prices[v.id] !== undefined) return quote.prices[v.id]; // gerçek yol mesafesi tarifesi
     const est = CUSTOM_BASE_PRICE * vehicleFactor(v.id) * (night ? 1 + NIGHT_SURCHARGE_TRANSFER : 1);
     return Math.round(est * 100) / 100;
   };
@@ -337,7 +358,7 @@ export default function Buchung() {
 
   // ── Ölçüm yardımcıları (kişisel veri yok; özel adres yalnızca type:"address") ──
   const bookingType = hourly ? "hourly" : "transfer";
-  const priceFinal = route !== null || hourly; // sabit rota ve saatlik = kesin; özel güzergâh = tahmini
+  const priceFinal = route !== null || hourly || quote !== null; // sabit rota, saatlik ve mesafesi bulunan özel güzergâh = kesin
   const tripLocations = () => {
     if (hourly) return { pickup: AIRPORT_LOCATION };
     if (route) return reversed
@@ -863,7 +884,9 @@ export default function Buchung() {
               </div>
               {showCustom && !hourly && (
                 <p className="mt-1 text-right text-[11px] text-stone-500">
-                  {lang === "de" ? "Individuelle Strecke – Endpreis wird per WhatsApp bestätigt." : "Custom route – final price confirmed via WhatsApp."}
+                  {quote
+                    ? (lang === "de" ? `Festpreis für ${quote.km} km Fahrstrecke.` : `Fixed price for ${quote.km} km driving distance.`)
+                    : (lang === "de" ? "Individuelle Strecke – Endpreis wird per WhatsApp bestätigt." : "Custom route – final price confirmed via WhatsApp.")}
                 </p>
               )}
               {night && (

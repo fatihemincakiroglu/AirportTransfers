@@ -4,47 +4,28 @@ import Image from "next/image";
 
 import { useMemo, useState } from "react";
 
-import { C, routes, fleet, KM_RATE, transferPrice } from "../../config";
+import { C, routes, fleet, KM_RATE } from "../../config";
 import { t } from "../../i18n";
-import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import { getRouteContent } from "../../routeContent";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls,
-  RouteCard, ExtrasCounter,
+  RouteCard,
 } from "../../components";
-
-// Talep referans numarası (tıklama anında üretilir)
-const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase();
 
 export default function RouteClient({ slug }: { slug: string }) {
   const { lang, P } = useLang();
   const L = t[lang];
-  const X = tx[lang];
   const D = L.detail;
-  
 
   const route = useMemo(() => routes.find((r) => r.slug === slug), [slug]);
 
-  // Adım 1: tarih/saat + araç seçimi · Adım 2: yolcu bilgileri
-  const [step, setStep] = useState<1 | 2>(1);
+  // Bu sayfa fiyat göstermez: tarih/saat + araç seçilir, fiyat rezervasyon sayfasında
+  // yolculuk saatine ve gerçek mesafeye göre hesaplanır (Kilometertarif).
   const [reversed, setReversed] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [sentRef, setSentRef] = useState<string | null>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [car, setCar] = useState<number | null>(null);
-  const [pay, setPay] = useState(0);
-  const [extras, setExtras] = useState({ baby: 0, child: 0, ski: 0 });
-  const [f, setF] = useState({
-    name: "", surname: "", email: "", phone: "",
-    flight: "", nameboard: "", pax: "2", luggage: "2", notes: "",
-  });
-  const [accepted, setAccepted] = useState(false);
-  const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
-  const bump = (k: "baby" | "child" | "ski", d: number) =>
-    setExtras((s) => ({ ...s, [k]: Math.max(0, Math.min(4, s[k] + d)) }));
 
   if (!route) {
     return (
@@ -72,52 +53,18 @@ export default function RouteClient({ slug }: { slug: string }) {
       : route.min < 60 ? `${route.min} mins` : `${Math.floor(route.min / 60)} h${route.min % 60 ? ` ${route.min % 60} mins` : ""}`;
 
   const sorted = [...fleet].sort((a, b) => KM_RATE[a.id] - KM_RATE[b.id]);
-  const priceOf = (v: (typeof fleet)[number]) => transferPrice(route.km, v.id); // gündüz fiyatı; gece zammı rezervasyonda
-  const chosen = car !== null ? sorted[car] : null;
-  const total = chosen ? priceOf(chosen) : 0;
+  const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
 
-
-  const ready =
-    accepted && f.name && f.surname && f.email && f.phone && f.flight && date && time;
-
-  /** Talebi sunucuya gönderir: panele kaydolur ve bildirim e-postası gider */
-  const submitBooking = async () => {
-    if (!ready || sending) return;
-    setSending(true);
-    const ref = makeRef();
-    try {
-      await fetch("/api/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ref, channel: "site", lang,
-          pickup: reversed ? n : "Flughafen Zürich (ZRH)",
-          dropoff: reversed ? "Flughafen Zürich (ZRH)" : n,
-          date, time,
-          pax: Number(f.pax) || null,
-          luggage: Number(f.luggage) || null,
-          vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
-          price: total || null,
-          payment: D.payOptions[pay]?.[0] ?? null,
-          firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone,
-          flight: f.flight, nameboard: f.nameboard,
-          extras: [
-            extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
-            extras.child ? `${D.child[0]}: ${extras.child}` : "",
-            extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
-          ].filter(Boolean).join(", "),
-          notes: f.notes,
-        }),
-      });
-    } catch {
-      /* ağ hatası olsa da müşteriye onay gösterilir */
-    }
-    setSending(false);
-    setSentRef(ref);
+  /** Rezervasyon sayfasına ön-doldurulmuş geçiş; tarih+saat varsa doğrudan araç adımı açılır */
+  const bookingHref = () => {
+    const q = new URLSearchParams({
+      from: reversed ? n : AIRPORT,
+      to: reversed ? AIRPORT : n,
+      ...(date ? { date } : {}), ...(time ? { time } : {}),
+    });
+    return `${P("/buchung")}?${q.toString()}`;
   };
 
-  // ── Sağ taraftaki özet kartı ─────────────────────────────
-  // JSX döndüren yardımcı — bileşen değil, fonksiyon olarak çağrılır (remount olmaz)
   const renderSummary = () => (
     <aside className="h-fit space-y-4 lg:sticky lg:top-24">
       <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
@@ -146,7 +93,6 @@ export default function RouteClient({ slug }: { slug: string }) {
             </li>
           )}
         </ul>
-        {/* Rota haritası */}
         <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
           <iframe
             title="Route map"
@@ -159,27 +105,20 @@ export default function RouteClient({ slug }: { slug: string }) {
           <span><span className="block text-xs text-stone-500">{D.distance}</span><b>{route.km} km</b></span>
           <span><span className="block text-xs text-stone-500">{D.time}</span><b>{dur}</b></span>
         </div>
-        {chosen && (
-          <div className="mt-4 border-t border-stone-100 pt-4 text-sm">
-            <span className="block text-xs text-stone-500">{D.vehicle}</span>
-            <b>{localName(chosen.name, lang)}</b>
-            <p className="text-xs text-stone-500">{chosen.car} · {chosen.pax} 👥 · {chosen.bags} 🧳</p>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={chosen.img} alt={chosen.car} className="mx-auto mt-2 h-20 object-contain" />
-          </div>
-        )}
       </div>
-      {chosen && (
-        <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
-          <div className="flex items-center justify-between">
-            <b style={{ color: C.gold }}>{D.total}</b>
-            <span className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-              CHF {total.toFixed(2)}
-            </span>
-          </div>
-          <p className="mt-1 text-xs text-stone-500">{D.priceNote}</p>
-        </div>
-      )}
+      <div className="rounded-2xl p-5 text-white" style={{ background: C.pine }}>
+        <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
+          {lang === "de" ? "Preis" : "Price"}
+        </p>
+        <p className="mt-1 text-sm leading-relaxed text-white/85">
+          {lang === "de"
+            ? "Ihr Festpreis wird im nächsten Schritt nach Kilometertarif berechnet – pro Fahrzeug, inkl. MwSt., Meet & Greet und 60 Min. Wartezeit."
+            : "Your fixed price is calculated in the next step by kilometre tariff – per vehicle, incl. VAT, meet & greet and 60 min waiting time."}
+        </p>
+        <a href={bookingHref()} className="mt-4 block rounded-full px-5 py-3 text-center text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
+          {lang === "de" ? "Preis berechnen & buchen" : "Calculate price & book"} →
+        </a>
+      </div>
     </aside>
   );
 
@@ -188,7 +127,6 @@ export default function RouteClient({ slug }: { slug: string }) {
       <TopBar />
       <SiteHeader active="strecken" />
 
-      {/* Başlık — fildişi zeminde kesintisiz */}
       <section style={{ background: C.ivory }}>
         <div className="mx-auto max-w-7xl px-5 pb-8 pt-8">
           <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
@@ -206,7 +144,7 @@ export default function RouteClient({ slug }: { slug: string }) {
             <span>🛣 {route.km} km</span>
             <span>🕐 {dur}</span>
             <span className="rounded-full px-3 py-0.5 text-xs font-extrabold uppercase" style={{ background: C.gold, color: C.pine }}>
-              {L.routesSec.from} CHF {route.price.toFixed(2)}
+              {lang === "de" ? "Festpreis pro Fahrzeug" : "Fixed price per vehicle"}
             </span>
           </p>
         </div>
@@ -217,149 +155,50 @@ export default function RouteClient({ slug }: { slug: string }) {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-5 py-10 lg:grid-cols-[1.7fr_1fr] md:py-14">
         <div>
-          {step === 1 ? (
-            <>
-              {/* Tarih & saat */}
-              <div className="mb-6 grid grid-cols-2 gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
+          <div className="mb-6 grid grid-cols-2 gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
+            <div>
+              <label className={labelCls}>📅 {L.form.date}</label>
+              <input type="date" className={inputCls} value={date} onChange={(e) => setDate(e.target.value)} />
+            </div>
+            <div>
+              <label className={labelCls}>🕐 {L.form.time}</label>
+              <input type="time" className={inputCls} value={time} onChange={(e) => setTime(e.target.value)} />
+            </div>
+          </div>
+
+          <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>
+            {D.selectCar}
+          </h2>
+          <div className="space-y-4">
+            {sorted.map((v, i) => (
+              <div key={i} className="grid gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 sm:grid-cols-[200px_1fr_auto] sm:items-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={v.img} alt={v.car} className="mx-auto h-24 object-contain" />
                 <div>
-                  <label className={labelCls}>📅 {L.form.date}</label>
-                  <input type="date" className={inputCls} value={date} onChange={(e) => setDate(e.target.value)} />
+                  <h3 className="font-display text-lg font-semibold" style={{ color: C.pine }}>
+                    {localName(v.name, lang)}
+                  </h3>
+                  <p className="text-sm text-stone-500">{v.car}</p>
+                  <p className="mt-1 text-sm">👥 {v.pax} · 🧳 {v.bags}</p>
+                  <ul className="mt-2 grid gap-x-4 gap-y-0.5 text-xs text-stone-500 sm:grid-cols-2">
+                    {D.feats.map((ft, j) => <li key={j}>✓ {ft}</li>)}
+                  </ul>
                 </div>
-                <div>
-                  <label className={labelCls}>🕐 {L.form.time}</label>
-                  <input type="time" className={inputCls} value={time} onChange={(e) => setTime(e.target.value)} />
-                </div>
-              </div>
-
-              <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>
-                {D.selectCar}
-              </h2>
-              <div className="space-y-4">
-                {sorted.map((v, i) => (
-                  <div key={i} className="grid gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 sm:grid-cols-[200px_1fr_auto] sm:items-center">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={v.img} alt={v.car} className="mx-auto h-24 object-contain" />
-                    <div>
-                      <h3 className="font-display text-lg font-semibold" style={{ color: C.pine }}>
-                        {localName(v.name, lang)}
-                      </h3>
-                      <p className="text-sm text-stone-500">{v.car}</p>
-                      <p className="mt-1 text-sm">👥 {v.pax} · 🧳 {v.bags}</p>
-                      <ul className="mt-2 grid gap-x-4 gap-y-0.5 text-xs text-stone-500 sm:grid-cols-2">
-                        {D.feats.map((ft, j) => <li key={j}>✓ {ft}</li>)}
-                      </ul>
-                    </div>
-                    <div className="text-center sm:text-right">
-                      <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                        CHF {priceOf(v).toFixed(2)}
-                      </p>
-                      <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
-                      <button
-                        onClick={() => { setCar(i); setStep(2); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                        className="w-full rounded-full px-6 py-2.5 text-sm font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
-                        style={{ background: C.pine }}
-                      >
-                        {D.select}
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Uyarı */}
-
-              {/* Ödeme yöntemi */}
-              <h2 className="font-display mb-3 text-2xl font-semibold" style={{ color: C.pine }}>{D.payTitle}</h2>
-              <div className="mb-8 grid grid-cols-3 gap-3">
-                {D.payOptions.map(([title, desc], i) => (
-                  <button
-                    key={i}
-                    onClick={() => setPay(i)}
-                    className="rounded-2xl border-2 bg-white p-4 text-center text-xs font-bold uppercase tracking-wide transition-all"
-                    style={pay === i ? { borderColor: C.gold, boxShadow: "0 4px 14px rgba(201,162,75,0.25)" } : { borderColor: "#e7e5e4" }}
+                <div className="text-center sm:text-right">
+                  <p className="mb-3 text-[11px] text-stone-500">
+                    {lang === "de" ? "Preis nach Kilometertarif" : "Price by kilometre tariff"}
+                  </p>
+                  <a
+                    href={bookingHref()}
+                    className="inline-block w-full rounded-full px-6 py-2.5 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
+                    style={{ background: C.pine }}
                   >
-                    <span className="mb-1 block text-xl">{["📱", "💵", "💳"][i]}</span>
-                    {title}
-                    <span className="mt-1 block text-[10px] font-medium normal-case text-stone-500">{desc}</span>
-                  </button>
-                ))}
+                    {D.select}
+                  </a>
+                </div>
               </div>
-
-              {/* Yolcu bilgileri */}
-              <h2 className="font-display mb-3 text-2xl font-semibold" style={{ color: C.pine }}>{D.paxTitle}</h2>
-              <div className="rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 md:p-6">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <input className={inputCls} placeholder={`${D.name} *`} value={f.name} onChange={(e) => set("name", e.target.value)} />
-                  <input className={inputCls} placeholder={`${D.surname} *`} value={f.surname} onChange={(e) => set("surname", e.target.value)} />
-                  <input type="email" className={inputCls} placeholder={`${D.email} *`} value={f.email} onChange={(e) => set("email", e.target.value)} />
-                  <input type="tel" className={inputCls} placeholder={`${D.phone} * (+41 …)`} value={f.phone} onChange={(e) => set("phone", e.target.value)} />
-                </div>
-
-                <div className="mt-4">
-                  <ExtrasCounter title={D.baby[0]} desc={D.baby[1]} freeLabel={D.free} value={extras.baby} onBump={(d) => bump("baby", d)} />
-                  <ExtrasCounter title={D.child[0]} desc={D.child[1]} freeLabel={D.free} value={extras.child} onBump={(d) => bump("child", d)} />
-                  <ExtrasCounter title={D.ski[0]} desc={D.ski[1]} freeLabel={D.free} value={extras.ski} onBump={(d) => bump("ski", d)} />
-                </div>
-
-                <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                  <input className={inputCls} placeholder={`${D.flight} *`} value={f.flight} onChange={(e) => set("flight", e.target.value)} />
-                  <input className={inputCls} placeholder={D.nameboard} value={f.nameboard} onChange={(e) => set("nameboard", e.target.value)} />
-                  <div>
-                    <label className={labelCls}>👥 {L.form.pax}</label>
-                    <select className={inputCls} value={f.pax} onChange={(e) => set("pax", e.target.value)}>
-                      {Array.from({ length: chosen?.pax ?? 7 }, (_, i) => i + 1).map((x) => <option key={x}>{x}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className={labelCls}>🧳 {D.luggage}</label>
-                    <select className={inputCls} value={f.luggage} onChange={(e) => set("luggage", e.target.value)}>
-                      {Array.from({ length: chosen?.bags ?? 7 }, (_, i) => i + 1).map((x) => <option key={x}>{x}</option>)}
-                    </select>
-                  </div>
-                </div>
-
-                <textarea rows={4} className={`${inputCls} mt-4`} placeholder={D.notes} value={f.notes} onChange={(e) => set("notes", e.target.value)} />
-
-                <label className="mt-4 flex cursor-pointer items-center gap-2 text-sm">
-                  <input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} className="h-4 w-4 accent-[#C9A24B]" />
-                  {D.accept} *
-                </label>
-
-                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                  <button
-                    onClick={() => setStep(1)}
-                    className="rounded-full border px-6 py-3 text-sm font-bold"
-                    style={{ borderColor: C.pine, color: C.pine }}
-                  >
-                    ← {D.back}
-                  </button>
-                  <button
-                    type="button"
-                    disabled={!ready || sending}
-                    onClick={submitBooking}
-                    className={`flex-1 rounded-full px-6 py-3 text-center text-sm font-extrabold uppercase tracking-wider transition-all ${
-                      ready && !sending ? "hover:-translate-y-0.5" : "cursor-not-allowed opacity-40"
-                    }`}
-                    style={{ background: C.gold, color: C.pine }}
-                  >
-                    {sending ? `${D.sending}…` : `${L.hero.cta1} — CHF ${total.toFixed(2)}`}
-                  </button>
-                </div>
-
-                {sentRef && (
-                  <div className="mt-4 rounded-2xl border p-4 text-center" style={{ borderColor: "#A7F3D0", background: "#ECFDF5" }}>
-                    <p className="text-sm font-bold" style={{ color: "#065F46" }}>
-                      ✓ {X.done.title}
-                    </p>
-                    <p className="mt-1.5 text-sm" style={{ color: "#065F46" }}>{X.done.body(sentRef)}</p>
-                  </div>
-                )}
-                <p className="mt-3 text-center text-xs text-stone-500">{D.confirmNote}</p>
-              </div>
-            </>
-          )}
+            ))}
+          </div>
         </div>
 
         {renderSummary()}
@@ -392,8 +231,7 @@ function RouteSeoContent({ slug }: { slug: string }) {
   const facts: [string, string][] = [
     [D.distance, `${route.km} km`],
     [D.time, dur],
-    [L.routesSec.from, `CHF ${route.price.toFixed(2)}`],
-    [L.nav.fleet, lang === "de" ? "4 Fahrzeugklassen" : "4 vehicle classes"],
+    [L.nav.fleet, lang === "de" ? "3 Fahrzeugklassen" : "3 vehicle classes"],
   ];
 
   return (

@@ -45,8 +45,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   // SEO meta: rota başına elle yazılmış başlık/açıklama (routeMeta.ts); yoksa şablon
   const rm = routeMeta[slug]?.[safe];
   return {
-    title: rm?.title ?? `${X.dest.hero(n)} | ${X.dest.fixed} ${route.price.toFixed(2)} – ${route.km} km`,
-    description: rm?.description ?? `${X.dest.routeKnown(n, route.price.toFixed(2))} ${X.dest.heroSub(n)}`,
+    title: rm?.title ?? `${X.dest.hero(n)} | Zürich Airport Taxi`,
+    description: rm?.description ?? `${X.dest.routeKnown(n)} ${X.dest.heroSub(n)}`,
     alternates: {
       canonical: `/${lang}/${res.canonical}`,
       languages: slugAlternates(slug),
@@ -113,7 +113,6 @@ export default async function Page({ params }: Params) {
         telephone: `+${WHATSAPP_NUMBER}`,
         address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
       },
-      offers: { "@type": "Offer", price: route.price.toFixed(2), priceCurrency: "CHF" },
     });
     jsonLd.push({
       "@context": "https://schema.org",

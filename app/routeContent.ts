@@ -12,9 +12,8 @@ export type RouteContent = {
   faq: [string, string][]; // soru-cevap listesi
 };
 
-import { routes, fleet, transferPrice, type LocalName } from "./config";
+import { routes, fleet, type LocalName } from "./config";
 
-const chf = (n: number) => `CHF ${n.toFixed(2)}`;
 const nameOf = (n: LocalName, lang: "de" | "en") => (typeof n === "string" ? n : n[lang]);
 const dur = (min: number, lang: "de" | "en") =>
   lang === "de"
@@ -30,13 +29,12 @@ export function extraRouteFaq(slug: string, lang: "de" | "en"): [string, string]
   if (!r) return [];
   const n = nameOf(r.to, lang);
   const e = fleet[0], v = fleet[1], sC = fleet[2];
-  const pE = chf(transferPrice(r.km, e.id)), pV = chf(transferPrice(r.km, v.id)), pS = chf(transferPrice(r.km, sC.id));
   const d = dur(r.min, lang);
   if (lang === "de") return [
     [`Fahren Sie auch nachts vom Flughafen Zürich nach ${n}?`,
      `Ja, wir fahren rund um die Uhr – auch bei Landungen nach Mitternacht – zum Festpreis; zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von 20 %, der bei der Buchung sofort angezeigt wird. Wichtig: Anfragen, die zwischen 23:00 und 06:00 Uhr eingehen und innerhalb der nächsten zwei Stunden starten sollen, können wir online nicht annehmen; buchen Sie Nachtfahrten deshalb im Voraus oder kontaktieren Sie uns per WhatsApp.`],
     [`Wie viele Personen und Koffer passen ins Fahrzeug nach ${n}?`,
-     `Business Class (${e.car}): bis ${e.pax} Personen und ${e.bags} Koffer ab ${pE}. Business & Family Class (${v.car}): bis ${v.pax} Personen und ${v.bags} Koffer ab ${pV}. Premium Class (${sC.car}): bis ${sC.pax} Personen und ${sC.bags} Koffer ab ${pS}. Handgepäck zählt in der Regel nicht mit; Skitaschen befördern wir kostenlos (max. 4 pro Fahrzeug).`],
+     `Business Class (${e.car}): bis ${e.pax} Personen und ${e.bags} Koffer. Business & Family Class (${v.car}): bis ${v.pax} Personen und ${v.bags} Koffer. Premium Class (${sC.car}): bis ${sC.pax} Personen und ${sC.bags} Koffer. Der Preis jeder Klasse wird bei der Buchung nach Kilometertarif berechnet. Handgepäck zählt in der Regel nicht mit; Skitaschen befördern wir kostenlos (max. 4 pro Fahrzeug).`],
     [`Bieten Sie auch die Rückfahrt von ${n} zum Flughafen Zürich an?`,
      `Ja, zum gleichen Festpreis. Ihr Chauffeur holt Sie an Ihrer Adresse in ${n} ab und bringt Sie in rund ${d} zum Abflugterminal. Bei der Buchung wählen Sie einfach ${n} als Abholort und den Flughafen als Ziel – oder buchen Sie Hin- und Rückfahrt direkt nacheinander.`],
     [`Ist der Preis nach ${n} pro Person oder pro Fahrzeug?`,
@@ -48,7 +46,7 @@ export function extraRouteFaq(slug: string, lang: "de" | "en"): [string, string]
     [`Do you also drive from Zurich Airport to ${n} at night?`,
      `Yes, we operate around the clock – including landings after midnight – at a fixed price; between midnight and 6 am a night tariff of 20 % applies, shown immediately when booking. Important: requests received between 11 pm and 6 am for journeys due to start within the next two hours cannot be accepted online; please book night transfers in advance or contact us via WhatsApp.`],
     [`How many people and suitcases fit in the vehicle to ${n}?`,
-     `Business Class (${e.car}): up to ${e.pax} people and ${e.bags} suitcases from ${pE}. Business & Family Class (${v.car}): up to ${v.pax} people and ${v.bags} suitcases from ${pV}. Premium Class (${sC.car}): up to ${sC.pax} people and ${sC.bags} suitcases from ${pS}. Hand luggage does not usually count; ski bags travel free (max. 4 per vehicle).`],
+     `Business Class (${e.car}): up to ${e.pax} people and ${e.bags} suitcases. Business & Family Class (${v.car}): up to ${v.pax} people and ${v.bags} suitcases. Premium Class (${sC.car}): up to ${sC.pax} people and ${sC.bags} suitcases. The price of each class is calculated at booking by kilometre tariff. Hand luggage does not usually count; ski bags travel free (max. 4 per vehicle).`],
     [`Do you also offer the return journey from ${n} to Zurich Airport?`,
      `Yes, at the same fixed price. Your chauffeur collects you at your address in ${n} and brings you to the departures terminal in around ${d}. When booking, simply choose ${n} as pickup and the airport as destination – or book outbound and return one after the other.`],
     [`Is the price to ${n} per person or per vehicle?`,

@@ -4,7 +4,7 @@ import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../
 import { createCheckout, stripeReady } from "../../lib/stripe";
 import { SITE_URL } from "../../config";
 import { captureMeasurement } from "../../lib/measurement";
-import { serverPrice } from "../../lib/pricing";
+import { serverPriceAsync } from "../../lib/pricing";
 
 export const runtime = "nodejs";
 
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const b = await req.json();
     const ref = str(b.ref, 32);
     // Sabit rota / saatlik: tarifeden yeniden hesapla; özel güzergâh: tarayıcı tahmini
-    const realPrice = serverPrice(b) ?? num(b.price);
+    const realPrice = (await serverPriceAsync(b)) ?? num(b.price);
     let amount = realPrice;
     // Canlı ödeme testi: CHECKOUT_TEST_EMAIL tanımlıysa ve müşteri e-postası ona eşitse Stripe'a CHF 1.00 gider.
     // Kayıt gerçek fiyatla tutulur; log satırı bunu belirtir. Test bitince Vercel'den değişkeni sil.

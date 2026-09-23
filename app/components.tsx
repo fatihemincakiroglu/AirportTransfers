@@ -599,9 +599,8 @@ export function BookingCard() {
 }
 
 // ── Kartlar ───────────────────────────────────────────────────
-export function RouteCard({ slug, to, km, min, price, img, priority }: { slug: string; to: LocalName; km: number; min: number; price: number; img: string; priority?: boolean }) {
+export function RouteCard({ slug, to, km, min, img, priority }: { slug: string; to: LocalName; km: number; min: number; price?: number; img: string; priority?: boolean }) {
   const { lang, P } = useLang();
-  const L = t[lang];
   const n = localName(to, lang);
   const dur =
     lang === "de"
@@ -627,7 +626,7 @@ export function RouteCard({ slug, to, km, min, price, img, priority }: { slug: s
         style={{ background: "linear-gradient(180deg, rgba(8,33,27,0.15) 0%, rgba(8,33,27,0.85) 85%)" }}
       />
       <span className="absolute right-4 top-4 z-10 rounded-full px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wide" style={{ background: C.gold, color: C.pine }}>
-        {L.routesSec.from} CHF {price.toFixed(2)}
+        🕐 {min < 60 ? `${min} min` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60}` : ""}`}
       </span>
       <span className="relative z-10 mb-2 h-0.5 w-8" style={{ background: C.gold }} />
       <h3 className="font-display relative z-10 text-xl font-semibold leading-snug">Flughafen Zürich (ZRH) → {n}</h3>

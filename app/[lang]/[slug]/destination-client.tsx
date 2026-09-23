@@ -62,7 +62,7 @@ export default function DestinationClient({ slug }: { slug: string }) {
             </a>
             {route && (
               <span className="text-sm font-bold" style={{ color: C.pine }}>
-                {D.routeKnown(d.name, route.price.toFixed(2))}
+                {D.routeKnown(d.name)}
               </span>
             )}
           </div>

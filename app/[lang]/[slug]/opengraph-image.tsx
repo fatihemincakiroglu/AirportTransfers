@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { routes } from "../../config";
 
-// Rotaya özel sosyal paylaşım kartı: "ZRH → Luzern · ab CHF 189.75"
+// Rotaya özel sosyal paylaşım kartı: "ZRH → Luzern · Festpreis"
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = "Zurich Airport Transfer";
@@ -63,7 +63,7 @@ export default async function OgImage({
                 display: "flex",
               }}
             >
-              {`${de ? "ab" : "from"} CHF ${route.price.toFixed(2)}`}
+              {de ? "Festpreis · Kilometertarif" : "Fixed price · kilometre tariff"}
             </div>
           ) : null}
           <div style={{ fontSize: 24, color: "rgba(250,250,247,0.6)", display: "flex" }}>

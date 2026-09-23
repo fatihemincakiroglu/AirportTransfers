@@ -1,11 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { C, routes, fleet, transferPrice, hourlyPrice, HOURLY, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY } from "../../config";
+import { C, fleet, transferPrice, hourlyPrice, HOURLY, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, KM_RATE, KM_TIERS, TRANSFER_MIN_PRICE } from "../../config";
 import { tx } from "../../i18nX";
-import { pickL } from "../../i18n";
 import { useLang } from "../../providers";
-import { destRegions } from "../../destinations";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, localName } from "../../components";
 
 // Bölüm başlığı: küçük harf aralıklı etiket + eriyen altın çizgi (site imzası)
@@ -26,15 +24,7 @@ export default function PreiseClient() {
   const X = tx[lang];
   const PR = X.prices;
 
-  // En kısa rota — sınıf kartlarındaki "ab CHF" her araç için kendi tarifesiyle
-  const minKm = Math.min(...routes.map((r) => r.km));
 
-  const dur = (min: number) =>
-    lang === "de"
-      ? min < 60 ? `${min} Min.` : `${Math.floor(min / 60)} Std.${min % 60 ? ` ${min % 60}` : ""}`
-      : min < 60 ? `${min} mins` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60}m` : ""}`;
-
-  const routeOf = (routeSlug?: string) => (routeSlug ? routes.find((r) => r.slug === routeSlug) : undefined);
 
   return (
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
@@ -81,103 +71,65 @@ export default function PreiseClient() {
                 <h3 className="mt-5 text-base font-bold" style={{ color: C.pine }}>{localName(v.name, lang)}</h3>
                 <p className="mt-0.5 text-xs text-stone-500">{v.car} · 👥 {v.pax} · 🧳 {v.bags}</p>
                 <p className="mt-4 flex items-baseline gap-2">
-                  <span className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{PR.from}</span>
                   <span className="font-display text-3xl font-semibold" style={{ color: C.pine }}>
-                    CHF {Math.round(transferPrice(minKm, v.id))}
+                    CHF {KM_RATE[v.id].toFixed(2)}
                   </span>
+                  <span className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{lang === "de" ? "pro km" : "per km"}</span>
                 </p>
-                <p className="text-xs text-stone-400">{PR.perVehicle}</p>
+                <p className="text-xs text-stone-400">{lang === "de" ? `+ Grundpreis nach Distanz · mind. CHF ${TRANSFER_MIN_PRICE}` : `+ base fare by distance · min. CHF ${TRANSFER_MIN_PRICE}`}</p>
               </a>
             ))}
           </div>
         </div>
 
         {/* ── Rota tablosu ── */}
+        {/* Kilometertarif: dilim tabanı + km ücreti; örnek mesafeler */}
         <div className="mt-16">
-          <SectionLabel>{PR.tableTitle}</SectionLabel>
-          <p className="mt-3 max-w-2xl text-sm text-stone-600">{PR.tableSub}</p>
-          <div className="mt-6 overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-black/5">
-            <table className="w-full min-w-[680px] text-left text-sm">
+          <SectionLabel>{lang === "de" ? "So berechnet sich Ihr Festpreis" : "How your fixed price is calculated"}</SectionLabel>
+          <p className="mt-2 max-w-2xl text-sm text-stone-600">
+            {lang === "de"
+              ? "Grundpreis nach Distanz + gefahrene Kilometer × Kilometerpreis der Fahrzeugklasse. Die Distanz wird bei der Buchung aus der tatsächlichen Fahrstrecke ermittelt – für jede Adresse in der Schweiz und den Nachbarländern."
+              : "Base fare by distance + kilometres driven × the class kilometre rate. The distance is determined at booking from the actual driving route – for any address in Switzerland and neighbouring countries."}
+          </p>
+          <div className="mt-6 overflow-x-auto rounded-2xl bg-white shadow-md ring-1 ring-black/5">
+            <table className="w-full text-sm">
               <thead>
-                <tr className="text-[10px] font-bold uppercase tracking-[0.18em] text-stone-400">
-                  <th className="px-6 pb-3 pt-5 font-bold">{PR.colDest}</th>
-                  <th className="px-4 pb-3 pt-5 font-bold">{PR.colKm}</th>
-                  <th className="px-4 pb-3 pt-5 font-bold">{PR.colDur}</th>
+                <tr style={{ background: C.pine }}>
+                  <th className="px-5 py-3 text-left text-[11px] font-extrabold uppercase tracking-wider text-white">{lang === "de" ? "Distanz" : "Distance"}</th>
+                  <th className="px-5 py-3 text-left text-[11px] font-extrabold uppercase tracking-wider text-white">{lang === "de" ? "Grundpreis" : "Base fare"}</th>
                   {fleet.map((v) => (
-                    <th key={v.car} className="px-4 pb-3 pt-5 text-right font-bold last:px-6">{localName(v.name, lang)}</th>
+                    <th key={v.id} className="px-5 py-3 text-right text-[11px] font-extrabold uppercase tracking-wider text-white">{typeof v.name === "string" ? v.name : v.name[lang]}</th>
                   ))}
                 </tr>
-                <tr aria-hidden>
-                  <td colSpan={3 + fleet.length} className="px-6">
-                    <span className="block h-px w-full" style={{ background: `linear-gradient(90deg, ${C.gold} 0%, ${C.gold}44 40%, #e7e5e4 100%)` }} />
-                  </td>
-                </tr>
               </thead>
-              <tbody className="divide-y divide-stone-100">
-                {routes.map((r) => (
-                  <tr key={r.slug} className="transition-colors hover:bg-[#FBF9F3]">
-                    <td className="px-6 py-4">
-                      <a href={P(`/${r.slug}`)} className="font-bold underline-offset-4 hover:underline" style={{ color: C.pine, textDecorationColor: C.gold }}>
-                        ZRH → {localName(r.to, lang)}
-                      </a>
-                    </td>
-                    <td className="px-4 py-4 tabular-nums text-stone-500">{r.km} km</td>
-                    <td className="px-4 py-4 text-stone-500">{dur(r.min)}</td>
-                    {fleet.map((v, i) => (
-                      <td key={v.car} className={`px-4 py-4 text-right tabular-nums last:px-6 ${i === 0 ? "font-bold" : "font-medium text-stone-600"}`} style={i === 0 ? { color: C.pine } : undefined}>
-                        {Math.round(transferPrice(r.km, v.id))}.–
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+              <tbody>
+                {KM_TIERS.map((tier, i) => {
+                  const lo = i === 0 ? 0 : KM_TIERS[i - 1].upTo!;
+                  const label = tier.upTo === null ? `${lo}+ km` : `${lo}–${tier.upTo} km`;
+                  const sample = tier.upTo === null ? 100 : Math.round((lo + tier.upTo) / 2);
+                  return (
+                    <tr key={i} className={i % 2 ? "bg-[#FBF9F3]" : "bg-white"}>
+                      <td className="px-5 py-3 font-bold" style={{ color: C.pine }}>{label}</td>
+                      <td className="px-5 py-3 text-stone-600">CHF {tier.base}</td>
+                      {fleet.map((v) => (
+                        <td key={v.id} className="px-5 py-3 text-right tabular-nums text-stone-700">
+                          <span className="text-[11px] text-stone-400">{lang === "de" ? "z. B." : "e.g."} {sample} km → </span>
+                          <b>CHF {transferPrice(sample, v.id).toFixed(2)}</b>
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
-        </div>
-
-        {/* ── Destinasyonlara göre — editoryal dizin ── */}
-        <div className="mt-16">
-          <SectionLabel>{PR.destTitle}</SectionLabel>
-          <p className="mt-3 max-w-2xl text-sm text-stone-600">{PR.destSub}</p>
-          {destRegions.map((region) => {
-            return (
-              <div key={region.key} className="mt-10">
-                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-stone-400">{pickL(region.label, lang)}</h3>
-                <ul className="mt-4 columns-2 gap-x-10 md:columns-3 lg:columns-4">
-                  {region.cities.map((c) => {
-                    const r = routeOf(c.routeSlug);
-                    return (
-                      <li key={region.key + c.slug} className="break-inside-avoid">
-                        <a
-                          href={P(`/${c.slug}`)}
-                          className="group flex items-baseline justify-between gap-3 py-[7px] text-[15px] font-semibold text-stone-700 transition-colors hover:text-[#0C2E25]"
-                        >
-                          <span className="underline-offset-4 group-hover:underline" style={{ textDecorationColor: C.gold }}>
-                            {c.name}
-                          </span>
-                          <span className="shrink-0 text-xs font-bold tabular-nums text-stone-400 transition-colors group-hover:text-[#0C2E25]">
-                            {r ? `${Math.round(r.price)}.–` : PR.request}
-                          </span>
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* CTA */}
-        <div className="mt-20 rounded-3xl p-8 text-center text-white md:p-12" style={{ background: C.pine }}>
-          <h2 className="font-display text-2xl font-semibold md:text-3xl">{X.dest.ctaTitle}</h2>
-          <p className="mx-auto mt-2 max-w-xl text-white/70">{X.dest.ctaSub}</p>
-          <a
-            href={P("/buchung")}
-            className="mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3 text-sm font-extrabold uppercase tracking-wide transition-transform hover:-translate-y-0.5"
-            style={{ background: C.gold, color: C.pine }}
-          >
-            {X.dest.ctaBtn} →
+          <p className="mt-3 text-xs text-stone-500">
+            {lang === "de"
+              ? `Kilometerpreis: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Mindestpreis CHF ${TRANSFER_MIN_PRICE}. Alle Preise pro Fahrzeug, inkl. MwSt., Meet & Greet, Flugverfolgung, 60 Min. Wartezeit und Kindersitzen.`
+              : `Kilometre rate: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Minimum fare CHF ${TRANSFER_MIN_PRICE}. All prices per vehicle, incl. VAT, meet & greet, flight tracking, 60 min waiting time and child seats.`}
+          </p>
+          <a href={P("/buchung")} className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
+            {lang === "de" ? "Preis für meine Adresse berechnen" : "Calculate the price for my address"} →
           </a>
         </div>
 

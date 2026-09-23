@@ -36,7 +36,6 @@ export default async function Page({ params }: Params) {
           serviceType: "Airport transfer",
           name: `Zurich Airport (ZRH) → ${nameOf(r.to, lang)}`,
           url: `/${lang}/${routeSlug(r.slug, lang as "de" | "en")}`,
-          offers: { "@type": "Offer", price: r.price.toFixed(2), priceCurrency: "CHF" },
         },
       })),
     },

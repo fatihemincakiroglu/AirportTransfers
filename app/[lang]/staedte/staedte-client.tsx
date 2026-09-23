@@ -73,7 +73,7 @@ export default function StaedteClient() {
                     <span aria-hidden className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(8,33,27,0.05) 30%, rgba(8,33,27,0.85) 100%)" }} />
                     <span className="relative font-display text-2xl font-semibold">{c.name}</span>
                     <span className="relative mt-1 text-xs font-bold uppercase tracking-wide text-white/80">
-                      {r ? `${D.fixed} ${Math.round(r.price)}` : D.onRequest}
+                      {D.onRequest}
                     </span>
                   </a>
                 );
@@ -96,7 +96,6 @@ export default function StaedteClient() {
               </div>
               <ul className="mt-5 columns-2 gap-x-10 md:columns-3 lg:columns-4">
                 {cities.map((c) => {
-                  const r = routeOf(c.routeSlug);
                   return (
                     <li key={region.key + c.slug} className="break-inside-avoid">
                       <a
@@ -106,11 +105,6 @@ export default function StaedteClient() {
                         <span className="underline-offset-4 group-hover:underline" style={{ textDecorationColor: C.gold }}>
                           {c.name}
                         </span>
-                        {r && (
-                          <span className="shrink-0 text-xs font-bold tabular-nums text-stone-400 transition-colors group-hover:text-[#0C2E25]">
-                            {Math.round(r.price)}.–
-                          </span>
-                        )}
                       </a>
                     </li>
                   );
