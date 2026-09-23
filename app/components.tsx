@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
   COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES, GOOGLE_BUSINESS_URL,
@@ -273,16 +273,45 @@ export const norm = (s: string) =>
   s.toLowerCase().replace(/ä/g, "a").replace(/ö/g, "o").replace(/ü/g, "u")
    .replace(/é|è|ê/g, "e").replace(/â|à/g, "a").replace(/î/g, "i");
 
-/** İsviçre yerleri için otomatik tamamlamalı alan */
+/**
+ * Yer alanı — dünya geneli otomatik tamamlama.
+ * Yerel liste (havalimanı, sabit rotalar, İsviçre yerleri) anında; 2. harften itibaren
+ * /api/places (OpenStreetMap/Photon) sonuçları eklenir. Kullanıcı istediği metni de yazabilir.
+ */
+type PlaceSuggestion = { label: string; sub?: string };
+const LOCAL_PLACES = ["Flughafen Zürich (ZRH), Schweiz", ...SWISS_PLACES];
+
 export function PlaceField({ label, icon, value, placeholder, onChange }: {
   label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
 }) {
+  const { lang } = useLang();
   const [open, setOpen] = useState(false);
+  const [remote, setRemote] = useState<PlaceSuggestion[]>([]);
   const q = norm(value.trim());
-  const matches = q.length >= 1
-    ? SWISS_PLACES.filter((p) => norm(p).includes(q) && norm(p) !== q).slice(0, 7)
+
+  // Uzak arama: 250 ms gecikme, eski istekler yok sayılır
+  useEffect(() => {
+    let alive = true;
+    /* eslint-disable react-hooks/set-state-in-effect -- harici arama (fetch) senkronu; kısa sorguda sonuç temizlenir */
+    if (q.length < 2) { setRemote([]); return; }
+    /* eslint-enable react-hooks/set-state-in-effect */
+    const t = setTimeout(async () => {
+      try {
+        const r = await fetch(`/api/places?q=${encodeURIComponent(value.trim())}&lang=${lang}`);
+        const d = (await r.json()) as { items: { label: string; sub: string }[] };
+        if (alive) setRemote(d.items ?? []);
+      } catch { /* öneri gelmezse yerel liste yeter */ }
+    }, 250);
+    return () => { alive = false; clearTimeout(t); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- value.trim() değişimi q üzerinden izlenir
+  }, [q, lang]);
+
+  const local: PlaceSuggestion[] = q.length >= 1
+    ? LOCAL_PLACES.filter((p) => norm(p).includes(q) && norm(p) !== q).slice(0, 4).map((p) => ({ label: p }))
     : [];
-  const show = open && matches.length > 0;
+  const seen = new Set(local.map((p) => norm(p.label)));
+  const merged = [...local, ...remote.filter((r) => !seen.has(norm(r.label)) && norm(r.label) !== q)].slice(0, 8);
+  const show = open && merged.length > 0;
 
   return (
     <div className="relative">
@@ -307,16 +336,17 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
         )}
       </div>
       {show && (
-        <ul className="absolute z-30 mt-2 max-h-56 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
-          {matches.map((p) => (
-            <li key={p}>
+        <ul className="absolute z-30 mt-2 max-h-64 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
+          {merged.map((p) => (
+            <li key={p.label + (p.sub ?? "")}>
               <button
                 type="button"
-                onMouseDown={(e) => { e.preventDefault(); onChange(p); setOpen(false); }}
+                onMouseDown={(e) => { e.preventDefault(); onChange(p.sub ? `${p.label}, ${p.sub}` : p.label); setOpen(false); }}
                 className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm font-medium text-stone-700 transition-colors hover:bg-[#FBF7EE]"
               >
                 <span className="text-xs" style={{ color: C.gold }}>📍</span>
-                {p}
+                <span className="min-w-0 flex-1 truncate">{p.label}</span>
+                {p.sub && <span className="shrink-0 text-[11px] text-stone-400">{p.sub}</span>}
               </button>
             </li>
           ))}

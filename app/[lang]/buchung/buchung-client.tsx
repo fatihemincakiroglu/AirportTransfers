@@ -28,6 +28,8 @@ const DIAL_CODES: [string, string, string][] = [
 ];
 
 const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
+/** Harita için: ülke yazılmamışsa İsviçre varsayılır (dünya geneli adresler olduğu gibi kalır) */
+const withCountry = (s: string) => (s.includes(",") ? s : `${s}, Switzerland`);
 
 /**
  * Serbest metin uçları sabit rotayla eşleştirir (aksan duyarsız, iki dilde).
@@ -303,7 +305,7 @@ export default function Buchung() {
 
   // Harita için varış zinciri: duraklar + varış ("to:" sözdizimi waypoint verir)
   const chain = (stopsArr: string[], dest: string) =>
-    [...stopsArr.map((x) => `${x}, Switzerland`), dest].join(" to:");
+    [...stopsArr.map((x) => withCountry(x)), dest].join(" to:");
   const showCustom = !route && custom !== null;
   const cFrom = showCustom ? (reversed ? custom!.to : custom!.from) : "";
   const cTo = showCustom ? (reversed ? custom!.from : custom!.to) : "";
@@ -817,7 +819,7 @@ export default function Buchung() {
               <div className="mt-4 overflow-hidden rounded-xl border border-stone-200">
                 <iframe
                   title="Custom route map"
-                  src={`https://maps.google.com/maps?saddr=${encodeURIComponent(cFrom + ", Switzerland")}&daddr=${encodeURIComponent(chain(reversed ? [...stops].reverse() : stops, cTo + ", Switzerland"))}&hl=${lang}&output=embed`}
+                  src={`https://maps.google.com/maps?saddr=${encodeURIComponent(withCountry(cFrom))}&daddr=${encodeURIComponent(chain(reversed ? [...stops].reverse() : stops, withCountry(cTo)))}&hl=${lang}&output=embed`}
                   className="h-52 w-full"
                   loading="lazy"
                 />
