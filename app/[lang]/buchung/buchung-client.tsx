@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { C, routes, fleet, CUSTOM_BASE_PRICE, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, vehicleFactor, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY } from "../../config";
+import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
@@ -106,8 +106,9 @@ export default function Buchung() {
       booking: { booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
     }, { idPrefix: "submit" });
 
-    // Yalnızca "Online bezahlen" seçildiyse Stripe; araç içi ödemelerde talep doğrudan iletilir
-    if (pay === ONLINE_PAY) {
+    // Yalnızca "Online bezahlen" seçildiyse Stripe; araç içi ödemelerde talep doğrudan iletilir.
+    // Fiyat henüz hesaplanamadıysa online ödeme açılmaz (tutar belirsiz) — talep iletilir, fiyat kabulde bildirilir.
+    if (pay === ONLINE_PAY && !priceUnknown) {
       try {
         const res = await fetch("/api/checkout", {
           method: "POST",
@@ -350,9 +351,9 @@ export default function Buchung() {
     if (hourly) return hourlyPrice(hourlyHours ?? 1, v.id, time);
     if (route) return transferPrice(route.km, v.id, time);
     if (quote?.prices[v.id] !== undefined) return quote.prices[v.id]; // gerçek yol mesafesi tarifesi
-    const est = CUSTOM_BASE_PRICE * vehicleFactor(v.id) * (night ? 1 + NIGHT_SURCHARGE_TRANSFER : 1);
-    return Math.round(est * 100) / 100;
+    return 0; // mesafe (henüz) yok → fiyat gösterilmez, kabulde tarifeye göre hesaplanır
   };
+  const priceUnknown = hasTrip && !hourly && !route && quote === null;
   const basePrice = chosen ? priceFor(chosen) : hasTrip ? priceFor(sorted[0]) : 0; // ölçüm: tahmini değer için
   const total = hasTrip && chosen ? priceFor(chosen) : 0;
 
@@ -666,7 +667,7 @@ export default function Buchung() {
                     </div>
                     <div className="text-center sm:text-right">
                       <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                        CHF {priceFor(v).toFixed(2)}
+                        {priceUnknown ? <span className="text-sm font-bold text-stone-500">{lang === "de" ? "Preis bei Bestätigung" : "Price on confirmation"}</span> : `CHF ${priceFor(v).toFixed(2)}`}
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button
@@ -785,7 +786,7 @@ export default function Buchung() {
                     }`}
                     style={{ background: C.gold, color: C.pine }}
                   >
-                    {sending ? `${D.sending}…` : `${pay === ONLINE_PAY ? X.pay.cta : D.bookCta} — CHF ${total.toFixed(2)}`}
+                    {sending ? `${D.sending}…` : priceUnknown ? D.bookCta : `${pay === ONLINE_PAY ? X.pay.cta : D.bookCta} — CHF ${total.toFixed(2)}`}
                   </button>
                 </div>
 
@@ -879,14 +880,14 @@ export default function Buchung() {
               <div className="flex items-center justify-between">
                 <b style={{ color: C.gold }}>{D.total}</b>
                 <span className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                  CHF {total.toFixed(2)}
+                  {priceUnknown ? (lang === "de" ? "bei Bestätigung" : "on confirmation") : `CHF ${total.toFixed(2)}`}
                 </span>
               </div>
               {showCustom && !hourly && (
                 <p className="mt-1 text-right text-[11px] text-stone-500">
                   {quote
                     ? (lang === "de" ? `Festpreis für ${quote.km} km Fahrstrecke.` : `Fixed price for ${quote.km} km driving distance.`)
-                    : (lang === "de" ? "Individuelle Strecke – Endpreis wird per WhatsApp bestätigt." : "Custom route – final price confirmed via WhatsApp.")}
+                    : (lang === "de" ? "Adresse konnte nicht verortet werden – der Preis wird nach Kilometertarif berechnet und Ihnen bei der Bestätigung mitgeteilt." : "Address could not be located – the price is calculated by kilometre tariff and sent with your confirmation.")}
                 </p>
               )}
               {night && (
@@ -945,7 +946,7 @@ export default function Buchung() {
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-stone-500">{D.total}</span>
-                <b>CHF {total.toFixed(2)}</b>
+                <b>{priceUnknown ? (lang === "de" ? "bei Bestätigung" : "on confirmation") : `CHF ${total.toFixed(2)}`}</b>
               </div>
               <div className="flex items-center justify-between gap-4">
                 <span className="text-stone-500">{X.done.payment}</span>
