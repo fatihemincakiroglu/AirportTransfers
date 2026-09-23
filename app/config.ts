@@ -220,6 +220,32 @@ export const SWISS_PLACES: string[] = [
   "Lugano", "Locarno", "Ascona", "Bellinzona", "Morcote",
 ];
 
+/**
+ * Komşu ülkelerdeki sık gidilen yerler — yer alanında anında öneri (uzak arama beklemeden).
+ * Biçim "Şehir, Ülke"; dünya geneli diğer yerler Photon/OSM aramasından gelir.
+ */
+export const NEARBY_PLACES: string[] = [
+  // Deutschland
+  "Konstanz, Deutschland", "Freiburg im Breisgau, Deutschland", "Lörrach, Deutschland", "Weil am Rhein, Deutschland",
+  "Singen, Deutschland", "Friedrichshafen, Deutschland", "Lindau, Deutschland", "Waldshut-Tiengen, Deutschland",
+  "Stuttgart, Deutschland", "München, Deutschland", "Ulm, Deutschland", "Frankfurt am Main, Deutschland", "Karlsruhe, Deutschland",
+  "Baden-Baden, Deutschland", "Titisee-Neustadt, Deutschland", "Radolfzell, Deutschland", "Überlingen, Deutschland",
+  // Österreich
+  "Bregenz, Österreich", "Dornbirn, Österreich", "Feldkirch, Österreich", "Innsbruck, Österreich", "St. Anton am Arlberg, Österreich",
+  "Lech am Arlberg, Österreich", "Ischgl, Österreich", "Sölden, Österreich", "Kitzbühel, Österreich", "Salzburg, Österreich",
+  "Wien, Österreich", "Schruns, Österreich", "Gaschurn, Österreich",
+  // Frankreich
+  "Mulhouse, Frankreich", "Colmar, Frankreich", "Strasbourg, Frankreich", "Saint-Louis, Frankreich", "Annecy, Frankreich",
+  "Chamonix-Mont-Blanc, Frankreich", "Évian-les-Bains, Frankreich", "Lyon, Frankreich", "Paris, Frankreich", "Nizza, Frankreich",
+  "Megève, Frankreich", "Morzine, Frankreich", "Divonne-les-Bains, Frankreich", "Besançon, Frankreich",
+  // Italien
+  "Mailand, Italien", "Como, Italien", "Varese, Italien", "Malpensa Flughafen, Italien", "Turin, Italien", "Bergamo, Italien",
+  "Verona, Italien", "Venedig, Italien", "Bozen, Italien", "Aosta, Italien", "Courmayeur, Italien", "Livigno, Italien",
+  "Domodossola, Italien", "Stresa, Italien", "Genua, Italien", "Florenz, Italien", "Rom, Italien",
+  // Liechtenstein
+  "Vaduz, Liechtenstein", "Schaan, Liechtenstein",
+];
+
 // Özel güzergâhlar (sabit rota dışı, mesafe bilinmiyor) için Business Class tahmini taban;
 // kesin fiyat kabulde teyit edilir. Araç farkı km ücreti oranıyla uygulanır (vehicleFactor).
 export const CUSTOM_BASE_PRICE = 250.0;

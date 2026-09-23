@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
-  COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES, GOOGLE_BUSINESS_URL,
+  COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES, NEARBY_PLACES, GOOGLE_BUSINESS_URL,
 } from "./config";
 import { t, Lang, pickL } from "./i18n";
 import { tx } from "./i18nX";
@@ -279,7 +279,28 @@ export const norm = (s: string) =>
  * /api/places (OpenStreetMap/Photon) sonuçları eklenir. Kullanıcı istediği metni de yazabilir.
  */
 type PlaceSuggestion = { label: string; sub?: string };
-const LOCAL_PLACES = ["Flughafen Zürich (ZRH), Schweiz", ...SWISS_PLACES];
+
+/** Photon/OSM özelliklerini "Ad, Şehir, Bölge · Ülke" önerisine çevirir (sunucu vekiliyle aynı mantık) */
+function photonToSuggestions(features: { properties: Record<string, string | undefined> }[]): PlaceSuggestion[] {
+  const out: PlaceSuggestion[] = [];
+  const seen = new Set<string>();
+  for (const f of features) {
+    const p = f.properties;
+    const name = p.name ?? p.street ?? "";
+    if (!name) continue;
+    const city = p.city && p.city !== name ? p.city : "";
+    const state = p.state && p.state !== city && p.state !== name ? p.state : "";
+    const parts = [name, city, state].filter(Boolean);
+    const street = p.street && p.street !== name ? `${p.street}${p.housenumber ? " " + p.housenumber : ""}` : "";
+    const label = street ? `${street}, ${parts.join(", ")}` : parts.join(", ");
+    const key = `${label}|${p.country ?? ""}`.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push({ label, sub: p.country ?? "" });
+  }
+  return out;
+}
+const LOCAL_PLACES = ["Flughafen Zürich (ZRH), Schweiz", ...SWISS_PLACES, ...NEARBY_PLACES];
 
 export function PlaceField({ label, icon, value, placeholder, onChange }: {
   label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
@@ -289,20 +310,29 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
   const [remote, setRemote] = useState<PlaceSuggestion[]>([]);
   const q = norm(value.trim());
 
-  // Uzak arama: 250 ms gecikme, eski istekler yok sayılır
+  // Uzak arama: 150 ms gecikme, önceki istek iptal edilir; tarayıcı Photon'a doğrudan gider (tek atlama),
+  // olmazsa sunucu vekili (/api/places) devreye girer
   useEffect(() => {
     let alive = true;
+    const ctrl = new AbortController();
     /* eslint-disable react-hooks/set-state-in-effect -- harici arama (fetch) senkronu; kısa sorguda sonuç temizlenir */
     if (q.length < 2) { setRemote([]); return; }
     /* eslint-enable react-hooks/set-state-in-effect */
     const t = setTimeout(async () => {
+      const text = value.trim();
       try {
-        const r = await fetch(`/api/places?q=${encodeURIComponent(value.trim())}&lang=${lang}`);
-        const d = (await r.json()) as { items: { label: string; sub: string }[] };
-        if (alive) setRemote(d.items ?? []);
-      } catch { /* öneri gelmezse yerel liste yeter */ }
-    }, 250);
-    return () => { alive = false; clearTimeout(t); };
+        const r = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(text)}&lang=${lang}&limit=8&lat=47.4582&lon=8.5555`, { signal: ctrl.signal });
+        const d = (await r.json()) as { features: { properties: Record<string, string | undefined> }[] };
+        if (alive) setRemote(photonToSuggestions(d.features ?? []));
+      } catch {
+        try {
+          const r = await fetch(`/api/places?q=${encodeURIComponent(text)}&lang=${lang}`, { signal: ctrl.signal });
+          const d = (await r.json()) as { items: { label: string; sub: string }[] };
+          if (alive) setRemote(d.items ?? []);
+        } catch { /* öneri gelmezse yerel liste yeter */ }
+      }
+    }, 150);
+    return () => { alive = false; ctrl.abort(); clearTimeout(t); };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- value.trim() değişimi q üzerinden izlenir
   }, [q, lang]);
 
