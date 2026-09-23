@@ -2,6 +2,7 @@
 // Vercel Cron `Authorization: Bearer <CRON_SECRET>` başlığıyla çağırır (vercel.json).
 import { NextRequest, NextResponse } from "next/server";
 import { deliverDue } from "../../../lib/measurement";
+import { sendPendingReviewRequests } from "../../../lib/mail";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,5 +13,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ok: false }, { status: 401 });
   }
   const processed = await deliverDue(100);
-  return NextResponse.json({ ok: true, processed });
+  const reviews = await sendPendingReviewRequests(50); // dünkü yolculuklara Google değerlendirme isteği
+  return NextResponse.json({ ok: true, processed, reviews });
 }

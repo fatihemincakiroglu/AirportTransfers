@@ -13,7 +13,7 @@ import {
 } from "../components";
 
 // ── Yorum marquee'si — modül seviyesinde tanımlı (her render'da yeniden oluşmaz) ──
-type Review = { text: string; name: string; route: string; flag: string };
+import { reviews, reviewStats, type Review } from "../reviews";
 
 function ReviewCard({ r }: { r: Review }) {
   return (
@@ -107,9 +107,9 @@ export default function Home() {
         <div className="relative mx-auto grid max-w-7xl gap-8 px-5 pb-16 pt-6 text-white md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:pb-24 md:pt-24">
           <div className="order-2 flex flex-col justify-center md:order-1">
             <h1 className="font-display text-4xl font-semibold leading-[1.08] md:text-7xl">
-              Airport Zurich
+              {lang === "de" ? "Zürich Flughafen" : "Airport Zurich"}
               <br />
-              <span style={{ color: C.gold }}>Transfer</span>
+              <span style={{ color: C.gold }}>{lang === "de" ? "Privater Transfer" : "Private Transfer"}</span>
             </h1>
             {/* Güven rozetleri — 2x2 + puan kartı */}
             <div className="mt-6 grid grid-cols-2 gap-2 md:gap-3">
@@ -119,13 +119,6 @@ export default function Home() {
                   {b}
                 </span>
               ))}
-            </div>
-            <div className="mt-2 flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur md:mt-3 md:gap-4 md:rounded-2xl md:px-5 md:py-3.5">
-              <span className="text-base tracking-[0.15em]" style={{ color: C.gold }}>★★★★★</span>
-              <span className="text-sm">
-                <b>{X.heroRating.score}</b>
-                <span className="block text-xs text-white/60">{X.heroRating.sub}</span>
-              </span>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
               <a href="#buchen" className="rounded-full px-6 py-3 text-sm font-bold transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
@@ -274,40 +267,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Reviews ─────────────────────────────────────────── */}
-      <section style={{ background: C.pine }} className="text-white">
-        <div className="mx-auto max-w-7xl px-5 py-16 md:py-24">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.gold }}>
-                <span className="h-px w-8" style={{ background: C.gold }} />
-                {L.reviewsSec.eyebrow}
-              </p>
-              <h2 className="font-display text-4xl font-semibold md:text-5xl">{L.reviewsSec.title}</h2>
-              <p className="mt-3 text-white/70">{L.reviewsSec.sub}</p>
-            </div>
-            <div className="text-right">
-              <span style={{ color: C.gold }}>★★★★★</span>
-              <p className="text-2xl font-extrabold">
-                4.9 <span className="text-sm font-normal text-white/60">· 6 {L.reviewsSec.count}</span>
-              </p>
-            </div>
-          </div>
-
-          {/* İki satırlık akan yorum şeridi */}
-          {(() => {
-            const list: Review[] = [...L.reviewsSec.list];
-            const rowTop = list;                       // üst satır → sağa kayar
-            const rowBottom = [...list].reverse();     // alt satır → sola kayar
-            return (
-              <div className="mt-10 space-y-4">
-                <ReviewRow items={rowTop} dir="right" />
-                <ReviewRow items={rowBottom} dir="left" />
+      {/* ── Reviews — yalnızca gerçek yorum varsa (app/reviews.ts) ── */}
+      {reviewStats() && (
+        <section style={{ background: C.pine }} className="text-white">
+          <div className="mx-auto max-w-7xl px-5 py-16 md:py-24">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.gold }}>
+                  <span className="h-px w-8" style={{ background: C.gold }} />
+                  {L.reviewsSec.eyebrow}
+                </p>
+                <h2 className="font-display text-4xl font-semibold md:text-5xl">{L.reviewsSec.title}</h2>
+                <p className="mt-3 text-white/70">{L.reviewsSec.sub}</p>
               </div>
-            );
-          })()}
-        </div>
-      </section>
+              <div className="text-right">
+                <span style={{ color: C.gold }}>{"★".repeat(Math.round(reviewStats()!.avg))}</span>
+                <p className="text-2xl font-extrabold">
+                  {reviewStats()!.avg.toFixed(1)} <span className="text-sm font-normal text-white/60">· {reviewStats()!.count} {L.reviewsSec.count}</span>
+                </p>
+              </div>
+            </div>
+            {(() => {
+              const list: Review[] = [...reviews];
+              return (
+                <div className="mt-10 space-y-4">
+                  <ReviewRow items={list} dir="right" />
+                  {list.length > 3 && <ReviewRow items={[...list].reverse()} dir="left" />}
+                </div>
+              );
+            })()}
+          </div>
+        </section>
+      )}
 
       <SiteFooter />
       <FloatingButtons />

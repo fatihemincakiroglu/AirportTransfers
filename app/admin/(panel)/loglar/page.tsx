@@ -36,6 +36,8 @@ const KIND: Record<string, { label: string; icon: string; bg: string; fg: string
   customer_mail:  { label: "Müşteri e-postası", icon: "📨", bg: "#D1FAE5", fg: "#065F46" },
   customer_mail_failed:  { label: "E-posta hatası",  icon: "⚠", bg: "#FEE2E2", fg: "#B91C1C" },
   customer_mail_skipped: { label: "E-posta yok",     icon: "📭", bg: "#F3F4F6", fg: "#6B7280" },
+  review_mail:           { label: "Değerlendirme isteği", icon: "⭐", bg: "#FEF3C7", fg: "#92400E" },
+  review_mail_failed:    { label: "Değerlendirme hatası", icon: "⚠", bg: "#FEE2E2", fg: "#B91C1C" },
 };
 
 const ACTOR: Record<string, string> = { panel: "Yönetici", site: "Ziyaretçi", sistem: "Sistem" };

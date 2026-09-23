@@ -5,7 +5,7 @@
 //  sunucusuz ortamda bağlantı havuzu tükenmesin diye.
 //  Şema ilk sorguda otomatik oluşturulur (ayrı migration adımı yok).
 // ─────────────────────────────────────────────────────────────
-import postgres from "postgres";
+import postgres, { type TransactionSql } from "postgres";
 
 const url = process.env.DATABASE_URL;
 if (!url) {
@@ -32,34 +32,56 @@ if (process.env.NODE_ENV !== "production") g.__sql = sql;
 let schemaPromise: Promise<void> | null = null;
 
 /**
+ * Şema sürümü. Tablo/kolon eklediğinde BU SAYIYI ARTIR; aksi hâlde yeni DDL çalışmaz.
+ * Sürüm veritabanındaki `schema_meta` ile eşleşiyorsa hiçbir DDL çalışmaz (tek SELECT).
+ */
+const SCHEMA_VERSION = 3;
+
+/**
  * Tabloları oluşturur (varsa dokunmaz).
- * Aynı anda birden fazla sayfa çağırabildiği için tek bir söz (promise)
- * paylaşılır; ayrıca danışma kilidi ile eşzamanlı DDL çakışması önlenir.
+ * - Süreç başına tek söz (promise) paylaşılır.
+ * - Hızlı yol: schema_meta.version güncelse DDL hiç çalışmaz — her sunucu örneğinin
+ *   40 ALTER/CREATE çalıştırıp tabloları kilitlemesi bu şekilde önlenir.
+ * - Güncelleme gerekiyorsa TEK transaction içinde pg_advisory_xact_lock ile yapılır:
+ *   transaction pooler'da (Supavisor) oturum düzeyi pg_advisory_lock güvenilmez,
+ *   kilit başka bağlantıda kalıp herkesi 300 sn bekletebilir (14.09.2026'da yaşandı).
  */
 export async function ensureSchema(): Promise<void> {
   if (!dbReady) return;
   if (!schemaPromise) {
     schemaPromise = runSchema().catch((e) => {
-      // Başarısız olursa bir sonraki istekte tekrar denensin
-      schemaPromise = null;
+      schemaPromise = null; // bir sonraki istekte tekrar denensin
       throw e;
     });
   }
   return schemaPromise;
 }
 
-async function runSchema() {
-  // Aynı anda çalışan örneklerin birbirini bozmaması için kilit
-  await sql`SELECT pg_advisory_lock(918273645)`;
+async function currentVersion(): Promise<number> {
   try {
-    await createTables();
-  } finally {
-    await sql`SELECT pg_advisory_unlock(918273645)`;
+    const rows = (await sql`SELECT version FROM schema_meta WHERE id = 1`) as unknown as { version: number }[];
+    return rows[0]?.version ?? 0;
+  } catch {
+    return 0; // tablo yok → ilk kurulum
   }
 }
 
-async function createTables() {
-  await sql`
+async function runSchema() {
+  if ((await currentVersion()) >= SCHEMA_VERSION) return;
+  await sql.begin(async (tx) => {
+    await tx`SELECT pg_advisory_xact_lock(918273645)`;
+    await tx`CREATE TABLE IF NOT EXISTS schema_meta (id INT PRIMARY KEY, version INT NOT NULL DEFAULT 0)`;
+    const rows = (await tx`SELECT version FROM schema_meta WHERE id = 1`) as unknown as { version: number }[];
+    if ((rows[0]?.version ?? 0) >= SCHEMA_VERSION) return; // kilidi bekleyen ikinci örnek: iş bitmiş
+    await createTables(tx);
+    await tx`
+      INSERT INTO schema_meta (id, version) VALUES (1, ${SCHEMA_VERSION})
+      ON CONFLICT (id) DO UPDATE SET version = EXCLUDED.version`;
+  });
+}
+
+async function createTables(tx: TransactionSql) {
+  await tx`
     CREATE TABLE IF NOT EXISTS bookings (
       id           SERIAL PRIMARY KEY,
       ref          TEXT UNIQUE NOT NULL,
@@ -89,23 +111,23 @@ async function createTables() {
       updated_at   TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
   // Stripe online ödeme
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status  TEXT DEFAULT 'none'`; // none|pending|paid|refunded
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS stripe_session  TEXT`;
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS stripe_intent   TEXT`;
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS paid_at         TIMESTAMPTZ`;
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS refunded_at     TIMESTAMPTZ`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status  TEXT DEFAULT 'none'`; // none|pending|paid|refunded
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS stripe_session  TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS stripe_intent   TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS paid_at         TIMESTAMPTZ`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS refunded_at     TIMESTAMPTZ`;
 
   // Google Takvim senkronu
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS google_event_id TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS google_event_id TEXT`;
 
   // Kabul / ret kararı
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS reject_reason TEXT`;
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS decided_at    TIMESTAMPTZ`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS reject_reason TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS decided_at    TIMESTAMPTZ`;
 
   // Şoför ataması ve kaynak bilgisi
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS driver_id INT`;
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS source    TEXT DEFAULT 'site'`; // site | panel
-  await sql`
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS driver_id INT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS source    TEXT DEFAULT 'site'`; // site | panel
+  await tx`
     CREATE TABLE IF NOT EXISTS drivers (
       id         SERIAL PRIMARY KEY,
       name       TEXT NOT NULL,
@@ -118,12 +140,12 @@ async function createTables() {
     )`;
 
   // Fatura alanları (sonradan eklendi)
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoice_no   TEXT`;
-  await sql`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoiced_at  TIMESTAMPTZ`;
-  await sql`CREATE INDEX IF NOT EXISTS bookings_created_idx ON bookings (created_at DESC)`;
-  await sql`CREATE INDEX IF NOT EXISTS bookings_status_idx  ON bookings (status)`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoice_no   TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoiced_at  TIMESTAMPTZ`;
+  await tx`CREATE INDEX IF NOT EXISTS bookings_created_idx ON bookings (created_at DESC)`;
+  await tx`CREATE INDEX IF NOT EXISTS bookings_status_idx  ON bookings (status)`;
 
-  await sql`
+  await tx`
     CREATE TABLE IF NOT EXISTS contacts (
       id         SERIAL PRIMARY KEY,
       status     TEXT NOT NULL DEFAULT 'new',
@@ -136,7 +158,7 @@ async function createTables() {
     )`;
 
   // Ziyaretçi sayaçları — kişisel veri (IP) SAKLANMAZ, yalnızca toplamlar
-  await sql`
+  await tx`
     CREATE TABLE IF NOT EXISTS visits (
       day     DATE NOT NULL,
       country TEXT NOT NULL DEFAULT '??',
@@ -147,9 +169,9 @@ async function createTables() {
       hits    INT  NOT NULL DEFAULT 0,
       PRIMARY KEY (day, country, city, region, lang, page)
     )`;
-  await sql`CREATE INDEX IF NOT EXISTS visits_day_idx ON visits (day DESC)`;
+  await tx`CREATE INDEX IF NOT EXISTS visits_day_idx ON visits (day DESC)`;
 
-  await sql`
+  await tx`
     CREATE TABLE IF NOT EXISTS logs (
       id         SERIAL PRIMARY KEY,
       kind       TEXT NOT NULL,
@@ -157,24 +179,24 @@ async function createTables() {
       ip         TEXT,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
-  await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS actor TEXT`; // "panel" | "site" | "sistem"
-  await sql`ALTER TABLE logs ADD COLUMN IF NOT EXISTS ref   TEXT`; // ilgili rezervasyon referansı
-  await sql`CREATE INDEX IF NOT EXISTS logs_created_idx ON logs (created_at DESC)`;
+  await tx`ALTER TABLE logs ADD COLUMN IF NOT EXISTS actor TEXT`; // "panel" | "site" | "sistem"
+  await tx`ALTER TABLE logs ADD COLUMN IF NOT EXISTS ref   TEXT`; // ilgili rezervasyon referansı
+  await tx`CREATE INDEX IF NOT EXISTS logs_created_idx ON logs (created_at DESC)`;
 
   // ── Ölçüm (Data Layer spec v1.3.5, Faz 2: backend hattı) ──
   // Rezervasyon/lead kaydında yakalanan kimlik ve onay anlık görüntüsü (yalnızca izinli alanlar)
   for (const table of ["bookings", "contacts"]) {
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS ga_client_id  TEXT`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS ga_session_id TEXT`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS fbp           TEXT`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS fbc           TEXT`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS client_ip     TEXT`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS client_ua     TEXT`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS consent       JSONB`;
-    await sql`ALTER TABLE ${sql(table)} ADD COLUMN IF NOT EXISTS source_url    TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS ga_client_id  TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS ga_session_id TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS fbp           TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS fbc           TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS client_ip     TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS client_ua     TEXT`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS consent       JSONB`;
+    await tx`ALTER TABLE ${tx(table)} ADD COLUMN IF NOT EXISTS source_url    TEXT`;
   }
   // İş olayı kutusu: her yaşam döngüsü olayı bir kez, değişmez
-  await sql`
+  await tx`
     CREATE TABLE IF NOT EXISTS analytics_outbox (
       id          SERIAL PRIMARY KEY,
       environment TEXT NOT NULL,
@@ -188,7 +210,7 @@ async function createTables() {
       UNIQUE (environment, event_id)
     )`;
   // Hedef başına teslimat durumu (ga4 | meta_capi)
-  await sql`
+  await tx`
     CREATE TABLE IF NOT EXISTS analytics_delivery (
       id               SERIAL PRIMARY KEY,
       outbox_id        INT NOT NULL REFERENCES analytics_outbox(id) ON DELETE CASCADE,
@@ -204,7 +226,9 @@ async function createTables() {
       expires_at       TIMESTAMPTZ NOT NULL,
       UNIQUE (outbox_id, destination)
     )`;
-  await sql`CREATE INDEX IF NOT EXISTS analytics_delivery_due_idx ON analytics_delivery (status, next_attempt_at)`;
+  await tx`CREATE INDEX IF NOT EXISTS analytics_delivery_due_idx ON analytics_delivery (status, next_attempt_at)`;
+  // Yolculuk sonrası değerlendirme e-postası gönderim zamanı (cron)
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS review_mail_at TIMESTAMPTZ`;
 }
 
 /**

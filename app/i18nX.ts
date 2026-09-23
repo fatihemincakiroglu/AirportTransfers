@@ -9,7 +9,6 @@ const baseX = {
   de: {
     nav: { destinations: "Reiseziele", prices: "Preise", events: "Events" },
     heroBadges: ["Kostenlose Stornierung", "24/7 Support", "Flugverfolgung", "Festpreis"],
-    heroRating: { score: "Ausgezeichnet · 4.8/5", sub: "Beliebt bei Reisenden am Flughafen Zürich" },
     howSec: {
       eyebrow: "Ablauf",
       title: "In drei einfachen Schritten buchen",
@@ -100,7 +99,6 @@ const baseX = {
   en: {
     nav: { destinations: "Destinations", prices: "Prices", events: "Events" },
     heroBadges: ["Free cancellation", "24/7 support", "Flight tracking", "Fixed price"],
-    heroRating: { score: "Excellent · 4.8/5", sub: "Trusted by travellers at Zurich Airport" },
     howSec: {
       eyebrow: "How it works",
       title: "Book in three simple steps",

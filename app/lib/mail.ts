@@ -7,7 +7,7 @@
 // ─────────────────────────────────────────────────────────────
 import nodemailer, { type Transporter } from "nodemailer";
 import { actionToken } from "./actionToken";
-import { fleet, COMPANY_ADDRESS, PHONE_DISPLAY, CONTACT_EMAIL, WHATSAPP_NUMBER } from "../config";
+import { fleet, COMPANY_ADDRESS, PHONE_DISPLAY, CONTACT_EMAIL, WHATSAPP_NUMBER, GOOGLE_BUSINESS_URL } from "../config";
 import { sql, dbReady, logEvent } from "./db";
 
 export const mailReady = () =>
@@ -358,6 +358,80 @@ export async function notifyCustomerDecision(bookingId: number, decision: "accep
   } catch (e) {
     console.error("[mail] müşteri bildirimi", e);
   }
+}
+
+// ── Yolculuk sonrası değerlendirme isteği ────────────────────
+const REVIEW_T = {
+  de: {
+    subject: (r: string) => `Wie war Ihre Fahrt? · ${r}`,
+    eyebrow: "Danke für Ihr Vertrauen", title: "Wie war Ihre Fahrt mit uns?",
+    lead: (n: string) => `Guten Tag ${n},<br><br>wir hoffen, Sie sind gut angekommen. Vielen Dank, dass Sie mit ZRH Airport Taxi gefahren sind.`,
+    ask: "Eine kurze Bewertung auf Google hilft uns mehr, als Sie denken – und dauert weniger als eine Minute. Nennen Sie gern den Namen Ihres Chauffeurs; wir geben Lob weiter.",
+    cta: "Auf Google bewerten",
+    alt: "Wenn etwas nicht gepasst hat, antworten Sie bitte einfach auf diese E-Mail – wir klären es persönlich.",
+    sign: "Freundliche Grüsse<br><b>ZRH Airport Taxi</b>",
+  },
+  en: {
+    subject: (r: string) => `How was your ride? · ${r}`,
+    eyebrow: "Thank you for your trust", title: "How was your ride with us?",
+    lead: (n: string) => `Hello ${n},<br><br>we hope you arrived well. Thank you for travelling with ZRH Airport Taxi.`,
+    ask: "A short review on Google helps us more than you might think – and takes less than a minute. Feel free to mention your chauffeur's name; we pass on praise.",
+    cta: "Review us on Google",
+    alt: "If something was not right, please simply reply to this email – we will sort it out personally.",
+    sign: "Kind regards<br><b>ZRH Airport Taxi</b>",
+  },
+};
+
+/** Tamamlanan yolculuktan sonra tek seferlik Google değerlendirme isteği */
+export async function sendReviewRequestMail(b: { ref: string; lang: string | null; email: string | null; first_name: string | null; last_name: string | null; pickup: string | null; dropoff: string | null; ride_date: string | null }): Promise<boolean> {
+  const tx = getTransporter();
+  if (!tx || !b.email) return false;
+  const lang: "de" | "en" = b.lang === "de" ? "de" : "en";
+  const t = REVIEW_T[lang];
+  const name = [b.first_name, b.last_name].filter(Boolean).join(" ") || (lang === "de" ? "liebe Kundin, lieber Kunde" : "dear customer");
+  const body = `
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.7">${t.lead(esc(name))}</p>
+    ${routeCard({ pickup: b.pickup, dropoff: b.dropoff, date: b.ride_date, time: null, lang, labels: { stops: "" } })}
+    <p style="margin:22px 0 0;font-size:15px;line-height:1.7">${t.ask}</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px auto 0"><tr>
+      <td>${button(GOOGLE_BUSINESS_URL, `★ ${t.cta}`, C.gold, C.pine)}</td>
+    </tr></table>
+    <p style="margin:22px 0 0;font-size:13px;line-height:1.7;color:${C.muted}">${t.alt}</p>
+    <p style="margin:26px 0 0;font-size:14px;line-height:1.7">${t.sign}</p>`;
+  const html = shell({ eyebrow: t.eyebrow, title: t.title, body, lang });
+  try {
+    await tx.sendMail({ from: `"ZRH Airport Taxi" <${process.env.GMAIL_USER}>`, to: b.email, replyTo: CONTACT_EMAIL, subject: t.subject(b.ref), html });
+    return true;
+  } catch (e) {
+    console.error("[mail] değerlendirme e-postası gönderilemedi", e);
+    return false;
+  }
+}
+
+/**
+ * Cron: dünkü (ve en fazla 3 gün önceki) onaylı/tamamlanmış web rezervasyonlarına
+ * henüz gönderilmemişse değerlendirme e-postası. İptal/ret/gelmedi hariç.
+ */
+export async function sendPendingReviewRequests(limit = 50): Promise<number> {
+  if (!dbReady) return 0;
+  const rows = (await sql`
+    SELECT id, ref, lang, email, first_name, last_name, pickup, dropoff, ride_date
+    FROM bookings
+    WHERE status IN ('confirmed', 'done')
+      AND review_mail_at IS NULL
+      AND email IS NOT NULL AND email <> ''
+      AND source = 'site'
+      AND ride_date::date < CURRENT_DATE
+      AND ride_date::date >= CURRENT_DATE - INTERVAL '3 days'
+    ORDER BY ride_date LIMIT ${limit}`) as unknown as { id: number; ref: string; lang: string | null; email: string | null; first_name: string | null; last_name: string | null; pickup: string | null; dropoff: string | null; ride_date: string | null }[];
+  let sent = 0;
+  for (const b of rows) {
+    const ok = await sendReviewRequestMail(b);
+    await sql`UPDATE bookings SET review_mail_at = now() WHERE id = ${b.id}`; // başarısızsa da tekrar denenmez (spam önlemi)
+    await logEvent(ok ? "review_mail" : "review_mail_failed", `${b.ref}: değerlendirme e-postası ${ok ? "gönderildi" : "gönderilemedi"} (${b.email})`, { actor: "sistem", ref: b.ref });
+    if (ok) sent++;
+  }
+  return sent;
 }
 
 /** Panelden çalıştırılan SMTP testi — gerçek hatayı geri döndürür */
