@@ -11,6 +11,7 @@ import {
   waHref, PlaceField, SelectField, fieldWrap, fieldInput,
 } from "../../components";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
+import { clientRouteKm } from "../../lib/distance-client";
 
 const PAY_TYPES = ["twint", "cash", "card", "online"] as const; // D.payOptions sırasıyla
 const ONLINE_PAY = 3; // Stripe Checkout seçeneğinin dizini
@@ -148,7 +149,7 @@ export default function Buchung() {
         stops: stops.join(" | "),
         date, time,
         // Sunucu tarafı fiyat doğrulaması için (sabit rota / saatlik: fiyat yeniden hesaplanır)
-        pricing: { routeKey: route?.slug ?? null, vehicleId: chosen?.id ?? null, hours: hourly ? hourlyHours : null },
+        pricing: { routeKey: route?.slug ?? null, vehicleId: chosen?.id ?? null, hours: hourly ? hourlyHours : null, km: quote?.km ?? null },
         pax: Number(f.pax) || null,
         luggage: Number(f.pax) || null, // bagaj sorulmuyor; yolcu sayısı kadar varsayılır
         vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
@@ -308,24 +309,22 @@ export default function Buchung() {
   const chain = (stopsArr: string[], dest: string) =>
     [...stopsArr.map((x) => withCountry(x)), dest].join(" to:");
   const showCustom = !route && custom !== null;
-  // Özel güzergâh: sunucudan yol mesafesi + tarife (Photon + OSRM); gelmezse tahmine düşülür
+  // Özel güzergâh: mesafe TARAYICIDA hesaplanır (Photon + OSRM, yedek kuş uçuşu) → tarife üç araç için.
+  // Sunucu ödeme tutarını aynı zincirle doğrular; erişemezse bu km'yi kabul eder.
   const [quote, setQuote] = useState<{ km: number; prices: Record<string, number> } | null>(null);
   useEffect(() => {
-    /* eslint-disable react-hooks/set-state-in-effect -- harici teklif servisiyle senkron; koşul değişince eski teklif temizlenir */
+    /* eslint-disable react-hooks/set-state-in-effect -- harici mesafe servisleriyle senkron; koşul değişince eski teklif temizlenir */
     if (!showCustom || hourly || !custom?.from || !custom?.to) { setQuote(null); return; }
     /* eslint-enable react-hooks/set-state-in-effect */
     let alive = true;
+    const ctrl = new AbortController();
     const t = setTimeout(async () => {
-      try {
-        const r = await fetch("/api/quote", {
-          method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ from: reversed ? custom.to : custom.from, to: reversed ? custom.from : custom.to, time, stops }),
-        });
-        const d = await r.json();
-        if (alive) setQuote(d?.ok ? { km: d.km, prices: d.prices } : null);
-      } catch { if (alive) setQuote(null); }
+      const km = await clientRouteKm(reversed ? custom.to : custom.from, reversed ? custom.from : custom.to, stops, ctrl.signal);
+      if (!alive) return;
+      if (km === null) { setQuote(null); return; }
+      setQuote({ km, prices: Object.fromEntries(fleet.map((v) => [v.id, transferPrice(km, v.id, time)])) });
     }, 150);
-    return () => { alive = false; clearTimeout(t); };
+    return () => { alive = false; ctrl.abort(); clearTimeout(t); };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- yalnızca uç noktalar, duraklar ve saat değişince
   }, [showCustom, hourly, custom?.from, custom?.to, reversed, time, stops.join("|")]);
   const cFrom = showCustom ? (reversed ? custom!.to : custom!.from) : "";

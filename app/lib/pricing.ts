@@ -21,11 +21,15 @@ export function serverPrice(b: Record<string, unknown>): number | null {
 export async function serverPriceAsync(b: Record<string, unknown>): Promise<number | null> {
   const sync = serverPrice(b);
   if (sync !== null) return sync;
-  const p = (b.pricing ?? null) as { vehicleId?: string | null } | null;
+  const p = (b.pricing ?? null) as { vehicleId?: string | null; km?: number | null } | null;
   const vehicle = p?.vehicleId && (VEHICLES as string[]).includes(p.vehicleId) ? (p.vehicleId as VehicleId) : null;
   if (!vehicle || typeof b.pickup !== "string" || typeof b.dropoff !== "string") return null;
   const stops = typeof b.stops === "string" ? b.stops.split(" | ").map((s) => s.trim()).filter(Boolean) : [];
-  const km = await routeDistanceKm(b.pickup, b.dropoff, stops);
+  const time = typeof b.time === "string" ? b.time : null;
+  const serverKm = await routeDistanceKm(b.pickup, b.dropoff, stops);
+  const clientKm = typeof p?.km === "number" && p.km > 0 && p.km < 2000 ? p.km : null;
+  // Sunucu ölçebildiyse onunkini kullan (sapma büyükse de sunucu geçerli); ölçemediyse tarayıcı km'si
+  const km = serverKm ?? clientKm;
   if (km === null) return null;
-  return transferPrice(km, vehicle, typeof b.time === "string" ? b.time : null);
+  return transferPrice(km, vehicle, time);
 }
