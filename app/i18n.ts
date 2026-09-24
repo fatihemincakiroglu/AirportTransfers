@@ -6,7 +6,7 @@ const base = {
   de: {
     meta: {
       title: "Zürich Flughafen Taxi - Privater Transfer & Limousinenservice",
-      desc: "Premium Flughafentransfer ab Zürich (ZRH) zu Festpreisen – professionelle Chauffeure, Flugverfolgung, Meet & Greet. Jetzt Transfer in 1 Minute buchen!",
+      desc: "Zürich Flughafen Taxi und Limousinenservice: private Transfers an jede Adresse in der Schweiz zum Festpreis, Meet & Greet. In 1 Minute buchen.",
     },
     topbar: "Zürich · Private Transfer",
     nav: {
@@ -153,7 +153,7 @@ const base = {
   en: {
     meta: {
       title: "Zürich Airport Taxi - Private Transfer & Limousine Service",
-      desc: "Premium airport transfers from Zurich (ZRH) at fixed prices – professional chauffeurs, flight tracking, meet & greet. Book your transfer in 1 minute!",
+      desc: "Zürich Airport Taxi and limousine service: private transfers to any address in Switzerland, fixed prices, meet & greet. Book in 1 minute.",
     },
     topbar: "Zurich · Private Transfer",
     nav: {
