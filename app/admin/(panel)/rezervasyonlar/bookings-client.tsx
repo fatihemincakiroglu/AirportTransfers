@@ -331,13 +331,13 @@ export default function BookingsClient({
                 ["Araç", open.vehicle],
                 ["Tutar", open.price ? `CHF ${Number(open.price).toFixed(2)}` : null],
                 ["Ödeme", open.payment],
-                ["Ödeme durumu", open.payment_status && open.payment_status !== "none" ? PAY_LABEL[open.payment_status] : null],
+                ["Ödeme durumu", open.payment_status && open.payment_status !== "none" ? PAY_LABEL[open.payment_status] : (/stripe|online/i.test(open.payment ?? "") ? "Ödeme başlatılmadı / tamamlanmadı" : "Araçta ödenecek")],
                 ["Ödeme tarihi", open.paid_at ? fmtDate(open.paid_at) : null],
                 ["İade tarihi", open.refunded_at ? fmtDate(open.refunded_at) : null], ["Uçuş", open.flight], ["İsim tabelası", open.nameboard],
                 ["Ekstralar", open.extras], ["Müşteri notu", open.notes],
                 ["Panel notu", open.admin_note],
                 ["Kaynak", open.source === "panel" ? "Panelden eklendi" : "Siteden geldi"],
-                ["Dil / kanal", [open.lang, open.channel].filter(Boolean).join(" · ")],
+                ["Dil / kanal", [open.lang, open.channel === "taslak" ? "taslak – müşteri 3. adıma geldi, ödemeye geçmedi" : open.channel].filter(Boolean).join(" · ")],
                 ["Kayıt", fmtDate(open.created_at)],
               ] as [string, string | null][])
                 .filter(([, v]) => v && String(v).trim())

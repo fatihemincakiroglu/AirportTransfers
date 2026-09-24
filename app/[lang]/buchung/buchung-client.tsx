@@ -142,18 +142,19 @@ export default function Buchung() {
   };
 
   // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
-  const bookingPayload = (ref: string, channel: "site" | "taslak") => ({
+  // v: araç seçimi setState ile aynı render'da henüz "chosen"a yansımadığından açıkça geçilir (taslak kaydı)
+  const bookingPayload = (ref: string, channel: "site" | "taslak", v: (typeof fleet)[number] | null = chosen) => ({
         ref, channel, lang,
         pickup: showCustom ? custom!.from : reversed ? n : "Flughafen Zürich (ZRH)",
         dropoff: showCustom ? custom!.to : reversed ? "Flughafen Zürich (ZRH)" : n,
         stops: stops.join(" | "),
         date, time,
         // Sunucu tarafı fiyat doğrulaması için (sabit rota / saatlik: fiyat yeniden hesaplanır)
-        pricing: { routeKey: route?.slug ?? null, vehicleId: chosen?.id ?? null, hours: hourly ? hourlyHours : null, km: quote?.km ?? null },
+        pricing: { routeKey: route?.slug ?? null, vehicleId: v?.id ?? null, hours: hourly ? hourlyHours : null, km: quote?.km ?? null },
         pax: Number(f.pax) || null,
         luggage: Number(f.pax) || null, // bagaj sorulmuyor; yolcu sayısı kadar varsayılır
-        vehicle: chosen ? `${localName(chosen.name, lang)} · ${chosen.car}` : null,
-        price: total || null,
+        vehicle: v ? `${localName(v.name, lang)} · ${v.car}` : null,
+        price: (v ? priceFor(v) : 0) || null,
         payment: D.payOptions[pay]?.[0] ?? null,
         firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone ? `${dial} ${f.phone.trim()}` : "",
         flight: f.flight, nameboard: f.nameboard,
@@ -165,9 +166,9 @@ export default function Buchung() {
     notes: f.notes,
   });
 
-  const saveBooking = (ref: string, channel: "site" | "taslak") => {
+  const saveBooking = (ref: string, channel: "site" | "taslak", v: (typeof fleet)[number] | null = chosen) => {
     try {
-      const body = JSON.stringify(bookingPayload(ref, channel));
+      const body = JSON.stringify(bookingPayload(ref, channel, v));
       // sendBeacon: yeni sekme açılırken isteğin kesilmemesi için
       if (navigator.sendBeacon) {
         navigator.sendBeacon("/api/bookings", new Blob([body], { type: "application/json" }));
@@ -443,7 +444,7 @@ export default function Buchung() {
       ecommerce: { currency: "CHF", ...(priceFinal ? { value: splitVat(gross).net, tax: splitVat(gross).tax } : {}), items: [vehicleItem(v, i, gross)] },
     }, { idPrefix: "begin" });
     setCar(i);
-    go(3);
+    go(3, v); // seçilen araç taslağa hemen yazılsın
   };
 
   // Ödeme yöntemi seçimi → booking_payment_info (UI seçimi; doğrulanmış ödeme değil)
@@ -482,13 +483,13 @@ export default function Buchung() {
   const ready = accepted && f.name && f.surname && f.email && f.phone.trim() && !slot.busy; // uçuş numarası isteğe bağlı
 
 
-  const go = (s: 1 | 2 | 3) => {
+  const go = (s: 1 | 2 | 3, v: (typeof fleet)[number] | null = chosen) => {
     // Son adıma geçerken talebi şimdiden kaydet: müşteri tarayıcıyı
-    // kapatsa bile kayıt panelde kalır (WhatsApp'a basınca güncellenir).
+    // kapatsa bile kayıt panelde kalır (ödemeye geçince güncellenir).
     if (s === 3 && !draftRef.current) {
       const r = makeRef();
       draftRef.current = r;
-      saveBooking(r, "taslak");
+      saveBooking(r, "taslak", v);
     }
     setStep(s);
     window.scrollTo({ top: 0, behavior: "smooth" });

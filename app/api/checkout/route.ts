@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
         client_ua    = COALESCE(EXCLUDED.client_ua, bookings.client_ua),
         consent      = COALESCE(EXCLUDED.consent, bookings.consent),
         source_url   = COALESCE(EXCLUDED.source_url, bookings.source_url),
-        payment_status = 'pending', price = EXCLUDED.price, payment = 'Online (Stripe)',
+        channel = 'site', payment_status = 'pending', price = EXCLUDED.price, payment = 'Online (Stripe)',
         pickup = COALESCE(EXCLUDED.pickup, bookings.pickup),
         dropoff = COALESCE(EXCLUDED.dropoff, bookings.dropoff),
         ride_date = COALESCE(EXCLUDED.ride_date, bookings.ride_date),
@@ -65,6 +65,15 @@ export async function POST(req: NextRequest) {
         last_name = COALESCE(EXCLUDED.last_name, bookings.last_name),
         email = COALESCE(EXCLUDED.email, bookings.email),
         phone = COALESCE(EXCLUDED.phone, bookings.phone),
+        vehicle = COALESCE(EXCLUDED.vehicle, bookings.vehicle),
+        stops = COALESCE(EXCLUDED.stops, bookings.stops),
+        pax = COALESCE(EXCLUDED.pax, bookings.pax),
+        luggage = COALESCE(EXCLUDED.luggage, bookings.luggage),
+        flight = COALESCE(EXCLUDED.flight, bookings.flight),
+        nameboard = COALESCE(EXCLUDED.nameboard, bookings.nameboard),
+        extras = COALESCE(EXCLUDED.extras, bookings.extras),
+        notes = COALESCE(EXCLUDED.notes, bookings.notes),
+        lang = COALESCE(EXCLUDED.lang, bookings.lang),
         updated_at = now()`;
 
     const [row] = (await sql`SELECT id FROM bookings WHERE ref = ${ref}`) as unknown as { id: number }[];
