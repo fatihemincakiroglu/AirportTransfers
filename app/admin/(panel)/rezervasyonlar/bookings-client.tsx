@@ -39,8 +39,10 @@ const EDIT_FIELDS: [keyof Booking, string, string][] = [
 ];
 
 const FILTERS: [string, string][] = [
-  ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"],
+  ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"], ["draft", "Yarım kalan"],
 ];
+/** Taslak: müşteri 3. adıma geldi, ödemeye/gönderime geçmedi — ana listede gösterilmez */
+const isDraft = (r: Booking) => r.channel === "taslak";
 
 const TR_MONTHS = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
 /** Kayıtları yolculuk tarihine (yoksa kayıt tarihine) göre aya böler */
@@ -76,7 +78,9 @@ export default function BookingsClient({
   const router = useRouter();
 
   const list = rows.filter((r) => {
-    if (filter !== "all" && r.status !== filter) return false;
+    if (filter === "draft") { if (!isDraft(r)) return false; }
+    else if (isDraft(r)) return false;
+    else if (filter !== "all" && r.status !== filter) return false;
     if (!q.trim()) return true;
     const hay = [r.ref, r.first_name, r.last_name, r.email, r.phone, r.pickup, r.dropoff, r.flight]
       .filter(Boolean).join(" ").toLowerCase();
@@ -161,6 +165,12 @@ export default function BookingsClient({
           />
         </div>
       </div>
+
+      {filter === "draft" && (
+        <p className="mb-4 rounded-xl px-4 py-3 text-xs text-stone-600" style={{ background: "#FBF7EE" }}>
+          Bu kayıtlar rezervasyon <b>değil</b>: müşteri son adıma geldi ama ödemeye ya da gönderime geçmedi. Telefon/e-posta varsa ulaşmak için kullanılabilir; 14 günden eski taslaklar otomatik silinir.
+        </p>
+      )}
 
       {/* Aylara bölünmüş liste */}
       {list.length === 0 ? (

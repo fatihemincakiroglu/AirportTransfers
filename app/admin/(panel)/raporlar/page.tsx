@@ -15,7 +15,7 @@ export default async function Page() {
     SELECT to_char(date_trunc('month', created_at), 'YYYY-MM') AS ym,
            COUNT(*)::int AS n,
            COALESCE(SUM(price) FILTER (WHERE status IN ('confirmed','done')), 0)::float AS revenue
-    FROM bookings WHERE created_at > now() - interval '12 months'
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak' AND created_at > now() - interval '12 months'
     GROUP BY 1 ORDER BY 1`) as unknown as { ym: string; n: number; revenue: number }[];
 
   const label = (ym: string) => TR_SHORT[Number(ym.split("-")[1]) - 1];
@@ -23,36 +23,36 @@ export default async function Page() {
   const topRoutes = (await sql`
     SELECT COALESCE(dropoff, '—') AS label, COUNT(*)::int AS n,
            COALESCE(SUM(price) FILTER (WHERE status IN ('confirmed','done')), 0)::float AS revenue
-    FROM bookings GROUP BY 1 ORDER BY n DESC LIMIT 8`) as unknown as { label: string; n: number; revenue: number }[];
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak' GROUP BY 1 ORDER BY n DESC LIMIT 8`) as unknown as { label: string; n: number; revenue: number }[];
 
   const byVehicle = (await sql`
     SELECT COALESCE(vehicle, '—') AS label, COUNT(*)::int AS n
-    FROM bookings GROUP BY 1 ORDER BY n DESC LIMIT 6`) as unknown as { label: string; n: number }[];
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak' GROUP BY 1 ORDER BY n DESC LIMIT 6`) as unknown as { label: string; n: number }[];
 
   const byLang = (await sql`
     SELECT COALESCE(lang, '—') AS label, COUNT(*)::int AS n
-    FROM bookings GROUP BY 1 ORDER BY n DESC LIMIT 11`) as unknown as { label: string; n: number }[];
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak' GROUP BY 1 ORDER BY n DESC LIMIT 11`) as unknown as { label: string; n: number }[];
 
   const byStatus = (await sql`
-    SELECT status AS label, COUNT(*)::int AS n FROM bookings GROUP BY 1`) as unknown as { label: string; n: number }[];
+    SELECT status AS label, COUNT(*)::int AS n FROM bookings WHERE COALESCE(channel, '') <> 'taslak' GROUP BY 1`) as unknown as { label: string; n: number }[];
 
   const byWeekday = (await sql`
     SELECT EXTRACT(dow FROM created_at)::int AS d, COUNT(*)::int AS n
-    FROM bookings GROUP BY 1 ORDER BY 1`) as unknown as { d: number; n: number }[];
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak' GROUP BY 1 ORDER BY 1`) as unknown as { d: number; n: number }[];
 
   const [lost] = (await sql`
     SELECT COALESCE(SUM(price) FILTER (WHERE status IN ('cancelled','rejected')), 0)::float AS lost_revenue,
            COUNT(*) FILTER (WHERE status IN ('cancelled','rejected'))::int AS lost_count,
            COALESCE(SUM(price) FILTER (WHERE status = 'new'), 0)::float AS pending_revenue,
            COUNT(*) FILTER (WHERE status = 'new')::int AS pending_count
-    FROM bookings`) as unknown as { lost_revenue: number; lost_count: number; pending_revenue: number; pending_count: number }[];
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak'`) as unknown as { lost_revenue: number; lost_count: number; pending_revenue: number; pending_count: number }[];
 
   const [tot] = (await sql`
     SELECT COUNT(*)::int AS n,
            COALESCE(AVG(price) FILTER (WHERE price IS NOT NULL), 0)::float AS avg_price,
            COALESCE(SUM(price) FILTER (WHERE status IN ('confirmed','done')), 0)::float AS revenue,
            COUNT(*) FILTER (WHERE status IN ('confirmed','done'))::int AS won
-    FROM bookings`) as unknown as { n: number; avg_price: number; revenue: number; won: number }[];
+    FROM bookings WHERE COALESCE(channel, '') <> 'taslak'`) as unknown as { n: number; avg_price: number; revenue: number; won: number }[];
 
   // Son iki ayın karşılaştırması (trend rozeti)
   const last = monthly.at(-1)?.n ?? 0;
