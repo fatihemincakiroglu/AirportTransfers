@@ -1,7 +1,8 @@
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import Link from "next/link";
 import { PageTitle, NoDb } from "../../ui";
-import BookingsClient, { type Booking, isComplete } from "./bookings-client";
+import BookingsClient, { type Booking } from "./bookings-client";
+import { isComplete } from "../../booking-utils";
 
 export const dynamic = "force-dynamic";
 

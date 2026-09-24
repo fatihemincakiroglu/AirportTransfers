@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { isComplete } from "../../booking-utils";
 import { C, Card, StatusPill, PayPill, PAY_LABEL, STATUS_LABEL, STATUS_STYLE, STATUS_SOLID, fmtDate } from "../../ui";
 import DecisionButtons from "../../decision-buttons";
 
@@ -41,9 +42,6 @@ const EDIT_FIELDS: [keyof Booking, string, string][] = [
 const FILTERS: [string, string][] = [
   ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"],
 ];
-/** Rezervasyon = ad, soyad, e-posta ve telefon dolu. Eksikler "Yarım kalanlar" sayfasında. */
-export const isComplete = (r: Pick<Booking, "first_name" | "last_name" | "email" | "phone">) =>
-  Boolean(r.first_name?.trim() && r.last_name?.trim() && r.email?.trim() && r.phone?.trim());
 
 const TR_MONTHS = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
 /** Kayıtları yolculuk tarihine (yoksa kayıt tarihine) göre aya böler */
