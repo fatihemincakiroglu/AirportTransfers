@@ -20,14 +20,13 @@ function todayAndTomorrow() {
   };
 }
 
-/** Belirli bir günün yolculukları (şoför adıyla birlikte) */
+/** Belirli bir günün yolculukları */
 async function tripsFor(day: string) {
   try {
     return (await sql`
     SELECT b.id, b.ref, b.status, b.ride_time, b.ride_date, b.pickup, b.dropoff, b.stops,
-           b.vehicle, b.price, b.pax, b.flight, b.first_name, b.last_name, b.phone,
-           d.name AS driver_name
-    FROM bookings b LEFT JOIN drivers d ON d.id = b.driver_id
+           b.vehicle, b.price, b.pax, b.flight, b.first_name, b.last_name, b.phone
+    FROM bookings b
     WHERE b.ride_date = ${day} AND b.status <> 'cancelled' AND COALESCE(b.first_name, '') <> '' AND COALESCE(b.last_name, '') <> '' AND COALESCE(b.email, '') <> '' AND COALESCE(b.phone, '') <> ''
     ORDER BY b.ride_time`) as unknown as Trip[];
   } catch (e) {
@@ -56,14 +55,13 @@ export default async function Dashboard() {
     SELECT COUNT(*) FILTER (WHERE status = 'new')::int AS new_count,
            COUNT(*) FILTER (WHERE ride_date >= ${today} AND status <> 'cancelled')::int AS upcoming,
            COALESCE(SUM(price) FILTER (WHERE status IN ('confirmed','done')
-             AND to_char(created_at, 'YYYY-MM') = to_char(now(), 'YYYY-MM')), 0)::float AS month_revenue,
-           COUNT(*) FILTER (WHERE driver_id IS NULL AND ride_date >= ${today} AND status <> 'cancelled')::int AS unassigned
-    FROM bookings WHERE COALESCE(first_name, '') <> '' AND COALESCE(last_name, '') <> '' AND COALESCE(email, '') <> '' AND COALESCE(phone, '') <> ''`) as unknown as { new_count: number; upcoming: number; month_revenue: number; unassigned: number }[];
+             AND to_char(created_at, 'YYYY-MM') = to_char(now(), 'YYYY-MM')), 0)::float AS month_revenue
+    FROM bookings WHERE COALESCE(first_name, '') <> '' AND COALESCE(last_name, '') <> '' AND COALESCE(email, '') <> '' AND COALESCE(phone, '') <> ''`) as unknown as { new_count: number; upcoming: number; month_revenue: number }[];
 
   const kpis: [string, string, string, string?][] = [
     ["Bugünkü yolculuk", String(todayTrips.length), C.pine],
     ["Yanıt bekleyen", String(stats.new_count), "#D97706", "/admin/rezervasyonlar"],
-    ["Şoför atanmamış", String(stats.unassigned), stats.unassigned ? "#DC2626" : "#059669"],
+    ["Yaklaşan yolculuk", String(stats.upcoming), C.pine, "/admin/takvim"],
     ["Bu ay ciro", `CHF ${stats.month_revenue.toLocaleString("de-CH", { maximumFractionDigits: 0 })}`, "#059669"],
   ];
 

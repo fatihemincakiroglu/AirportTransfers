@@ -17,7 +17,7 @@ const EMPTY = {
   vehicle: VEHICLES[0], price: "", payment: "Bar / Cash",
   first_name: "", last_name: "", phone: "", email: "", flight: "",
   extras: "", notes: "", admin_note: "",
-  status: "confirmed", channel: "telefon", driver_id: "",
+  status: "confirmed", channel: "telefon",
 };
 
 const input = "w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm outline-none focus:border-[#C9A24B]";
@@ -35,7 +35,7 @@ function Field({ label, value, onChange, type = "text", ph }: {
   );
 }
 
-export default function NewBookingForm({ drivers }: { drivers: { id: number; name: string }[] }) {
+export default function NewBookingForm() {
   const [f, setF] = useState(EMPTY);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -96,13 +96,6 @@ export default function NewBookingForm({ drivers }: { drivers: { id: number; nam
             <span className={lbl}>Ödeme</span>
             <select value={f.payment} onChange={(e) => set("payment", e.target.value)} className={input}>
               {["Bar / Cash", "TWINT", "Kreditkarte", "Rechnung"].map((v) => <option key={v} value={v}>{v}</option>)}
-            </select>
-          </label>
-          <label className="block">
-            <span className={lbl}>Şoför</span>
-            <select value={f.driver_id} onChange={(e) => set("driver_id", e.target.value)} className={input}>
-              <option value="">— atanmadı —</option>
-              {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
             </select>
           </label>
         </div>

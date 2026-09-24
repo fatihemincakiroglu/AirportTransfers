@@ -25,7 +25,6 @@ const REJECT_LABEL: Record<string, string> = {
   customer: "Müşteri isteği", reschedule: "Müşteri tarihi değiştirdi", driver: "Şoför müsait değil",
 };
 
-type Driver = { id: number; name: string };
 type History = Record<string, { trips: number; spent: number }>;
 
 /** Düzenlenebilir alanlar: [anahtar, etiket, tip] */
@@ -62,10 +61,10 @@ const monthName = (ym: string) => {
 };
 
 export default function BookingsClient({
-  rows, months, month, openRef = null, drivers = [], history = {},
+  rows, months, month, openRef = null, history = {},
 }: {
   rows: Booking[]; months: string[]; month: string; openRef?: string | null;
-  drivers?: Driver[]; history?: History;
+  history?: History;
 }) {
   const [filter, setFilter] = useState("all");
   const [edit, setEdit] = useState<Record<string, string> | null>(null);
@@ -292,17 +291,6 @@ export default function BookingsClient({
                     />
                   </label>
                 ))}
-                <label className="block">
-                  <span className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-stone-400">Şoför</span>
-                  <select
-                    value={edit.driver_id ?? ""}
-                    onChange={(e) => setEdit({ ...edit, driver_id: e.target.value })}
-                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-3.5 py-2.5 text-sm outline-none focus:border-[#C9A24B]"
-                  >
-                    <option value="">— atanmadı —</option>
-                    {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
-                  </select>
-                </label>
                 <label className="block">
                   <span className="mb-1 block text-[11px] font-bold uppercase tracking-wide text-stone-400">Panel notu</span>
                   <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2}

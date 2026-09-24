@@ -8,7 +8,6 @@ export type Trip = {
   pickup: string | null; dropoff: string | null; stops: string | null; vehicle: string | null;
   price: string | null; pax: number | null; flight: string | null;
   first_name: string | null; last_name: string | null; phone: string | null;
-  driver_name: string | null;
 };
 
 /** Tek yolculuk satırı — tıklanınca rezervasyon detayına gider */
@@ -29,9 +28,6 @@ export default function TripRow({ t }: { t: Trip }) {
             {t.flight ? ` · ✈ ${t.flight}` : ""}
             {t.stops ? ` · durak: ${t.stops}` : ""}
           </span>
-        </span>
-        <span className="text-xs" style={{ color: t.driver_name ? C.pine : "#DC2626" }}>
-          {t.driver_name ? `👤 ${t.driver_name}` : "şoför atanmadı"}
         </span>
         {t.price && <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>CHF {Number(t.price).toFixed(2)}</span>}
         <StatusPill status={t.status} />

@@ -18,13 +18,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
 
   const trips = (await sql`
     SELECT b.id, b.ref, b.status, b.ride_date, b.ride_time, b.pickup, b.dropoff, b.stops,
-           b.vehicle, b.price, b.first_name, b.last_name, b.phone, b.pax,
-           b.driver_id, d.name AS driver_name
-    FROM bookings b LEFT JOIN drivers d ON d.id = b.driver_id
+           b.vehicle, b.price, b.first_name, b.last_name, b.phone, b.pax
+    FROM bookings b
     WHERE b.ride_date IS NOT NULL AND b.ride_date <> '' AND b.ride_date LIKE ${month + "%"} AND COALESCE(b.first_name, '') <> '' AND COALESCE(b.last_name, '') <> '' AND COALESCE(b.email, '') <> '' AND COALESCE(b.phone, '') <> ''
     ORDER BY b.ride_date, b.ride_time`) as unknown as Trip[];
 
-  const drivers = (await sql`SELECT id, name FROM drivers WHERE active ORDER BY name`.catch(() => [])) as unknown as { id: number; name: string }[];
 
   const months = (await sql`
     SELECT DISTINCT substring(ride_date, 1, 7) AS ym
@@ -45,7 +43,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
       {months.length === 0 ? (
         <Card><p className="text-sm text-stone-500">Henüz tarihli yolculuk yok.</p></Card>
       ) : (
-        <CalendarView month={month} trips={trips} months={months.map((m) => m.ym)} drivers={drivers} />
+        <CalendarView month={month} trips={trips} months={months.map((m) => m.ym)} />
       )}
       <p className="mt-4 text-xs text-stone-400">
         Renkler durumu gösterir: <span style={{ color: "#D97706" }}>■ yeni</span>{" · "}

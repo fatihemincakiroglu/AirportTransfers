@@ -63,14 +63,14 @@ export async function POST(req: NextRequest) {
   await sql`
     INSERT INTO bookings (ref, status, source, channel, lang, pickup, dropoff, stops,
       ride_date, ride_time, pax, luggage, vehicle, price, payment,
-      first_name, last_name, email, phone, flight, nameboard, extras, notes, admin_note, driver_id)
+      first_name, last_name, email, phone, flight, nameboard, extras, notes, admin_note)
     VALUES (${ref}, ${b.status ?? "confirmed"}, 'panel', ${b.channel ?? "telefon"}, ${b.lang ?? "de"},
       ${b.pickup ?? null}, ${b.dropoff ?? null}, ${b.stops ?? null},
       ${b.ride_date ?? null}, ${b.ride_time ?? null}, ${num(b.pax)}, ${num(b.luggage)},
       ${b.vehicle ?? null}, ${num(b.price)}, ${b.payment ?? null},
       ${b.first_name ?? null}, ${b.last_name ?? null}, ${b.email ?? null}, ${b.phone ?? null},
       ${b.flight ?? null}, ${b.nameboard ?? null}, ${b.extras ?? null}, ${b.notes ?? null},
-      ${b.admin_note ?? null}, ${num(b.driver_id)})`;
+      ${b.admin_note ?? null})`;
 
   await logEvent("booking_manual", `Panelden manuel rezervasyon eklendi: ${ref} · ${b.pickup ?? "—"} → ${b.dropoff ?? "—"}`, { actor: "panel", ref });
 
@@ -161,14 +161,14 @@ export async function PATCH(req: NextRequest) {
   if (fields && typeof fields === "object") {
     const EDITABLE = ["pickup","dropoff","stops","ride_date","ride_time","pax","luggage",
       "vehicle","price","payment","first_name","last_name","email","phone","flight",
-      "nameboard","extras","notes","driver_id"] as const;
+      "nameboard","extras","notes"] as const;
     const num = (v: unknown) => (v === "" || v === null || v === undefined ? null : Number(v));
     const changed: string[] = [];
 
     for (const key of EDITABLE) {
       if (!(key in fields)) continue;
       const raw = fields[key];
-      const val = ["pax","luggage","price","driver_id"].includes(key) ? num(raw) : (raw === "" ? null : String(raw));
+      const val = ["pax","luggage","price"].includes(key) ? num(raw) : (raw === "" ? null : String(raw));
       await sql`UPDATE bookings SET ${sql(key)} = ${val as never}, updated_at = now() WHERE id = ${id}`;
       changed.push(key);
     }

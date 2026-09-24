@@ -18,12 +18,12 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
     ? await sql`
         SELECT id, ref, status, lang, channel, pickup, dropoff, stops, ride_date, ride_time,
                pax, luggage, vehicle, price, payment, first_name, last_name, email, phone,
-               flight, nameboard, extras, notes, admin_note, created_at, driver_id, source, reject_reason
+               flight, nameboard, extras, notes, admin_note, created_at, source, reject_reason
         FROM bookings ORDER BY created_at DESC LIMIT 500`
     : await sql`
         SELECT id, ref, status, lang, channel, pickup, dropoff, stops, ride_date, ride_time,
                pax, luggage, vehicle, price, payment, first_name, last_name, email, phone,
-               flight, nameboard, extras, notes, admin_note, created_at, driver_id, source, reject_reason
+               flight, nameboard, extras, notes, admin_note, created_at, source, reject_reason
         FROM bookings
         WHERE to_char(created_at, 'YYYY-MM') = ${month} OR ride_date LIKE ${month + "%"}
         ORDER BY created_at DESC LIMIT 500`
@@ -37,7 +37,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
       SELECT substring(ride_date, 1, 7) FROM bookings WHERE ride_date IS NOT NULL AND ride_date <> ''
     ) x WHERE ym IS NOT NULL ORDER BY ym DESC`) as unknown as { ym: string }[];
 
-  const drivers = (await sql`SELECT id, name FROM drivers WHERE active ORDER BY name`.catch(() => [])) as unknown as { id: number; name: string }[];
 
   // Müşteri geçmişi: telefon/e-posta bazında toplam yolculuk ve ciro
   const history = (await sql`
@@ -64,7 +63,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
           + Yeni rezervasyon
         </Link>
       </div>
-      <BookingsClient rows={rows} months={months.map((m) => m.ym)} month={month} openRef={ref ?? null} drivers={drivers} history={Object.fromEntries(history.map((h) => [h.key, { trips: h.trips, spent: h.spent }]))} />
+      <BookingsClient rows={rows} months={months.map((m) => m.ym)} month={month} openRef={ref ?? null} history={Object.fromEntries(history.map((h) => [h.key, { trips: h.trips, spent: h.spent }]))} />
     </>
   );
 }
