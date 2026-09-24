@@ -1,7 +1,7 @@
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import Link from "next/link";
 import { PageTitle, NoDb } from "../../ui";
-import BookingsClient, { type Booking } from "./bookings-client";
+import BookingsClient, { type Booking, isComplete } from "./bookings-client";
 
 export const dynamic = "force-dynamic";
 
@@ -47,14 +47,16 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ a
     WHERE coalesce(nullif(email,''), phone, '') <> ''
     GROUP BY 1 HAVING COUNT(*) > 1`) as unknown as { key: string; trips: number; spent: number }[];
 
-  const revenue = rows
+  // Yalnızca tam kayıtlar (ad/soyad/e-posta/telefon) rezervasyondur; eksikler "Yarım Kalanlar" sayfasında
+  const complete = rows.filter(isComplete);
+  const revenue = complete
     .filter((r) => r.status === "confirmed" || r.status === "done")
     .reduce((s, r) => s + Number(r.price ?? 0), 0);
 
   return (
     <>
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
-        <PageTitle title="Rezervasyonlar" sub={`${rows.length} kayıt · onaylı ciro CHF ${revenue.toFixed(2)}`} />
+        <PageTitle title="Rezervasyonlar" sub={`${complete.length} kayıt · onaylı ciro CHF ${revenue.toFixed(2)}`} />
         <Link href="/admin/rezervasyonlar/yeni"
           className="rounded-full px-5 py-3 text-xs font-extrabold uppercase tracking-wide shadow-sm"
           style={{ background: "#C9A24B", color: "#0C2E25" }}>

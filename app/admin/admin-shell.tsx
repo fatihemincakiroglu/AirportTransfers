@@ -12,6 +12,7 @@ const NAV: [string, string, string][] = [
   ["/admin/ziyaretciler", "Ziyaretçiler", "🌍"],
   ["/admin/rezervasyonlar", "Rezervasyonlar", "🗓"],
   ["/admin/takvim", "Takvim", "📅"],
+  ["/admin/yarim-kalan", "Yarım Kalanlar", "◔"],
   ["/admin/faturalar", "Faturalar", "🧾"],
   ["/admin/talepler", "İletişim Talepleri", "✉"],
   ["/admin/loglar", "Sistem Logları", "☰"],

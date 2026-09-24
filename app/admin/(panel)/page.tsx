@@ -28,7 +28,7 @@ async function tripsFor(day: string) {
            b.vehicle, b.price, b.pax, b.flight, b.first_name, b.last_name, b.phone,
            d.name AS driver_name
     FROM bookings b LEFT JOIN drivers d ON d.id = b.driver_id
-    WHERE b.ride_date = ${day} AND b.status <> 'cancelled' AND COALESCE(b.channel, '') <> 'taslak'
+    WHERE b.ride_date = ${day} AND b.status <> 'cancelled' AND COALESCE(b.first_name, '') <> '' AND COALESCE(b.last_name, '') <> '' AND COALESCE(b.email, '') <> '' AND COALESCE(b.phone, '') <> ''
     ORDER BY b.ride_time`) as unknown as Trip[];
   } catch (e) {
     console.error("[dashboard] yolculuklar okunamadı", e);
@@ -48,7 +48,7 @@ export default async function Dashboard() {
   const pending = (await sql`
     SELECT id, ref, lang, pickup, dropoff, ride_date, ride_time, price, vehicle,
            first_name, last_name, phone, email, created_at
-    FROM bookings WHERE status = 'new' AND COALESCE(channel, '') <> 'taslak' ORDER BY created_at DESC LIMIT 6`) as unknown as (DecisionBooking & { created_at: string })[];
+    FROM bookings WHERE status = 'new' AND COALESCE(first_name, '') <> '' AND COALESCE(last_name, '') <> '' AND COALESCE(email, '') <> '' AND COALESCE(phone, '') <> '' ORDER BY created_at DESC LIMIT 6`) as unknown as (DecisionBooking & { created_at: string })[];
 
   const [msg] = (await sql`SELECT COUNT(*) FILTER (WHERE status = 'new')::int AS n FROM contacts`) as unknown as { n: number }[];
 
@@ -58,7 +58,7 @@ export default async function Dashboard() {
            COALESCE(SUM(price) FILTER (WHERE status IN ('confirmed','done')
              AND to_char(created_at, 'YYYY-MM') = to_char(now(), 'YYYY-MM')), 0)::float AS month_revenue,
            COUNT(*) FILTER (WHERE driver_id IS NULL AND ride_date >= ${today} AND status <> 'cancelled')::int AS unassigned
-    FROM bookings WHERE COALESCE(channel, '') <> 'taslak'`) as unknown as { new_count: number; upcoming: number; month_revenue: number; unassigned: number }[];
+    FROM bookings WHERE COALESCE(first_name, '') <> '' AND COALESCE(last_name, '') <> '' AND COALESCE(email, '') <> '' AND COALESCE(phone, '') <> ''`) as unknown as { new_count: number; upcoming: number; month_revenue: number; unassigned: number }[];
 
   const kpis: [string, string, string, string?][] = [
     ["Bugünkü yolculuk", String(todayTrips.length), C.pine],

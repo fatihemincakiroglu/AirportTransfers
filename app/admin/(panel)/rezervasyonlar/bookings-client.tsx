@@ -39,10 +39,11 @@ const EDIT_FIELDS: [keyof Booking, string, string][] = [
 ];
 
 const FILTERS: [string, string][] = [
-  ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"], ["draft", "Yarım kalan"],
+  ["all", "Tümü"], ["new", "Yeni"], ["confirmed", "Onaylı"], ["done", "Tamamlandı"], ["cancelled", "İptal"],
 ];
-/** Taslak: müşteri 3. adıma geldi, ödemeye/gönderime geçmedi — ana listede gösterilmez */
-const isDraft = (r: Booking) => r.channel === "taslak";
+/** Rezervasyon = ad, soyad, e-posta ve telefon dolu. Eksikler "Yarım kalanlar" sayfasında. */
+export const isComplete = (r: Pick<Booking, "first_name" | "last_name" | "email" | "phone">) =>
+  Boolean(r.first_name?.trim() && r.last_name?.trim() && r.email?.trim() && r.phone?.trim());
 
 const TR_MONTHS = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
 /** Kayıtları yolculuk tarihine (yoksa kayıt tarihine) göre aya böler */
@@ -78,9 +79,8 @@ export default function BookingsClient({
   const router = useRouter();
 
   const list = rows.filter((r) => {
-    if (filter === "draft") { if (!isDraft(r)) return false; }
-    else if (isDraft(r)) return false;
-    else if (filter !== "all" && r.status !== filter) return false;
+    if (!isComplete(r)) return false;
+    if (filter !== "all" && r.status !== filter) return false;
     if (!q.trim()) return true;
     const hay = [r.ref, r.first_name, r.last_name, r.email, r.phone, r.pickup, r.dropoff, r.flight]
       .filter(Boolean).join(" ").toLowerCase();
@@ -165,12 +165,6 @@ export default function BookingsClient({
           />
         </div>
       </div>
-
-      {filter === "draft" && (
-        <p className="mb-4 rounded-xl px-4 py-3 text-xs text-stone-600" style={{ background: "#FBF7EE" }}>
-          Bu kayıtlar rezervasyon <b>değil</b>: müşteri son adıma geldi ama ödemeye ya da gönderime geçmedi. Telefon/e-posta varsa ulaşmak için kullanılabilir; 14 günden eski taslaklar otomatik silinir.
-        </p>
-      )}
 
       {/* Aylara bölünmüş liste */}
       {list.length === 0 ? (
@@ -347,7 +341,7 @@ export default function BookingsClient({
                 ["Ekstralar", open.extras], ["Müşteri notu", open.notes],
                 ["Panel notu", open.admin_note],
                 ["Kaynak", open.source === "panel" ? "Panelden eklendi" : "Siteden geldi"],
-                ["Dil / kanal", [open.lang, open.channel === "taslak" ? "taslak – müşteri 3. adıma geldi, ödemeye geçmedi" : open.channel].filter(Boolean).join(" · ")],
+                ["Dil / kanal", [open.lang, open.channel === "taslak" ? "taslak (ödeme adımından geldi)" : open.channel].filter(Boolean).join(" · ")],
                 ["Kayıt", fmtDate(open.created_at)],
               ] as [string, string | null][])
                 .filter(([, v]) => v && String(v).trim())

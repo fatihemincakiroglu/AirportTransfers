@@ -15,12 +15,12 @@ export async function GET(req: NextRequest) {
   }
   const processed = await deliverDue(100);
   const reviews = await sendPendingReviewRequests(50); // dünkü yolculuklara Google değerlendirme isteği
-  // 14 günden eski taslaklar (3. adıma gelip ödemeye/gönderime geçmeyenler) temizlenir
+  // 14 günden eski yarım kalanlar (ad/soyad/e-posta/telefon eksik) temizlenir
   let drafts = 0;
   if (dbReady) {
     const rows = (await sql`
       DELETE FROM bookings
-      WHERE channel = 'taslak' AND status = 'new' AND COALESCE(payment_status, 'none') IN ('none', 'pending')
+      WHERE NOT (COALESCE(first_name, '') <> '' AND COALESCE(last_name, '') <> '' AND COALESCE(email, '') <> '' AND COALESCE(phone, '') <> '') AND status = 'new' AND COALESCE(payment_status, 'none') IN ('none', 'pending')
         AND invoice_no IS NULL AND created_at < now() - interval '14 days'
       RETURNING id`) as unknown as { id: number }[];
     drafts = rows.length;
