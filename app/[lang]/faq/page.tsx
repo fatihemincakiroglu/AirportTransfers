@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { pageMeta } from "../../pageMeta";
 import { langAlternates, localizePath } from "../../paths";
 import { t } from "../../i18n";
+import { faqGroups } from "../../faqContent";
 import FaqClient from "./faq-client";
 
 type Params = { params: Promise<{ lang: string }> };
@@ -18,7 +19,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function Page({ params }: Params) {
   const { lang } = await params;
-  const list = (lang === "de" ? t.de : t.en).faqPage.list;
+  const l = lang === "de" ? "de" : "en";
+  // Şema: mevcut 8 soru + tüm ek gruplar
+  const list = [...t[l].faqPage.list, ...faqGroups[l].flatMap((g) => g.list)];
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
