@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { sql, ensureSchemaSafe as ensureSchema, dbReady, VAT_RATE } from "../../../../lib/db";
+import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../../lib/db";
 import {
   COMPANY_NAME, COMPANY_ADDRESS_LINES, CONTACT_EMAIL, BANK,
 } from "../../../../config";
@@ -33,8 +33,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (!b || !b.invoice_no) notFound();
 
   const gross = Number(b.price ?? 0);
-  const net = gross / (1 + VAT_RATE);
-  const vat = gross - net;
   const chf = (n: number) => n.toLocaleString("de-CH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const day = (d?: string | null) => (d ? new Date(d).toLocaleDateString("sv-SE") : "—"); // YYYY-MM-DD
   const who = [b.first_name, b.last_name].filter(Boolean).join(" ") || "—";
@@ -149,11 +147,9 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
             </tbody>
           </table>
 
-          {/* KDV kırılımı */}
+          {/* Toplam — MwSt. ayrımı gösterilmez */}
           <div className="mt-5 flex justify-end">
             <div className="w-full max-w-xs space-y-1.5 text-sm" style={{ color: MUTED }}>
-              <div className="flex justify-between"><span>Nettobetrag</span><span>{chf(net)} CHF</span></div>
-              <div className="flex justify-between"><span>MwSt. {(VAT_RATE * 100).toFixed(1)}%</span><span>{chf(vat)} CHF</span></div>
               <div className="flex justify-between border-t border-stone-200 pt-1.5 text-base font-extrabold" style={{ color: INK }}>
                 <span>Gesamt</span><span>{chf(gross)} CHF</span>
               </div>
