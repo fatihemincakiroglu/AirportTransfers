@@ -57,6 +57,7 @@ export const C = {
   pine: "#0C2E25",
   pineDeep: "#08211B",
   gold: "#C9A24B",
+  goldText: "#8A6A1F", // açık zeminde metin için koyu altın (WCAG AA kontrast)
   ivory: "#FAFAF7",
   ink: "#1C2B27",
 };

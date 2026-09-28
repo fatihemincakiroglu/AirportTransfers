@@ -52,10 +52,13 @@ export default function Home() {
   const X = tx[lang];
   const L = t[lang];
   const [slide, setSlide] = useState(0);
+  // Performans (LCP): 2. ve 3. slayt ilk görüntüden sonra yüklenir; ilk slaytla bant genişliği için yarışmaz
+  const [extraSlides, setExtraSlides] = useState(false);
 
   useEffect(() => {
+    const warm = setTimeout(() => setExtraSlides(true), Math.max(1500, SLIDE_MS - 2000));
     const id = setInterval(() => setSlide((s) => (s + 1) % HERO_IMAGES.length), SLIDE_MS);
-    return () => clearInterval(id);
+    return () => { clearTimeout(warm); clearInterval(id); };
   }, []);
 
   const sectionHead = (eyebrow: string, title: string, sub: string, href: string) => (
@@ -68,7 +71,7 @@ export default function Home() {
       <a
         href={P(href)}
         className="text-[12px] font-extrabold uppercase tracking-[0.18em] underline-offset-4 transition-colors hover:underline"
-        style={{ color: C.gold }}
+        style={{ color: C.goldText }}
       >
         {L.routesSec.all} →
       </a>
@@ -82,7 +85,7 @@ export default function Home() {
 
       {/* ── Hero: image slider + booking card ───────────────── */}
       <section className="relative overflow-hidden" style={{ background: C.pine }}>
-        {HERO_IMAGES.map((src, i) => (
+        {HERO_IMAGES.map((src, i) => (i === 0 || extraSlides) && (
           <div
             key={src}
             aria-hidden
@@ -94,7 +97,9 @@ export default function Home() {
               alt=""
               fill
               priority={i === 0}
+              fetchPriority={i === 0 ? "high" : "low"}
               sizes="100vw"
+              quality={i === 0 ? 70 : 60}
               className="object-cover"
             />
             <span
@@ -129,15 +134,20 @@ export default function Home() {
               </a>
             </div>
             {/* Slider noktaları — CTA butonlarının altında (tüm ekranlar) */}
-            <div className="mt-8 flex gap-2 md:mt-12">
+            <div className="mt-6 flex md:mt-10">
+              {/* Dokunma hedefi 44×44 (erişilebilirlik); görünen nokta küçük kalır */}
               {HERO_IMAGES.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setSlide(i)}
                   aria-label={`Slide ${i + 1}`}
-                  className="h-2 rounded-full transition-all"
-                  style={{ width: slide === i ? 28 : 8, background: slide === i ? C.gold : "rgba(255,255,255,0.35)" }}
-                />
+                  className="flex h-11 min-w-[44px] items-center justify-center"
+                >
+                  <span
+                    className="block h-2 rounded-full transition-all"
+                    style={{ width: slide === i ? 28 : 8, background: slide === i ? C.gold : "rgba(255,255,255,0.35)" }}
+                  />
+                </button>
               ))}
             </div>
           </div>

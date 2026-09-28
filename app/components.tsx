@@ -56,7 +56,7 @@ export function ExtrasCounter({ title, desc, freeLabel, value, onBump }: {
 
 export function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.gold }}>
+    <p className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.25em]" style={{ color: C.goldText }}>
       <span className="h-px w-8" style={{ background: C.gold }} />
       {children}
     </p>
@@ -224,13 +224,13 @@ export function BookingBar() {
         <div>
           <label className={labelCls}>📅 {L.form.date}</label>
           <div className={fieldWrap}>
-            <input type="date" className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+            <input type="date" aria-label={L.form.date} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
           </div>
         </div>
         <div>
           <label className={labelCls}>🕐 {L.form.time}</label>
           <div className={fieldWrap}>
-            <input type="time" className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+            <input type="time" aria-label={L.form.time} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
           </div>
         </div>
         <SelectField
@@ -457,7 +457,7 @@ export function BookingCard() {
             type="button"
             onClick={() => setMode(m)}
             className="flex-1 rounded-full px-4 py-2 transition-colors"
-            style={mode === m ? { background: C.gold, color: C.pine } : { color: "#78716c" }}
+            style={mode === m ? { background: C.gold, color: C.pine } : { color: "#57534E" }}
           >
             {m === "transfer" ? X.hourly.tabTransfer : X.hourly.tabHourly}
           </button>
@@ -478,13 +478,13 @@ export function BookingCard() {
             <div>
               <label className={labelCls}>📅 {L.form.date}</label>
               <div className={fieldWrap}>
-                <input type="date" className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+                <input type="date" aria-label={L.form.date} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
               </div>
             </div>
             <div>
               <label className={labelCls}>🕐 {L.form.time}</label>
               <div className={fieldWrap}>
-                <input type="time" className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+                <input type="time" aria-label={L.form.time} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
               </div>
             </div>
           </div>
@@ -551,13 +551,13 @@ export function BookingCard() {
           <div>
             <label className={labelCls}>📅 {L.form.date}</label>
             <div className={fieldWrap}>
-              <input type="date" className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+              <input type="date" aria-label={L.form.date} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
             </div>
           </div>
           <div>
             <label className={labelCls}>🕐 {L.form.time}</label>
             <div className={fieldWrap}>
-              <input type="time" className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+              <input type="time" aria-label={L.form.time} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
             </div>
           </div>
         </div>
@@ -652,7 +652,7 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
       className="group flex flex-col rounded-2xl bg-white p-7 shadow-sm ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl"
     >
       {/* Sınıf etiketi + araç adı — editoryal hiyerarşi */}
-      <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>{n}</p>
+      <p className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: C.goldText }}>{n}</p>
       <h3 className="font-display mt-1.5 text-2xl font-semibold leading-snug" style={{ color: C.pine }}>{car}</h3>
 
       {/* Araç görseli — geniş sahne */}
@@ -668,9 +668,9 @@ export function FleetCard({ name, car, pax, bags, img, showFeatures }: { name: L
 
       {/* Kapasite — sakin tek satır */}
       <p className="flex items-center gap-4 border-t border-stone-100 pt-4 text-sm font-semibold text-stone-600">
-        <span>👥 {pax} <span className="font-medium text-stone-400">{L.fleetSec.pax}</span></span>
+        <span>👥 {pax} <span className="font-medium text-stone-600">{L.fleetSec.pax}</span></span>
         <span aria-hidden className="h-3 w-px bg-stone-200" />
-        <span>🧳 {bags} <span className="font-medium text-stone-400">{L.fleetSec.bags}</span></span>
+        <span>🧳 {bags} <span className="font-medium text-stone-600">{L.fleetSec.bags}</span></span>
       </p>
 
       {showFeatures && (
@@ -777,7 +777,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
           </div>
         </div>
         <div>
-          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.explore}</h4>
+          <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.explore}</h2>
           <ul className="space-y-2.5 text-sm">
             <li><a href={P("/strecken")} className="hover:text-white">{L.nav.routes}</a></li>
             <li><a href={P("/fahrzeuge")} className="hover:text-white">{L.nav.fleet}</a></li>
@@ -786,7 +786,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
           </ul>
         </div>
         <div>
-          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.company}</h4>
+          <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.company}</h2>
           <ul className="space-y-2.5 text-sm">
             <li><a href={P("/ueber-uns")} className="hover:text-white">{L.footer.aboutLink}</a></li>
             <li><a href={P("/kontakt")} className="hover:text-white">{L.nav.contact}</a></li>
@@ -794,7 +794,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
           </ul>
         </div>
         <div>
-          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.information}</h4>
+          <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.information}</h2>
           <ul className="space-y-2.5 text-sm">
             <li><a href={P("/datenschutz")} className="hover:text-white">{lang === "de" ? "Datenschutz" : "Privacy Policy"}</a></li>
             <li><a href={P("/cookies")} className="hover:text-white">{lang === "de" ? "Cookie-Richtlinie" : "Cookie Policy"}</a></li>
@@ -804,7 +804,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
           </ul>
         </div>
         <div>
-          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.support}</h4>
+          <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.support}</h2>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">
               <span className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(201,162,75,0.15)", color: C.gold }}>📞</span>
@@ -833,9 +833,9 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
       {/* Beliebte Strecken — iç linkleme şeridi */}
       <div className="relative border-t border-white/10">
         <div className="mx-auto max-w-7xl px-5 py-8">
-          <h4 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">
+          <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">
             {L.footer.popular}
-          </h4>
+          </h2>
           <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm sm:grid-cols-3 lg:grid-cols-5">
             {routes.slice(0, 10).map((r) => (
               <li key={r.slug}>
@@ -912,7 +912,7 @@ export function FloatingButtons() {
             href={waHref()}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-2 py-3 text-sm font-bold text-white shadow-sm active:scale-95"
+            className="flex items-center justify-center gap-2 rounded-xl bg-[#128C4A] px-2 py-3 text-sm font-bold text-white shadow-sm active:scale-95"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/icons/whatsapp.png" alt="" className="h-5 w-5 rounded-full bg-white object-contain" />
@@ -929,7 +929,7 @@ export function FloatingButtons() {
           </a>
           <a
             href={P("/buchung")}
-            className="flex items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
+            className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
             style={{ borderColor: C.pine, color: C.pine }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -150,11 +150,11 @@ export function ConsentBanner() {
           {T.necessary}
         </button>
         {detail ? (
-          <button type="button" onClick={() => decide(choice)} className="ml-auto text-xs font-bold underline-offset-2 hover:underline" style={{ color: C.pine }}>
+          <button type="button" onClick={() => decide(choice)} className="ml-auto min-h-[44px] px-3 text-xs font-bold underline-offset-2 hover:underline" style={{ color: C.pine }}>
             {T.save}
           </button>
         ) : (
-          <button type="button" onClick={() => setDetail(true)} className="ml-auto text-xs font-bold text-stone-500 underline-offset-2 hover:underline">
+          <button type="button" onClick={() => setDetail(true)} className="ml-auto min-h-[44px] px-3 text-xs font-bold text-stone-600 underline-offset-2 hover:underline">
             {T.customize}
           </button>
         )}
