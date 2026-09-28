@@ -9,6 +9,7 @@ type Row = {
   id: number; ref: string; status: string; price: string | null; invoice_no: string | null;
   invoiced_at: string | null; first_name: string | null; last_name: string | null;
   ride_date: string | null; pickup: string | null; dropoff: string | null; created_at: string;
+  invoice_sent_at?: string | null; email?: string | null;
 };
 
 export default async function Page() {
@@ -16,7 +17,7 @@ export default async function Page() {
   await ensureSchema();
 
   const rows = (await sql`
-    SELECT id, ref, status, price, invoice_no, invoiced_at, first_name, last_name,
+    SELECT id, ref, status, price, invoice_no, invoiced_at, invoice_sent_at, email, first_name, last_name,
            ride_date, pickup, dropoff, created_at
     FROM bookings
     WHERE status IN ('confirmed','done')
@@ -65,7 +66,7 @@ export default async function Page() {
               <span className="text-sm font-bold tabular-nums" style={{ color: C.pine }}>
                 {r.price ? `CHF ${Number(r.price).toFixed(2)}` : "—"}
               </span>
-              <InvoiceActions id={r.id} hasInvoice={!!r.invoice_no} />
+              <InvoiceActions id={r.id} hasInvoice={!!r.invoice_no} sentAt={r.invoice_sent_at} email={r.email} />
             </div>
           </Card>
         ))}
@@ -99,7 +100,7 @@ export default async function Page() {
                   <td className="px-4 py-3 whitespace-nowrap text-stone-600">{r.ride_date}</td>
                   <td className="px-4 py-3 tabular-nums">{r.price ? `CHF ${Number(r.price).toFixed(2)}` : "—"}</td>
                   <td className="px-4 py-3"><StatusPill status={r.status} /></td>
-                  <td className="px-4 py-3 text-right"><InvoiceActions id={r.id} hasInvoice={!!r.invoice_no} /></td>
+                  <td className="px-4 py-3 text-right"><InvoiceActions id={r.id} hasInvoice={!!r.invoice_no} sentAt={r.invoice_sent_at} email={r.email} /></td>
                 </tr>
               ))}
             </tbody>

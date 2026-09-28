@@ -434,6 +434,83 @@ export async function sendPendingReviewRequests(limit = 50): Promise<number> {
   return sent;
 }
 
+// ── Fatura e-postası (müşteri + işletme, PDF ekli) ─────────────
+const INVOICE_T = {
+  de: {
+    subject: (no: string, ref: string) => `Ihre Rechnung ${no} · ${ref}`,
+    eyebrow: "Rechnung", title: "Ihre Rechnung",
+    lead: (n: string) => `Guten Tag ${n},<br><br>vielen Dank, dass Sie mit ZRH Airport Taxi gefahren sind. Im Anhang finden Sie Ihre Rechnung als PDF.`,
+    note: "Bei Fragen zur Rechnung antworten Sie einfach auf diese E-Mail oder schreiben Sie uns per WhatsApp – wir helfen gern.",
+    sign: "Freundliche Grüsse<br><b>ZRH Airport Taxi</b>",
+    labels: { no: "Rechnungsnummer", ref: "Buchung", date: "Servicedatum", amount: "Betrag", pay: "Zahlung" },
+  },
+  en: {
+    subject: (no: string, ref: string) => `Your invoice ${no} · ${ref}`,
+    eyebrow: "Invoice", title: "Your invoice",
+    lead: (n: string) => `Hello ${n},<br><br>thank you for travelling with ZRH Airport Taxi. Please find your invoice attached as a PDF.`,
+    note: "If you have any questions about the invoice, simply reply to this email or message us on WhatsApp – we are happy to help.",
+    sign: "Kind regards<br><b>ZRH Airport Taxi</b>",
+    labels: { no: "Invoice number", ref: "Booking", date: "Service date", amount: "Amount", pay: "Payment" },
+  },
+};
+
+export type InvoiceMailRow = {
+  ref: string; invoice_no: string; lang: string | null; email: string | null; first_name: string | null; last_name: string | null;
+  pickup: string | null; dropoff: string | null; ride_date: string | null; ride_time: string | null; price: string | number | null; payment: string | null;
+};
+
+/**
+ * Faturayı PDF ekiyle müşteriye (kendi dilinde) ve işletmeye (MAIL_TO) gönderir.
+ * Sonuç: { customer: gönderildi mi, office: gönderildi mi }
+ */
+export async function sendInvoiceMail(b: InvoiceMailRow, pdf: Buffer): Promise<{ customer: boolean; office: boolean }> {
+  const tx = getTransporter();
+  if (!tx) return { customer: false, office: false };
+  const user = process.env.GMAIL_USER!;
+  const office = process.env.MAIL_TO || user;
+  const lang: "de" | "en" = b.lang === "de" ? "de" : "en";
+  const t = INVOICE_T[lang];
+  const name = [b.first_name, b.last_name].filter(Boolean).join(" ") || (lang === "de" ? "liebe Kundin, lieber Kunde" : "dear customer");
+  const filename = `Rechnung-${b.invoice_no}.pdf`;
+  const attachments = [{ filename, content: pdf, contentType: "application/pdf" }];
+
+  const body = `
+    <p style="margin:18px 0 0;font-size:15px;line-height:1.7">${t.lead(esc(name))}</p>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:22px;border-collapse:collapse">
+      ${detailRow(t.labels.no, b.invoice_no)}
+      ${detailRow(t.labels.ref, b.ref)}
+      ${detailRow(t.labels.date, `${b.ride_date ?? ""}${b.ride_time ? " · " + b.ride_time : ""}`)}
+      ${detailRow(t.labels.amount, fmtPrice(b.price))}
+      ${detailRow(t.labels.pay, b.payment)}
+    </table>
+    ${routeCard({ pickup: b.pickup, dropoff: b.dropoff, date: b.ride_date, time: b.ride_time, lang, labels: { stops: "" } })}
+    <p style="margin:22px 0 0;font-size:14px;line-height:1.7">${t.note}</p>
+    <p style="margin:26px 0 0;font-size:14px;line-height:1.7">${t.sign}</p>`;
+  const html = shell({ eyebrow: t.eyebrow, title: `${t.title} <span style="color:${C.muted};font-weight:400;font-size:18px">${esc(b.invoice_no)}</span>`, body, lang });
+
+  let customer = false, officeOk = false;
+  if (b.email) {
+    try {
+      await tx.sendMail({ from: `"ZRH Airport Taxi" <${user}>`, to: b.email, replyTo: CONTACT_EMAIL, subject: t.subject(b.invoice_no, b.ref), html, attachments });
+      customer = true;
+    } catch (e) { console.error("[mail] fatura müşteriye gönderilemedi", e); }
+  }
+  try {
+    await tx.sendMail({
+      from: `"ZRH Airport Taxi" <${user}>`, to: office,
+      subject: `Fatura kopyası ${b.invoice_no} · ${b.ref} · ${name}`,
+      html: shell({ eyebrow: "Fatura kopyası", title: esc(b.invoice_no), lang: "de", body: `
+        <p style="margin:18px 0 0;font-size:14px;line-height:1.7">${esc(name)} için düzenlenen faturanın kopyası ektedir.${b.email ? ` Müşteriye ${esc(b.email)} adresine ${customer ? "gönderildi" : "<b>gönderilemedi</b>"}.` : " Müşterinin e-posta adresi yok; yalnızca size gönderildi."}</p>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:18px;border-collapse:collapse">
+          ${detailRow("Rezervasyon", b.ref)}${detailRow("Yolculuk", `${b.ride_date ?? ""} ${b.ride_time ?? ""}`)}${detailRow("Güzergâh", `${b.pickup ?? ""} → ${b.dropoff ?? ""}`)}${detailRow("Tutar", fmtPrice(b.price))}${detailRow("Ödeme", b.payment)}
+        </table>` }),
+      attachments,
+    });
+    officeOk = true;
+  } catch (e) { console.error("[mail] fatura kopyası gönderilemedi", e); }
+  return { customer, office: officeOk };
+}
+
 /** Panelden çalıştırılan SMTP testi — gerçek hatayı geri döndürür */
 export async function sendTestMail(): Promise<{ ok: boolean; reason?: string; to?: string }> {
   const tx = getTransporter();

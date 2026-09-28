@@ -35,7 +35,7 @@ let schemaPromise: Promise<void> | null = null;
  * Şema sürümü. Tablo/kolon eklediğinde BU SAYIYI ARTIR; aksi hâlde yeni DDL çalışmaz.
  * Sürüm veritabanındaki `schema_meta` ile eşleşiyorsa hiçbir DDL çalışmaz (tek SELECT).
  */
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 
 /**
  * Tabloları oluşturur (varsa dokunmaz).
@@ -142,6 +142,7 @@ async function createTables(tx: TransactionSql) {
   // Fatura alanları (sonradan eklendi)
   await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoice_no   TEXT`;
   await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoiced_at  TIMESTAMPTZ`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS invoice_sent_at TIMESTAMPTZ`; // faturanın e-postayla gönderim zamanı
   await tx`CREATE INDEX IF NOT EXISTS bookings_created_idx ON bookings (created_at DESC)`;
   await tx`CREATE INDEX IF NOT EXISTS bookings_status_idx  ON bookings (status)`;
 
