@@ -33,6 +33,25 @@ function getTransporter() {
 
 const C = { pine: "#0C2E25", gold: "#C9A24B", ivory: "#FAFAF7", ink: "#1C1917", muted: "#78716C" };
 const SITE = () => process.env.SITE_URL ?? "https://zrhairporttaxi.ch";
+/**
+ * Teslimat kalitesi: her e-postaya düz metin alternatifi ve standart başlıklar eklenir
+ * (yalnızca HTML gönderen mesajlar Outlook/Apple filtrelerinde puan kaybeder).
+ */
+function htmlToText(html: string): string {
+  return html
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<br\s*\/?>/gi, "\n").replace(/<\/(p|div|tr|li|h[1-6])>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"')
+    .replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+type MailOpts = Parameters<ReturnType<typeof nodemailer.createTransport>["sendMail"]>[0];
+const withDeliverability = (m: MailOpts): MailOpts => ({
+  ...m,
+  text: m.text ?? (typeof m.html === "string" ? htmlToText(m.html) : undefined),
+  headers: { "X-Mailer": "ZRH Airport Taxi", "X-Entity-Ref-ID": String(Date.now()), ...(m.headers as Record<string, string> | undefined) },
+});
+
 const esc = (v: unknown) =>
   String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -205,13 +224,13 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
   });
 
   try {
-    await tx.sendMail({
+    await tx.sendMail(withDeliverability({
       from: `"ZRH Airport Taxi" <${user}>`,
       to,
       replyTo: typeof b.email === "string" && b.email ? b.email : undefined,
-      subject: `${paid ? "💰 " : ""}Yeni rezervasyon ${b.ref ?? ""} — ${b.dropoff ?? ""} (${b.date ?? ""} ${b.time ?? ""})`,
+      subject: `${paid ? "[Bezahlt] " : ""}Yeni rezervasyon ${b.ref ?? ""} — ${b.dropoff ?? ""} (${b.date ?? ""} ${b.time ?? ""})`,
       html,
-    });
+    }));
   } catch (e) {
     console.error("[mail] gönderilemedi", e);
   }
@@ -321,13 +340,13 @@ export async function sendCustomerDecisionMail(b: CustomerBooking, decision: "ac
   const d = t[decision];
   const html = shell({ eyebrow: d.eyebrow, title: d.title, body, lang });
   try {
-    await tx.sendMail({
+    await tx.sendMail(withDeliverability({
       from: `"ZRH Airport Taxi" <${process.env.GMAIL_USER}>`,
       to: b.email,
       replyTo: CONTACT_EMAIL,
       subject: d.subject(b.ref),
       html,
-    });
+    }));
     return true;
   } catch (e) {
     console.error("[mail] müşteri e-postası gönderilemedi", e);
@@ -400,7 +419,7 @@ export async function sendReviewRequestMail(b: { ref: string; lang: string | nul
     <p style="margin:26px 0 0;font-size:14px;line-height:1.7">${t.sign}</p>`;
   const html = shell({ eyebrow: t.eyebrow, title: t.title, body, lang });
   try {
-    await tx.sendMail({ from: `"ZRH Airport Taxi" <${process.env.GMAIL_USER}>`, to: b.email, replyTo: CONTACT_EMAIL, subject: t.subject(b.ref), html });
+    await tx.sendMail(withDeliverability({ from: `"ZRH Airport Taxi" <${process.env.GMAIL_USER}>`, to: b.email, replyTo: CONTACT_EMAIL, subject: t.subject(b.ref), html }));
     return true;
   } catch (e) {
     console.error("[mail] değerlendirme e-postası gönderilemedi", e);
@@ -491,12 +510,12 @@ export async function sendInvoiceMail(b: InvoiceMailRow, pdf: Buffer): Promise<{
   let customer = false, officeOk = false;
   if (b.email) {
     try {
-      await tx.sendMail({ from: `"ZRH Airport Taxi" <${user}>`, to: b.email, replyTo: CONTACT_EMAIL, subject: t.subject(b.invoice_no, b.ref), html, attachments });
+      await tx.sendMail(withDeliverability({ from: `"ZRH Airport Taxi" <${user}>`, to: b.email, replyTo: CONTACT_EMAIL, subject: t.subject(b.invoice_no, b.ref), html, attachments }));
       customer = true;
     } catch (e) { console.error("[mail] fatura müşteriye gönderilemedi", e); }
   }
   try {
-    await tx.sendMail({
+    await tx.sendMail(withDeliverability({
       from: `"ZRH Airport Taxi" <${user}>`, to: office,
       subject: `Fatura kopyası ${b.invoice_no} · ${b.ref} · ${name}`,
       html: shell({ eyebrow: "Fatura kopyası", title: esc(b.invoice_no), lang: "de", body: `
@@ -505,7 +524,7 @@ export async function sendInvoiceMail(b: InvoiceMailRow, pdf: Buffer): Promise<{
           ${detailRow("Rezervasyon", b.ref)}${detailRow("Yolculuk", `${b.ride_date ?? ""} ${b.ride_time ?? ""}`)}${detailRow("Güzergâh", `${b.pickup ?? ""} → ${b.dropoff ?? ""}`)}${detailRow("Tutar", fmtPrice(b.price))}${detailRow("Ödeme", b.payment)}
         </table>` }),
       attachments,
-    });
+    }));
     officeOk = true;
   } catch (e) { console.error("[mail] fatura kopyası gönderilemedi", e); }
   return { customer, office: officeOk };
@@ -520,13 +539,13 @@ export async function sendTestMail(): Promise<{ ok: boolean; reason?: string; to
   const to = process.env.MAIL_TO || user;
   try {
     await tx.verify(); // kimlik doğrulamayı ayrıca sına
-    await tx.sendMail({
+    await tx.sendMail(withDeliverability({
       from: `"ZRH Airport Taxi" <${user}>`,
       to,
-      subject: "Test — bildirim sistemi çalışıyor",
+      subject: "Test - bildirim sistemi çalışıyor",
       html: `<p style="font-family:sans-serif">Bu bir test mesajıdır. E-posta bildirimleri düzgün yapılandırılmış.</p>
              <p style="font-family:sans-serif;color:#78716c;font-size:13px">Gönderen: ${user} · Alıcı: ${to}</p>`,
-    });
+    }));
     return { ok: true, to };
   } catch (e) {
     return { ok: false, reason: e instanceof Error ? e.message : String(e), to };
