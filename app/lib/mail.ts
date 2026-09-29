@@ -259,7 +259,7 @@ const T = {
       note: "Es sind Ihnen selbstverständlich keine Kosten entstanden. Gerne finden wir einen neuen Termin für Sie." },
     refund: "Eine bereits geleistete Online-Zahlung wird automatisch vollständig zurückerstattet (3–10 Werktage).",
     labels: { stops: "Zwischenstopps", vehicle: "Fahrzeug", flight: "Flug", pax: "Passagiere / Gepäck", price: "Preis", payment: "Zahlung", ref: "Referenz", notes: "Ihre Notiz", paid: "Online bezahlt", inCar: "Zahlung im Fahrzeug" },
-    cta: { wa: "WhatsApp", call: "Anrufen" },
+    cta: { wa: "WhatsApp", call: "Anrufen", details: "Buchung ansehen" },
     sign: "Freundliche Grüsse<br><b>ZRH Airport Taxi</b>",
   },
   en: {
@@ -276,7 +276,7 @@ const T = {
       note: "No costs have been incurred for you. We would be happy to arrange a new date." },
     refund: "Any online payment already made will be refunded automatically in full (3–10 business days).",
     labels: { stops: "Stops", vehicle: "Vehicle", flight: "Flight", pax: "Passengers / luggage", price: "Price", payment: "Payment", ref: "Reference", notes: "Your note", paid: "Paid online", inCar: "Payment in the vehicle" },
-    cta: { wa: "WhatsApp", call: "Call us" },
+    cta: { wa: "WhatsApp", call: "Call us", details: "View booking" },
     sign: "Kind regards<br><b>ZRH Airport Taxi</b>",
   },
 };
@@ -332,6 +332,7 @@ export async function sendCustomerDecisionMail(b: CustomerBooking, decision: "ac
     <p style="margin:22px 0 0;font-size:14px;line-height:1.7">${note}</p>
     ${refundNote}
     <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px auto 0"><tr>
+      ${decision === "accept" ? `<td style="padding-right:10px">${button(`${SITE()}/${lang}/buchung/confirmation?ref=${encodeURIComponent(b.ref)}`, t.cta.details, C.pine)}</td>` : ""}
       <td style="padding-right:10px">${button(`https://wa.me/${WHATSAPP_NUMBER}`, t.cta.wa, "#25D366")}</td>
       <td>${button(`tel:+${WHATSAPP_NUMBER}`, t.cta.call, C.gold, C.pine)}</td>
     </tr></table>

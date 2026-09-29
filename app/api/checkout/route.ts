@@ -86,7 +86,7 @@ export async function POST(req: NextRequest) {
       description: `${str(b.pickup) ?? ""} → ${str(b.dropoff) ?? ""} · ${str(b.date, 20) ?? ""} ${str(b.time, 10) ?? ""}`,
       email: str(b.email, 160),
       lang,
-      successUrl: `${SITE_URL}/${lang}/buchung?paid=${encodeURIComponent(ref)}`,
+      successUrl: `${SITE_URL}/${lang}/buchung/pending-confirmation?ref=${encodeURIComponent(ref)}`,
       cancelUrl: `${SITE_URL}/${lang}/buchung?canceled=1`,
     });
 

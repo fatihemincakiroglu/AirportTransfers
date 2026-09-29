@@ -108,7 +108,7 @@ export function pushEvent(event: string, payload: DL, opts: { id?: string; idPre
   dl()?.push({
     schema_version: SCHEMA_VERSION,
     environment: ENVIRONMENT,
-    event_source: "browser",
+    event_source: "browser", // backend aynası (booking_complete) payload ile "backend" olarak ezer
     event,
     event_id,
     event_time: nowSec(),

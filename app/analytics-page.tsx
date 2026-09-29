@@ -45,7 +45,8 @@ function describePage(pathname: string, lang: string): PageContext {
     if (r?.kind === "route") { page_type = "route_detail"; page_id = routeId(r.key); }
     else if (r?.kind === "dest") { page_type = "destination_detail"; page_id = `destination_${r.key.replace(/^flughafentransfer-/, "")}`; }
   } else if (parts.length >= 2) {
-    if (key === "staedte") { page_type = "destination_detail"; page_id = `destination_${parts[1]}`; }
+    if (key === "buchung") page_type = "booking_confirmation";
+    else if (key === "staedte") { page_type = "destination_detail"; page_id = `destination_${parts[1]}`; }
     else if (key === "events") { page_type = "event_detail"; page_id = `event_${parts[1]}`; }
     else if (key === "blog") { page_type = "blog_detail"; page_id = `blog_${parts[1]}`; }
   }

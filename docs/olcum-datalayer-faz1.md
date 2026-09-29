@@ -104,3 +104,14 @@ Değişken eksikse ilgili hedef `suppressed_unconfigured` olarak birikir; site �
 
 ## GTM tarafı (reklamcı) — değişmedi
 GA4 Purchase yalnızca sunucudan gelir; GTM'de `booking_complete` için GA4 etiketi **kurulmaz**. Meta Pixel Purchase aynası bu sürümde yok (CAPI tek kaynak). GA4'te `purchase`/`refund`/`generate_lead` standart, diğerleri özel olay olarak görünür.
+
+---
+
+# Faz 3 — Purchase tarayıcı aynası (browser mirror, spec §14)
+
+- Stripe success_url → `/{lang}/buchung/pending-confirmation?ref=…` (EN: `/en/booking/pending-confirmation`). Sayfa 4 sn'de bir `GET /api/booking-status?ref=…` sorar.
+- Backend `confirmed` döndüğünde yanıtta **imzalı makbuz** (`receipt`: event_id `purchase_<ref>`, brüt/net/KDV, items, issued_at, expires_at 24 s, dedup_deadline_at 48 s, HMAC).
+- Tarayıcı makbuzu alınca `booking_complete` olayını **yalnızca bir kez** basar (localStorage kilidi `zrh_purchase_<ref>`), `event_source: "backend"`, `mirror.kind: "backend_receipt"`, sonra `/buchung/confirmation` sayfasına geçer.
+- Onay e-postasındaki "Buchung ansehen" bağlantısı da `/buchung/confirmation?ref=…`'e gider; makbuz süresi içindeyse ve daha önce basılmadıysa ayna orada basılır (araç içi ödeme / sayfayı kapatan müşteriler).
+- Tarayıcı kendi başına Purchase üretmez; Stripe yönlendirmesi tetikleyici değildir. Sunucu tarafı `booking_complete` (GA4 MP / Meta CAPI) aynen devam eder; GTM'de Google Ads Purchase etiketi `booking_complete` + `mirror.google_ads_browser_allowed` ile tetiklenir.
+- Panelden/telefondan açılan kayıtlar (source ≠ site) makbuz almaz.
