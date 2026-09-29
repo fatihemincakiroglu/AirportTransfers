@@ -730,28 +730,30 @@ export default function Buchung() {
                     <input type="email" inputMode="email" autoComplete="email" className={`${inputCls} ${touched.email && !emailOk ? "ring-2 ring-red-300" : ""}`} placeholder={`${D.email} *`} value={f.email} onChange={(e) => set("email", e.target.value)} />
                     {touched.email && !emailOk && <p className="mt-1 text-[11px] font-semibold text-red-700">{VAL.email}</p>}
                   </div>
-                  <div className="flex w-full min-w-0 gap-2">
-                    <select
-                      aria-label="country code"
-                      className={`${inputCls.replace("w-full", "")} shrink-0 px-2`}
-                      style={{ width: 104 }}
-                      value={dial}
-                      onChange={(e) => setDial(e.target.value)}
-                    >
-                      {DIAL_CODES.map(([flag, code, cc]) => <option key={code + cc} value={code}>{flag} {code}</option>)}
-                    </select>
-                    <input
-                      type="tel"
-                      inputMode="tel"
-                      className={`${inputCls} w-full min-w-0 flex-1`}
-                      placeholder={`${D.phone} *`}
-                      value={f.phone}
-                      onChange={(e) => set("phone", e.target.value.replace(/[^\d\s]/g, ""))}
-                    />
+                  <div className="min-w-0">
+                    <div className="flex w-full min-w-0 gap-2">
+                      <select
+                        aria-label="country code"
+                        className={`${inputCls.replace("w-full", "")} shrink-0 px-2`}
+                        style={{ width: 104 }}
+                        value={dial}
+                        onChange={(e) => setDial(e.target.value)}
+                      >
+                        {DIAL_CODES.map(([flag, code, cc]) => <option key={code + cc} value={code}>{flag} {code}</option>)}
+                      </select>
+                      <input
+                        type="tel"
+                        inputMode="tel"
+                        className={`${inputCls} w-full min-w-0 flex-1 ${touched.phone && phoneProblem && phoneProblem !== "empty" ? "ring-2 ring-red-300" : ""}`}
+                        placeholder={`${D.phone} *`}
+                        value={f.phone}
+                        onChange={(e) => set("phone", e.target.value.replace(/[^\d\s]/g, ""))}
+                      />
+                    </div>
+                    {touched.phone && phoneProblem && phoneProblem !== "empty" && (
+                      <p className="mt-1 text-[11px] font-semibold text-red-700">{phoneProblem === "short" ? VAL.short : VAL.long}</p>
+                    )}
                   </div>
-                  {touched.phone && phoneProblem && phoneProblem !== "empty" && (
-                    <p className="-mt-2 text-[11px] font-semibold text-red-700 sm:col-span-2">{phoneProblem === "short" ? VAL.short : VAL.long}</p>
-                  )}
                 </div>
 
                 <div className="mt-4">
