@@ -28,6 +28,11 @@ export async function POST(req: NextRequest) {
     if (isTestPayment) amount = 1;
     if (!ref || !amount || amount <= 0) return NextResponse.json({ ok: false }, { status: 400 });
 
+    // Geçmiş tarih/saat kabul edilmez (tarayıcı kontrolüne güvenilmez)
+    if (typeof b.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(b.date)) {
+      const when = new Date(`${b.date}T${typeof b.time === "string" && /^\d{2}:\d{2}/.test(b.time) ? b.time.slice(0, 5) : "23:59"}:00`);
+      if (when.getTime() < Date.now() - 15 * 60_000) return NextResponse.json({ ok: false, error: "past_datetime" }, { status: 400 });
+    }
     await ensureSchema();
     const mm = captureMeasurement(req, b); // onay + kimlik anlık görüntüsü (yalnızca izinli alanlar)
 

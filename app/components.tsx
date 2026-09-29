@@ -224,13 +224,13 @@ export function BookingBar() {
         <div>
           <label className={labelCls}>📅 {L.form.date}</label>
           <div className={fieldWrap}>
-            <input type="date" aria-label={L.form.date} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+            <input type="date" aria-label={L.form.date} min={todayISO()} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
           </div>
         </div>
         <div>
           <label className={labelCls}>🕐 {L.form.time}</label>
           <div className={fieldWrap}>
-            <input type="time" aria-label={L.form.time} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+            <input type="time" aria-label={L.form.time} min={minTimeFor(f.date)} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
           </div>
         </div>
         <SelectField
@@ -248,10 +248,12 @@ export function BookingBar() {
           onChange={(v) => set("kids", v)}
         />
         <a
-          href={`${P("/buchung")}?${new URLSearchParams({
+          href={isPastDateTime(f.date, f.time) ? undefined : `${P("/buchung")}?${new URLSearchParams({
             from: f.from, to: f.to, date: f.date, time: f.time, pax: f.pax, kids: f.kids,
           }).toString()}`}
-          className="col-span-2 mt-auto flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-[0.16em] shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg md:col-span-1"
+          aria-disabled={isPastDateTime(f.date, f.time)}
+          title={isPastDateTime(f.date, f.time) ? (lang === "de" ? "Bitte ein Datum in der Zukunft wählen" : "Please choose a date in the future") : undefined}
+          className={`col-span-2 mt-auto flex h-12 items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-[0.16em] shadow-md transition-all md:col-span-1 ${isPastDateTime(f.date, f.time) ? "cursor-not-allowed opacity-40" : "hover:-translate-y-0.5 hover:shadow-lg"}`}
           style={{ background: C.gold, color: C.pine }}
         >
           🔍 {L.form.search}
@@ -263,6 +265,13 @@ export function BookingBar() {
 
 // ── Dikey rezervasyon kartı (ana sayfa hero) ──────────────────
 /* ── Premium form alanları ─────────────────────────────── */
+/** Bugünün tarihi (yerel), YYYY-MM-DD — geçmişe rezervasyon yapılamaz */
+export const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+/** Seçilen tarih bugünse: en erken saat (şu an, dakikaya yuvarlanmış); değilse sınır yok */
+export const minTimeFor = (date: string) => { if (date !== todayISO()) return undefined; const d = new Date(); return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
+/** Tarih+saat geçmişte mi? (boşsa false) */
+export const isPastDateTime = (date: string, time: string) => { if (!date) return false; const t = new Date(`${date}T${time || "23:59"}:00`); return t.getTime() < Date.now(); };
+
 export const fieldWrap =
   "group relative flex h-12 items-center gap-2.5 rounded-xl border border-stone-200 bg-[#FAF9F4] px-3.5 transition-all focus-within:border-[#C9A24B] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#C9A24B]/15";
 export const fieldInput =
@@ -478,13 +487,13 @@ export function BookingCard() {
             <div>
               <label className={labelCls}>📅 {L.form.date}</label>
               <div className={fieldWrap}>
-                <input type="date" aria-label={L.form.date} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+                <input type="date" aria-label={L.form.date} min={todayISO()} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
               </div>
             </div>
             <div>
               <label className={labelCls}>🕐 {L.form.time}</label>
               <div className={fieldWrap}>
-                <input type="time" aria-label={L.form.time} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+                <input type="time" aria-label={L.form.time} min={minTimeFor(f.date)} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
               </div>
             </div>
           </div>
@@ -551,13 +560,13 @@ export function BookingCard() {
           <div>
             <label className={labelCls}>📅 {L.form.date}</label>
             <div className={fieldWrap}>
-              <input type="date" aria-label={L.form.date} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
+              <input type="date" aria-label={L.form.date} min={todayISO()} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
             </div>
           </div>
           <div>
             <label className={labelCls}>🕐 {L.form.time}</label>
             <div className={fieldWrap}>
-              <input type="time" aria-label={L.form.time} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
+              <input type="time" aria-label={L.form.time} min={minTimeFor(f.date)} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
             </div>
           </div>
         </div>
@@ -582,11 +591,13 @@ export function BookingCard() {
 
         {/* Ara → rezervasyon sayfasına form verisiyle */}
         <a
-          href={`${P("/buchung")}?${new URLSearchParams({
+          href={isPastDateTime(f.date, f.time) ? undefined : `${P("/buchung")}?${new URLSearchParams({
             from: f.from, to: f.to, date: f.date, time: f.time, pax: f.pax, kids: f.kids,
             ...(stops.filter((x) => x.trim()).length ? { stops: stops.filter((x) => x.trim()).join(" | ") } : {}),
           }).toString()}`}
-          className="mt-1 flex h-14 items-center justify-center gap-2.5 rounded-2xl text-sm font-extrabold uppercase tracking-[0.18em] text-white shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          aria-disabled={isPastDateTime(f.date, f.time)}
+          title={isPastDateTime(f.date, f.time) ? (lang === "de" ? "Bitte ein Datum in der Zukunft wählen" : "Please choose a date in the future") : undefined}
+          className={`mt-1 flex h-14 items-center justify-center gap-2.5 rounded-2xl text-sm font-extrabold uppercase tracking-[0.18em] text-white shadow-lg transition-all ${isPastDateTime(f.date, f.time) ? "cursor-not-allowed opacity-40" : "hover:-translate-y-0.5 hover:shadow-xl"}`}
           style={{ background: C.pine }}
         >
           🔍 {L.form.search}

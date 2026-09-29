@@ -10,7 +10,7 @@ import { useLang } from "../../providers";
 import { getRouteContent } from "../../routeContent";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  localName, inputCls, labelCls,
+  localName, inputCls, labelCls, todayISO, minTimeFor,
   RouteCard,
 } from "../../components";
 
@@ -158,11 +158,11 @@ export default function RouteClient({ slug }: { slug: string }) {
           <div className="mb-6 grid grid-cols-2 gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
             <div>
               <label className={labelCls}>📅 {L.form.date}</label>
-              <input type="date" className={inputCls} value={date} onChange={(e) => setDate(e.target.value)} />
+              <input type="date" min={todayISO()} className={inputCls} value={date} onChange={(e) => setDate(e.target.value)} />
             </div>
             <div>
               <label className={labelCls}>🕐 {L.form.time}</label>
-              <input type="time" className={inputCls} value={time} onChange={(e) => setTime(e.target.value)} />
+              <input type="time" min={minTimeFor(date)} className={inputCls} value={time} onChange={(e) => setTime(e.target.value)} />
             </div>
           </div>
 

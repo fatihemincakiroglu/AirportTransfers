@@ -8,7 +8,7 @@ import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls, norm, ExtrasCounter,
-  waHref, PlaceField, SelectField, fieldWrap, fieldInput,
+  waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime,
 } from "../../components";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
@@ -391,7 +391,8 @@ export default function Buchung() {
   });
   const routeObj = route ? { route: { route_id: routeId(route.slug), origin_id: "zrh_airport", destination_id: safeLocation(n).location_id } } : {};
 
-  const step1Ready = (hourly || (trip.from.trim() && trip.to.trim())) && date && time;
+  const pastTime = isPastDateTime(date, time); // geçmiş tarih/saat: ileri gidilemez
+  const step1Ready = (hourly || (trip.from.trim() && trip.to.trim())) && date && time && !pastTime;
 
   // Adım 2'ye yeni bir aramayla gelindiğinde: booking_search → booking_results_view (araç listesi)
   useEffect(() => {
@@ -607,16 +608,21 @@ export default function Buchung() {
                 <div>
                   <label className={labelCls}>📅 {L.form.date}</label>
                   <div className={fieldWrap}>
-                    <input type="date" className={fieldInput} value={date} onChange={(e) => setDate(e.target.value)} />
+                    <input type="date" min={todayISO()} className={fieldInput} value={date} onChange={(e) => setDate(e.target.value)} />
                   </div>
                 </div>
                 <div>
                   <label className={labelCls}>🕐 {L.form.time}</label>
                   <div className={fieldWrap}>
-                    <input type="time" className={fieldInput} value={time} onChange={(e) => setTime(e.target.value)} />
+                    <input type="time" min={minTimeFor(date)} className={fieldInput} value={time} onChange={(e) => setTime(e.target.value)} />
                   </div>
                 </div>
               </div>
+              {pastTime && (
+                <p className="mt-2 text-xs font-semibold" style={{ color: "#B91C1C" }}>
+                  {lang === "de" ? "Dieser Zeitpunkt liegt in der Vergangenheit – bitte Datum oder Uhrzeit anpassen." : "This time is in the past – please adjust the date or time."}
+                </p>
+              )}
 
               {/* Yolcu / Çocuk */}
               {!hourly && (
