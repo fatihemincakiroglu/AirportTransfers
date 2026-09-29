@@ -26,15 +26,21 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     const dest = findDestination(slug);
     if (dest) {
       const safe: Lang = (LANGS as readonly string[]).includes(lang) ? (lang as Lang) : DEFAULT_LANG;
-      const X = tx[safe];
       const n = dest.d.name;
+      // Hedef sayfası SEO meta: "Zürich Airport Transfer <Ort> | Zürich Airport Taxi"; açıklama ≤155 karakter,
+      // her iki anahtar kelime geçer (H1 metni ayrı: X.dest.hero)
+      const metaTitle = safe === "de" ? `Zürich Flughafentransfer ${n} | Zürich Airport Taxi` : `Zürich Airport Transfer ${n} | Zürich Airport Taxi`;
+      const metaDesc = safe === "de"
+        ? `Zürich Flughafentransfer ${n} mit Zürich Airport Taxi: Festpreis pro Fahrzeug, Flugverfolgung, rund um die Uhr. Online buchen.`
+        : `Zürich Airport Transfer ${n} with Zürich Airport Taxi: fixed price per vehicle, flight tracking, 24/7. Book online.`;
       return {
-        title: `${X.dest.hero(n)} | Zürich Airport Taxi`,
-        description: X.dest.heroSub(n),
+        title: metaTitle,
+        description: metaDesc,
         alternates: {
           canonical: `/${lang}/${res.canonical}`,
           languages: slugAlternates(slug),
         },
+        openGraph: { title: metaTitle, description: tx[safe].dest.heroSub(n) },
       };
     }
     return { title: "ZRH Airport Taxi" };
