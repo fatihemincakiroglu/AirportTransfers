@@ -12,6 +12,7 @@ import {
 } from "../../components";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
+import { isValidEmail, phoneIssue } from "../../lib/validation";
 
 const PAY_TYPES = ["twint", "cash", "card", "online"] as const; // D.payOptions sırasıyla
 const ONLINE_PAY = 3; // Stripe Checkout seçeneğinin dizini
@@ -481,7 +482,14 @@ export default function Buchung() {
     pendingSearchRef.current = true;
     go(2);
   };
-  const ready = accepted && f.name && f.surname && f.email && f.phone.trim() && !slot.busy; // uçuş numarası isteğe bağlı
+  // İletişim doğrulaması: ad, soyad, geçerli e-posta (@ ve alan adı), telefon 5–13 rakam (ülke koduyla ≤15)
+  const emailOk = isValidEmail(f.email);
+  const phoneProblem = phoneIssue(f.phone, dial);
+  const touched = { email: f.email.trim().length > 0, phone: f.phone.trim().length > 0 };
+  const ready = accepted && f.name.trim() && f.surname.trim() && emailOk && !phoneProblem && !slot.busy; // uçuş numarası isteğe bağlı
+  const VAL = lang === "de"
+    ? { email: "Bitte eine gültige E-Mail-Adresse eingeben (z. B. name@domain.ch).", short: "Telefonnummer zu kurz – bitte prüfen.", long: "Telefonnummer zu lang – bitte prüfen." }
+    : { email: "Please enter a valid email address (e.g. name@domain.com).", short: "Phone number too short – please check.", long: "Phone number too long – please check." };
 
 
   const go = (s: 1 | 2 | 3, v: (typeof fleet)[number] | null = chosen) => {
@@ -718,7 +726,10 @@ export default function Buchung() {
                 <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
                   <input className={inputCls} placeholder={`${D.name} *`} value={f.name} onChange={(e) => set("name", e.target.value)} />
                   <input className={inputCls} placeholder={`${D.surname} *`} value={f.surname} onChange={(e) => set("surname", e.target.value)} />
-                  <input type="email" className={inputCls} placeholder={`${D.email} *`} value={f.email} onChange={(e) => set("email", e.target.value)} />
+                  <div>
+                    <input type="email" inputMode="email" autoComplete="email" className={`${inputCls} ${touched.email && !emailOk ? "ring-2 ring-red-300" : ""}`} placeholder={`${D.email} *`} value={f.email} onChange={(e) => set("email", e.target.value)} />
+                    {touched.email && !emailOk && <p className="mt-1 text-[11px] font-semibold text-red-700">{VAL.email}</p>}
+                  </div>
                   <div className="flex w-full min-w-0 gap-2">
                     <select
                       aria-label="country code"
@@ -738,6 +749,9 @@ export default function Buchung() {
                       onChange={(e) => set("phone", e.target.value.replace(/[^\d\s]/g, ""))}
                     />
                   </div>
+                  {touched.phone && phoneProblem && phoneProblem !== "empty" && (
+                    <p className="-mt-2 text-[11px] font-semibold text-red-700 sm:col-span-2">{phoneProblem === "short" ? VAL.short : VAL.long}</p>
+                  )}
                 </div>
 
                 <div className="mt-4">

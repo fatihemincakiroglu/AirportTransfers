@@ -4,6 +4,7 @@ import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../
 import { sendBookingMail } from "../../lib/mail";
 import { captureMeasurement } from "../../lib/measurement";
 import { serverPriceAsync } from "../../lib/pricing";
+import { contactProblems } from "../../lib/validation";
 
 export const runtime = "nodejs";
 
@@ -17,6 +18,11 @@ export async function POST(req: NextRequest) {
     const ref = str(b.ref, 32);
     if (!ref) return NextResponse.json({ ok: false }, { status: 400 });
 
+    // Taslak dışında (gerçek talep) ad, soyad, geçerli e-posta ve telefon zorunlu
+    if (str(b.channel, 20) !== "taslak") {
+      const problems = contactProblems(b);
+      if (problems.length) return NextResponse.json({ ok: false, error: "invalid_contact", fields: problems }, { status: 400 });
+    }
     // Geçmiş tarih/saat kabul edilmez (tarayıcı kontrolüne güvenilmez)
     if (typeof b.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(b.date)) {
       const when = new Date(`${b.date}T${typeof b.time === "string" && /^\d{2}:\d{2}/.test(b.time) ? b.time.slice(0, 5) : "23:59"}:00`);
