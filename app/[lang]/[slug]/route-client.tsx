@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useMemo, useState } from "react";
 
-import { C, routes, fleet, KM_RATE } from "../../config";
+import { C, routes, fleet, KM_RATE, transferPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import { getRouteContent } from "../../routeContent";
@@ -21,8 +21,8 @@ export default function RouteClient({ slug }: { slug: string }) {
 
   const route = useMemo(() => routes.find((r) => r.slug === slug), [slug]);
 
-  // Bu sayfa fiyat göstermez: tarih/saat + araç seçilir, fiyat rezervasyon sayfasında
-  // yolculuk saatine ve gerçek mesafeye göre hesaplanır (Kilometertarif).
+  // Sabit rota: güzergâh ve mesafe belli, fiyat burada araç başına gösterilir.
+  // Hesap rezervasyon sayfası ve sunucuyla aynıdır (transferPrice: km tarifesi + gece zammı).
   const [reversed, setReversed] = useState(false);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
@@ -54,6 +54,10 @@ export default function RouteClient({ slug }: { slug: string }) {
 
   const sorted = [...fleet].sort((a, b) => KM_RATE[a.id] - KM_RATE[b.id]);
   const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
+  const night = isNightTime(time); // 00:00–06:00 gece tarifesi
+  const priceOf = (id: (typeof fleet)[number]["id"]) => transferPrice(route.km, id, time || null);
+  const fromPrice = Math.min(...sorted.map((v) => priceOf(v.id)));
+  const chf = (n: number) => `CHF ${n.toFixed(2)}`;
 
   /** Rezervasyon sayfasına ön-doldurulmuş geçiş; tarih+saat varsa doğrudan araç adımı açılır */
   const bookingHref = () => {
@@ -110,13 +114,20 @@ export default function RouteClient({ slug }: { slug: string }) {
         <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
           {lang === "de" ? "Preis" : "Price"}
         </p>
+        <p className="mt-1 font-display text-2xl font-semibold">
+          {lang === "de" ? "ab" : "from"} {chf(fromPrice)}
+        </p>
         <p className="mt-1 text-sm leading-relaxed text-white/85">
           {lang === "de"
-            ? "Ihr Festpreis wird im nächsten Schritt nach Kilometertarif berechnet – pro Fahrzeug, inkl. MwSt., Meet & Greet und 60 Min. Wartezeit."
-            : "Your fixed price is calculated in the next step by kilometre tariff – per vehicle, incl. VAT, meet & greet and 60 min waiting time."}
+            ? "Festpreis pro Fahrzeug, inkl. MwSt., Meet & Greet und 60 Min. Wartezeit."
+            : "Fixed price per vehicle, incl. VAT, meet & greet and 60 min waiting time."}
+          {" "}
+          {night
+            ? (lang === "de" ? `Inkl. Nachtzuschlag ${NIGHT_SURCHARGE_TRANSFER * 100} % (00:00–06:00).` : `Incl. ${NIGHT_SURCHARGE_TRANSFER * 100}% night surcharge (00:00–06:00).`)
+            : (lang === "de" ? `Zwischen 00:00 und 06:00 gilt ein Nachtzuschlag von ${NIGHT_SURCHARGE_TRANSFER * 100} %.` : `A ${NIGHT_SURCHARGE_TRANSFER * 100}% night surcharge applies between 00:00 and 06:00.`)}
         </p>
         <a href={bookingHref()} className="mt-4 block rounded-full px-5 py-3 text-center text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
-          {lang === "de" ? "Preis berechnen & buchen" : "Calculate price & book"} →
+          {lang === "de" ? "Jetzt buchen" : "Book now"} →
         </a>
       </div>
     </aside>
@@ -185,8 +196,10 @@ export default function RouteClient({ slug }: { slug: string }) {
                   </ul>
                 </div>
                 <div className="text-center sm:text-right">
+                  <p className="font-display text-2xl font-semibold" style={{ color: C.pine }}>{chf(priceOf(v.id))}</p>
                   <p className="mb-3 text-[11px] text-stone-500">
-                    {lang === "de" ? "Preis nach Kilometertarif" : "Price by kilometre tariff"}
+                    {lang === "de" ? "Festpreis pro Fahrzeug" : "Fixed price per vehicle"}
+                    {night ? (lang === "de" ? " · inkl. Nachtzuschlag" : " · incl. night surcharge") : ""}
                   </p>
                   <a
                     href={bookingHref()}

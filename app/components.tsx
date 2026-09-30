@@ -618,7 +618,7 @@ export function BookingCard() {
 }
 
 // ── Kartlar ───────────────────────────────────────────────────
-export function RouteCard({ slug, to, km, min, img, priority }: { slug: string; to: LocalName; km: number; min: number; price?: number; img: string; priority?: boolean }) {
+export function RouteCard({ slug, to, km, min, price, img, priority }: { slug: string; to: LocalName; km: number; min: number; price?: number; img: string; priority?: boolean }) {
   const { lang, P } = useLang();
   const n = localName(to, lang);
   const dur =
@@ -653,6 +653,7 @@ export function RouteCard({ slug, to, km, min, img, priority }: { slug: string; 
         <span className="flex flex-wrap gap-x-3 gap-y-1">
           <span>🛣 {km} km</span>
           <span>🕐 {dur}</span>
+          {price ? <span className="font-bold text-white">{lang === "de" ? "ab" : "from"} CHF {price.toFixed(2)}</span> : null}
         </span>
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/15 backdrop-blur transition-colors group-hover:bg-white group-hover:text-[#0C2E25]">↗</span>
       </div>
