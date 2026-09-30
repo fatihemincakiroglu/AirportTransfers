@@ -1,5 +1,6 @@
 "use client";
 
+import { zurichParts } from "../../../lib/zurichTime";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,7 +35,7 @@ export default function CalendarView({
   const first = new Date(year, mon - 1, 1);
   const daysInMonth = new Date(year, mon, 0).getDate();
   const startOffset = (first.getDay() + 6) % 7; // Pazartesi = 0
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayStr = zurichParts().date; // Zürih takvim günü
 
   const byDay = new Map<string, Trip[]>();
   for (const t of trips) {

@@ -6,6 +6,7 @@ import { SITE_URL } from "../../config";
 import { captureMeasurement } from "../../lib/measurement";
 import { serverPriceAsync } from "../../lib/pricing";
 import { contactProblems } from "../../lib/validation";
+import { isPastZurich, isTooSoonZurich, MIN_LEAD_MINUTES } from "../../lib/zurichTime";
 
 export const runtime = "nodejs";
 
@@ -31,10 +32,13 @@ export async function POST(req: NextRequest) {
 
     // Ödemeye geçiş: ad, soyad, geçerli e-posta ve telefon zorunlu
     { const problems = contactProblems(b); if (problems.length) return NextResponse.json({ ok: false, error: "invalid_contact", fields: problems }, { status: 400 }); }
-    // Geçmiş tarih/saat kabul edilmez (tarayıcı kontrolüne güvenilmez)
+    // Tarih/saat Zürih yerel saatidir (sunucu UTC'de çalışır). Tarayıcı kontrolüne güvenilmez.
+    // Geçmiş: reddedilir (15 dk tolerans). Alışa MIN_LEAD_MINUTES (60) dk'dan az: online kabul edilmez, WhatsApp'a yönlenir
+    // (formu doldurma süresi için 10 dk tolerans).
     if (typeof b.date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(b.date)) {
-      const when = new Date(`${b.date}T${typeof b.time === "string" && /^\d{2}:\d{2}/.test(b.time) ? b.time.slice(0, 5) : "23:59"}:00`);
-      if (when.getTime() < Date.now() - 15 * 60_000) return NextResponse.json({ ok: false, error: "past_datetime" }, { status: 400 });
+      const time = typeof b.time === "string" ? b.time : "";
+      if (isPastZurich(b.date, time, 15)) return NextResponse.json({ ok: false, error: "past_datetime" }, { status: 400 });
+      if (isTooSoonZurich(b.date, time, 10)) return NextResponse.json({ ok: false, error: "too_soon", minLeadMinutes: MIN_LEAD_MINUTES }, { status: 400 });
     }
     await ensureSchema();
     const mm = captureMeasurement(req, b); // onay + kimlik anlık görüntüsü (yalnızca izinli alanlar)

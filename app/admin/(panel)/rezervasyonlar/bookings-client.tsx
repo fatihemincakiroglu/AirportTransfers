@@ -1,5 +1,6 @@
 "use client";
 
+import { zurichParts } from "../../../lib/zurichTime";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { isComplete } from "../../booking-utils";
@@ -49,7 +50,7 @@ function groupByMonth(rows: Booking[]): [string, Booking[]][] {
   for (const r of rows) {
     const ym = (r.ride_date && /^\d{4}-\d{2}/.test(r.ride_date))
       ? r.ride_date.slice(0, 7)
-      : String(r.created_at).slice(0, 7);
+      : zurichParts(new Date(r.created_at).getTime()).date.slice(0, 7);
     map.set(ym, [...(map.get(ym) ?? []), r]);
   }
   return [...map.entries()].sort((a, b) => b[0].localeCompare(a[0]));

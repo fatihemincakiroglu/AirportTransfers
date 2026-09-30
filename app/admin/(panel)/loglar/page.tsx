@@ -46,7 +46,7 @@ function relTime(d: string) {
   if (diff < 3600) return `${Math.floor(diff / 60)} dk önce`;
   if (diff < 86400) return `${Math.floor(diff / 3600)} saat önce`;
   if (diff < 604800) return `${Math.floor(diff / 86400)} gün önce`;
-  return new Date(d).toLocaleDateString("tr-TR");
+  return new Date(d).toLocaleDateString("tr-TR", { timeZone: "Europe/Zurich" });
 }
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ tur?: string }> }) {
@@ -66,7 +66,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
   // Günlere göre grupla
   const groups = new Map<string, Row[]>();
   for (const r of rows) {
-    const day = new Date(r.created_at).toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    const day = new Date(r.created_at).toLocaleDateString("tr-TR", { timeZone: "Europe/Zurich", weekday: "long", day: "numeric", month: "long", year: "numeric" });
     groups.set(day, [...(groups.get(day) ?? []), r]);
   }
 
@@ -128,7 +128,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ t
                       </div>
                       <div className="shrink-0 text-right text-[10px] sm:text-xs">
                         <p className="text-[11px] font-semibold text-stone-500">
-                          {new Date(r.created_at).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })}
+                          {new Date(r.created_at).toLocaleTimeString("tr-TR", { timeZone: "Europe/Zurich", hour: "2-digit", minute: "2-digit" })}
                         </p>
                         <p className="text-[10px] text-stone-400">{relTime(r.created_at)}</p>
                         {r.ip && <p className="mt-0.5 text-[10px] text-stone-300">{r.ip}</p>}

@@ -13,6 +13,7 @@ import { legalPages, LegalKey } from "./legalContent";
 import { LANGS, LANG_NAMES } from "./paths";
 import { useLang } from "./providers";
 import { openConsentSettings } from "./consent";
+import { zurichParts, earliestBookable, isPastZurich, isTooSoonZurich } from "./lib/zurichTime";
 
 // ── Yardımcılar ────────────────────────────────────────────────
 export const waHref = (text?: string) =>
@@ -265,12 +266,19 @@ export function BookingBar() {
 
 // ── Dikey rezervasyon kartı (ana sayfa hero) ──────────────────
 /* ── Premium form alanları ─────────────────────────────── */
-/** Bugünün tarihi (yerel), YYYY-MM-DD — geçmişe rezervasyon yapılamaz */
-export const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
-/** Seçilen tarih bugünse: en erken saat (şu an, dakikaya yuvarlanmış); değilse sınır yok */
-export const minTimeFor = (date: string) => { if (date !== todayISO()) return undefined; const d = new Date(); return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`; };
-/** Tarih+saat geçmişte mi? (boşsa false) */
-export const isPastDateTime = (date: string, time: string) => { if (!date) return false; const t = new Date(`${date}T${time || "23:59"}:00`); return t.getTime() < Date.now(); };
+/** Bugünün tarihi (Zürih), YYYY-MM-DD — geçmişe rezervasyon yapılamaz */
+export const todayISO = () => zurichParts().date;
+/** Seçilen tarih için en erken saat (Zürih; alışa en az MIN_LEAD_MINUTES). Sonraki günlerde sınır yok. */
+export const minTimeFor = (date: string) => {
+  const today = todayISO();
+  if (!date || date > today) return undefined;
+  const e = earliestBookable();
+  return date === e.date ? e.time : date < e.date ? "23:59" : undefined;
+};
+/** Tarih+saat (Zürih saatiyle) geçmişte mi? (boşsa false) */
+export const isPastDateTime = (date: string, time: string) => isPastZurich(date, time);
+/** Alışa MIN_LEAD_MINUTES'tan az mı kaldı? (online rezervasyon yerine WhatsApp) */
+export const isTooSoonDateTime = (date: string, time: string) => !isPastZurich(date, time) && isTooSoonZurich(date, time);
 
 export const fieldWrap =
   "group relative flex h-12 items-center gap-2.5 rounded-xl border border-stone-200 bg-[#FAF9F4] px-3.5 transition-all focus-within:border-[#C9A24B] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#C9A24B]/15";

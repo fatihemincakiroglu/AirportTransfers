@@ -11,7 +11,7 @@ export type Incomplete = {
   first_name: string | null; last_name: string | null; email: string | null; phone: string | null; created_at: string;
 };
 
-const fmt = (iso: string) => new Date(iso).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+const fmt = (iso: string) => new Date(iso).toLocaleString("tr-TR", { timeZone: "Europe/Zurich", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export default function IncompleteClient({ rows }: { rows: Incomplete[] }) {
   const router = useRouter();

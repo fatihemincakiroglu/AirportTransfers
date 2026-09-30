@@ -1,3 +1,4 @@
+import { zurichParts } from "../../lib/zurichTime";
 import Link from "next/link";
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../lib/db";
 import { C, Card, PageTitle, NoDb } from "../ui";
@@ -8,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 
 
-const iso = (d: Date) => d.toISOString().slice(0, 10);
+const iso = (d: Date) => zurichParts(d.getTime()).date; // Zürih takvim günü
 
 /** Bugünün ve yarının tarihleri (sunucuda, render dışında hesaplanır) */
 function todayAndTomorrow() {
@@ -16,7 +17,7 @@ function todayAndTomorrow() {
   return {
     today: iso(now),
     tomorrow: iso(new Date(now.getTime() + 86400000)),
-    label: now.toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long", year: "numeric" }),
+    label: now.toLocaleDateString("tr-TR", { timeZone: "Europe/Zurich", weekday: "long", day: "numeric", month: "long", year: "numeric" }),
   };
 }
 

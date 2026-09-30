@@ -89,7 +89,7 @@ export default function MeasurementQueue({ rows, config }: {
                   <tr key={r.id} className="border-t border-stone-100 align-top">
                     <td className="py-2 pr-3 font-semibold text-stone-700">{EVENT_TR[r.event_name] ?? r.event_name}</td>
                     <td className="py-2 pr-3 font-bold" style={{ color: C.pine }}>{r.ref ?? "—"}</td>
-                    <td className="py-2 pr-3 whitespace-nowrap text-stone-500">{new Date(r.occurred_at).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</td>
+                    <td className="py-2 pr-3 whitespace-nowrap text-stone-500">{new Date(r.occurred_at).toLocaleString("tr-TR", { timeZone: "Europe/Zurich", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}</td>
                     {["ga4", "meta_capi"].map((dest) => {
                       const d = r.deliveries.find((x) => x.destination === dest);
                       if (!d) return <td key={dest} className="py-2 pr-3 text-stone-300">—</td>;

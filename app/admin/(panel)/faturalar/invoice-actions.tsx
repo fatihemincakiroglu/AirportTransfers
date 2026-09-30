@@ -48,7 +48,7 @@ export default function InvoiceActions({ id, hasInvoice, sentAt, email }: { id: 
         </div>
         {(msg || sentAt) && (
           <span className="text-[11px] text-stone-500">
-            {msg ?? `Gönderildi: ${new Date(sentAt!).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}`}
+            {msg ?? `Gönderildi: ${new Date(sentAt!).toLocaleString("tr-TR", { timeZone: "Europe/Zurich", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}`}
           </span>
         )}
       </div>

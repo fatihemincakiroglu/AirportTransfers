@@ -8,7 +8,7 @@ import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls, norm, ExtrasCounter,
-  waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime,
+  waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime, isTooSoonDateTime,
 } from "../../components";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
@@ -84,6 +84,9 @@ export default function Buchung() {
   const [slot, setSlot] = useState<{ busy: boolean; nextFree: string | null; reason: string | null }>({ busy: false, nextFree: null, reason: null });
 
   const [sending, setSending] = useState(false);
+  // Gönderim anında alışa 60 dk'dan az kaldıysa / geçmişe düştüyse: online talep yerine WhatsApp
+  // (engel, hangi tarih/saat için verildiğini tutar; tarih/saat değişince kendiliğinden kalkar)
+  const [blockedAt, setBlockedAt] = useState<{ kind: "too_soon" | "past_datetime"; at: string } | null>(null);
   // Stripe'tan dönüş: ödeme başarılıysa onay ekranı, iptalse uyarı
   const [payResult] = useState(() => {
     if (typeof window === "undefined") return { paidRef: null as string | null, canceled: false };
@@ -97,6 +100,10 @@ export default function Buchung() {
    */
   const submitBooking = async () => {
     if (!ready || sending) return;
+    // Form doldurulurken süre geçmiş olabilir: sunucuya gitmeden yakala
+    if (isPastDateTime(date, time)) { setSubmitBlocked("past_datetime"); return; }
+    if (isTooSoonDateTime(date, time)) { setSubmitBlocked("too_soon"); return; }
+    setSubmitBlocked(null);
     setSending(true);
     const r = draftRef.current ?? makeRef();
     // Ölçüm kimliği (GA client id, _fbp/_fbc) — sunucu yalnızca onay varsa saklar
@@ -118,6 +125,11 @@ export default function Buchung() {
           body: JSON.stringify(payload),
         });
         const data = await res.json();
+        if (data?.error === "too_soon" || data?.error === "past_datetime") {
+          setSubmitBlocked(data.error);
+          setSending(false);
+          return;
+        }
         if (data?.ok && data.url) {
           window.location.assign(data.url); // Stripe ödeme sayfası
           return;
@@ -130,11 +142,17 @@ export default function Buchung() {
     }
 
     try {
-      await fetch("/api/bookings", {
+      const res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      const data = await res.json().catch(() => null);
+      if (data?.error === "too_soon" || data?.error === "past_datetime") {
+        setSubmitBlocked(data.error);
+        setSending(false);
+        return;
+      }
     } catch {
       /* ağ hatası olsa da müşteriye onay gösterilir */
     }
@@ -200,6 +218,8 @@ export default function Buchung() {
   const removeStop = (i: number) => setStops((a) => a.filter((_, j) => j !== i));
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const setSubmitBlocked = (kind: "too_soon" | "past_datetime" | null) => setBlockedAt(kind ? { kind, at: `${date} ${time}` } : null);
+  const submitBlocked = blockedAt && blockedAt.at === `${date} ${time}` ? blockedAt.kind : null;
   const [car, setCar] = useState<number | null>(null);
   const [pay, setPay] = useState(0);
   const [extras, setExtras] = useState({ baby: 0, child: 0, ski: 0 });
@@ -235,9 +255,10 @@ export default function Buchung() {
       setCustom({ from: "Flughafen Zürich (ZRH)", to: `${XH.bookingLabel} · ${h}h` });
       setHourly(true);
       setHourlyHours(parseInt(h, 10) || null);
-      if (d && tm) pendingSearchRef.current = true;
+      const hourlyTimeOk = Boolean(d && tm) && !isPastDateTime(d, tm) && !isTooSoonDateTime(d, tm);
+      if (hourlyTimeOk) pendingSearchRef.current = true;
       setF((s) => ({ ...s, notes: XH.bookingNote(h) }));
-      if (d && tm) setStep(2);
+      if (hourlyTimeOk) setStep(2);
       return;
     }
     const paxN = parseInt(g("pax") || "0", 10) || 0;
@@ -249,7 +270,9 @@ export default function Buchung() {
     const { idx, rev, custom: customPlan } = resolveTrip(from, to);
     let notes = customPlan ? `${from || "?"} → ${to || "?"}` : "";
     // Rota ya da iki uçlu özel güzergâh + zaman belliyse doğrudan araç seçimine geç
-    const step2 = Boolean(d && tm) && (idx >= 0 || Boolean(customPlan && from && to));
+    // Geçmiş / alışa 60 dk'dan az: 1. adımda kalır, uyarı ve WhatsApp orada görünür
+    const timeOk = Boolean(d && tm) && !isPastDateTime(d, tm) && !isTooSoonDateTime(d, tm);
+    const step2 = timeOk && (idx >= 0 || Boolean(customPlan && from && to));
 
     // URL → state senkronu mount'ta bir kez çalışır; React tüm bu çağrıları
     // tek render'da toplar (otomatik batching). Bu, dokümante edilmiş
@@ -393,7 +416,29 @@ export default function Buchung() {
   const routeObj = route ? { route: { route_id: routeId(route.slug), origin_id: "zrh_airport", destination_id: safeLocation(n).location_id } } : {};
 
   const pastTime = isPastDateTime(date, time); // geçmiş tarih/saat: ileri gidilemez
-  const step1Ready = (hourly || (trip.from.trim() && trip.to.trim())) && date && time && !pastTime;
+  const tooSoon = isTooSoonDateTime(date, time); // alışa 60 dk'dan az: online rezervasyon yok, WhatsApp
+  const step1Ready = (hourly || (trip.from.trim() && trip.to.trim())) && date && time && !pastTime && !tooSoon;
+  const tooSoonNotice = () => (
+    <div className="mt-3 rounded-2xl border p-4" style={{ borderColor: "#FDE68A", background: "#FFFBEB" }}>
+      <p className="text-sm font-bold" style={{ color: "#92400E" }}>
+        ⚠ {lang === "de" ? "Kurzfristige Fahrt – bitte per WhatsApp anfragen" : "Short-notice ride – please request via WhatsApp"}
+      </p>
+      <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#92400E" }}>
+        {lang === "de"
+          ? "Online-Buchungen sind bis spätestens 1 Stunde vor Abholung möglich. Für kurzfristigere Fahrten schreiben Sie uns direkt – wir prüfen sofort, ob ein Fahrzeug frei ist."
+          : "Online bookings are possible up to 1 hour before pickup. For shorter notice, message us directly – we'll check right away whether a vehicle is available."}
+      </p>
+      <a
+        href={waHref(`${lang === "de" ? "Kurzfristige Anfrage" : "Short-notice request"} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : reversed ? `${n} → Flughafen Zürich (ZRH)` : `Flughafen Zürich (ZRH) → ${n}`}`)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"
+        style={{ background: "#25D366" }}
+      >
+        💬 {lang === "de" ? "Per WhatsApp anfragen" : "Request via WhatsApp"}
+      </a>
+    </div>
+  );
 
   // Adım 2'ye yeni bir aramayla gelindiğinde: booking_search → booking_results_view (araç listesi)
   useEffect(() => {
@@ -631,6 +676,7 @@ export default function Buchung() {
                   {lang === "de" ? "Dieser Zeitpunkt liegt in der Vergangenheit – bitte Datum oder Uhrzeit anpassen." : "This time is in the past – please adjust the date or time."}
                 </p>
               )}
+              {tooSoon && tooSoonNotice()}
 
               {/* Yolcu / Çocuk */}
               {!hourly && (
@@ -812,6 +858,12 @@ export default function Buchung() {
                   </button>
                 </div>
 
+                {submitBlocked === "too_soon" && tooSoonNotice()}
+                {submitBlocked === "past_datetime" && (
+                  <p className="mt-3 text-center text-xs font-semibold" style={{ color: "#B91C1C" }}>
+                    {lang === "de" ? "Dieser Zeitpunkt liegt inzwischen in der Vergangenheit – bitte Datum oder Uhrzeit im ersten Schritt anpassen." : "This time is now in the past – please adjust the date or time in the first step."}
+                  </p>
+                )}
                 {pay === ONLINE_PAY && <p className="mt-3 text-center text-xs text-stone-500">🔒 {X.pay.note}</p>}
                 <p className="mt-1.5 text-center text-xs text-stone-500">{D.confirmNote}</p>
               </div>

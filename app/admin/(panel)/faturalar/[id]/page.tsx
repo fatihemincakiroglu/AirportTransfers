@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
   const gross = Number(b.price ?? 0);
   const chf = (n: number) => n.toLocaleString("de-CH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const day = (d?: string | null) => (d ? new Date(d).toLocaleDateString("sv-SE") : "—"); // YYYY-MM-DD
+  const day = (d?: string | null) => (d ? new Date(d).toLocaleDateString("sv-SE", { timeZone: "Europe/Zurich" }) : "—"); // YYYY-MM-DD
   const who = [b.first_name, b.last_name].filter(Boolean).join(" ") || "—";
 
   const paid = b.status === "done";

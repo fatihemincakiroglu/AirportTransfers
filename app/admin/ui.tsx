@@ -64,7 +64,7 @@ export function NoDb() {
 }
 
 export const fmtDate = (d: Date | string) =>
-  new Date(d).toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  new Date(d).toLocaleString("tr-TR", { timeZone: "Europe/Zurich", day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 /** Ödeme durumu etiketleri ve renkleri */
 export const PAY_LABEL: Record<string, string> = {
