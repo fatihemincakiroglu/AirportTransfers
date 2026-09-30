@@ -48,7 +48,7 @@ export default async function Page({ params }: Params) {
       timeRequired: `PT${Math.max(2, Math.ceil(words / 180))}M`,
       inLanguage: lang === "de" ? "de" : "en",
       author: { "@type": "Organization", name: "ZRH Airport Taxi" },
-      publisher: { "@type": "Organization", name: "ZRH Airport Taxi", logo: { "@type": "ImageObject", url: "/icon.png" } },
+      publisher: { "@type": "Organization", name: "ZRH Airport Taxi", logo: { "@type": "ImageObject", url: "/logo-square.png" } },
       mainEntityOfPage: `/${lang}/blog/${slug}`,
     });
     jsonLd.push({

@@ -79,7 +79,7 @@ export default async function RootLayout({
       legalName: "Kula-ZATK",
       url: SITE_URL,
       sameAs: [GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL],
-      logo: `${SITE_URL}/icon.png`,
+      logo: `${SITE_URL}/logo-square.png`,
       telephone: `+${WHATSAPP_NUMBER}`,
       address: {
         "@type": "PostalAddress",
