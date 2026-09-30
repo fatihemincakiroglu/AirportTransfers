@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useMemo, useState } from "react";
 
-import { C, routes, fleet, KM_RATE, transferPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER } from "../../config";
+import { C, routes, fleet, KM_RATE, transferPrice, isNightTime } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import { getRouteContent } from "../../routeContent";
@@ -56,7 +56,6 @@ export default function RouteClient({ slug }: { slug: string }) {
   const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
   const night = isNightTime(time); // 00:00–06:00 gece tarifesi
   const priceOf = (id: (typeof fleet)[number]["id"]) => transferPrice(route.km, id, time || null);
-  const fromPrice = Math.min(...sorted.map((v) => priceOf(v.id)));
   const chf = (n: number) => `CHF ${n.toFixed(2)}`;
 
   /** Rezervasyon sayfasına ön-doldurulmuş geçiş; tarih+saat varsa doğrudan araç adımı açılır */
@@ -109,26 +108,6 @@ export default function RouteClient({ slug }: { slug: string }) {
           <span><span className="block text-xs text-stone-500">{D.distance}</span><b>{route.km} km</b></span>
           <span><span className="block text-xs text-stone-500">{D.time}</span><b>{dur}</b></span>
         </div>
-      </div>
-      <div className="rounded-2xl p-5 text-white" style={{ background: C.pine }}>
-        <p className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>
-          {lang === "de" ? "Preis" : "Price"}
-        </p>
-        <p className="mt-1 font-display text-2xl font-semibold">
-          {lang === "de" ? "ab" : "from"} {chf(fromPrice)}
-        </p>
-        <p className="mt-1 text-sm leading-relaxed text-white/85">
-          {lang === "de"
-            ? "Festpreis pro Fahrzeug, inkl. MwSt., Meet & Greet und 60 Min. Wartezeit."
-            : "Fixed price per vehicle, incl. VAT, meet & greet and 60 min waiting time."}
-          {" "}
-          {night
-            ? (lang === "de" ? `Inkl. Nachtzuschlag ${NIGHT_SURCHARGE_TRANSFER * 100} % (00:00–06:00).` : `Incl. ${NIGHT_SURCHARGE_TRANSFER * 100}% night surcharge (00:00–06:00).`)
-            : (lang === "de" ? `Zwischen 00:00 und 06:00 gilt ein Nachtzuschlag von ${NIGHT_SURCHARGE_TRANSFER * 100} %.` : `A ${NIGHT_SURCHARGE_TRANSFER * 100}% night surcharge applies between 00:00 and 06:00.`)}
-        </p>
-        <a href={bookingHref()} className="mt-4 block rounded-full px-5 py-3 text-center text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
-          {lang === "de" ? "Jetzt buchen" : "Book now"} →
-        </a>
       </div>
     </aside>
   );
@@ -196,10 +175,10 @@ export default function RouteClient({ slug }: { slug: string }) {
                   </ul>
                 </div>
                 <div className="text-center sm:text-right">
-                  <p className="font-display text-2xl font-semibold" style={{ color: C.pine }}>{chf(priceOf(v.id))}</p>
+                  <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>{chf(priceOf(v.id))}</p>
                   <p className="mb-3 text-[11px] text-stone-500">
-                    {lang === "de" ? "Festpreis pro Fahrzeug" : "Fixed price per vehicle"}
-                    {night ? (lang === "de" ? " · inkl. Nachtzuschlag" : " · incl. night surcharge") : ""}
+                    {D.priceNote}
+                    {night ? (lang === "de" ? " Inkl. Nachtzuschlag." : " Incl. night surcharge.") : ""}
                   </p>
                   <a
                     href={bookingHref()}
