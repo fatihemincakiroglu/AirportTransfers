@@ -57,9 +57,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       canonical: `/${lang}/${res.canonical}`,
       languages: slugAlternates(slug),
     },
+    // Paylaşım kartı (WhatsApp, Facebook, LinkedIn, X) meta başlık/açıklamayla aynı;
+    // twitter:title/description Next tarafından openGraph'tan devralınır.
     openGraph: {
-      title: X.dest.hero(n),
-      description: X.dest.chips.join(" · "),
+      title: rm?.title ?? X.dest.hero(n),
+      description: rm?.description ?? X.dest.chips.join(" · "),
     },
   };
 }
