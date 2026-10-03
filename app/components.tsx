@@ -75,7 +75,7 @@ export function TopBar() {
           className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
           style={{ color: C.gold }}
         >
-          ✈ Airport Zurich Transfer
+          ✈ {lang === "de" ? "Flughafen Zürich Transfer" : "Zurich Airport Private Transfer"}
         </span>
 
         {/* Dil geçişi — DE | EN */}

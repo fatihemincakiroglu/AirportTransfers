@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, airportName } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
@@ -13,21 +13,11 @@ import {
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
 import { isValidEmail, phoneIssue } from "../../lib/validation";
+import { DIAL_CODES, POPULAR_DIAL, dialOf, flagOf, countryNamer } from "../../lib/dialCodes";
 
 const PAY_TYPES = ["online", "card", "cash", "twint"] as const; // D.payOptions sırasıyla (Stripe, kart, nakit, TWINT)
 const ONLINE_PAY = 0; // Stripe Checkout seçeneğinin dizini
 const STEP_NAMES = { 1: "route", 2: "vehicle", 3: "contact" } as const;
-
-/** Telefon ülke kodları — en sık gelen ülkeler önde */
-const DIAL_CODES: [string, string, string][] = [
-  ["🇨🇭", "+41", "CH"], ["🇩🇪", "+49", "DE"], ["🇦🇹", "+43", "AT"], ["🇫🇷", "+33", "FR"], ["🇮🇹", "+39", "IT"],
-  ["🇬🇧", "+44", "GB"], ["🇺🇸", "+1", "US/CA"], ["🇳🇱", "+31", "NL"], ["🇧🇪", "+32", "BE"], ["🇪🇸", "+34", "ES"],
-  ["🇵🇹", "+351", "PT"], ["🇱🇮", "+423", "LI"], ["🇱🇺", "+352", "LU"], ["🇩🇰", "+45", "DK"], ["🇸🇪", "+46", "SE"],
-  ["🇳🇴", "+47", "NO"], ["🇵🇱", "+48", "PL"], ["🇨🇿", "+420", "CZ"], ["🇹🇷", "+90", "TR"], ["🇬🇷", "+30", "GR"],
-  ["🇮🇱", "+972", "IL"], ["🇦🇪", "+971", "AE"], ["🇸🇦", "+966", "SA"], ["🇶🇦", "+974", "QA"], ["🇮🇳", "+91", "IN"],
-  ["🇨🇳", "+86", "CN"], ["🇯🇵", "+81", "JP"], ["🇸🇬", "+65", "SG"], ["🇦🇺", "+61", "AU"], ["🇧🇷", "+55", "BR"],
-  ["🇷🇺", "+7", "RU"], ["🇿🇦", "+27", "ZA"],
-];
 
 /** Harita için: ülke yazılmamışsa İsviçre varsayılır (dünya geneli adresler olduğu gibi kalır) */
 const withCountry = (s: string) => (s.includes(",") ? s : `${s}, Switzerland`);
@@ -211,7 +201,16 @@ export default function Buchung() {
   const [trip, setTrip] = useState({ from: AIRPORT, to: "" });
   const [hourly, setHourly] = useState(false); // saatlik kiralama (URL'den)
   const [hourlyHours, setHourlyHours] = useState<number | null>(null);
-  const [dial, setDial] = useState("+41"); // telefon ülke kodu; kayda "+41 79 …" olarak gider
+  // Telefon ülke kodu: seçim ÜLKEYE göre tutulur (+1, +7, +44 gibi kodları birden çok ülke paylaşır);
+  // kayda "+41 79 …" olarak gider.
+  const [phoneCc, setPhoneCc] = useState("CH");
+  const dial = dialOf(phoneCc);
+  const dialOptions = useMemo(() => {
+    const nameOf = countryNamer(lang);
+    const opt = (cc: string) => ({ cc, label: `${flagOf(cc)} ${nameOf(cc)} (${dialOf(cc)})` });
+    const all = DIAL_CODES.map(([cc]) => opt(cc)).sort((a, b) => a.label.slice(5).localeCompare(b.label.slice(5), lang));
+    return { popular: POPULAR_DIAL.map(opt), all };
+  }, [lang]);
   // Ölçüm: kabul edilen arama kimliği; adım 2'ye ilk geçişte booking_search + results basılır
   const searchIdRef = useRef<string | null>(null);
   const pendingSearchRef = useRef(false);
@@ -781,15 +780,29 @@ export default function Buchung() {
                   </div>
                   <div className="min-w-0">
                     <div className="flex w-full min-w-0 gap-2">
-                      <select
-                        aria-label="country code"
-                        className={`${inputCls.replace("w-full", "")} shrink-0 px-2`}
-                        style={{ width: 104 }}
-                        value={dial}
-                        onChange={(e) => setDial(e.target.value)}
+                      {/* Ülke kodu: kapalıyken yalnızca bayrak + kod görünür; açılınca listede ülke adları da
+                          yer alır. Yerel <select> (mobilde sistem seçicisi) görünmez katman olarak üstte durur. */}
+                      <div
+                        className="relative flex shrink-0 items-center gap-1.5 rounded-xl border border-stone-300 bg-white px-2.5 text-[15px] transition-colors focus-within:border-[#C9A24B] focus-within:ring-2 focus-within:ring-[#C9A24B]/30"
+                        style={{ width: 108 }}
                       >
-                        {DIAL_CODES.map(([flag, code, cc]) => <option key={code + cc} value={code}>{flag} {code}</option>)}
-                      </select>
+                        <span className="flag-font text-lg leading-none" aria-hidden="true">{flagOf(phoneCc)}</span>
+                        <span className="text-stone-800">{dial}</span>
+                        <svg className="ml-auto shrink-0 text-stone-500" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" /></svg>
+                        <select
+                          aria-label={lang === "de" ? "Ländervorwahl" : "Country code"}
+                          className="flag-font absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                          value={phoneCc}
+                          onChange={(e) => setPhoneCc(e.target.value)}
+                        >
+                          <optgroup label={lang === "de" ? "Häufig" : "Popular"}>
+                            {dialOptions.popular.map((o) => <option key={`p-${o.cc}`} value={o.cc}>{o.label}</option>)}
+                          </optgroup>
+                          <optgroup label={lang === "de" ? "Alle Länder" : "All countries"}>
+                            {dialOptions.all.map((o) => <option key={o.cc} value={o.cc}>{o.label}</option>)}
+                          </optgroup>
+                        </select>
+                      </div>
                       <input
                         type="tel"
                         inputMode="tel"
