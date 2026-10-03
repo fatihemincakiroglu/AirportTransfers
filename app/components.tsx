@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
   COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES, NEARBY_PLACES, GOOGLE_BUSINESS_URL,
+  airportName,
 } from "./config";
 import { t, Lang, pickL } from "./i18n";
 import { tx } from "./i18nX";
@@ -201,7 +202,7 @@ export function PageHero({ title, crumb, children }: { title: string; crumb: str
 export function BookingBar() {
   const { lang, P } = useLang();
   const L = t[lang];
-  const [f, setF] = useState({ from: "Flughafen Zürich (ZRH), Schweiz", to: "", date: "", time: "", pax: "2", kids: "0" });
+  const [f, setF] = useState({ from: airportName(lang, true), to: "", date: "", time: "", pax: "2", kids: "0" });
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
 
@@ -317,7 +318,8 @@ function photonToSuggestions(features: { properties: Record<string, string | und
   }
   return out;
 }
-const LOCAL_PLACES = ["Flughafen Zürich (ZRH), Schweiz", ...SWISS_PLACES, ...NEARBY_PLACES];
+// Havalimanı önerisi dile göre başa eklenir; listedeki Almanca kopyası çıkarılır
+const localPlaces = (lang: string) => [airportName(lang, true), ...SWISS_PLACES.filter((p) => !/flughafen/i.test(p)), ...NEARBY_PLACES];
 
 export function PlaceField({ label, icon, value, placeholder, onChange }: {
   label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
@@ -354,7 +356,7 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
   }, [q, lang]);
 
   const local: PlaceSuggestion[] = q.length >= 1
-    ? LOCAL_PLACES.filter((p) => norm(p).includes(q) && norm(p) !== q).slice(0, 4).map((p) => ({ label: p }))
+    ? localPlaces(lang).filter((p) => norm(p).includes(q) && norm(p) !== q).slice(0, 4).map((p) => ({ label: p }))
     : [];
   const seen = new Set(local.map((p) => norm(p.label)));
   const merged = [...local, ...remote.filter((r) => !seen.has(norm(r.label)) && norm(r.label) !== q)].slice(0, 8);
@@ -455,7 +457,7 @@ export function BookingCard() {
   const X = tx[lang];
   const [mode, setMode] = useState<"transfer" | "hourly">("transfer");
   const [hours, setHours] = useState("2");
-  const [f, setF] = useState({ from: "Flughafen Zürich (ZRH), Schweiz", to: "", date: "", time: "", pax: "2", kids: "0" });
+  const [f, setF] = useState({ from: airportName(lang, true), to: "", date: "", time: "", pax: "2", kids: "0" });
   const [stops, setStops] = useState<string[]>([]);
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const swap = () => setF((s) => ({ ...s, from: s.to, to: s.from }));
@@ -648,7 +650,7 @@ export function RouteCard({ slug, to, km, min, price, img, priority }: { slug: s
         🕐 {min < 60 ? `${min} min` : `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60}` : ""}`}
       </span>
       <span className="relative z-10 mb-2 h-0.5 w-8" style={{ background: C.gold }} />
-      <h3 className="font-display relative z-10 text-xl font-semibold leading-snug">Flughafen Zürich (ZRH) → {n}</h3>
+      <h3 className="font-display relative z-10 text-xl font-semibold leading-snug">{airportName(lang)} → {n}</h3>
       <div className="relative z-10 mt-3 flex items-center justify-between text-sm text-white/85">
         <span className="flex flex-wrap gap-x-3 gap-y-1">
           <span>🛣 {km} km</span>

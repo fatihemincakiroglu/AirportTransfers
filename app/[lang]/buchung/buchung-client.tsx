@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY } from "../../config";
+import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, airportName } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
@@ -14,8 +14,8 @@ import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, ca
 import { clientRouteKm } from "../../lib/distance-client";
 import { isValidEmail, phoneIssue } from "../../lib/validation";
 
-const PAY_TYPES = ["twint", "cash", "card", "online"] as const; // D.payOptions sırasıyla
-const ONLINE_PAY = 3; // Stripe Checkout seçeneğinin dizini
+const PAY_TYPES = ["online", "card", "cash", "twint"] as const; // D.payOptions sırasıyla (Stripe, kart, nakit, TWINT)
+const ONLINE_PAY = 0; // Stripe Checkout seçeneğinin dizini
 const STEP_NAMES = { 1: "route", 2: "vehicle", 3: "contact" } as const;
 
 /** Telefon ülke kodları — en sık gelen ülkeler önde */
@@ -29,7 +29,6 @@ const DIAL_CODES: [string, string, string][] = [
   ["🇷🇺", "+7", "RU"], ["🇿🇦", "+27", "ZA"],
 ];
 
-const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
 /** Harita için: ülke yazılmamışsa İsviçre varsayılır (dünya geneli adresler olduğu gibi kalır) */
 const withCountry = (s: string) => (s.includes(",") ? s : `${s}, Switzerland`);
 
@@ -75,6 +74,8 @@ const makeRef = () => "#" + Math.random().toString(16).slice(2, 10).toUpperCase(
 export default function Buchung() {
   const { lang, P } = useLang();
   const XH = tx[lang].hourly; // saatlik kiralama etiketleri (URL ön-doldurma için)
+  const AIRPORT = airportName(lang, true); // varsayılan alış noktası: EN "Zurich Airport", DE "Flughafen Zürich"
+  const ZRH = airportName(lang);
   const X = tx[lang];
   const XS = X.stops;  // ara durak etiketi
   const [stops, setStops] = useState<string[]>([]); // URL'den gelen ara duraklar
@@ -164,8 +165,8 @@ export default function Buchung() {
   // v: araç seçimi setState ile aynı render'da henüz "chosen"a yansımadığından açıkça geçilir (taslak kaydı)
   const bookingPayload = (ref: string, channel: "site" | "taslak", v: (typeof fleet)[number] | null = chosen) => ({
         ref, channel, lang,
-        pickup: showCustom ? custom!.from : reversed ? n : "Flughafen Zürich (ZRH)",
-        dropoff: showCustom ? custom!.to : reversed ? "Flughafen Zürich (ZRH)" : n,
+        pickup: showCustom ? custom!.from : reversed ? n : ZRH,
+        dropoff: showCustom ? custom!.to : reversed ? ZRH : n,
         stops: stops.join(" | "),
         date, time,
         // Sunucu tarafı fiyat doğrulaması için (sabit rota / saatlik: fiyat yeniden hesaplanır)
@@ -174,8 +175,10 @@ export default function Buchung() {
         luggage: Number(f.pax) || null, // bagaj sorulmuyor; yolcu sayısı kadar varsayılır
         vehicle: v ? `${localName(v.name, lang)} · ${v.car}` : null,
         price: (v ? priceFor(v) : 0) || null,
-        payment: D.payOptions[pay]?.[0] ?? null,
-        firstName: f.name, lastName: f.surname, email: f.email, phone: f.phone ? `${dial} ${f.phone.trim()}` : "",
+        // Kayda giden değer görünen addan bağımsız: kartta "Stripe" yazar ama kayıt eskisi gibi
+        // "Online bezahlen"/"Pay online" gider (mail.ts, metninde "stripe" geçen ödemeyi ÖDENMİŞ sayar).
+        payment: PAY_TYPES[pay] === "online" ? (lang === "de" ? "Online bezahlen" : "Pay online") : (D.payOptions[pay]?.[0] ?? null),
+        firstName: f.name, lastName: f.surname, email: f.email, phone: !f.phone.trim() ? "" : /^\s*(\+|00)/.test(f.phone) ? f.phone.trim() : `${dial} ${f.phone.trim()}`,
         flight: f.flight, nameboard: f.nameboard,
         extras: [
           extras.baby ? `${D.baby[0]}: ${extras.baby}` : "",
@@ -252,7 +255,7 @@ export default function Buchung() {
       if (d) setDate(d);
       if (tm) setTime(tm);
       if (paxH) setF((s) => ({ ...s, pax: String(Math.min(7, paxH)) }));
-      setCustom({ from: "Flughafen Zürich (ZRH)", to: `${XH.bookingLabel} · ${h}h` });
+      setCustom({ from: ZRH, to: `${XH.bookingLabel} · ${h}h` });
       setHourly(true);
       setHourlyHours(parseInt(h, 10) || null);
       const hourlyTimeOk = Boolean(d && tm) && !isPastDateTime(d, tm) && !isTooSoonDateTime(d, tm);
@@ -429,7 +432,7 @@ export default function Buchung() {
           : "Online bookings are possible up to 1 hour before pickup. For shorter notice, message us directly – we'll check right away whether a vehicle is available."}
       </p>
       <a
-        href={waHref(`${lang === "de" ? "Kurzfristige Anfrage" : "Short-notice request"} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : reversed ? `${n} → Flughafen Zürich (ZRH)` : `Flughafen Zürich (ZRH) → ${n}`}`)}
+        href={waHref(`${lang === "de" ? "Kurzfristige Anfrage" : "Short-notice request"} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : reversed ? `${n} → ${ZRH}` : `${ZRH} → ${n}`}`)}
         target="_blank"
         rel="noopener noreferrer"
         className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"
@@ -527,14 +530,14 @@ export default function Buchung() {
     pendingSearchRef.current = true;
     go(2);
   };
-  // İletişim doğrulaması: ad, soyad, geçerli e-posta (@ ve alan adı), telefon 5–13 rakam (ülke koduyla ≤15)
+  // İletişim doğrulaması: ad, soyad, geçerli e-posta (@ ve alan adı); telefon yalnızca boş olmamalı (biçim/uzunluk sınırı yok)
   const emailOk = isValidEmail(f.email);
-  const phoneProblem = phoneIssue(f.phone, dial);
+  const phoneProblem = phoneIssue(f.phone);
   const touched = { email: f.email.trim().length > 0, phone: f.phone.trim().length > 0 };
   const ready = accepted && f.name.trim() && f.surname.trim() && emailOk && !phoneProblem && !slot.busy; // uçuş numarası isteğe bağlı
   const VAL = lang === "de"
-    ? { email: "Bitte eine gültige E-Mail-Adresse eingeben (z. B. name@domain.ch).", short: "Telefonnummer zu kurz – bitte prüfen.", long: "Telefonnummer zu lang – bitte prüfen." }
-    : { email: "Please enter a valid email address (e.g. name@domain.com).", short: "Phone number too short – please check.", long: "Phone number too long – please check." };
+    ? { email: "Bitte eine gültige E-Mail-Adresse eingeben (z. B. name@domain.ch)." }
+    : { email: "Please enter a valid email address (e.g. name@domain.com)." };
 
 
   const go = (s: 1 | 2 | 3, v: (typeof fleet)[number] | null = chosen) => {
@@ -760,7 +763,7 @@ export default function Buchung() {
                     className="rounded-2xl border-2 bg-white p-4 text-center text-xs font-bold uppercase tracking-wide transition-all"
                     style={pay === i ? { borderColor: C.gold, boxShadow: "0 4px 14px rgba(201,162,75,0.25)" } : { borderColor: "#e7e5e4" }}
                   >
-                    <span className="mb-1 block text-xl">{["📱", "💵", "💳", "🔒"][i]}</span>
+                    <span className="mb-1 block text-xl">{["🔒", "💳", "💵", "📱"][i]}</span>
                     {title}
                     <span className="mt-1 block text-[10px] font-medium normal-case text-stone-500">{desc}</span>
                   </button>
@@ -790,15 +793,12 @@ export default function Buchung() {
                       <input
                         type="tel"
                         inputMode="tel"
-                        className={`${inputCls} w-full min-w-0 flex-1 ${touched.phone && phoneProblem && phoneProblem !== "empty" ? "ring-2 ring-red-300" : ""}`}
+                        className={`${inputCls} w-full min-w-0 flex-1`}
                         placeholder={`${D.phone} *`}
                         value={f.phone}
-                        onChange={(e) => set("phone", e.target.value.replace(/[^\d\s]/g, ""))}
+                        onChange={(e) => set("phone", e.target.value)}
                       />
                     </div>
-                    {touched.phone && phoneProblem && phoneProblem !== "empty" && (
-                      <p className="mt-1 text-[11px] font-semibold text-red-700">{phoneProblem === "short" ? VAL.short : VAL.long}</p>
-                    )}
                   </div>
                 </div>
 
@@ -834,7 +834,7 @@ export default function Buchung() {
                         </p>
                       )}
                       <a
-                        href={waHref(`${X.night.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `Flughafen Zürich (ZRH) → ${n}`}`)}
+                        href={waHref(`${X.night.title} — ${date} ${time} · ${showCustom ? `${custom!.from} → ${custom!.to}` : `${ZRH} → ${n}`}`)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"

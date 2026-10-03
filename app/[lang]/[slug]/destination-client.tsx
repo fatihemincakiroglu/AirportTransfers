@@ -1,6 +1,6 @@
 "use client";
 
-import { C, routes, fleet } from "../../config";
+import { C, routes, fleet, airportName } from "../../config";
 import { t, pickL } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
@@ -21,7 +21,7 @@ export default function DestinationClient({ slug }: { slug: string }) {
   const route = d.routeSlug ? routes.find((r) => r.slug === d.routeSlug) : null;
   const regionLabel = pickL(region.label, lang);
 
-  const bookHref = `${P("/buchung")}?${new URLSearchParams({ from: "Flughafen Zürich (ZRH)", to: d.name }).toString()}`;
+  const bookHref = `${P("/buchung")}?${new URLSearchParams({ from: airportName(lang), to: d.name }).toString()}`;
   const popular = destRegions[0].cities.filter((c) => c.slug !== d.slug).slice(0, 8);
   const popularRoutes = routes.slice(0, 3);
 

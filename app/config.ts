@@ -207,6 +207,13 @@ export function altFor(src: string, fallback = "ZRH Airport Taxi"): string {
   return fallback;
 }
 
+// Havalimanı adı dile göre: EN kullanıcı "Zurich Airport", DE kullanıcı "Flughafen Zürich" görür.
+// Fiyat/rota eşleştirmesi (/zrh|flughafen|airport/) ve mesafe hesabı iki adı da tanır.
+export const airportName = (lang: string, withCountry = false) =>
+  lang === "de"
+    ? `Flughafen Zürich (ZRH)${withCountry ? ", Schweiz" : ""}`
+    : `Zurich Airport (ZRH)${withCountry ? ", Switzerland" : ""}`;
+
 // Rezervasyon formu otomatik tamamlama — İsviçre şehir/kanton/tatil yerleri
 export const SWISS_PLACES: string[] = [
   "Flughafen Zürich (ZRH)",

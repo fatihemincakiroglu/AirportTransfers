@@ -4,7 +4,7 @@ import Image from "next/image";
 
 import { useMemo, useState } from "react";
 
-import { C, routes, fleet, KM_RATE, transferPrice, isNightTime } from "../../config";
+import { C, routes, fleet, KM_RATE, transferPrice, isNightTime, airportName } from "../../config";
 import { t } from "../../i18n";
 import { useLang } from "../../providers";
 import { getRouteContent } from "../../routeContent";
@@ -53,7 +53,7 @@ export default function RouteClient({ slug }: { slug: string }) {
       : route.min < 60 ? `${route.min} mins` : `${Math.floor(route.min / 60)} h${route.min % 60 ? ` ${route.min % 60} mins` : ""}`;
 
   const sorted = [...fleet].sort((a, b) => KM_RATE[a.id] - KM_RATE[b.id]);
-  const AIRPORT = "Flughafen Zürich (ZRH), Schweiz";
+  const AIRPORT = airportName(lang, true);
   const night = isNightTime(time); // 00:00–06:00 gece tarifesi
   const priceOf = (id: (typeof fleet)[number]["id"]) => transferPrice(route.km, id, time || null);
   const chf = (n: number) => `CHF ${n.toFixed(2)}`;
@@ -237,7 +237,7 @@ function RouteSeoContent({ slug }: { slug: string }) {
               {lang === "de" ? "Flughafentransfer" : "Airport transfer"}
             </p>
             <h2 className="font-display text-3xl font-semibold md:text-4xl" style={{ color: C.pine }}>
-              Flughafen Zürich (ZRH) → {n}
+              {airportName(lang)} → {n}
             </h2>
             <div className="mt-5 space-y-4 leading-relaxed text-stone-700">
               {content.intro.map((p, i) => <p key={i}>{p}</p>)}

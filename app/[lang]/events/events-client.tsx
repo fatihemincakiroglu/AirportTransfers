@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { C } from "../../config";
+import { C, airportName } from "../../config";
 import { tx } from "../../i18nX";
 import { pickL } from "../../i18n";
 import { useLang } from "../../providers";
@@ -18,7 +18,7 @@ export default function EventsClient() {
   const list = swissEvents.filter((e) => cat === "all" || e.cat === cat);
   const catLabel = (k: EventCat) => { const c = eventCats.find((c) => c.key === k); return c ? pickL(c.label, lang) : k; };
   const bookHref = (city: string) =>
-    `${P("/buchung")}?${new URLSearchParams({ from: "Flughafen Zürich (ZRH)", to: city }).toString()}`;
+    `${P("/buchung")}?${new URLSearchParams({ from: airportName(lang), to: city }).toString()}`;
 
   return (
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>

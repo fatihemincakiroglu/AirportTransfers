@@ -107,10 +107,11 @@ const base = {
       noticeText: "Buchungen weniger als 2 Stunden vor der Abholzeit können in Stosszeiten nicht garantiert werden. Bitte buchen Sie frühzeitig.",
       payTitle: "Zahlungsmethode wählen",
       payOptions: [
-        ["TWINT", "Zahlung mit TWINT im Fahrzeug"],
-        ["Barzahlung", "Bar im Fahrzeug bezahlen"],
+        // Sıra buchung-client.tsx PAY_TYPES ile aynı olmalı
+        ["Stripe", "Jetzt sicher mit Karte, TWINT, Apple Pay oder Google Pay"],
         ["Kreditkarte", "Mit Karte im Fahrzeug bezahlen"],
-        ["Online bezahlen", "Jetzt sicher mit Karte, TWINT, Apple Pay oder Google Pay"],
+        ["Barzahlung", "Bar im Fahrzeug bezahlen"],
+        ["TWINT", "Zahlung mit TWINT im Fahrzeug"],
       ],
       bookCta: "Jetzt buchen",
       paxTitle: "Passagierdaten",
@@ -254,10 +255,11 @@ const base = {
       noticeText: "Reservations made less than 2 hours before pickup may not be guaranteed during busy periods. Please book as early as possible.",
       payTitle: "Select payment method",
       payOptions: [
-        ["TWINT", "Pay with TWINT in the vehicle"],
-        ["Cash", "Pay cash in the vehicle"],
+        // Order must match PAY_TYPES in buchung-client.tsx
+        ["Stripe", "Pay securely now by card, TWINT, Apple Pay or Google Pay"],
         ["Credit card", "Pay by card in the vehicle"],
-        ["Pay online", "Pay securely now by card, TWINT, Apple Pay or Google Pay"],
+        ["Cash", "Pay cash in the vehicle"],
+        ["TWINT", "Pay with TWINT in the vehicle"],
       ],
       bookCta: "Book now",
       paxTitle: "Passenger details",
