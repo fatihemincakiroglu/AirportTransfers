@@ -7,6 +7,564 @@ import type { BlogPost } from "./blogContent";
 
 export const guidePosts: BlogPost[] = [
   {
+    slug: "spengler-cup-davos-anreise-transfer",
+    date: "2026-10-07",
+    img: "/gallery/13.jpg",
+    de: {
+      title: "Spengler Cup Davos 2026: Spielplan, Tickets, Unterkunft und die entspannte Anreise ab Zürich",
+      seo: "Spengler Cup Davos 2026: Anreise & Tipps",
+      excerpt: "Vom 26. bis 31. Dezember 2026 spielt in Davos das älteste internationale Eishockeyturnier der Welt. Was Sie über Spielzeiten, Tickets, Hotels und Kleidung wissen sollten – und wie die Anreise vom Flughafen Zürich zwischen Weihnachten und Neujahr reibungslos klappt.",
+      body: [
+        { p: [
+          "Zwischen Weihnachten und Neujahr wird Davos zur Hauptstadt des Eishockeys. Der Spengler Cup, seit 1923 ausgetragen, ist das älteste internationale Eishockeyturnier der Welt und einer der grössten Sportanlässe der Schweiz. Rund 100'000 Besucher kommen jedes Jahr ins Eisstadion Davos und in die Fanzonen davor.",
+          "Dieser Guide fasst zusammen, wann gespielt wird, wie Sie an Tickets kommen, wo Sie übernachten und wie die Anreise vom Flughafen Zürich in einer der verkehrsreichsten Wochen des Jahres funktioniert. Alle Angaben entsprechen dem Stand Oktober 2026; die Spielpaarungen und den genauen Spielplan veröffentlicht der Veranstalter auf der offiziellen Website.",
+        ]},
+        { h: "Der Spengler Cup 2026 auf einen Blick", p: [
+          "Die wichtigsten Eckdaten zur 96. Austragung:",
+        ], table: { head: ["Eckdaten", "Spengler Cup Davos 2026"], rows: [
+          ["Datum", "26. bis 31. Dezember 2026"],
+          ["Ort", "Eisstadion Davos (zondacrypto-Arena), Davos Platz"],
+          ["Spielzeiten", "26.–30. Dezember je ein Nachmittags- und ein Abendspiel, Final am 31. Dezember um 12:00 Uhr"],
+          ["Teams", "Gastgeber HC Davos und eingeladene Mannschaften aus aller Welt"],
+          ["Tickets", "Sitzplätze ab CHF 98, Stehplätze CHF 35 (Angaben des Veranstalters)"],
+          ["Besucher", "rund 100'000 pro Turnier"],
+        ]}},
+        { h: "Warum der Spengler Cup besonders ist", p: [
+          "Der Reiz liegt in der Mischung: ein traditionsreiches Holzstadion mitten in einem Bergort, Mannschaften mit unterschiedlichen Spielstilen aus Europa und Nordamerika und ein Termin, an dem viele ohnehin Ferien haben. Davos ist während dieser Tage voller Fans, die tagsüber Ski fahren und abends ins Stadion gehen.",
+          "Auch wer kein Eishockeyfan ist, erlebt in Davos eine besondere Stimmung: Fanzonen, Konzerte und volle Restaurants machen die Tage zwischen den Jahren zu einem Fest.",
+        ]},
+        { h: "Tickets: früh entscheiden", p: [
+          "Tickets gibt es über den offiziellen Ticketverkauf des Spengler Cup. Die Finalspiele und die Spiele des HC Davos sind besonders gefragt; wer feste Sitzplätze will, sollte früh buchen. Stehplätze sind günstiger und bieten die lauteste Atmosphäre, verlangen aber warme Kleidung und Geduld beim Einlass.",
+          "Planen Sie bei den Spielzeiten Puffer ein: Rund um Spielbeginn und Spielende sind die Strassen und Gehwege in Davos Platz voll. Wer direkt nach einem Abendspiel abgeholt werden möchte, vereinbart mit dem Fahrer einen Treffpunkt etwas ausserhalb des Stadionbereichs.",
+        ]},
+        { h: "Unterkunft: Davos, Klosters oder die Umgebung", p: [
+          "Hotels in Davos sind in der Spengler-Woche oft Monate im Voraus ausgebucht und teurer als sonst. Gute Alternativen sind Klosters, rund 15 Minuten entfernt, sowie Orte im Prättigau. Wer flexibel ist, kombiniert den Spengler Cup mit Skitagen in Davos-Klosters und reist am 30. oder 31. Dezember für Silvester weiter.",
+          "Tragen Sie bei der Transferbuchung den genauen Hotelnamen ein. Davos besteht aus Davos Dorf und Davos Platz, die einige Kilometer auseinanderliegen; der Fahrer bringt Sie direkt vor die richtige Tür.",
+        ]},
+        { h: "Anreise vom Flughafen Zürich", p: [
+          "Die Fahrt vom Flughafen Zürich nach Davos führt über die A3 entlang des Zürich- und Walensees nach Landquart und weiter durch das Prättigau. Wir planen auf der festen Strecke mit etwa 194 Minuten; bei freier Strasse ist es weniger. Alle Details zur Route und zum Preis finden Sie auf der Seite [Transfer nach Davos](/zurich-airport-to-davos).",
+          "Zwischen Weihnachten und Neujahr ist auf dieser Strecke allerdings viel los: Ferienbeginn, Wechselsamstage und Silvesterreisende treffen aufeinander, besonders am 26. Dezember und an den Samstagen. Bei Schneefall im Prättigau kann es zusätzlich langsamer werden. Der Fahrer verfolgt Ihren Flug, kennt die Verkehrslage und plant entsprechend; für die Rückreise empfehlen wir einen Puffer von 45 bis 60 Minuten.",
+          "Skigepäck befördern wir kostenlos, bis zu vier Skisäcke pro Fahrzeug. Für Familien und Fangruppen bis sieben Personen ist die V-Klasse die richtige Wahl, der Festpreis gilt pro Fahrzeug.",
+        ]},
+        { h: "Was Sie mitnehmen sollten", p: [
+          "Davos liegt auf über 1'500 Metern; Ende Dezember sind Temperaturen weit unter null normal. Für Stehplätze und die Fanzonen gehören warme Schuhe, Mütze, Handschuhe und mehrere Schichten Kleidung ins Gepäck. Im Stadion selbst ist es wärmer, aber nicht warm.",
+          "Praktisch sind ausserdem ein kleiner Rucksack statt grosser Taschen und eine Powerbank – das Mobilnetz ist an Spieltagen stark belastet.",
+        ]},
+        { h: "Spengler Cup und Silvester kombinieren", p: [
+          "Das Finale findet am 31. Dezember mittags statt. Wer danach Silvester in Davos feiert, bleibt einfach vor Ort. Wer den Jahreswechsel in Zürich verbringen möchte, plant die Rückfahrt direkt nach dem Final ein; den Ablauf in Zürich beschreibt [Silvester in Zürich](/blog/silvester-zuerich-feuerwerk-transfer). Für Januar lohnt sich ein Blick auf den [WEF-Transfer-Guide](/blog/wef-davos-transfer-guide), falls Sie geschäftlich wieder nach Davos kommen.",
+        ]},
+        { h: "Davos zwischen den Spielen", p: [
+          "Die meisten Spiele beginnen am Nachmittag oder am Abend – der Vormittag gehört den Bergen. Die Skigebiete Parsenn, Jakobshorn und Madrisa sind in wenigen Minuten erreichbar, und Ende Dezember ist die Schneelage in Davos meist schon gut. Wer nicht Ski fährt, findet Schlittelbahnen, Winterwanderwege, Langlaufloipen und den zugefrorenen Davosersee.",
+          "Am Abend nach dem letzten Spiel füllen sich die Bars in Davos Platz. Für die Rückfahrt ins Hotel nach Klosters oder ins Prättigau lohnt es sich, eine feste Abholzeit zu vereinbaren; der Fahrer wartet an einem ruhigeren Punkt ausserhalb des Stadionbereichs.",
+        ]},
+        { h: "Häufige Fragen zum Spengler Cup", p: []},
+        { h3: "Wann findet der Spengler Cup 2026 statt?", p: [
+          "Vom 26. bis 31. Dezember 2026 im Eisstadion Davos. Das Finale wird am 31. Dezember um 12:00 Uhr gespielt.",
+        ]},
+        { h3: "Wie lange dauert die Fahrt vom Flughafen Zürich nach Davos?", p: [
+          "Wir planen mit etwa 194 Minuten. Zwischen Weihnachten und Neujahr kann es wegen des Ferienverkehrs länger dauern.",
+        ]},
+        { h3: "Kann mich der Fahrer nach einem Abendspiel abholen?", p: [
+          "Ja. Vereinbaren Sie einen Treffpunkt etwas ausserhalb des Stadionbereichs und eine ungefähre Uhrzeit; der Fahrer wartet dort.",
+        ]},
+        { h3: "Gibt es einen Aufpreis an Feiertagen?", p: [
+          "Nein, Feiertage und Wochenenden kosten nichts extra. Nur zwischen 00:00 und 06:00 Uhr gilt der Nachttarif von 20 %.",
+        ]},
+        { h3: "Fahren Sie auch nach Klosters?", p: [
+          "Ja, Klosters liegt auf dem Weg nach Davos. Geben Sie einfach die Hoteladresse ein.",
+          "Jetzt [Transfer nach Davos buchen](/buchung) – Festpreis pro Fahrzeug, Skigepäck inklusive.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Spengler Cup Davos 2026: Schedule, Tickets, Accommodation and a Relaxed Journey From Zurich",
+      seo: "Spengler Cup Davos 2026: Travel Guide",
+      excerpt: "From 26 to 31 December 2026 Davos hosts the world's oldest international ice hockey tournament. What you should know about game times, tickets, hotels and clothing – and how the journey from Zurich Airport works smoothly between Christmas and New Year.",
+      body: [
+        { p: [
+          "Between Christmas and New Year, Davos becomes the capital of ice hockey. The Spengler Cup, held since 1923, is the oldest international ice hockey tournament in the world and one of Switzerland's biggest sporting events. Around 100,000 visitors come to the Davos ice stadium and the fan zones in front of it every year.",
+          "This guide summarises when games are played, how to get tickets, where to stay and how the journey from Zurich Airport works in one of the busiest weeks of the year. All details are as of October 2026; the organiser publishes the line-up and exact schedule on the official website.",
+        ]},
+        { h: "The 2026 Spengler Cup at a glance", p: [
+          "The key facts about the 96th edition:",
+        ], table: { head: ["Key facts", "Spengler Cup Davos 2026"], rows: [
+          ["Dates", "26 to 31 December 2026"],
+          ["Venue", "Davos ice stadium (zondacrypto-Arena), Davos Platz"],
+          ["Game times", "26–30 December one afternoon and one evening game each day, final on 31 December at 12 noon"],
+          ["Teams", "Host HC Davos and invited teams from around the world"],
+          ["Tickets", "Seats from CHF 98, standing CHF 35 (organiser's information)"],
+          ["Visitors", "around 100,000 per tournament"],
+        ]}},
+        { h: "Why the Spengler Cup is special", p: [
+          "Its appeal lies in the mix: a traditional wooden stadium in the middle of a mountain resort, teams with different playing styles from Europe and North America, and a date when many people are on holiday anyway. During these days Davos is full of fans who ski during the day and go to the stadium in the evening.",
+          "Even if you are not an ice hockey fan, Davos has a special atmosphere: fan zones, concerts and packed restaurants turn the days between the years into a festival.",
+        ]},
+        { h: "Tickets: decide early", p: [
+          "Tickets are available through the official Spengler Cup ticket sales. The final and the HC Davos games are in particular demand; if you want fixed seats, book early. Standing places are cheaper and offer the loudest atmosphere, but require warm clothing and patience at the entrance.",
+          "Allow a buffer around game times: around the start and end of games the roads and pavements in Davos Platz are crowded. If you want to be picked up right after an evening game, agree a meeting point with the driver a little outside the stadium area.",
+        ]},
+        { h: "Accommodation: Davos, Klosters or the surroundings", p: [
+          "Hotels in Davos are often booked out months in advance during Spengler week and are more expensive than usual. Good alternatives are Klosters, around 15 minutes away, and villages in the Prättigau valley. If you are flexible, combine the Spengler Cup with ski days in Davos-Klosters and travel on for New Year's Eve on 30 or 31 December.",
+          "Enter the exact hotel name when booking your transfer. Davos consists of Davos Dorf and Davos Platz, which are a few kilometres apart; the driver takes you right to the correct door.",
+        ]},
+        { h: "Getting there from Zurich Airport", p: [
+          "The drive from Zurich Airport to Davos follows the A3 along Lake Zurich and Lake Walen to Landquart and on through the Prättigau. On the fixed route we plan about 194 minutes; on a clear road it is less. All details on the route and price are on the page [Transfer to Davos](/zurich-airport-to-davos).",
+          "Between Christmas and New Year this route is busy, however: the start of the holidays, changeover Saturdays and New Year travellers all meet, especially on 26 December and on Saturdays. Snowfall in the Prättigau can slow things down further. The driver tracks your flight, knows the traffic situation and plans accordingly; for the return trip we recommend a buffer of 45 to 60 minutes.",
+          "We carry ski luggage free of charge, up to four ski bags per vehicle. For families and fan groups of up to seven the V-Class is the right choice; the fixed price is per vehicle.",
+        ]},
+        { h: "What to bring", p: [
+          "Davos lies at over 1,500 metres; at the end of December temperatures well below zero are normal. For standing places and the fan zones, pack warm shoes, a hat, gloves and several layers of clothing. Inside the stadium it is warmer, but not warm.",
+          "A small backpack instead of large bags and a power bank are also practical – the mobile network is heavily loaded on match days.",
+        ]},
+        { h: "Combining the Spengler Cup and New Year's Eve", p: [
+          "The final takes place at midday on 31 December. If you celebrate New Year's Eve in Davos afterwards, simply stay. If you want to spend the turn of the year in Zurich, plan the return trip right after the final; what happens in Zurich is described in [New Year's Eve in Zurich](/blog/silvester-zuerich-feuerwerk-transfer). For January, the [WEF transfer guide](/blog/wef-davos-transfer-guide) is worth a look if you return to Davos on business.",
+        ]},
+        { h: "Davos between the games", p: [
+          "Most games start in the afternoon or evening – the mornings belong to the mountains. The Parsenn, Jakobshorn and Madrisa ski areas are only minutes away, and at the end of December the snow in Davos is usually already good. Non-skiers will find toboggan runs, winter walking trails, cross-country tracks and the frozen Lake Davos.",
+          "In the evening after the last game the bars in Davos Platz fill up. For the ride back to a hotel in Klosters or the Prättigau, it is worth agreeing a fixed pickup time; the driver waits at a quieter spot outside the stadium area.",
+        ]},
+        { h: "Frequently asked questions about the Spengler Cup", p: []},
+        { h3: "When is the 2026 Spengler Cup?", p: [
+          "From 26 to 31 December 2026 at the Davos ice stadium. The final is played on 31 December at 12 noon.",
+        ]},
+        { h3: "How long is the drive from Zurich Airport to Davos?", p: [
+          "We plan about 194 minutes. Between Christmas and New Year it can take longer because of holiday traffic.",
+        ]},
+        { h3: "Can the driver pick me up after an evening game?", p: [
+          "Yes. Agree a meeting point a little outside the stadium area and an approximate time; the driver waits there.",
+        ]},
+        { h3: "Is there a surcharge on public holidays?", p: [
+          "No, public holidays and weekends cost nothing extra. Only between midnight and 6 am does the 20 % night tariff apply.",
+        ]},
+        { h3: "Do you also drive to Klosters?", p: [
+          "Yes, Klosters is on the way to Davos. Simply enter the hotel address.",
+          "[Book your Davos transfer now](/buchung) – fixed price per vehicle, ski luggage included.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "lauberhornrennen-wengen-anreise-transfer",
+    date: "2026-10-07",
+    img: "/gallery/6.jpg",
+    de: {
+      title: "Lauberhornrennen Wengen 2027: Programm, Tickets, Unterkunft und die Anreise ins autofreie Wengen",
+      seo: "Lauberhornrennen Wengen 2027: Anreise",
+      excerpt: "Vom 15. bis 17. Januar 2027 fahren die besten Skirennfahrer der Welt die längste Abfahrt im Weltcup. Was Sie über Programm, Tickets, Zuschauerplätze und Unterkunft wissen sollten – und wie Sie mit Gepäck vom Flughafen Zürich ins autofreie Wengen kommen.",
+      body: [
+        { p: [
+          "Einmal im Jahr wird Wengen zum Zentrum des Skisports. Die Lauberhornrennen gehören zu den traditionsreichsten Weltcuprennen überhaupt, und die Lauberhornabfahrt ist die längste Abfahrt im Weltcup – mit Passagen wie dem Hundschopf, dem Kernen-S und dem Haneggschuss, die jeder Skifan kennt. Zehntausende Zuschauer verfolgen die Rennen vor der Kulisse von Eiger, Mönch und Jungfrau.",
+          "Dieser Guide erklärt Programm und Tickets, gibt Tipps für Zuschauerplätze und Unterkunft und zeigt, wie die Anreise vom Flughafen Zürich nach Wengen funktioniert, das nur mit der Bahn erreichbar ist.",
+        ]},
+        { h: "Die Lauberhornrennen 2027 auf einen Blick", p: [
+          "Die 97. Internationalen Lauberhornrennen (Stand Oktober 2026, Angaben des Veranstalters):",
+        ], table: { head: ["Tag", "Rennen", "Start"], rows: [
+          ["Freitag, 15. Januar 2027", "Super-G", "12:30 Uhr"],
+          ["Samstag, 16. Januar 2027", "Lauberhornabfahrt", "12:30 Uhr"],
+          ["Sonntag, 17. Januar 2027", "Slalom, zwei Durchgänge", "10:00 und 13:00 Uhr"],
+          ["Dienstag bis Donnerstag davor", "Abfahrtstrainings", "jeweils mittags (provisorisch)"],
+        ]}},
+        { h: "Tickets und Zuschauerplätze", p: [
+          "Tickets für die Lauberhornrennen 2027 sind laut Veranstalter ab dem 2. November 2026 erhältlich und nur online buchbar. Es gibt Zugänge für das Zielgelände in Innerwengen, Plätze entlang der Strecke und Hospitality-Angebote auf der Wengernalp.",
+          "Das Zielgelände bietet Grossleinwände, Stimmung und den Zieleinlauf; wer die Fahrer aus nächster Nähe in den Schlüsselpassagen sehen will, steht entlang der Strecke, etwa beim Hundschopf oder beim Ziel-S. Plätze an der Strecke erreichen Sie mit der Wengernalpbahn und zu Fuss – planen Sie dafür Zeit ein und tragen Sie Schuhe mit gutem Profil.",
+          "Ein Höhepunkt ist traditionell die Flugshow der Patrouille Suisse über der Strecke. Abends wird im Weltcup-Dörfli in Wengen gefeiert, mit Startnummernauslosung, Siegerehrungen und Bars.",
+        ]},
+        { h: "Unterkunft: Wengen, Lauterbrunnen oder Interlaken", p: [
+          "Hotels in Wengen sind am Rennwochenende sehr früh ausgebucht. Wer dort übernachten will, bucht im Sommer oder Herbst. Gute Alternativen sind Lauterbrunnen, nur 15 Minuten mit der Bahn von Wengen entfernt, sowie Interlaken, Wilderswil oder Grindelwald. Von Grindelwald erreichen Sie die Kleine Scheidegg und die obere Strecke ebenfalls per Bahn.",
+          "Welches Dorf zu Ihnen passt, erklärt [Jungfrau-Region für Einsteiger](/blog/jungfrau-region-guide-interlaken-grindelwald).",
+        ]},
+        { h: "Anreise vom Flughafen Zürich: so funktioniert es", p: [
+          "Wengen ist autofrei. Der Transfer bringt Sie deshalb nach Lauterbrunnen, wo Sie in die Wengernalpbahn umsteigen; die Fahrt hinauf nach Wengen dauert etwa eine Viertelstunde. Auf unserer festen Strecke planen wir bis Lauterbrunnen mit etwa 160 Minuten, die Route führt über Luzern und den Brünig oder über Bern. Details finden Sie auf der Seite [Transfer nach Wengen](/zurich-airport-to-wengen).",
+          "Der Fahrer setzt Sie am Bahnhof Lauterbrunnen ab und hilft mit dem Gepäck bis zum Zug. In Wengen bringen viele Hotels das Gepäck mit Elektrofahrzeugen vom Bahnhof zum Haus – fragen Sie bei Ihrem Hotel nach. Wer in Lauterbrunnen oder Interlaken übernachtet, wird direkt vor die Tür gefahren.",
+          "Am Rennwochenende sind die Bahnen zwischen Lauterbrunnen und Wengen stark ausgelastet, und die Strassen ins Lauterbrunnental werden voller. Reisen Sie wenn möglich am Donnerstag an und planen Sie für die Rückfahrt am Sonntag nach dem Slalom einen grosszügigen Puffer ein.",
+        ]},
+        { h: "Gepäck, Kleidung und Ausrüstung", p: [
+          "Mitte Januar ist es in Wengen kalt, an der Strecke steht man oft stundenlang im Schnee. Warme Schuhe, Skihosen, Mütze, Handschuhe und Sonnenbrille gehören ins Gepäck. Wer neben dem Zuschauen selbst Ski fahren möchte, nimmt die Ausrüstung mit: Skisäcke befördern wir kostenlos, bis zu vier pro Fahrzeug.",
+          "Für Gruppen von Skifans oder Familien bis sieben Personen ist die V-Klasse ideal; der Festpreis gilt pro Fahrzeug. Mehr zur Wintersaison steht in [Die besten Skigebiete ab Flughafen Zürich](/blog/skigebiete-ab-flughafen-zuerich-fahrzeit-transfer).",
+        ]},
+        { h: "Rückreise am Sonntag: richtig planen", p: [
+          "Nach dem zweiten Slalomlauf wollen viele Zuschauer gleichzeitig ins Tal. Die Bahnen sind dann voll, und in Lauterbrunnen bilden sich Schlangen. Wenn Sie am Sonntagabend fliegen, rechnen Sie grosszügig: Zeit für den Weg von der Strecke zum Bahnhof, die Bahnfahrt nach Lauterbrunnen, die rund 160 Minuten Fahrt zum Flughafen und die Zeit am Flughafen. Wie Sie die Abholzeit berechnen, zeigt [Wie früh am Flughafen Zürich sein?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+          "Am entspanntesten ist es, die Abholung in Lauterbrunnen für eine feste Zeit zu vereinbaren und eine Bahn früher zu nehmen als geplant. Melden Sie sich per WhatsApp, wenn Sie später kommen; der Fahrer wartet.",
+        ]},
+        { h: "Mit Familie und Nicht-Skifahrern nach Wengen", p: [
+          "Die Lauberhornrennen sind auch für Familien und Gäste ohne Skier ein Erlebnis. Das Zielgelände in Innerwengen ist von Wengen aus zu Fuss erreichbar, die Grossleinwände zeigen die ganze Strecke, und im Weltcup-Dörfli gibt es Essen, Musik und Programm. Für kleine Kinder empfehlen wir warme Kleidung in Schichten und Pausen in einem der Cafés im Dorf.",
+          "Wer den Trubel lieber meidet, schaut sich die Rennen an einem Tag an und verbringt die übrigen Tage im ruhigeren Mürren, in Grindelwald oder bei einer Schifffahrt ab Interlaken. Die Jungfrau-Region bietet genug Alternativen, und die Bahnen verbinden alle Orte.",
+        ]},
+        { h: "Häufige Fragen zu den Lauberhornrennen", p: []},
+        { h3: "Wann finden die Lauberhornrennen 2027 statt?", p: [
+          "Vom 15. bis 17. Januar 2027: Super-G am Freitag, Abfahrt am Samstag, Slalom am Sonntag.",
+        ]},
+        { h3: "Kann ich mit dem Auto nach Wengen fahren?", p: [
+          "Nein, Wengen ist autofrei. Der Transfer endet in Lauterbrunnen, von dort fahren Sie mit der Wengernalpbahn hinauf.",
+        ]},
+        { h3: "Wie lange dauert die Fahrt vom Flughafen Zürich nach Lauterbrunnen?", p: [
+          "Wir planen mit etwa 160 Minuten. Am Rennwochenende kann es im Lauterbrunnental länger dauern.",
+        ]},
+        { h3: "Wo kaufe ich Tickets?", p: [
+          "Ausschliesslich online über den offiziellen Ticketverkauf der Lauberhornrennen, laut Veranstalter ab dem 2. November 2026.",
+        ]},
+        { h3: "Kostet Skigepäck beim Transfer extra?", p: [
+          "Nein, bis zu vier Skisäcke pro Fahrzeug sind im Festpreis enthalten.",
+          "Jetzt [Transfer nach Lauterbrunnen und Wengen buchen](/buchung) – Festpreis pro Fahrzeug.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Lauberhorn Races Wengen 2027: Programme, Tickets, Accommodation and Getting to Car-Free Wengen",
+      seo: "Lauberhorn Races Wengen 2027: Travel Guide",
+      excerpt: "From 15 to 17 January 2027 the world's best ski racers tackle the longest downhill in the World Cup. What you should know about the programme, tickets, viewing spots and accommodation – and how to get from Zurich Airport to car-free Wengen with your luggage.",
+      body: [
+        { p: [
+          "Once a year Wengen becomes the centre of the ski world. The Lauberhorn races are among the most traditional World Cup races of all, and the Lauberhorn downhill is the longest downhill in the World Cup – with sections such as the Hundschopf, the Kernen-S and the Hanegg-Schuss that every ski fan knows. Tens of thousands of spectators follow the races against the backdrop of the Eiger, Mönch and Jungfrau.",
+          "This guide explains the programme and tickets, gives tips on viewing spots and accommodation, and shows how to travel from Zurich Airport to Wengen, which can only be reached by train.",
+        ]},
+        { h: "The 2027 Lauberhorn races at a glance", p: [
+          "The 97th International Lauberhorn Races (as of October 2026, according to the organiser):",
+        ], table: { head: ["Day", "Race", "Start"], rows: [
+          ["Friday, 15 January 2027", "Super-G", "12:30 pm"],
+          ["Saturday, 16 January 2027", "Lauberhorn downhill", "12:30 pm"],
+          ["Sunday, 17 January 2027", "Slalom, two runs", "10:00 am and 1:00 pm"],
+          ["Tuesday to Thursday before", "Downhill training", "around midday (provisional)"],
+        ]}},
+        { h: "Tickets and viewing spots", p: [
+          "According to the organiser, tickets for the 2027 Lauberhorn races are available from 2 November 2026 and can only be booked online. There is access to the finish area in Innerwengen, places along the course and hospitality packages on the Wengernalp.",
+          "The finish area offers big screens, atmosphere and the finish line; if you want to see the racers up close in the key sections, stand along the course, for example at the Hundschopf or the Ziel-S. Places on the course are reached by the Wengernalp railway and on foot – allow time and wear shoes with good grip.",
+          "A traditional highlight is the Patrouille Suisse air display over the course. In the evenings the World Cup village in Wengen celebrates with bib draws, award ceremonies and bars.",
+        ]},
+        { h: "Accommodation: Wengen, Lauterbrunnen or Interlaken", p: [
+          "Hotels in Wengen are booked out very early for race weekend. If you want to stay there, book in summer or autumn. Good alternatives are Lauterbrunnen, only 15 minutes by train from Wengen, as well as Interlaken, Wilderswil or Grindelwald. From Grindelwald you can also reach Kleine Scheidegg and the upper course by train.",
+          "Which village suits you is explained in [Jungfrau region for beginners](/blog/jungfrau-region-guide-interlaken-grindelwald).",
+        ]},
+        { h: "Getting there from Zurich Airport: how it works", p: [
+          "Wengen is car-free. The transfer therefore takes you to Lauterbrunnen, where you change to the Wengernalp railway; the ride up to Wengen takes about a quarter of an hour. On our fixed route we plan about 160 minutes to Lauterbrunnen, via Lucerne and the Brünig or via Bern. Details are on the page [Transfer to Wengen](/zurich-airport-to-wengen).",
+          "The driver drops you at Lauterbrunnen station and helps with the luggage to the train. In Wengen many hotels take luggage from the station to the hotel with electric vehicles – ask your hotel. If you stay in Lauterbrunnen or Interlaken, you are driven right to the door.",
+          "On race weekend the trains between Lauterbrunnen and Wengen are very busy, and the roads into the Lauterbrunnen valley fill up. If possible, arrive on Thursday and allow a generous buffer for the return trip on Sunday after the slalom.",
+        ]},
+        { h: "Luggage, clothing and equipment", p: [
+          "In mid-January it is cold in Wengen, and on the course you often stand in the snow for hours. Warm shoes, ski trousers, a hat, gloves and sunglasses belong in your luggage. If you want to ski yourself as well as watch, bring your equipment: we carry ski bags free of charge, up to four per vehicle.",
+          "For groups of ski fans or families of up to seven the V-Class is ideal; the fixed price is per vehicle. More on the winter season is in [The best ski resorts from Zurich Airport](/blog/skigebiete-ab-flughafen-zuerich-fahrzeit-transfer).",
+        ]},
+        { h: "Sunday return: plan it properly", p: [
+          "After the second slalom run many spectators want to go down to the valley at the same time. The trains are then full, and queues form in Lauterbrunnen. If you fly on Sunday evening, calculate generously: time from the course to the station, the train to Lauterbrunnen, the roughly 160-minute drive to the airport and the time at the airport. How to calculate the pickup time is shown in [How early should you be at Zurich Airport?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+          "The most relaxed approach is to agree a fixed pickup time in Lauterbrunnen and take a train earlier than planned. Message us on WhatsApp if you are running late; the driver will wait.",
+        ]},
+        { h: "Wengen with family and non-skiers", p: [
+          "The Lauberhorn races are an experience for families and guests without skis too. The finish area in Innerwengen can be reached on foot from Wengen, big screens show the whole course, and the World Cup village offers food, music and entertainment. For small children we recommend warm layers and breaks in one of the village cafés.",
+          "If you prefer to avoid the bustle, watch the races on one day and spend the other days in quieter Mürren, in Grindelwald or on a boat trip from Interlaken. The Jungfrau region offers plenty of alternatives, and the railways connect every village.",
+        ]},
+        { h: "Frequently asked questions about the Lauberhorn races", p: []},
+        { h3: "When are the 2027 Lauberhorn races?", p: [
+          "From 15 to 17 January 2027: super-G on Friday, downhill on Saturday, slalom on Sunday.",
+        ]},
+        { h3: "Can I drive to Wengen?", p: [
+          "No, Wengen is car-free. The transfer ends in Lauterbrunnen, from where you take the Wengernalp railway up.",
+        ]},
+        { h3: "How long is the drive from Zurich Airport to Lauterbrunnen?", p: [
+          "We plan about 160 minutes. On race weekend it can take longer in the Lauterbrunnen valley.",
+        ]},
+        { h3: "Where do I buy tickets?", p: [
+          "Only online through the official Lauberhorn ticket sales, from 2 November 2026 according to the organiser.",
+        ]},
+        { h3: "Does ski luggage cost extra on the transfer?", p: [
+          "No, up to four ski bags per vehicle are included in the fixed price.",
+          "[Book your transfer to Lauterbrunnen and Wengen now](/buchung) – fixed price per vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "zuerich-mailand-transfer-zug-auto-vergleich",
+    date: "2026-10-07",
+    img: "/hero/hero-3.jpg",
+    de: {
+      title: "Von Zürich nach Mailand: Zug, Auto oder Privattransfer? Der ehrliche Vergleich",
+      seo: "Zürich nach Mailand: Zug oder Transfer?",
+      excerpt: "Rund 280 km, drei bis vier Stunden, eine Grenze und der Gotthard dazwischen: wie Sie am besten vom Flughafen Zürich nach Mailand, Malpensa, zur Fiera Milano oder nach Monza kommen. Mit ehrlichem Vergleich zwischen Eurocity, Mietwagen und Privattransfer und Tipps zu Messen, Fashion Week und Formel 1.",
+      body: [
+        { p: [
+          "Zürich und Mailand sind die zwei wirtschaftlichen Zentren beiderseits der Alpen, und zwischen ihnen pendeln täglich Geschäftsreisende, Messebesucher, Modeleute und Touristen. Viele landen mit einem Langstreckenflug in Zürich und haben ihr eigentliches Ziel in Mailand – oder kombinieren die Schweiz und Norditalien auf einer Reise.",
+          "Dieser Guide vergleicht die Optionen ehrlich: Wann ist der Eurocity die beste Wahl, wann ein Privattransfer, und wofür lohnt sich ein Mietwagen? Dazu Infos zu Route, Grenze, Messen und Anlässen.",
+        ]},
+        { h: "Die Strecke auf einen Blick", p: [
+          "Die Fahrzeiten sind Richtwerte, am Gotthard hängen sie stark vom Reisetag ab.",
+        ], table: { head: ["Eckdaten", "Flughafen Zürich → Mailand"], rows: [
+          ["Distanz bis Mailand Zentrum", "rund 280 km"],
+          ["Fahrzeit", "ca. 3½ bis 4 Stunden"],
+          ["Malpensa (MXP)", "ähnlich weit, je nach Route ca. 3 bis 3½ Stunden"],
+          ["Route", "A2 durch den Gotthard oder A13 über den San Bernardino, via Lugano und Chiasso"],
+          ["Grenze", "Chiasso (Schweiz–Italien), Ausweis erforderlich"],
+          ["Preis", "Festpreis pro Fahrzeug für die genaue Adresse, vorab im Buchungsrechner"],
+        ]}},
+        { h: "Option 1: der Eurocity", p: [
+          "Zwischen Zürich HB und Milano Centrale verkehren direkte Eurocity-Züge durch den Gotthard-Basistunnel; die Fahrt dauert rund dreieinhalb Stunden. Vom Flughafen Zürich müssen Sie zunächst nach Zürich HB fahren und dort umsteigen.",
+          "Für Alleinreisende mit leichtem Gepäck, deren Ziel in der Nähe von Milano Centrale liegt, ist der Zug oft die beste Wahl: schnell, komfortabel, mit Arbeitsplatz. Weniger ideal ist er mit viel Gepäck, für Ziele ausserhalb des Zentrums wie die Fiera Milano in Rho, Monza oder Malpensa, für Gruppen und bei späten Ankünften in Zürich.",
+        ]},
+        { h: "Option 2: der Privattransfer", p: [
+          "Beim Transfer holt Sie der Chauffeur in der Ankunftshalle ab und bringt Sie ohne Umsteigen direkt ans Ziel: Hotel in Brera, Büro in Porta Nuova, Messegelände in Rho oder Malpensa für den Weiterflug. Der Festpreis gilt pro Fahrzeug und wird vorab angezeigt; bis zu sieben Personen fahren in der V-Klasse.",
+          "Der Transfer lohnt sich besonders für Gruppen und Familien, für Geschäftsreisende, die unterwegs telefonieren oder arbeiten wollen, für Messebesucher mit Material und für alle, die nach einem Langstreckenflug nicht mehr mit Koffern durch zwei Bahnhöfe wollen. Eine Übersicht der Ziele in Italien finden Sie auf der Seite [Transfer nach Mailand](/flughafentransfer-mailand-it).",
+        ]},
+        { h: "Option 3: der Mietwagen", p: [
+          "Ein Mietwagen ist sinnvoll, wenn Sie in Norditalien viele Orte ansteuern wollen. Für Mailand selbst ist er unpraktisch: Die Innenstadt hat Zufahrtsbeschränkungen mit Gebühren, Parkplätze sind knapp und teuer, und bei einer Einwegmiete über die Grenze fallen oft hohe Rückführungsgebühren an. Wer den Wagen in der Schweiz mietet und in Italien abgibt, sollte das vorab genau prüfen.",
+        ]},
+        { h: "Die Route und die Grenze", p: [
+          "Der Fahrer wählt je nach Verkehrslage den Gotthard-Strassentunnel oder den San Bernardino. Am Gotthard staut es sich an Ferientagen, besonders an Ostern, Pfingsten und an Sommersamstagen; dann ist der San Bernardino oft schneller. Nach Lugano folgt die Grenze bei Chiasso und die Autobahn nach Mailand.",
+          "Die Schweiz und Italien gehören zum Schengenraum, systematische Passkontrollen gibt es nicht, Zollkontrollen aber schon. Alle Mitreisenden brauchen einen gültigen Ausweis. Wie es am Comer See weitergeht, der fast auf dem Weg liegt, beschreibt [Vom Flughafen Zürich an den Comer See](/blog/zuerich-comer-see-transfer-tagesausflug).",
+        ]},
+        { h: "Messen und Anlässe in Mailand", p: [
+          "Einige Termine bringen besonders viele Reisende von Zürich nach Mailand:",
+        ], ul: [
+          "**Salone del Mobile** im April auf dem Messegelände Fiera Milano in Rho – die wichtigste Möbelmesse der Welt, Hotels sind Monate im Voraus voll.",
+          "**Milano Fashion Week** im Februar und September, dazu die Männermode-Schauen im Januar und Juni.",
+          "**Formel 1 in Monza** Anfang September, mit dichtem Verkehr rund um den Autodromo.",
+          "**Saisoneröffnung der Scala** am 7. Dezember, einer der gesellschaftlichen Höhepunkte des Jahres.",
+        ]},
+        { h: "Mailand oder Malpensa als Abflughafen", p: [
+          "Viele Reisende kombinieren Zürich und Mailand als Gabelflug: Ankunft in Zürich, Rückflug ab Malpensa oder umgekehrt. Das spart die Rückfahrt über die Alpen und eröffnet oft bessere Verbindungen. Den Transfer nach Malpensa finden Sie auf der Seite [Transfer nach Milano Malpensa](/flughafentransfer-milano-malpensa-it).",
+          "Für Abflüge ab Malpensa planen Sie die Fahrt grosszügig: Rund um Mailand kann der Verkehr am Morgen dicht sein, und an der Grenze gibt es gelegentlich Wartezeiten.",
+        ]},
+        { h: "Geschäftsreise Zürich–Mailand an einem Tag", p: [
+          "Für Termine in Mailand mit Rückflug am selben Abend ist eine Stundenbuchung oft die effizienteste Lösung: Der Fahrer holt Sie in Zürich ab, wartet während der Meetings in Mailand und bringt Sie zurück an den Flughafen. Die Fahrzeit nutzen Sie für Telefonate und E-Mails, die Rechnung kommt mit ausgewiesener Mehrwertsteuer – mehr dazu in [Firmentransfers in Zürich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen).",
+          "Bei mehreren Terminen in der Stadt, etwa in Porta Nuova und in der Nähe der Fiera, spart das die Taxisuche zwischen den Adressen. Geben Sie alle Stopps im Buchungsformular an, damit der Fahrer die Route planen kann.",
+        ]},
+        { h: "Häufige Fragen zur Strecke Zürich–Mailand", p: []},
+        { h3: "Wie lange dauert die Fahrt von Zürich nach Mailand?", p: [
+          "Mit dem Auto rund dreieinhalb bis vier Stunden, je nach Verkehr am Gotthard. Der Eurocity braucht ab Zürich HB rund dreieinhalb Stunden.",
+        ]},
+        { h3: "Ist der Zug oder der Transfer besser?", p: [
+          "Für Alleinreisende mit leichtem Gepäck ins Zentrum meist der Zug. Für Gruppen, viel Gepäck, Ziele ausserhalb des Zentrums oder späte Ankünfte meist der Transfer.",
+        ]},
+        { h3: "Fahren Sie auch zur Fiera Milano oder nach Monza?", p: [
+          "Ja. Geben Sie die genaue Adresse ein, zum Beispiel die Halle oder den Eingang; der Preis wird für die Distanz berechnet.",
+        ]},
+        { h3: "Brauche ich einen Pass?", p: [
+          "Ja, alle Mitreisenden brauchen einen gültigen Reisepass oder eine Identitätskarte, Reisende aus Drittstaaten zusätzlich die nötigen Schengen-Dokumente.",
+        ]},
+        { h3: "Kann ich unterwegs in Lugano oder am Comer See anhalten?", p: [
+          "Ja. Fügen Sie im Buchungsformular einen Zwischenstopp hinzu; der Preis wird für die gesamte Strecke berechnet.",
+          "Jetzt [Transfer nach Mailand buchen](/buchung) – Festpreis für Ihre genaue Adresse.",
+        ]},
+      ],
+    },
+    en: {
+      title: "From Zurich to Milan: Train, Car or Private Transfer? The Honest Comparison",
+      seo: "Zurich to Milan: Train or Transfer?",
+      excerpt: "Around 280 km, three to four hours, a border and the Gotthard in between: how best to get from Zurich Airport to Milan, Malpensa, Fiera Milano or Monza. With an honest comparison of the EuroCity train, a hire car and a private transfer, plus tips on trade fairs, Fashion Week and Formula 1.",
+      body: [
+        { p: [
+          "Zurich and Milan are the two economic centres on either side of the Alps, and business travellers, trade-fair visitors, fashion people and tourists travel between them every day. Many land on a long-haul flight in Zurich with Milan as their actual destination – or combine Switzerland and northern Italy in one trip.",
+          "This guide compares the options honestly: when is the EuroCity the best choice, when a private transfer, and what is a hire car worth it for? Plus information on the route, the border, trade fairs and events.",
+        ]},
+        { h: "The route at a glance", p: [
+          "Driving times are guide values; at the Gotthard they depend heavily on the day of travel.",
+        ], table: { head: ["Key facts", "Zurich Airport → Milan"], rows: [
+          ["Distance to central Milan", "around 280 km"],
+          ["Driving time", "approx. 3½ to 4 hours"],
+          ["Malpensa (MXP)", "similar distance, approx. 3 to 3½ hours depending on the route"],
+          ["Route", "A2 through the Gotthard or A13 via the San Bernardino, via Lugano and Chiasso"],
+          ["Border", "Chiasso (Switzerland–Italy), ID required"],
+          ["Price", "Fixed price per vehicle for the exact address, shown in advance in the booking calculator"],
+        ]}},
+        { h: "Option 1: the EuroCity", p: [
+          "Direct EuroCity trains run between Zurich HB and Milano Centrale through the Gotthard Base Tunnel; the journey takes around three and a half hours. From Zurich Airport you first need to travel to Zurich HB and change there.",
+          "For solo travellers with light luggage whose destination is near Milano Centrale, the train is often the best choice: fast, comfortable, with a place to work. It is less ideal with a lot of luggage, for destinations outside the centre such as Fiera Milano in Rho, Monza or Malpensa, for groups and for late arrivals in Zurich.",
+        ]},
+        { h: "Option 2: the private transfer", p: [
+          "With a transfer the chauffeur meets you in the arrivals hall and takes you straight to your destination without changing: a hotel in Brera, an office in Porta Nuova, the exhibition centre in Rho or Malpensa for an onward flight. The fixed price is per vehicle and shown in advance; up to seven people travel in the V-Class.",
+          "The transfer is particularly worthwhile for groups and families, for business travellers who want to call or work on the way, for trade-fair visitors with material and for anyone who does not want to drag suitcases through two stations after a long-haul flight. An overview of destinations in Italy is on the page [Transfer to Milan](/flughafentransfer-mailand-it).",
+        ]},
+        { h: "Option 3: the hire car", p: [
+          "A hire car makes sense if you want to visit many places in northern Italy. For Milan itself it is impractical: the city centre has access restrictions with charges, parking is scarce and expensive, and one-way rentals across the border often carry high drop-off fees. If you rent in Switzerland and return the car in Italy, check this carefully in advance.",
+        ]},
+        { h: "The route and the border", p: [
+          "Depending on traffic, the driver chooses the Gotthard road tunnel or the San Bernardino. The Gotthard has queues on holiday dates, especially at Easter, Whitsun and on summer Saturdays; the San Bernardino is then often faster. After Lugano comes the border at Chiasso and the motorway to Milan.",
+          "Switzerland and Italy are in the Schengen area, so there are no systematic passport checks, but there are customs checks. All passengers need valid ID. How to continue to Lake Como, which is almost on the way, is described in [From Zurich Airport to Lake Como](/blog/zuerich-comer-see-transfer-tagesausflug).",
+        ]},
+        { h: "Trade fairs and events in Milan", p: [
+          "Some dates bring particularly many travellers from Zurich to Milan:",
+        ], ul: [
+          "**Salone del Mobile** in April at the Fiera Milano exhibition centre in Rho – the world's most important furniture fair; hotels are full months in advance.",
+          "**Milan Fashion Week** in February and September, plus the menswear shows in January and June.",
+          "**Formula 1 at Monza** in early September, with heavy traffic around the Autodromo.",
+          "**La Scala's season opening** on 7 December, one of the social highlights of the year.",
+        ]},
+        { h: "Milan or Malpensa as your departure airport", p: [
+          "Many travellers combine Zurich and Milan as an open-jaw trip: arrive in Zurich, fly home from Malpensa or the other way round. That saves the return trip over the Alps and often opens up better connections. The transfer to Malpensa is on the page [Transfer to Milano Malpensa](/flughafentransfer-milano-malpensa-it).",
+          "For departures from Malpensa, plan the drive generously: traffic around Milan can be heavy in the morning, and there are occasional waits at the border.",
+        ]},
+        { h: "A Zurich–Milan business trip in one day", p: [
+          "For meetings in Milan with a return flight the same evening, an hourly booking is often the most efficient solution: the driver picks you up in Zurich, waits during your meetings in Milan and takes you back to the airport. You use the driving time for calls and emails, and the invoice comes with VAT shown – more in [Corporate transfers in Zurich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen).",
+          "With several meetings in the city, for example in Porta Nuova and near the Fiera, it saves hunting for taxis between addresses. Enter all stops in the booking form so the driver can plan the route.",
+        ]},
+        { h: "Frequently asked questions about Zurich–Milan", p: []},
+        { h3: "How long is the drive from Zurich to Milan?", p: [
+          "By car around three and a half to four hours, depending on traffic at the Gotthard. The EuroCity takes around three and a half hours from Zurich HB.",
+        ]},
+        { h3: "Is the train or the transfer better?", p: [
+          "For solo travellers with light luggage heading to the centre, usually the train. For groups, a lot of luggage, destinations outside the centre or late arrivals, usually the transfer.",
+        ]},
+        { h3: "Do you also drive to Fiera Milano or Monza?", p: [
+          "Yes. Enter the exact address, for example the hall or entrance; the price is calculated for the distance.",
+        ]},
+        { h3: "Do I need a passport?", p: [
+          "Yes, all passengers need a valid passport or ID card; travellers from third countries also need the required Schengen documents.",
+        ]},
+        { h3: "Can I stop in Lugano or at Lake Como on the way?", p: [
+          "Yes. Add an intermediate stop in the booking form; the price is calculated for the whole route.",
+          "[Book your Milan transfer now](/buchung) – fixed price for your exact address.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "zuerich-muenchen-transfer-zug-auto-vergleich",
+    date: "2026-10-07",
+    img: "/gallery/2.jpg",
+    de: {
+      title: "Von Zürich nach München: alle Optionen im Vergleich – Zug, Auto oder Privattransfer",
+      seo: "Zürich nach München: Zug oder Transfer?",
+      excerpt: "Rund 300 km über den Bodensee und das Allgäu, drei Länder in dreieinhalb bis vier Stunden: wie Sie vom Flughafen Zürich am besten nach München, zum Flughafen München oder zur Messe kommen. Mit ehrlichem Vergleich, Infos zu Route, Grenzen und Vignetten sowie Tipps für Oktoberfest, Messen und einen Abstecher nach Lindau oder Neuschwanstein.",
+      body: [
+        { p: [
+          "München und Zürich liegen näher beieinander, als viele denken. Trotzdem ist die Strecke für Reisende oft ein Rätsel: Gibt es einen direkten Zug? Wie oft muss man umsteigen? Braucht man mit dem Auto eine Vignette, und wenn ja, welche? Und lohnt sich ein Privattransfer über drei Länder?",
+          "Dieser Guide beantwortet diese Fragen, vergleicht die Optionen ehrlich und gibt Tipps für Anlässe wie das Oktoberfest und die grossen Messen.",
+        ]},
+        { h: "Die Strecke auf einen Blick", p: [
+          "Die Fahrzeiten sind Richtwerte und hängen vom Verkehr rund um München und am Bodensee ab.",
+        ], table: { head: ["Eckdaten", "Flughafen Zürich → München"], rows: [
+          ["Distanz bis München Zentrum", "rund 300 km"],
+          ["Fahrzeit", "ca. 3½ bis 4 Stunden"],
+          ["Flughafen München (MUC)", "nordöstlich der Stadt, je nach Verkehr ca. 30–45 Minuten zusätzlich"],
+          ["Route", "A1 bis St. Margrethen, kurzer Abschnitt durch Vorarlberg, über Lindau auf die A96 nach München"],
+          ["Grenzen", "Schweiz–Österreich und Österreich–Deutschland, Ausweis erforderlich"],
+          ["Preis", "Festpreis pro Fahrzeug für die genaue Adresse, vorab im Buchungsrechner"],
+        ]}},
+        { h: "Die Route: Bodensee, Vorarlberg, Allgäu", p: [
+          "Vom Flughafen Zürich geht es auf der A1 Richtung Osten an Winterthur und St. Gallen vorbei bis zur Grenze bei St. Margrethen. Ein kurzes Stück führt durch Vorarlberg und den Pfändertunnel bei Bregenz, dann erreichen Sie bei Lindau Deutschland und fahren auf der A96 durch das Allgäu über Memmingen nach München.",
+          "Für den österreichischen Abschnitt ist eine Vignette nötig – bei einem Transfer kümmern wir uns darum, Sie müssen nichts tun. Wer selbst fährt, braucht ab Februar 2027 die digitale österreichische Vignette; die Schweizer Vignette erklärt [Autobahnvignette Schweiz 2027](/blog/autobahnvignette-schweiz-2027-preis-e-vignette). In Deutschland ist die Autobahn für Autos gebührenfrei.",
+        ]},
+        { h: "Option 1: der Eurocity", p: [
+          "Zwischen Zürich HB und München Hauptbahnhof verkehren direkte Eurocity-Züge über Lindau; die Fahrt dauert rund dreieinhalb Stunden. Vom Flughafen Zürich müssen Sie zunächst nach Zürich HB fahren.",
+          "Für Alleinreisende mit leichtem Gepäck, deren Ziel nahe dem Münchner Hauptbahnhof liegt, ist der Zug eine gute Wahl. Für den Flughafen München, die Messe in Riem, Ziele im Umland oder Gruppen mit viel Gepäck bedeutet er weitere Umstiege.",
+        ]},
+        { h: "Option 2: der Privattransfer", p: [
+          "Beim Transfer holt Sie der Chauffeur in der Ankunftshalle ab und fährt Sie ohne Umsteigen direkt ans Ziel – ins Hotel in der Altstadt, ins Büro, zur Messe oder zum Flughafen München für den Weiterflug. Der Festpreis gilt pro Fahrzeug, Grenzen und Vignette sind für Sie kein Thema, und bis zu sieben Personen fahren in der V-Klasse.",
+          "Besonders sinnvoll ist das für Gruppen und Familien, für Geschäftsreisende, die unterwegs arbeiten wollen, und für Reisende mit viel Gepäck. Die Zielseite [Transfer nach München](/flughafentransfer-muenchen-de) zeigt, wie Sie den Preis für Ihre Adresse berechnen.",
+        ]},
+        { h: "Option 3: Mietwagen oder eigenes Auto", p: [
+          "Mit dem eigenen Auto ist die Strecke unkompliziert, aber mit drei Ländern, zwei Vignettensystemen und dem Verkehr um München nicht ganz so entspannt, wie sie auf der Karte aussieht. Bei Mietwagen ist die Einwegmiete über die Grenze oft teuer; prüfen Sie Rückgabegebühren und die nötigen Vignetten vor der Buchung.",
+        ]},
+        { h: "Abstecher unterwegs: Lindau und Neuschwanstein", p: [
+          "Die Route bietet schöne Zwischenhalte. Die Inselstadt Lindau am Bodensee liegt direkt an der Strecke und eignet sich für einen Spaziergang am Hafen mit Blick auf die Alpen. Bregenz mit den Seefestspielen im Sommer ist ebenfalls nah; Details zum Ziel finden Sie auf der Seite [Transfer nach Bregenz](/flughafentransfer-bregenz-at).",
+          "Wer Schloss Neuschwanstein sehen möchte, plant einen Umweg über Füssen ein. Das verlängert die Reise um einige Stunden und lohnt sich am ehesten mit einer Stundenbuchung, bei der der Fahrer während der Besichtigung wartet. Tragen Sie Zwischenstopps im Buchungsformular ein, der Preis wird für die gesamte Strecke berechnet.",
+        ]},
+        { h: "Oktoberfest, Messen und Fussball", p: [
+          "Einige Anlässe machen München besonders voll:",
+        ], ul: [
+          "**Oktoberfest** ab Mitte oder Ende September bis Anfang Oktober – Hotels sind dann sehr teuer und früh ausgebucht, die Strassen rund um die Theresienwiese gesperrt.",
+          "**Messen in München-Riem**, darunter grosse Fachmessen, bei denen der Verkehr rund um das Messegelände dicht ist.",
+          "**Heimspiele in der Allianz Arena**, mit Stau auf der A9 im Norden der Stadt.",
+          "**Christkindlmärkte** im Advent, etwa am Marienplatz.",
+        ]},
+        { p: [
+          "Für diese Termine lohnt sich die frühe Buchung, und im Notizfeld hilft ein Hinweis auf den Anlass – der Fahrer plant dann einen geeigneten Absetzpunkt.",
+        ]},
+        { h: "Gabelflug: in Zürich landen, ab München fliegen", p: [
+          "Viele Reisende kombinieren die Schweiz und Süddeutschland auf einer Reise: Ankunft in Zürich, ein paar Tage in Luzern, im Berner Oberland oder am Bodensee, dann Weiterreise nach München und Rückflug von dort. So sparen Sie den Rückweg und haben oft eine grössere Auswahl an Verbindungen.",
+          "Der Transfer lässt sich dafür flexibel planen: Abholung im Hotel in der Schweiz statt am Flughafen, Zwischenstopps unterwegs und Ankunft direkt am Terminal in München. Für den Abflug ab München planen Sie die Fahrt grosszügig und rechnen die Zeit am Flughafen nach den Regeln aus [Wie früh am Flughafen Zürich sein?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in) – sie gelten für München sinngemäss.",
+        ]},
+        { h: "Häufige Fragen zur Strecke Zürich–München", p: []},
+        { h3: "Wie lange dauert die Fahrt von Zürich nach München?", p: [
+          "Mit dem Auto rund dreieinhalb bis vier Stunden. Der direkte Eurocity braucht ab Zürich HB rund dreieinhalb Stunden.",
+        ]},
+        { h3: "Brauche ich eine Vignette?", p: [
+          "Bei einem Transfer nicht, darum kümmern wir uns. Wer selbst fährt, braucht für die Strecke die Schweizer und die österreichische Vignette.",
+        ]},
+        { h3: "Fahren Sie auch direkt zum Flughafen München?", p: [
+          "Ja. Geben Sie den Flughafen München als Ziel ein; der Preis wird für die Distanz berechnet.",
+        ]},
+        { h3: "Brauche ich einen Pass?", p: [
+          "Ja, alle Mitreisenden brauchen einen gültigen Reisepass oder eine Identitätskarte, Reisende aus Drittstaaten die nötigen Schengen-Dokumente.",
+        ]},
+        { h3: "Kann ich in Lindau oder am Bodensee anhalten?", p: [
+          "Ja. Fügen Sie im Buchungsformular einen Zwischenstopp hinzu.",
+          "Jetzt [Transfer nach München buchen](/buchung) – Festpreis für Ihre genaue Adresse.",
+        ]},
+      ],
+    },
+    en: {
+      title: "From Zurich to Munich: All Options Compared – Train, Car or Private Transfer",
+      seo: "Zurich to Munich: Train or Transfer?",
+      excerpt: "Around 300 km via Lake Constance and the Allgäu, three countries in three and a half to four hours: how best to get from Zurich Airport to Munich, Munich Airport or the exhibition centre. With an honest comparison, information on the route, borders and vignettes, plus tips for Oktoberfest, trade fairs and a detour to Lindau or Neuschwanstein.",
+      body: [
+        { p: [
+          "Munich and Zurich are closer together than many people think. Yet the route is often a puzzle for travellers: is there a direct train? How often do you have to change? Do you need a vignette by car, and if so, which one? And is a private transfer across three countries worth it?",
+          "This guide answers these questions, compares the options honestly and gives tips for events such as Oktoberfest and the major trade fairs.",
+        ]},
+        { h: "The route at a glance", p: [
+          "Driving times are guide values and depend on traffic around Munich and at Lake Constance.",
+        ], table: { head: ["Key facts", "Zurich Airport → Munich"], rows: [
+          ["Distance to central Munich", "around 300 km"],
+          ["Driving time", "approx. 3½ to 4 hours"],
+          ["Munich Airport (MUC)", "north-east of the city, approx. 30–45 minutes extra depending on traffic"],
+          ["Route", "A1 to St. Margrethen, a short section through Vorarlberg, via Lindau onto the A96 to Munich"],
+          ["Borders", "Switzerland–Austria and Austria–Germany, ID required"],
+          ["Price", "Fixed price per vehicle for the exact address, shown in advance in the booking calculator"],
+        ]}},
+        { h: "The route: Lake Constance, Vorarlberg, Allgäu", p: [
+          "From Zurich Airport the A1 heads east past Winterthur and St. Gallen to the border at St. Margrethen. A short stretch leads through Vorarlberg and the Pfänder tunnel near Bregenz, then you reach Germany at Lindau and follow the A96 through the Allgäu via Memmingen to Munich.",
+          "The Austrian section requires a vignette – with a transfer we take care of it, you need do nothing. If you drive yourself, from February 2027 you need the digital Austrian vignette; the Swiss vignette is explained in [Swiss motorway vignette 2027](/blog/autobahnvignette-schweiz-2027-preis-e-vignette). German motorways are toll-free for cars.",
+        ]},
+        { h: "Option 1: the EuroCity", p: [
+          "Direct EuroCity trains run between Zurich HB and Munich Hauptbahnhof via Lindau; the journey takes around three and a half hours. From Zurich Airport you first need to travel to Zurich HB.",
+          "For solo travellers with light luggage whose destination is near Munich's main station, the train is a good choice. For Munich Airport, the exhibition centre in Riem, destinations in the surrounding area or groups with a lot of luggage it means further changes.",
+        ]},
+        { h: "Option 2: the private transfer", p: [
+          "With a transfer the chauffeur meets you in the arrivals hall and drives you straight to your destination without changing – to a hotel in the old town, an office, the exhibition centre or Munich Airport for an onward flight. The fixed price is per vehicle, borders and vignettes are no concern of yours, and up to seven people travel in the V-Class.",
+          "This makes particular sense for groups and families, for business travellers who want to work on the way and for travellers with a lot of luggage. The destination page [Transfer to Munich](/flughafentransfer-muenchen-de) shows how to calculate the price for your address.",
+        ]},
+        { h: "Option 3: hire car or your own car", p: [
+          "With your own car the route is straightforward, but with three countries, two vignette systems and the traffic around Munich it is not quite as relaxed as it looks on the map. With hire cars, one-way rentals across the border are often expensive; check drop-off fees and the required vignettes before booking.",
+        ]},
+        { h: "Detours on the way: Lindau and Neuschwanstein", p: [
+          "The route offers lovely stops. The island town of Lindau on Lake Constance is right on the way and ideal for a stroll around the harbour with a view of the Alps. Bregenz, with its lake festival in summer, is close too; details are on the page [Transfer to Bregenz](/flughafentransfer-bregenz-at).",
+          "If you want to see Neuschwanstein Castle, plan a detour via Füssen. That adds a few hours to the journey and is best done with an hourly booking, where the driver waits during your visit. Enter stops in the booking form; the price is calculated for the whole route.",
+        ]},
+        { h: "Oktoberfest, trade fairs and football", p: [
+          "Some events make Munich particularly busy:",
+        ], ul: [
+          "**Oktoberfest** from mid or late September to early October – hotels are then very expensive and booked out early, and the roads around the Theresienwiese are closed.",
+          "**Trade fairs in Munich-Riem**, including major industry fairs, when traffic around the exhibition centre is heavy.",
+          "**Home matches at the Allianz Arena**, with queues on the A9 north of the city.",
+          "**Christmas markets** in Advent, for example on Marienplatz.",
+        ]},
+        { p: [
+          "For these dates early booking pays off, and a note about the occasion in the notes field helps – the driver will then plan a suitable drop-off point.",
+        ]},
+        { h: "Open jaw: land in Zurich, fly home from Munich", p: [
+          "Many travellers combine Switzerland and southern Germany in one trip: arrive in Zurich, spend a few days in Lucerne, the Bernese Oberland or on Lake Constance, then travel on to Munich and fly home from there. That saves the way back and often gives you a wider choice of connections.",
+          "The transfer can be planned flexibly for this: pickup at your hotel in Switzerland instead of the airport, stops on the way and arrival right at the terminal in Munich. For a departure from Munich, plan the drive generously and calculate your time at the airport using the rules in [How early should you be at Zurich Airport?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in) – they apply to Munich in the same way.",
+        ]},
+        { h: "Frequently asked questions about Zurich–Munich", p: []},
+        { h3: "How long is the drive from Zurich to Munich?", p: [
+          "By car around three and a half to four hours. The direct EuroCity takes around three and a half hours from Zurich HB.",
+        ]},
+        { h3: "Do I need a vignette?", p: [
+          "Not with a transfer – we take care of it. If you drive yourself, you need the Swiss and the Austrian vignette for the route.",
+        ]},
+        { h3: "Do you also drive directly to Munich Airport?", p: [
+          "Yes. Enter Munich Airport as your destination; the price is calculated for the distance.",
+        ]},
+        { h3: "Do I need a passport?", p: [
+          "Yes, all passengers need a valid passport or ID card; travellers from third countries need the required Schengen documents.",
+        ]},
+        { h3: "Can I stop in Lindau or on Lake Constance?", p: [
+          "Yes. Add an intermediate stop in the booking form.",
+          "[Book your Munich transfer now](/buchung) – fixed price for your exact address.",
+        ]},
+      ],
+    },
+  },
+  {
     slug: "silvester-zuerich-feuerwerk-transfer",
     date: "2026-10-07",
     img: "/gallery/1.jpg",
