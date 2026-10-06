@@ -37,6 +37,17 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
 
+      // ── Birleştirilen blog yazıları (app/blogContent.ts → mergedBlogSlugs ile aynı liste) ──
+      ...[
+        ["gepaeck-tipps-flughafentransfer", "wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse"],
+        ["mit-baby-und-kleinkind-ab-flughafen-zuerich-kindersitz-kinderwagen", "mit-kindern-reisen-kindersitze-schweiz"],
+        ["ankunft-flughafen-zuerich-fahrer-finden", "ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich"],
+        ["taxi-flughafen-zuerich-finden-kosten-alternativen", "uber-taxi-oder-privater-transfer-flughafen-zuerich"],
+      ].flatMap(([from, to]) => [
+        { source: `/:lang(de|en)/blog/${from}`, destination: `/:lang/blog/${to}`, permanent: true },
+        { source: `/blog/${from}`, destination: `/blog/${to}`, permanent: true }, // dil yönlendirmesini proxy yapar
+      ]),
+
       // Touren bölümü kaldırıldı — eski URL'ler ana sayfaya yönlenir
       { source: "/:lang/touren/:path*", destination: "/:lang", permanent: true },
       { source: "/:lang/tours/:path*", destination: "/:lang", permanent: true },

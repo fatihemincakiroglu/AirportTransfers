@@ -13,13 +13,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   if (!post) return { title: "Blog | Zürich Airport Taxi" };
   const c = pickL(post, lang as never);
   return {
-    title: `${c.title} | Zürich Airport Taxi`,
+    title: `${c.seo ?? c.title} | Zürich Airport Taxi`,
     description: c.excerpt,
     alternates: {
       canonical: `/${lang}/blog/${slug}`,
       languages: langAlternates(`/blog/${slug}`),
     },
-    openGraph: { type: "article", title: c.title, description: c.excerpt, publishedTime: post.date, images: [post.img] },
+    openGraph: { type: "article", title: c.seo ?? c.title, description: c.excerpt, publishedTime: post.date, modifiedTime: post.updated ?? post.date, images: [post.img] },
   };
 }
 
@@ -43,7 +43,7 @@ export default async function Page({ params }: Params) {
       description: c.excerpt,
       image: post.img,
       datePublished: post.date,
-      dateModified: post.date,
+      dateModified: post.updated ?? post.date,
       wordCount: words,
       timeRequired: `PT${Math.max(2, Math.ceil(words / 180))}M`,
       inLanguage: lang === "de" ? "de" : "en",

@@ -42,7 +42,7 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ...routes.map((r): [string, "monthly", number] => [`/${r.slug}`, "monthly", 0.8]),
   ...allDestinationSlugs().map((sl): [string, "monthly", number] => [`/${sl}`, "monthly", 0.6]),
   ...blogPosts.map((p): [string, "yearly", number, string] => [
-    `/blog/${p.slug}`, "yearly", 0.6, new Date(p.date).toISOString(),
+    `/blog/${p.slug}`, "yearly", 0.6, new Date(p.updated ?? p.date).toISOString(),
   ]),
 ];
 

@@ -75,6 +75,12 @@ export default function PostClient({ slug }: { slug: string }) {
           <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight md:text-[44px]" style={{ color: C.pine }}>{c.title}</h1>
           <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-stone-500">
             <span style={{ color: C.gold }}>📅</span> {B.published} {formatDate(post.date, lang)}
+            {post.updated && post.updated > post.date && (
+              <>
+                <span className="text-stone-300">·</span>
+                <span>🔄 {lang === "de" ? "Aktualisiert am" : "Updated"} {formatDate(post.updated, lang)}</span>
+              </>
+            )}
             <span className="text-stone-300">·</span>
             🕐 {readingTime(post, lang)} {B.minRead}
           </p>

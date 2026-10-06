@@ -6,59 +6,6 @@
 import type { BlogPost } from "./blogContent";
 
 export const basePosts: BlogPost[] = [
-  {
-    slug: "ankunft-flughafen-zuerich-fahrer-finden",
-    date: "2026-07-21",
-    img: "/gallery/1.jpg",
-    de: {
-      title: "Ankunft am Flughafen Zürich: So finden Sie Ihren Fahrer in 3 Minuten",
-      excerpt: "Vom Gate bis zum Mercedes ohne Suchen: Wo Ihr Chauffeur wartet, was Meet & Greet konkret bedeutet, wie die Wartezeit geregelt ist und warum Verspätungen kein Thema sind.",
-      body: [
-        { p: [
-          "Der Moment nach der Landung entscheidet über den ersten Eindruck einer Reise. Wer nach zwölf Stunden Flug noch Schilder lesen, Ticketautomaten bedienen oder am Taxistand anstehen muss, kommt gestresst an. Ein vorab gebuchter Transfer nimmt Ihnen genau das ab – vorausgesetzt, der Ablauf ist klar. Dieser Beitrag beschreibt ihn Schritt für Schritt: von der Gepäckausgabe bis zum Fahrzeug.",
-        ]},
-        { h: "Schritt 1: Gepäck holen, Ausgang folgen", p: [
-          "Nach der Passkontrolle und der Gepäckausgabe folgen Sie der Beschilderung zum Ausgang in die öffentliche Ankunftshalle. Der Flughafen Zürich hat zwei Ankunftsbereiche – welcher für Sie gilt, hängt von Ihrem Flug ab; anhand Ihrer Flugnummer wissen wir es und positionieren den Fahrer entsprechend. Was Ankunft 1 und Ankunft 2 unterscheidet, erklärt [Ankunft 1 oder Ankunft 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
-        ]},
-        { h: "Schritt 2: Das Namensschild", p: [
-          "Unmittelbar hinter dem Ausgang, in der Ankunftshalle, steht Ihr Chauffeur mit einem Schild. Darauf steht der Name, den Sie bei der Buchung angegeben haben – auf Wunsch auch ein Firmenname, wenn Sie Gäste empfangen lassen. Sie müssen nicht nach draussen, nicht ins Parkhaus und nicht zum Taxistand. Der Fahrer stellt sich vor, übernimmt das Gepäck und begleitet Sie zum Fahrzeug im direkt angeschlossenen Parkhaus. Vom Schild bis zum Mercedes sind es wenige Minuten zu Fuss.",
-        ]},
-        { h: "Schritt 3: Wartezeit – 60 Minuten inklusive", p: [
-          "Nach der tatsächlichen Landung sind 60 Minuten Wartezeit im Festpreis enthalten. Das reicht für Passkontrolle, Gepäck und einen Kaffee, auch wenn das Gepäckband einmal länger braucht. Dauert es aussergewöhnlich lange – etwa weil ein Koffer nicht angekommen ist –, genügt eine kurze WhatsApp-Nachricht. Der Fahrer bleibt.",
-        ]},
-        { h: "Verspätung? Wir wissen es vor Ihnen", p: [
-          "Wir verfolgen Ihren Flug ab dem Abflug. Verspätet er sich, verschiebt sich die Abholung automatisch mit; Sie müssen niemanden anrufen. Auch bei Umleitungen finden wir eine Lösung. Was genau bei Verspätung, Umleitung und Annullierung passiert, steht in [Flug verspätet oder annulliert?](/blog/flug-verspaetet-oder-annulliert-was-passiert-mit-dem-transfer).",
-        ]},
-        { h: "Was Sie vorbereiten können", p: [
-          "Geben Sie bei der Buchung die vollständige Flugnummer an. Schalten Sie nach der Landung das Telefon ein – das kostenlose Flughafen-WLAN reicht für WhatsApp. Und wenn Sie sich einmal nicht auf Anhieb finden: Bleiben Sie am Ausgang stehen und schreiben Sie uns Ihren Namen; die Zentrale ist rund um die Uhr erreichbar. So wird die Ankunft in Zürich zum einfachsten Teil der Reise – egal, ob es weiter nach [Luzern](/zurich-airport-to-luzern), [Basel](/zurich-airport-to-basel) oder in die Berge geht. [Transfer buchen](/buchung).",
-        ]},
-      ],
-    },
-    en: {
-      title: "Arriving at Zurich Airport: How to Find Your Driver in 3 Minutes",
-      excerpt: "From the gate to the Mercedes without searching: where your chauffeur waits, what meet & greet actually means, how waiting time is handled and why delays are not an issue.",
-      body: [
-        { p: [
-          "The moment after landing shapes the first impression of a trip. Anyone who still has to read signs, operate ticket machines or queue at the taxi rank after a twelve-hour flight arrives stressed. A pre-booked transfer takes exactly that off your hands – provided the procedure is clear. This article describes it step by step: from baggage claim to the vehicle.",
-        ]},
-        { h: "Step 1: collect luggage, follow the exit", p: [
-          "After passport control and baggage claim, follow the signs to the exit into the public arrivals hall. Zurich Airport has two arrivals areas – which one applies to you depends on your flight; your flight number tells us and we position the driver accordingly. What distinguishes Arrival 1 and Arrival 2 is explained in [Arrival 1 or Arrival 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
-        ]},
-        { h: "Step 2: the name sign", p: [
-          "Right behind the exit, in the arrivals hall, your chauffeur stands with a sign. It shows the name you entered when booking – on request also a company name if you have guests collected. You do not need to go outside, into the car park or to the taxi rank. The driver introduces himself, takes the luggage and walks you to the vehicle in the directly connected car park. From the sign to the Mercedes is a few minutes on foot.",
-        ]},
-        { h: "Step 3: waiting time – 60 minutes included", p: [
-          "After the actual landing, 60 minutes of waiting time are included in the fixed price. That covers passport control, luggage and a coffee, even if the baggage belt takes longer for once. If it takes unusually long – for instance because a suitcase did not arrive – a short WhatsApp message is enough. The driver stays.",
-        ]},
-        { h: "Delayed? We know before you do", p: [
-          "We track your flight from departure. If it is delayed, the pickup shifts automatically; you do not need to call anyone. We find a solution for diversions too. Exactly what happens in case of delay, diversion and cancellation is in [Flight delayed or cancelled?](/blog/flug-verspaetet-oder-annulliert-was-passiert-mit-dem-transfer).",
-        ]},
-        { h: "What you can prepare", p: [
-          "Enter the complete flight number when booking. Switch on your phone after landing – the free airport Wi-Fi is enough for WhatsApp. And if for once you do not find each other straight away: stay at the exit and send us your name; dispatch is reachable around the clock. This makes arriving in Zurich the easiest part of the trip – whether you continue to [Lucerne](/zurich-airport-to-luzern), [Basel](/zurich-airport-to-basel) or the mountains. [Book a transfer](/buchung).",
-        ]},
-      ],
-    },
-  },
 
   {
     slug: "taxi-oder-zug-flughafen-zuerich",
@@ -66,6 +13,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/3.jpg",
     de: {
       title: "Taxi oder Zug ab Flughafen Zürich? Der ehrliche Vergleich",
+      seo: "Taxi oder Zug ab Flughafen Zürich?",
       excerpt: "Die SBB ist exzellent – und trotzdem gibt es Situationen, in denen der private Transfer klar gewinnt. Ein fairer Blick auf Zeit, Komfort, Gepäck und Planbarkeit, ohne Verkaufsgerede.",
       body: [
         { p: [
@@ -82,7 +30,7 @@ export const basePosts: BlogPost[] = [
           "Planbarkeit: Der Preis steht vor der Abreise fest, der Fahrer steht bei der Landung bereit, und Sie erhalten eine Rechnung mit Mehrwertsteuer. Für Geschäftsreisende ist das oft der entscheidende Punkt.",
         ]},
         { h: "Und das Taxi vom Stand?", p: [
-          "Das Taxi ist für kurze, spontane Fahrten in die Stadt eine gute Option. Auf längeren Strecken kennen Sie den Preis erst am Ziel, und ein Fahrzeug mit sieben Plätzen oder Kindersitz ist am Stand nicht garantiert. Den vollständigen Vergleich finden Sie in [Taxi am Flughafen Zürich](/blog/taxi-flughafen-zuerich-finden-kosten-alternativen).",
+          "Das Taxi ist für kurze, spontane Fahrten in die Stadt eine gute Option. Auf längeren Strecken kennen Sie den Preis erst am Ziel, und ein Fahrzeug mit sieben Plätzen oder Kindersitz ist am Stand nicht garantiert. Den vollständigen Vergleich finden Sie in [Taxi am Flughafen Zürich](/blog/uber-taxi-oder-privater-transfer-flughafen-zuerich).",
         ]},
         { h: "Fazit", p: [
           "Zug für den leichten Solo-Trip in die Stadt bei Tag; Transfer für Gepäck, Gruppen, abgelegene Ziele, späte Landungen und alle, die den Preis vorher kennen wollen. Unsere Festpreise sehen Sie auf der [Preisseite](/preise) – und entscheiden dann selbst. [Jetzt buchen](/buchung).",
@@ -91,6 +39,7 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "Taxi or Train From Zurich Airport? The Honest Comparison",
+      seo: "Taxi or Train from Zurich Airport?",
       excerpt: "Swiss rail is excellent – and yet there are situations in which a private transfer clearly wins. A fair look at time, comfort, luggage and predictability, without a sales pitch.",
       body: [
         { p: [
@@ -107,7 +56,7 @@ export const basePosts: BlogPost[] = [
           "Predictability: the price is fixed before departure, the driver is ready when you land, and you receive an invoice with VAT. For business travellers this is often the deciding point.",
         ]},
         { h: "And the taxi from the rank?", p: [
-          "The taxi is a good option for short, spontaneous rides into the city. On longer routes you only know the fare at the destination, and a vehicle with seven seats or a child seat is not guaranteed at the rank. The full comparison is in [Taxi at Zurich Airport](/blog/taxi-flughafen-zuerich-finden-kosten-alternativen).",
+          "The taxi is a good option for short, spontaneous rides into the city. On longer routes you only know the fare at the destination, and a vehicle with seven seats or a child seat is not guaranteed at the rank. The full comparison is in [Taxi at Zurich Airport](/blog/uber-taxi-oder-privater-transfer-flughafen-zuerich).",
         ]},
         { h: "Conclusion", p: [
           "Train for the light solo trip into the city by day; transfer for luggage, groups, remote destinations, late landings and anyone who wants to know the price in advance. Our fixed prices are on the [prices page](/preise) – then decide for yourself. [Book now](/buchung).",
@@ -122,6 +71,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/10.jpg",
     de: {
       title: "Wintersaison in den Alpen: So klappt der Ski-Transfer ab Zürich",
+      seo: "Ski-Transfer ab Zürich: Wintersaison-Guide",
       excerpt: "Davos, St. Moritz, Grindelwald, Engelberg: Fahrzeiten im Winter, Skigepäck ohne Aufpreis, Wechselsamstage und warum frühe Buchung in der Hochsaison Gold wert ist.",
       body: [
         { p: [
@@ -146,6 +96,7 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "Winter Season in the Alps: Ski Transfers From Zurich That Work",
+      seo: "Ski Transfers from Zurich: Winter Guide",
       excerpt: "Davos, St. Moritz, Grindelwald, Engelberg: winter driving times, ski luggage at no extra charge, changeover Saturdays and why booking early in high season is worth its weight in gold.",
       body: [
         { p: [
@@ -176,6 +127,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/2.jpg",
     de: {
       title: "24 Stunden in Zürich: Das perfekte Programm zwischen zwei Flügen",
+      seo: "24 Stunden in Zürich zwischen zwei Flügen",
       excerpt: "Ein voller Tag in Zürich, richtig getaktet: Altstadt, See, Aussicht und ein Abend am Wasser – mit Fahrer, der das Gepäck hütet und Sie pünktlich zum Anschlussflug bringt.",
       body: [
         { p: [
@@ -200,6 +152,7 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "24 Hours in Zurich: The Perfect Programme Between Two Flights",
+      seo: "24 Hours in Zurich Between Two Flights",
       excerpt: "A full day in Zurich, properly paced: old town, lake, viewpoint and an evening by the water – with a driver who guards the luggage and gets you to the connecting flight on time.",
       body: [
         { p: [
@@ -230,6 +183,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/9.jpg",
     de: {
       title: "WEF Davos: Der Transfer-Guide für die anspruchsvollste Woche des Jahres",
+      seo: "WEF Davos: Transfer-Guide ab Zürich",
       excerpt: "Gesperrte Strassen, Sicherheitszonen, knappe Kapazitäten und enge Zeitfenster: So funktioniert der Transfer vom Flughafen Zürich nach Davos während des Weltwirtschaftsforums – und was Sie Monate vorher tun sollten.",
       body: [
         { p: [
@@ -254,13 +208,14 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "WEF Davos: The Transfer Guide for the Most Demanding Week of the Year",
+      seo: "WEF Davos Transfer Guide from Zurich",
       excerpt: "Closed roads, security zones, scarce capacity and tight time windows: how the transfer from Zurich Airport to Davos works during the World Economic Forum – and what to do months in advance.",
       body: [
         { p: [
           "One week in January turns Davos into the best-secured place in Europe. For delegations, companies and media, the World Economic Forum begins long before the first session – with the question of how to get there at all. This guide explains what distinguishes the transfer in WEF week from a normal journey to Davos. The event page with dates and enquiry is at [WEF Davos](/events).",
         ]},
         { h: "The route outside WEF week", p: [
-          "Normally the [Zurich Airport–Davos transfer](/zurich-airport-to-davos) via the A3 and A13 through Landquart and the Prättigau road takes around 3 hours 15 minutes; the fixed price is calculated by kilometre tariff, per vehicle. During the WEF, different rules apply to the final stage.",
+          "Normally the [Zurich Airport–Davos transfer](/zurich-airport-to-davos) via the A3 and A13 through Landquart and the Prättigau road takes around 3 hours 15 minutes; the fixed price is calculated from our per-kilometre tariff, per vehicle. During the WEF, different rules apply to the final stage.",
         ]},
         { h: "Security zones and access", p: [
           "Around the congress centre and the delegation hotels, police set up closure zones that only accredited vehicles may enter. For everyone else, journeys end at defined points on the edge of town or at hotels outside the zone. Our drivers know the current regulations and agree the drop-off point with you. If your organisation issues vehicle accreditations, tell us when booking – then we clarify whether access to the hotel is possible.",
@@ -281,19 +236,29 @@ export const basePosts: BlogPost[] = [
   {
     slug: "mit-kindern-reisen-kindersitze-schweiz",
     date: "2026-05-13",
+    updated: "2026-10-07",
     img: "/gallery/14.jpg",
     de: {
       title: "Mit Kindern unterwegs: Kindersitz-Regeln und Familien-Transfers in der Schweiz",
+      seo: "Kindersitz Schweiz: Regeln & Familientransfer",
       excerpt: "Welche Sitzpflicht in der Schweiz gilt, welcher Sitz zu welchem Alter passt, wie Sie Kinder bei der Buchung angeben – und warum Kindersitze bei uns immer kostenlos sind.",
       body: [
         { p: [
-          "Wer mit Kindern reist, hat andere Prioritäten: Sicherheit, wenig Umsteigen, kein Warten. Ein privater Transfer ab Flughafen Zürich erfüllt alle drei – wenn die Kindersitze stimmen. Dieser Beitrag erklärt die Schweizer Regeln, unsere Ausstattung und was Sie bei der Buchung angeben sollten. Für Babys und Kleinkinder im Speziellen lesen Sie auch [Mit Baby und Kleinkind ab Flughafen Zürich](/blog/mit-baby-und-kleinkind-ab-flughafen-zuerich-kindersitz-kinderwagen).",
+          "Wer mit Kindern reist, hat andere Prioritäten: Sicherheit, wenig Umsteigen, kein Warten. Ein privater Transfer ab Flughafen Zürich erfüllt alle drei – wenn die Kindersitze stimmen. Dieser Beitrag erklärt die Schweizer Regeln, unsere Ausstattung und was Sie bei der Buchung angeben sollten. Für Babys und Kleinkinder im Speziellen lesen Sie auch Mit Baby und Kleinkind ab Flughafen Zürich.",
         ]},
         { h: "Die Regel: bis 12 Jahre oder 150 cm", p: [
           "In der Schweiz müssen Kinder bis zum vollendeten 12. Lebensjahr oder bis zu einer Körpergrösse von 150 cm in einer geeigneten Kinderrückhaltevorrichtung mitfahren – in jedem Personenwagen, auch in Taxis und Transferfahrzeugen. Der Sitz muss zu Gewicht und Grösse des Kindes passen. Für Sie heisst das: Ein Sitz muss vorhanden sein. Bei uns ist er das, ohne Aufpreis.",
         ]},
         { h: "Welcher Sitz für welches Alter", p: [
           "Babyschale rückwärtsgerichtet für Säuglinge und Babys bis etwa 12 bis 15 Monate. Kindersitz mit Gurt oder Fangkörper für Kleinkinder ab etwa einem Jahr bis rund vier Jahre. Sitzerhöhung mit Rückenlehne für Kinder ab etwa vier Jahren bis 12 Jahre beziehungsweise 150 cm. Im Buchungsformular wählen Sie den Kindersitz für Kinder von 15 bis 36 kg direkt aus; für jüngere Kinder und Babyschalen geben Sie Alter und Anzahl im Notizfeld an. Eigene Sitze dürfen Sie selbstverständlich mitbringen.",
+        ]},
+        { h: "Welche Sitze wir bereitstellen", p: [
+          "Babyschalen für Säuglinge, Kindersitze für Kleinkinder und Sitzerhöhungen mit Rückenlehne für Kinder bis etwa zwölf Jahre. Im Buchungsformular können Sie einen Kindersitz für Kinder von 15 bis 36 kg (etwa 4 bis 12 Jahre) direkt auswählen; für jüngere Kinder und Babyschalen geben Sie Anzahl und Alter im Notizfeld an. Der Fahrer montiert die Sitze vor der Abholung, sodass Sie am Fahrzeug nur noch einsteigen und anschnallen müssen.",
+          "Wenn Sie Ihren eigenen Sitz mitbringen möchten – etwa weil Ihr Kind daran gewöhnt ist – ist das selbstverständlich möglich. Sagen Sie es uns kurz, damit wir keinen zweiten montieren.",
+        ]},
+        { h: "Kinderwagen, Buggy und Reisebett", p: [
+          "Ein zusammenklappbarer Buggy findet in jeder Fahrzeugklasse Platz. Ein grosser Kombi-Kinderwagen mit Wanne und Gestell braucht mehr Raum; hier empfehlen wir die Business & Family Class (V-Klasse), in der auch Reisebett, Wickeltasche und die Koffer der Eltern problemlos Platz finden. Die V-Klasse hat zudem den Vorteil, dass die Eltern dem Kind gegenübersitzen können – bei einer längeren Fahrt nach Interlaken oder Davos ist das Gold wert.",
+          "Melden Sie den Kinderwagen bei der Buchung an. Wie bei allem sperrigen Gepäck gilt: Wenn wir es wissen, ist der Laderaum vorbereitet.",
         ]},
         { h: "Welches Fahrzeug für Familien", p: [
           "Für eine Familie mit einem Kind und normalem Gepäck reicht die Business Class (E-Klasse, 2 Erwachsene plus Kind mit Sitz). Ab zwei Kindern oder mit Kinderwagen, Reisebett und mehreren Koffern ist die Business & Family Class (V-Klasse, bis 7 Personen und 7 Koffer) die entspanntere Wahl – Eltern und Kinder sitzen einander gegenüber, und alles Sperrige findet Platz. Unser [Gepäck-Guide](/blog/wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse) hilft bei der Einschätzung; alle Klassen auf der [Fahrzeugseite](/fahrzeuge).",
@@ -308,16 +273,25 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "Travelling With Children: Child-Seat Rules and Family Transfers in Switzerland",
+      seo: "Child Seats in Switzerland: Rules & Transfers",
       excerpt: "Which seat requirements apply in Switzerland, which seat suits which age, how to state children when booking – and why child seats are always free with us.",
       body: [
         { p: [
-          "Travelling with children means different priorities: safety, few changes, no waiting. A private transfer from Zurich Airport meets all three – if the child seats are right. This article explains the Swiss rules, our equipment and what to state when booking. For babies and toddlers in particular, also read [With a baby or toddler from Zurich Airport](/blog/mit-baby-und-kleinkind-ab-flughafen-zuerich-kindersitz-kinderwagen).",
+          "Travelling with children means different priorities: safety, few changes, no waiting. A private transfer from Zurich Airport meets all three – if the child seats are right. This article explains the Swiss rules, our equipment and what to state when booking. For babies and toddlers in particular, also read With a baby or toddler from Zurich Airport.",
         ]},
         { h: "The rule: up to 12 years or 150 cm", p: [
           "In Switzerland, children up to the age of 12 or up to a height of 150 cm must travel in a suitable child restraint – in every passenger car, including taxis and transfer vehicles. The seat must match the child's weight and height. For you this means: a seat must be present. With us it is, at no extra charge.",
         ]},
         { h: "Which seat for which age", p: [
           "Rear-facing baby shell for infants and babies up to around 12 to 15 months. Child seat with harness or impact shield for toddlers from about one year to around four years. High-back booster for children from about four years up to 12 years or 150 cm. In the booking form you select the child seat for children of 15 to 36 kg directly; for younger children and baby shells, state age and number in the notes field. You are of course welcome to bring your own seats.",
+        ]},
+        { h: "Which seats we provide", p: [
+          "Baby shells for infants, child seats for toddlers and high-back boosters for children up to around twelve. In the booking form you can directly select a child seat for children of 15 to 36 kg (roughly 4 to 12 years); for younger children and baby shells, state number and age in the notes field. The driver fits the seats before the pickup, so at the vehicle you only need to get in and buckle up.",
+          "If you would like to bring your own seat – for instance because your child is used to it – that is of course possible. Just let us know so we do not fit a second one.",
+        ]},
+        { h: "Pushchair, buggy and travel cot", p: [
+          "A folding buggy fits in every vehicle class. A large travel-system pram with carrycot and chassis needs more room; here we recommend the Business & Family Class (V-Class), where travel cot, changing bag and the parents' suitcases also fit without difficulty. The V-Class has the added advantage that parents can sit facing the child – on a longer drive to Interlaken or Davos this is worth its weight in gold.",
+          "Mention the pushchair when booking. As with all bulky luggage: if we know, the load space is prepared.",
         ]},
         { h: "Which vehicle for families", p: [
           "For a family with one child and normal luggage, the Business Class (E-Class, 2 adults plus child with seat) is sufficient. From two children or with a pushchair, travel cot and several suitcases, the Business & Family Class (V-Class, up to 7 people and 7 suitcases) is the more relaxed choice – parents and children sit facing each other, and everything bulky fits. Our [luggage guide](/blog/wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse) helps with the assessment; all classes on the [vehicles page](/fahrzeuge).",
@@ -338,6 +312,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/18.jpg",
     de: {
       title: "Business Travel Zürich: 5 Gewohnheiten effizienter Vielflieger",
+      seo: "Geschäftsreise Zürich: 5 Tipps",
       excerpt: "Vom Sitzplatz bis zur Spesenabrechnung: kleine Routinen, die Geschäftsreisen über den Flughafen Zürich messbar entspannter machen – und wie der Transfer in diese Routinen passt.",
       body: [
         { p: [
@@ -365,6 +340,7 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "Business Travel Zurich: 5 Habits of Efficient Frequent Flyers",
+      seo: "Business Travel Zurich: 5 Frequent-Flyer Tips",
       excerpt: "From seat selection to expense reports: small routines that make business trips via Zurich Airport measurably more relaxed – and how the transfer fits into those routines.",
       body: [
         { p: [
@@ -398,13 +374,14 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/8.jpg",
     de: {
       title: "Jungfrau-Region für Einsteiger: Interlaken, Grindelwald, Wengen & Lauterbrunnen",
+      seo: "Jungfrau-Region: Interlaken, Grindelwald & Co.",
       excerpt: "Vier Orte, ein Bergpanorama: Was die Dörfer der Jungfrau-Region unterscheidet, welcher zu welchem Reisenden passt und wie Sie ab Flughafen Zürich am besten anreisen – mit Fahrzeiten und Festpreisen.",
       body: [
         { p: [
           "Eiger, Mönch und Jungfrau bilden die berühmteste Bergkulisse der Schweiz – und zu ihren Füssen liegen vier Orte, die sich deutlich unterscheiden. Wer zum ersten Mal in die Jungfrau-Region reist, steht vor der Frage: Interlaken, Grindelwald, Wengen oder Lauterbrunnen? Dieser Guide hilft bei der Wahl und erklärt die Anreise ab Flughafen Zürich.",
         ]},
         { h: "Interlaken: die Drehscheibe zwischen zwei Seen", p: [
-          "Interlaken liegt zwischen Thuner- und Brienzersee und ist der Verkehrsknoten der Region: Hotels aller Kategorien, Ausflugsschiffe, Paragliding über der Höhematte und der Startpunkt der Bahnen ins Tal. Ideal für Reisende, die flexibel bleiben und jeden Tag ein anderes Ziel ansteuern wollen. Der [Transfer Flughafen Zürich–Interlaken](/zurich-airport-to-interlaken) dauert rund 2 Stunden 30 Minuten über Bern und den Thunersee; Festpreis nach Kilometertarif pro Fahrzeug.",
+          "Interlaken liegt zwischen Thuner- und Brienzersee und ist der Verkehrsknoten der Region: Hotels aller Kategorien, Ausflugsschiffe, Paragliding über der Höhematte und der Startpunkt der Bahnen ins Tal. Ideal für Reisende, die flexibel bleiben und jeden Tag ein anderes Ziel ansteuern wollen. Der [Transfer Flughafen Zürich–Interlaken](/zurich-airport-to-interlaken) dauert rund 2 Stunden 30 Minuten über Bern und den Thunersee; Festpreis pro Fahrzeug.",
         ]},
         { h: "Grindelwald: das Eigerdorf", p: [
           "Grindelwald liegt direkt unter der Eiger-Nordwand und ist mit dem Eiger Express, der First-Bahn und dem Zugang zum Jungfraujoch der aktivste Ort der Region – im Winter Skigebiet, im Sommer Wanderbasis. Für Familien und Sportler die erste Wahl. Der [Transfer nach Grindelwald](/zurich-airport-to-grindelwald) dauert rund 2 Stunden 50 Minuten; Festpreis nach Kilometertarif. Das Dorf ist mit dem Auto erreichbar, der Fahrer bringt Sie bis zum Hotel.",
@@ -422,16 +399,17 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "Jungfrau Region for Beginners: Interlaken, Grindelwald, Wengen & Lauterbrunnen",
+      seo: "Jungfrau Region: Which Village to Choose",
       excerpt: "Four villages, one mountain panorama: what distinguishes the villages of the Jungfrau region, which suits which traveller and how best to get there from Zurich Airport – with driving times and fixed prices.",
       body: [
         { p: [
           "Eiger, Mönch and Jungfrau form Switzerland's most famous mountain backdrop – and at their feet lie four villages that differ markedly. Anyone travelling to the Jungfrau region for the first time faces the question: Interlaken, Grindelwald, Wengen or Lauterbrunnen? This guide helps with the choice and explains the journey from Zurich Airport.",
         ]},
         { h: "Interlaken: the hub between two lakes", p: [
-          "Interlaken lies between Lake Thun and Lake Brienz and is the region's transport hub: hotels of all categories, excursion boats, paragliding over the Höhematte and the starting point of the railways into the valley. Ideal for travellers who want to stay flexible and head for a different destination every day. The [Zurich Airport–Interlaken transfer](/zurich-airport-to-interlaken) takes around 2 hours 30 minutes via Bern and Lake Thun; fixed price by kilometre tariff per vehicle.",
+          "Interlaken lies between Lake Thun and Lake Brienz and is the region's transport hub: hotels of all categories, excursion boats, paragliding over the Höhematte and the starting point of the railways into the valley. Ideal for travellers who want to stay flexible and head for a different destination every day. The [Zurich Airport–Interlaken transfer](/zurich-airport-to-interlaken) takes around 2 hours 30 minutes via Bern and Lake Thun; fixed price per vehicle.",
         ]},
         { h: "Grindelwald: the Eiger village", p: [
-          "Grindelwald lies directly beneath the Eiger north face and, with the Eiger Express, the First gondola and access to the Jungfraujoch, is the most active place in the region – a ski resort in winter, a hiking base in summer. First choice for families and sports enthusiasts. The [transfer to Grindelwald](/zurich-airport-to-grindelwald) takes around 2 hours 50 minutes; fixed price by kilometre tariff. The village is accessible by car; the driver takes you to the hotel.",
+          "Grindelwald lies directly beneath the Eiger north face and, with the Eiger Express, the First gondola and access to the Jungfraujoch, is the most active place in the region – a ski resort in winter, a hiking base in summer. First choice for families and sports enthusiasts. The [transfer to Grindelwald](/zurich-airport-to-grindelwald) takes around 2 hours 50 minutes; fixed price per vehicle. The village is accessible by car; the driver takes you to the hotel.",
         ]},
         { h: "Wengen: car-free on the sun terrace", p: [
           "Wengen sits on a terrace above the Lauterbrunnen valley and is car-free – the transfer ends at the valley station in Lauterbrunnen, from where the cog railway climbs in a few minutes. Quiet, traditional, with a view of the Jungfrau; perfect for anyone seeking rest. [Transfer to Wengen](/zurich-airport-to-wengen) to Lauterbrunnen: around 2 hours 40 minutes. The principle is the same as in Zermatt, see [Why the transfer ends in Täsch](/blog/zermatt-transfer-flughafen-zuerich-taesch-autofrei).",
@@ -452,6 +430,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/17.jpg",
     de: {
       title: "Festpreis statt Taxameter: So kalkulieren faire Flughafentransfers",
+      seo: "Festpreis statt Taxameter erklärt",
       excerpt: "Warum unser Preis vor der Fahrt feststeht, was alles inbegriffen ist, wie sich die drei Fahrzeugklassen unterscheiden – und welche versteckten Kosten Sie bei uns nie sehen werden.",
       body: [
         { p: [
@@ -470,12 +449,13 @@ export const basePosts: BlogPost[] = [
           "Business Class (Mercedes-Benz E-Klasse): bis 2 Personen, 2 Koffer – der Standard für Geschäftsreisende und Paare. Business & Family Class (V-Klasse): bis 7 Personen, 7 Koffer – für Familien und Gruppen, siehe [5 bis 7 Personen ab Flughafen Zürich](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug). Premium Class (S-Klasse): bis 3 Personen, 3 Koffer – wenn die Fahrt Teil des Aufenthalts ist. Der Buchungsprozess zeigt den Preis jeder Klasse für Ihre Strecke, bevor Sie sich entscheiden. Details auf der [Fahrzeugseite](/fahrzeuge).",
         ]},
         { h: "Festpreis versus Taxameter versus App", p: [
-          "Beim Taxi kennen Sie den Preis am Ziel; nachts und bei Stau ist er höher. Bei App-Diensten schwankt der Preis mit der Nachfrage – nach einer grossen Landung ist er selten günstig. Beim Festpreis wissen Sie ihn vor dem Abflug, und er bleibt. Den Vergleich mit dem Taxistand am Flughafen führt [Taxi am Flughafen Zürich](/blog/taxi-flughafen-zuerich-finden-kosten-alternativen) im Detail. [Zum Festpreis buchen](/buchung).",
+          "Beim Taxi kennen Sie den Preis am Ziel; nachts und bei Stau ist er höher. Bei App-Diensten schwankt der Preis mit der Nachfrage – nach einer grossen Landung ist er selten günstig. Beim Festpreis wissen Sie ihn vor dem Abflug, und er bleibt. Den Vergleich mit dem Taxistand am Flughafen führt [Taxi am Flughafen Zürich](/blog/uber-taxi-oder-privater-transfer-flughafen-zuerich) im Detail. [Zum Festpreis buchen](/buchung).",
         ]},
       ],
     },
     en: {
       title: "Fixed Price Instead of Meter: How Fair Airport Transfers Are Calculated",
+      seo: "Fixed-Price Airport Transfers Explained",
       excerpt: "Why our price is fixed before the journey, what is included, how the three vehicle classes differ – and which hidden costs you will never see with us.",
       body: [
         { p: [
@@ -494,7 +474,7 @@ export const basePosts: BlogPost[] = [
           "Business Class (Mercedes-Benz E-Class): up to 2 people, 2 suitcases – the standard for business travellers and couples. Business & Family Class (V-Class): up to 7 people, 7 suitcases – for families and groups, see [5 to 7 people from Zurich Airport](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug). Premium Class (S-Class): up to 3 people, 3 suitcases – when the journey is part of the stay. The booking process shows the price of each class for your route before you decide. Details on the [vehicles page](/fahrzeuge).",
         ]},
         { h: "Fixed price versus meter versus app", p: [
-          "With a taxi you know the fare at the destination; at night and in traffic it is higher. With app services the price fluctuates with demand – after a big landing it is rarely cheap. With a fixed price you know it before departure, and it stays. The comparison with the airport taxi rank is made in detail in [Taxi at Zurich Airport](/blog/taxi-flughafen-zuerich-finden-kosten-alternativen). [Book at a fixed price](/buchung).",
+          "With a taxi you know the fare at the destination; at night and in traffic it is higher. With app services the price fluctuates with demand – after a big landing it is rarely cheap. With a fixed price you know it before departure, and it stays. The comparison with the airport taxi rank is made in detail in [Taxi at Zurich Airport](/blog/uber-taxi-oder-privater-transfer-flughafen-zuerich). [Book at a fixed price](/buchung).",
         ]},
       ],
     },
@@ -506,6 +486,7 @@ export const basePosts: BlogPost[] = [
     img: "/gallery/17.jpg",
     de: {
       title: "Tagesausflug Luzern: Kapellbrücke, See und Pilatus an einem Tag",
+      seo: "Tagesausflug Luzern ab Zürich",
       excerpt: "Der Klassiker unter den Schweiz-Ausflügen, perfekt getaktet: unser bewährter Ablauf für einen Tag Luzern mit privatem Chauffeur – ab Flughafen oder ab Zürich, mit Rückfahrt am Abend.",
       body: [
         { p: [
@@ -530,13 +511,14 @@ export const basePosts: BlogPost[] = [
     },
     en: {
       title: "Lucerne Day Trip: Chapel Bridge, Lake and Pilatus in One Day",
+      seo: "Lucerne Day Trip from Zurich",
       excerpt: "The classic among Swiss excursions, perfectly paced: our proven schedule for a day in Lucerne with a private chauffeur – from the airport or from Zurich, with return in the evening.",
       body: [
         { p: [
           "Lucerne is the excursion almost every visitor to Switzerland makes – and rightly so: medieval bridges, a lake with mountains on all sides and two summits reachable directly from the city. With a private chauffeur, the classic becomes a relaxed day without timetables. Here is our proven schedule.",
         ]},
         { h: "Getting there: 75 minutes from the airport", p: [
-          "The [Zurich Airport–Lucerne transfer](/zurich-airport-to-luzern) takes around 76 minutes via the A4 and A14; fixed price by kilometre tariff, per vehicle. From Zurich city centre it is about an hour. For the day trip with return we recommend the hourly booking: vehicle and chauffeur stay with you all day, the luggage in the boot. What else Lucerne offers as a base is in [Zurich Airport–Lucerne in detail](/blog/flughafen-zuerich-luzern-transfer-preis-dauer).",
+          "The [Zurich Airport–Lucerne transfer](/zurich-airport-to-luzern) takes around 76 minutes via the A4 and A14; fixed price per vehicle, based on our per-kilometre tariff. From Zurich city centre it is about an hour. For the day trip with return we recommend the hourly booking: vehicle and chauffeur stay with you all day, the luggage in the boot. What else Lucerne offers as a base is in [Zurich Airport–Lucerne in detail](/blog/flughafen-zuerich-luzern-transfer-preis-dauer).",
         ]},
         { h: "Morning: old town and Chapel Bridge", p: [
           "Start at the Chapel Bridge, the 14th-century landmark with its water tower. Across the bridge into the old town with its painted façades on Weinmarkt and Hirschenplatz, on to the Musegg Wall, whose towers you can climb – the best view of city and lake. To finish, the Lion Monument, \"the saddest stone in the world\", as Mark Twain wrote.",
@@ -554,51 +536,4 @@ export const basePosts: BlogPost[] = [
     },
   },
 
-  {
-    slug: "gepaeck-tipps-flughafentransfer",
-    date: "2026-02-05",
-    img: "/gallery/6.jpg",
-    de: {
-      title: "Wie viel Gepäck passt ins Fahrzeug? Der ehrliche Kapazitäts-Guide",
-      excerpt: "E-Klasse, V-Klasse oder S-Klasse: welche Koffermengen realistisch passen, wie Sie Handgepäck, Sondergepäck und Kinderwagen einrechnen – und wann Sie besser eine Klasse grösser buchen.",
-      body: [
-        { p: [
-          "Die Frage nach dem Gepäck entscheidet, ob ein Transfer entspannt oder eng wird. Auf dem Papier passt vieles; am Gepäckband zählt die Realität. Dieser Guide gibt eine ehrliche Orientierung – ergänzt durch den ausführlichen Vergleich in [Wie viele Koffer passen wirklich?](/blog/wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse), der die Sonderfälle im Detail behandelt.",
-        ]},
-        { h: "Die Kapazitäten auf einen Blick", p: [
-          "Business Class, Mercedes-Benz E-Klasse: 2 Personen, 2 grosse Koffer plus Handgepäck. Business & Family Class, Mercedes-Benz V-Klasse: 7 Personen, 7 grosse Koffer plus Handgepäck. Premium Class, Mercedes-Benz S-Klasse: 3 Personen, 3 grosse Koffer plus Handgepäck. Alle Details auf der [Fahrzeugseite](/fahrzeuge). «Grosser Koffer» meint das aufgegebene Gepäckstück; Trolleys, Laptoptaschen und Rucksäcke finden zusätzlich im Fussraum oder auf der Rückbank Platz.",
-        ]},
-        { h: "Die drei häufigsten Fehleinschätzungen", p: [
-          "Erstens: «Wir sind nur zu zweit» – aber mit je zwei grossen Koffern nach einem Monat Reise. Das ist V-Klasse-Gepäck, auch für zwei Personen. Zweitens: «Der Kinderwagen ist klein» – der zusammenklappbare Buggy ja, der Kombi-Kinderwagen mit Wanne nein. Drittens: «Skitaschen zählen doch nicht» – sie zählen nicht zum Preis (bis zu vier sind kostenlos), aber zum Platz. Zwei Personen mit Ski und je einem Koffer passen in die E-Klasse; vier Personen mit Ski gehören in die V-Klasse. Mehr dazu in [Ski-Transfer ab Zürich](/blog/wintersaison-ski-transfers-schweiz).",
-        ]},
-        { h: "Sondergepäck anmelden", p: [
-          "Golfbags, Fahrräder, Musikinstrumente in Flightcases, Messematerial: Oft geht mehr, als man denkt, aber wir wollen es vorher wissen. Schreiben Sie Sondergepäck ins Notizfeld der Buchung oder per WhatsApp – der Fahrer bereitet den Laderaum vor, und Sie haben am Flughafen keine Überraschung.",
-        ]},
-        { h: "Faustregel für die Buchung", p: [
-          "Zählen Sie die aufgegebenen Gepäckstücke, nicht die Personen. Ist die Zahl der Koffer grösser als die Personenzahl, prüfen Sie die nächste Klasse. Reisen Sie zu dritt oder mehr mit je einem grossen Koffer, wählen Sie die V-Klasse. Und wenn Sie unsicher sind: eine Nachricht mit Personen und Gepäck genügt, wir antworten ehrlich – auch wenn die Antwort «die kleinere Klasse reicht» lautet. Für Gruppen ab fünf Personen zeigt [5 bis 7 Personen ab Flughafen Zürich](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug), warum ein Van fast immer die bessere Rechnung ist. [Jetzt buchen](/buchung).",
-        ]},
-      ],
-    },
-    en: {
-      title: "How Much Luggage Fits in the Vehicle? The Honest Capacity Guide",
-      excerpt: "E-Class, V-Class or S-Class: which quantities of luggage realistically fit, how to account for hand luggage, special luggage and pushchairs – and when to book one class larger.",
-      body: [
-        { p: [
-          "The luggage question decides whether a transfer is relaxed or cramped. On paper a lot fits; at the baggage belt reality counts. This guide gives honest orientation – complemented by the detailed comparison in [How many suitcases really fit?](/blog/wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse), which covers the special cases in depth.",
-        ]},
-        { h: "Capacities at a glance", p: [
-          "Business Class, Mercedes-Benz E-Class: 2 people, 2 large suitcases plus hand luggage. Business & Family Class, Mercedes-Benz V-Class: 7 people, 7 large suitcases plus hand luggage. Premium Class, Mercedes-Benz S-Class: 3 people, 3 large suitcases plus hand luggage. All details on the [vehicles page](/fahrzeuge). \"Large suitcase\" means the checked piece; trolleys, laptop bags and backpacks find additional space in the footwell or on the rear seat.",
-        ]},
-        { h: "The three most common misjudgements", p: [
-          "First: \"There are only two of us\" – but with two large suitcases each after a month of travel. That is V-Class luggage, even for two people. Second: \"The pushchair is small\" – the folding buggy yes, the travel-system pram with carrycot no. Third: \"Ski bags don't count\" – they do not count towards the price (up to four are free), but towards space. Two people with skis and one suitcase each fit in the E-Class; four people with skis belong in the V-Class. More in [Ski transfer from Zurich](/blog/wintersaison-ski-transfers-schweiz).",
-        ]},
-        { h: "Declaring special luggage", p: [
-          "Golf bags, bicycles, musical instruments in flight cases, trade-fair material: often more is possible than you think, but we want to know beforehand. Write special luggage in the notes field of the booking or via WhatsApp – the driver prepares the load space, and you have no surprise at the airport.",
-        ]},
-        { h: "Rule of thumb for booking", p: [
-          "Count the checked pieces, not the people. If the number of suitcases exceeds the number of people, check the next class. If three or more of you travel with one large suitcase each, choose the V-Class. And if you are unsure: a message with people and luggage is enough, we answer honestly – even if the answer is \"the smaller class is enough\". For groups of five or more, [5 to 7 people from Zurich Airport](/blog/gruppen-5-7-personen-flughafen-zuerich-ein-fahrzeug) shows why a van is almost always the better deal. [Book now](/buchung).",
-        ]},
-      ],
-    },
-  },
 ];

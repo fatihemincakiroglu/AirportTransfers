@@ -14,6 +14,7 @@ export const airportPosts: BlogPost[] = [
     img: "/gallery/12.jpg",
     de: {
       title: "Nachtankunft am Flughafen Zürich: So kommen Sie nach 23 Uhr sicher in die Stadt – und weiter",
+      seo: "Nachtankunft Flughafen Zürich: nach 23 Uhr",
       excerpt: "Späte Landung, leerer Bahnhof, lange Taxischlange? Was nachts am Flughafen Zürich wirklich fährt, warum eine Vorabbuchung nach 23 Uhr entscheidend ist und wie Sie Ihren Transfer richtig planen.",
       body: [
         { p: [
@@ -39,6 +40,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "Late-Night Arrival at Zurich Airport: Getting Into the City (and Beyond) After 11 pm",
+      seo: "Late Arrival at Zurich Airport After 11 pm",
       excerpt: "Late landing, empty station, long taxi queue? What actually runs at night at Zurich Airport, why pre-booking after 11 pm is decisive and how to plan your transfer properly.",
       body: [
         { p: [
@@ -68,9 +70,11 @@ export const airportPosts: BlogPost[] = [
   {
     slug: "ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich",
     date: "2026-09-03",
+    updated: "2026-10-07",
     img: "/gallery/1.jpg",
     de: {
       title: "Ankunft 1 oder Ankunft 2? Wo Sie Ihren Chauffeur am Flughafen Zürich treffen",
+      seo: "Ankunft 1 oder 2: Fahrer am Flughafen Zürich",
       excerpt: "Zwei Ankunftsbereiche, ein Flughafen: Welche Airlines wo landen, wie der Treffpunkt mit Ihrem Fahrer funktioniert und was Sie tun, wenn Sie sich einmal nicht sofort finden.",
       body: [
         { p: [
@@ -83,6 +87,12 @@ export const airportPosts: BlogPost[] = [
           "Nach der Gepäckausgabe folgen Sie den Schildern zum Ausgang in die öffentliche Ankunftshalle. Dort – nicht draussen am Strassenrand und nicht im Parkhaus – steht Ihr Chauffeur mit einem Namensschild. Auf dem Schild steht der Name, den Sie bei der Buchung angegeben haben; auf Wunsch auch ein Firmenname, etwa wenn Sie Gäste empfangen lassen. Der Fahrer hilft mit dem Gepäck und begleitet Sie zum Fahrzeug im Parkhaus, das direkt an das Terminal angeschlossen ist.",
           "Meet & Greet ist bei uns kein Zusatz, sondern Standard und im Festpreis enthalten. Ebenso enthalten sind 60 Minuten Wartezeit nach der Landung – Zeit genug für Passkontrolle, Gepäck und einen Kaffee.",
         ]},
+        { h: "Schritt 3: Wartezeit – 60 Minuten inklusive", p: [
+          "Nach der tatsächlichen Landung sind 60 Minuten Wartezeit im Festpreis enthalten. Das reicht für Passkontrolle, Gepäck und einen Kaffee, auch wenn das Gepäckband einmal länger braucht. Dauert es aussergewöhnlich lange – etwa weil ein Koffer nicht angekommen ist –, genügt eine kurze WhatsApp-Nachricht. Der Fahrer bleibt.",
+        ]},
+        { h: "Verspätung? Wir wissen es vor Ihnen", p: [
+          "Wir verfolgen Ihren Flug ab dem Abflug. Verspätet er sich, verschiebt sich die Abholung automatisch mit; Sie müssen niemanden anrufen. Auch bei Umleitungen finden wir eine Lösung. Was genau bei Verspätung, Umleitung und Annullierung passiert, steht in [Flug verspätet oder annulliert?](/blog/flug-verspaetet-oder-annulliert-was-passiert-mit-dem-transfer).",
+        ]},
         { h: "Was, wenn Sie sich nicht sofort finden?", p: [
           "Es passiert selten, aber es passiert: Ihr Flug wird auf den anderen Ankunftsbereich umgeleitet, Sie verlassen die Halle durch einen Nebenausgang, oder die Halle ist bei mehreren Landungen einfach voll. In diesem Fall bleiben Sie bitte am Ausgang stehen und schreiben Sie uns eine WhatsApp-Nachricht mit Ihrem Namen. Fahrer und Zentrale sind rund um die Uhr erreichbar und lotsen Sie in wenigen Sätzen zum richtigen Punkt. Laufen Sie nicht nach draussen zum Taxistand – dort sucht Sie niemand.",
         ]},
@@ -94,6 +104,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "Arrival 1 or Arrival 2? Where to Meet Your Chauffeur at Zurich Airport",
+      seo: "Arrival 1 or 2? Meeting Your Driver at ZRH",
       excerpt: "Two arrivals areas, one airport: which airlines land where, how the meeting point with your driver works and what to do if you do not spot each other right away.",
       body: [
         { p: [
@@ -105,6 +116,12 @@ export const airportPosts: BlogPost[] = [
         { h: "The meeting point: meet & greet in the arrivals hall", p: [
           "After baggage claim, follow the signs to the exit into the public arrivals hall. There – not outside at the kerb and not in the car park – your chauffeur stands with a name sign. The sign shows the name you entered when booking; on request also a company name, for instance when you have guests collected. The driver helps with the luggage and walks you to the vehicle in the car park directly connected to the terminal.",
           "Meet & greet is not an add-on with us but standard and included in the fixed price. Also included are 60 minutes of waiting time after landing – enough for passport control, luggage and a coffee.",
+        ]},
+        { h: "Step 3: waiting time – 60 minutes included", p: [
+          "After the actual landing, 60 minutes of waiting time are included in the fixed price. That covers passport control, luggage and a coffee, even if the baggage belt takes longer for once. If it takes unusually long – for instance because a suitcase did not arrive – a short WhatsApp message is enough. The driver stays.",
+        ]},
+        { h: "Delayed? We know before you do", p: [
+          "We track your flight from departure. If it is delayed, the pickup shifts automatically; you do not need to call anyone. We find a solution for diversions too. Exactly what happens in case of delay, diversion and cancellation is in [Flight delayed or cancelled?](/blog/flug-verspaetet-oder-annulliert-was-passiert-mit-dem-transfer).",
         ]},
         { h: "What if you do not find each other immediately?", p: [
           "It rarely happens, but it does: your flight is rerouted to the other arrivals area, you leave the hall through a side exit, or the hall is simply crowded when several flights land at once. In that case, please stay at the exit and send us a WhatsApp message with your name. Driver and dispatch are reachable around the clock and guide you to the right spot in a few sentences. Do not walk outside to the taxi rank – nobody is looking for you there.",
@@ -124,6 +141,7 @@ export const airportPosts: BlogPost[] = [
     img: "/gallery/5.jpg",
     de: {
       title: "Flug verspätet oder annulliert – was passiert mit meinem Transfer?",
+      seo: "Flug verspätet? So läuft Ihr Transfer",
       excerpt: "Flugverfolgung, kostenlose Wartezeit, Umbuchung und Rückerstattung: So gehen wir mit Verspätungen, Umleitungen und Annullierungen um – und was Sie selbst tun sollten.",
       body: [
         { p: [
@@ -148,6 +166,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "Flight Delayed or Cancelled – What Happens to My Transfer?",
+      seo: "Flight Delayed or Cancelled? Your Transfer",
       excerpt: "Flight tracking, free waiting time, rebooking and refunds: how we handle delays, diversions and cancellations – and what you should do yourself.",
       body: [
         { p: [
@@ -179,6 +198,7 @@ export const airportPosts: BlogPost[] = [
     img: "/gallery/14.jpg",
     de: {
       title: "5 bis 7 Personen ab Flughafen Zürich: Warum ein Van günstiger und entspannter ist als zwei Taxis",
+      seo: "Gruppe ab Flughafen Zürich: Van statt 2 Taxis",
       excerpt: "Familienurlaub, Freundesgruppe oder Team-Reise: So rechnen Sie Gepäck und Sitzplätze richtig, was die Business & Family Class bietet und weshalb sich ein Fahrzeug fast immer lohnt.",
       body: [
         { p: [
@@ -203,6 +223,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "5 to 7 People from Zurich Airport: Why One Van Beats Two Taxis on Cost and Comfort",
+      seo: "Group of 5–7 from Zurich Airport: One Van",
       excerpt: "Family holiday, group of friends or team trip: how to count luggage and seats realistically, what the Business & Family Class offers and why one vehicle almost always pays off.",
       body: [
         { p: [
@@ -213,7 +234,7 @@ export const airportPosts: BlogPost[] = [
           "The rule of thumb: seven people with one large suitcase each fits. Seven people with two large suitcases each is more honestly served by a second vehicle – tell us and we plan for it.",
         ]},
         { h: "One vehicle instead of two taxis: the maths", p: [
-          "A taxi from the rank usually takes four passengers; for a group of six that means two vehicles, two meters, two separate fare negotiations for the long-distance leg – and two arrival times, because the cars separate in traffic. With us the fixed price applies per vehicle, not per person. On the Zurich Airport–Lucerne route, for example, the Business Class price is calculated by kilometre tariff, per vehicle; the Business & Family Class is visibly above that when booking, but transports the whole group and all luggage in one car. Spread across six people, that is markedly less than two individual journeys would cost.",
+          "A taxi from the rank usually takes four passengers; for a group of six that means two vehicles, two meters, two separate fare negotiations for the long-distance leg – and two arrival times, because the cars separate in traffic. With us the fixed price applies per vehicle, not per person. On the Zurich Airport–Lucerne route, for example, the Business Class price is calculated from our per-kilometre tariff, per vehicle; the Business & Family Class is visibly above that when booking, but transports the whole group and all luggage in one car. Spread across six people, that is markedly less than two individual journeys would cost.",
           "Price is only part of the argument. The group arrives together, nobody waits in the rain for the second car, the children sit with their parents, and the discussion about who travels with whom simply disappears.",
         ]},
         { h: "Families: child seats included", p: [
@@ -231,9 +252,11 @@ export const airportPosts: BlogPost[] = [
   {
     slug: "wie-viele-koffer-passen-e-klasse-v-klasse-s-klasse",
     date: "2026-08-13",
+    updated: "2026-10-07",
     img: "/gallery/6.jpg",
     de: {
       title: "Wie viele Koffer passen wirklich? Gepäckkapazität von E-Klasse, V-Klasse und S-Klasse im Detail",
+      seo: "Gepäck im Transfer: Wie viele Koffer passen?",
       excerpt: "Reisekoffer, Handgepäck, Skitaschen, Golfbags, Kinderwagen: Was in welches Fahrzeug passt, wie wir zählen und wann Sie besser eine Klasse grösser buchen.",
       body: [
         { p: [
@@ -251,6 +274,9 @@ export const airportPosts: BlogPost[] = [
           "Skitaschen befördern wir kostenlos, bis zu vier pro Fahrzeug. In der E-Klasse geht das über die Durchlade, in der V-Klasse problemlos im Laderaum. Golfbags sind sperriger als Skitaschen; ein bis zwei passen in die E-Klasse, für mehr empfehlen wir die V-Klasse. Ein zusammenklappbarer Kinderwagen oder Buggy findet in jeder Klasse Platz, ein grosser Kombi-Kinderwagen gehört in die V-Klasse. Fahrräder, Musikinstrumente in Grosskoffern oder Ausstellungsmaterial sollten Sie uns bitte vorab schreiben – oft geht mehr, als man denkt, aber wir wollen es vorher wissen.",
           "Melden Sie Sondergepäck am besten im Notizfeld der Buchung an. Der Fahrer bereitet den Laderaum vor und weiss, was ihn erwartet.",
         ]},
+        { h: "Die drei häufigsten Fehleinschätzungen", p: [
+          "Erstens: «Wir sind nur zu zweit» – aber mit je zwei grossen Koffern nach einem Monat Reise. Das ist V-Klasse-Gepäck, auch für zwei Personen. Zweitens: «Der Kinderwagen ist klein» – der zusammenklappbare Buggy ja, der Kombi-Kinderwagen mit Wanne nein. Drittens: «Skitaschen zählen doch nicht» – sie zählen nicht zum Preis (bis zu vier sind kostenlos), aber zum Platz. Zwei Personen mit Ski und je einem Koffer passen in die E-Klasse; vier Personen mit Ski gehören in die V-Klasse. Mehr dazu in [Ski-Transfer ab Zürich](/blog/wintersaison-ski-transfers-schweiz).",
+        ]},
         { h: "Wann Sie eine Klasse grösser buchen sollten", p: [
           "Buchen Sie die V-Klasse, wenn Sie zu dritt oder viert mit je einem grossen Koffer reisen, wenn Skiausrüstung für mehr als zwei Personen dabei ist, wenn ein Kinderwagen plus Koffer plus Kindersitze zusammenkommen, oder wenn Sie nach einem Langstreckenflug schlicht nicht mehr über Gepäck nachdenken wollen. Der Aufpreis gegenüber der E-Klasse ist im Buchungsprozess transparent ersichtlich; dafür haben alle Platz, und niemand sitzt zwischen Koffern.",
           "Und wenn Sie unsicher sind: Schreiben Sie uns kurz Personen und Gepäck per WhatsApp. Wir sagen Ihnen ehrlich, was passt – auch wenn die Antwort «die kleinere Klasse reicht» lautet.",
@@ -259,6 +285,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "How Many Suitcases Really Fit? Luggage Capacity of E-Class, V-Class and S-Class in Detail",
+      seo: "How Many Suitcases Fit? Luggage Guide",
       excerpt: "Suitcases, carry-ons, ski bags, golf bags, pushchairs: what fits in which vehicle, how we count and when you should book one class larger.",
       body: [
         { p: [
@@ -276,6 +303,9 @@ export const airportPosts: BlogPost[] = [
           "We carry ski bags free of charge, up to four per vehicle. In the E-Class this works via the ski hatch, in the V-Class easily in the load space. Golf bags are bulkier than ski bags; one or two fit in the E-Class, for more we recommend the V-Class. A folding pushchair or buggy fits in every class; a large travel-system pram belongs in the V-Class. Bicycles, musical instruments in flight cases or exhibition material – please write to us in advance. Often more is possible than you think, but we want to know beforehand.",
           "The best place to mention special luggage is the notes field of the booking. The driver prepares the load space and knows what to expect.",
         ]},
+        { h: "The three most common misjudgements", p: [
+          "First: \"There are only two of us\" – but with two large suitcases each after a month of travel. That is V-Class luggage, even for two people. Second: \"The pushchair is small\" – the folding buggy yes, the travel-system pram with carrycot no. Third: \"Ski bags don't count\" – they do not count towards the price (up to four are free), but towards space. Two people with skis and one suitcase each fit in the E-Class; four people with skis belong in the V-Class. More in [Ski transfer from Zurich](/blog/wintersaison-ski-transfers-schweiz).",
+        ]},
         { h: "When to book one class larger", p: [
           "Book the V-Class if three or four of you travel with one large suitcase each, if ski equipment for more than two people is on board, if a pushchair plus suitcases plus child seats come together, or if after a long-haul flight you simply do not want to think about luggage any more. The difference to the E-Class is shown transparently in the booking process; in return everyone has space and nobody sits between suitcases.",
           "And if you are unsure: send us people and luggage in a short WhatsApp message. We tell you honestly what fits – even if the answer is \"the smaller class is enough\".",
@@ -291,6 +321,7 @@ export const airportPosts: BlogPost[] = [
     img: "/gallery/5.jpg",
     de: {
       title: "Vom Flughafen Zürich nach Deutschland oder Österreich: Grenzübertritt, Dokumente und was Sie wissen sollten",
+      seo: "Flughafen Zürich nach Deutschland & Österreich",
       excerpt: "Konstanz, Freiburg, Bregenz, Friedrichshafen oder Stuttgart: So funktioniert der Transfer über die Grenze, welche Dokumente Sie brauchen und warum Zürich oft der bessere Flughafen ist.",
       body: [
         { p: [
@@ -316,6 +347,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "From Zurich Airport to Germany or Austria: Border Crossing, Documents and What You Should Know",
+      seo: "Zurich Airport to Germany & Austria",
       excerpt: "Konstanz, Freiburg, Bregenz, Friedrichshafen or Stuttgart: how the cross-border transfer works, which documents you need and why Zurich is often the better airport.",
       body: [
         { p: [
@@ -342,59 +374,6 @@ export const airportPosts: BlogPost[] = [
   },
 
   // 7 ─────────────────────────────────────────────────────────
-  {
-    slug: "mit-baby-und-kleinkind-ab-flughafen-zuerich-kindersitz-kinderwagen",
-    date: "2026-07-30",
-    img: "/gallery/11.jpg",
-    de: {
-      title: "Mit Baby und Kleinkind ab Flughafen Zürich: Kindersitze, Kinderwagen und ein entspannter Start",
-      excerpt: "Welche Sitze für welches Alter, wie Sie Kinder bei der Buchung angeben, was mit dem Kinderwagen passiert und warum der private Transfer für junge Familien die ruhigste Option ist.",
-      body: [
-        { p: [
-          "Mit einem Baby oder Kleinkind zu fliegen ist anstrengend genug – die Weiterreise ab Flughafen sollte es nicht auch noch sein. Zug mit Umsteigen und Kinderwagen im Treppenhaus, Taxi ohne passenden Sitz, Mietwagen mit Sitzmontage im Parkhaus: Es gibt gute Gründe, warum junge Familien den privaten Transfer wählen. Hier erfahren Sie, wie wir Kinder befördern und was Sie bei der Buchung beachten sollten.",
-        ]},
-        { h: "Kindersitzpflicht in der Schweiz – kurz erklärt", p: [
-          "In der Schweiz müssen Kinder bis zum vollendeten 12. Lebensjahr oder bis zu einer Körpergrösse von 150 cm in einer geeigneten Kinderrückhaltevorrichtung mitfahren. Das gilt in jedem Personenwagen, auch in Taxis und Transferfahrzeugen. Für Sie heisst das: Ein Sitz muss vorhanden sein, und er muss zum Alter und Gewicht des Kindes passen. Genau das übernehmen wir – kostenlos.",
-        ]},
-        { h: "Welche Sitze wir bereitstellen", p: [
-          "Babyschalen für Säuglinge, Kindersitze für Kleinkinder und Sitzerhöhungen mit Rückenlehne für Kinder bis etwa zwölf Jahre. Im Buchungsformular können Sie einen Kindersitz für Kinder von 15 bis 36 kg (etwa 4 bis 12 Jahre) direkt auswählen; für jüngere Kinder und Babyschalen geben Sie Anzahl und Alter im Notizfeld an. Der Fahrer montiert die Sitze vor der Abholung, sodass Sie am Fahrzeug nur noch einsteigen und anschnallen müssen.",
-          "Wenn Sie Ihren eigenen Sitz mitbringen möchten – etwa weil Ihr Kind daran gewöhnt ist – ist das selbstverständlich möglich. Sagen Sie es uns kurz, damit wir keinen zweiten montieren.",
-        ]},
-        { h: "Kinderwagen, Buggy und Reisebett", p: [
-          "Ein zusammenklappbarer Buggy findet in jeder Fahrzeugklasse Platz. Ein grosser Kombi-Kinderwagen mit Wanne und Gestell braucht mehr Raum; hier empfehlen wir die Business & Family Class (V-Klasse), in der auch Reisebett, Wickeltasche und die Koffer der Eltern problemlos Platz finden. Die V-Klasse hat zudem den Vorteil, dass die Eltern dem Kind gegenübersitzen können – bei einer längeren Fahrt nach Interlaken oder Davos ist das Gold wert.",
-          "Melden Sie den Kinderwagen bei der Buchung an. Wie bei allem sperrigen Gepäck gilt: Wenn wir es wissen, ist der Laderaum vorbereitet.",
-        ]},
-        { h: "Warum der private Transfer für Familien die ruhigste Wahl ist", p: [
-          "Ihr Chauffeur wartet in der Ankunftshalle mit Namensschild, hilft mit Gepäck und Kinderwagen und bringt Sie zum Fahrzeug im Parkhaus, das direkt am Terminal liegt – kein Shuttle, keine Treppe, kein Warten am Strassenrand. 60 Minuten Wartezeit nach der Landung sind inklusive; wenn das Wickeln oder das Gepäckband länger dauert, ist das kein Problem. Der Festpreis gilt pro Fahrzeug, Kindersitze kosten nichts extra, und Sie werden bis vor die Haustür oder den Hoteleingang gefahren.",
-          "Und sollte sich der Flug verspäten: Wir verfolgen ihn und passen die Abholzeit automatisch an. Sie kümmern sich um das Kind – wir uns um den Rest.",
-        ]},
-      ],
-    },
-    en: {
-      title: "With a Baby or Toddler from Zurich Airport: Child Seats, Pushchairs and a Relaxed Start",
-      excerpt: "Which seats for which age, how to state children when booking, what happens to the pushchair and why a private transfer is the calmest option for young families.",
-      body: [
-        { p: [
-          "Flying with a baby or toddler is tiring enough – the onward journey from the airport should not add to it. Train with changes and a pushchair in the stairwell, taxi without a suitable seat, hire car with seat installation in the car park: there are good reasons why young families choose a private transfer. Here you learn how we carry children and what to keep in mind when booking.",
-        ]},
-        { h: "Child-seat requirements in Switzerland – briefly explained", p: [
-          "In Switzerland, children up to the age of 12 or up to a height of 150 cm must travel in a suitable child restraint. This applies in every passenger car, including taxis and transfer vehicles. For you it means: a seat must be present, and it must match the child's age and weight. That is exactly what we take care of – free of charge.",
-        ]},
-        { h: "Which seats we provide", p: [
-          "Baby shells for infants, child seats for toddlers and high-back boosters for children up to around twelve. In the booking form you can directly select a child seat for children of 15 to 36 kg (roughly 4 to 12 years); for younger children and baby shells, state number and age in the notes field. The driver fits the seats before the pickup, so at the vehicle you only need to get in and buckle up.",
-          "If you would like to bring your own seat – for instance because your child is used to it – that is of course possible. Just let us know so we do not fit a second one.",
-        ]},
-        { h: "Pushchair, buggy and travel cot", p: [
-          "A folding buggy fits in every vehicle class. A large travel-system pram with carrycot and chassis needs more room; here we recommend the Business & Family Class (V-Class), where travel cot, changing bag and the parents' suitcases also fit without difficulty. The V-Class has the added advantage that parents can sit facing the child – on a longer drive to Interlaken or Davos this is worth its weight in gold.",
-          "Mention the pushchair when booking. As with all bulky luggage: if we know, the load space is prepared.",
-        ]},
-        { h: "Why a private transfer is the calmest choice for families", p: [
-          "Your chauffeur waits in the arrivals hall with a name sign, helps with luggage and pushchair and takes you to the vehicle in the car park right next to the terminal – no shuttle, no stairs, no waiting at the kerb. 60 minutes of waiting time after landing are included; if changing the baby or the baggage belt takes longer, it is no problem. The fixed price applies per vehicle, child seats cost nothing extra, and you are driven to your front door or hotel entrance.",
-          "And should the flight be delayed: we track it and adjust the pickup automatically. You look after the child – we look after the rest.",
-        ]},
-      ],
-    },
-  },
 
   // 8 ─────────────────────────────────────────────────────────
   {
@@ -403,6 +382,7 @@ export const airportPosts: BlogPost[] = [
     img: "/gallery/2.jpg",
     de: {
       title: "Zwischenlandung in Zürich: Was Sie bei 4 bis 8 Stunden Aufenthalt am Flughafen unternehmen können",
+      seo: "Zwischenlandung Zürich: 4–8 Stunden nutzen",
       excerpt: "Gepäck einlagern, in die Stadt fahren, den See sehen und rechtzeitig zurück sein: Ein realistischer Zeitplan für lange Layovers am Flughafen Zürich – mit und ohne Fahrer.",
       body: [
         { p: [
@@ -430,6 +410,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "Layover in Zurich: What to Do With 4 to 8 Hours at the Airport",
+      seo: "Zurich Layover: What to Do in 4–8 Hours",
       excerpt: "Store the luggage, head into the city, see the lake and be back on time: a realistic schedule for long layovers at Zurich Airport – with and without a driver.",
       body: [
         { p: [
@@ -464,6 +445,7 @@ export const airportPosts: BlogPost[] = [
     img: "/gallery/18.jpg",
     de: {
       title: "Wann losfahren? So berechnen Sie die richtige Abholzeit zum Flughafen Zürich aus Basel, Luzern, Bern und den Bergen",
+      seo: "Abholzeit zum Flughafen Zürich berechnen",
       excerpt: "Fahrzeit, Stosszeiten, Winterwetter, Check-in-Fristen: Eine ehrliche Rechnung, wie viel Vorlauf Sie für den Weg zum Flughafen einplanen sollten – Strecke für Strecke.",
       body: [
         { p: [
@@ -488,6 +470,7 @@ export const airportPosts: BlogPost[] = [
     },
     en: {
       title: "When to Leave? Calculating the Right Pickup Time to Zurich Airport From Basel, Lucerne, Bern and the Mountains",
+      seo: "When to Leave for Zurich Airport",
       excerpt: "Driving time, rush hours, winter weather, check-in deadlines: an honest calculation of how much lead time to plan for the journey to the airport – route by route.",
       body: [
         { p: [
@@ -513,55 +496,4 @@ export const airportPosts: BlogPost[] = [
   },
 
   // 10 ────────────────────────────────────────────────────────
-  {
-    slug: "taxi-flughafen-zuerich-finden-kosten-alternativen",
-    date: "2026-07-09",
-    img: "/gallery/3.jpg",
-    de: {
-      title: "Taxi am Flughafen Zürich: Wo Sie es finden, wie der Preis entsteht – und wann ein Festpreis-Transfer die bessere Wahl ist",
-      excerpt: "Taxistand, Taxameter, Zuschläge und Wartezeit: Wie das Taxi ab Kloten funktioniert, welche Nachteile es auf längeren Strecken hat und was ein vorab gebuchter Transfer anders macht.",
-      body: [
-        { p: [
-          "Das Taxi ist die naheliegendste Wahl nach der Landung – man geht hinaus, steigt ein, fährt los. Für kurze Strecken in die Stadt ist das oft auch vernünftig. Auf längeren Wegen nach Luzern, Basel, Bern oder in die Berge zeigen sich jedoch die Grenzen des Systems. Dieser Beitrag erklärt, wie das Taxi am Flughafen Zürich funktioniert, welche Fragen Sie vorher klären sollten und wann ein vorab gebuchter Transfer die bessere Entscheidung ist.",
-        ]},
-        { h: "Wo Sie den Taxistand finden", p: [
-          "Die Taxistände liegen unmittelbar vor den Ankunftsbereichen – Sie verlassen die Ankunftshalle und folgen der Beschilderung «Taxi». Tagsüber stehen in der Regel ausreichend Fahrzeuge bereit; am späten Abend, bei mehreren gleichzeitigen Landungen oder bei schlechtem Wetter bilden sich Schlangen. Die Wartezeit lässt sich nicht vorhersagen, und ein Fahrzeug mit Platz für sieben Personen oder mit Kindersitz ist am Stand nicht garantiert.",
-        ]},
-        { h: "Wie der Taxipreis entsteht", p: [
-          "Taxis in Zürich fahren nach Taxameter: eine Grundgebühr plus ein Betrag pro gefahrenem Kilometer plus Zeit im Stau. Nachts und an Sonn- und Feiertagen gelten andere Tarife, und je nach Anbieter können Zuschläge für Gepäck oder zusätzliche Passagiere anfallen. Der entscheidende Punkt: Sie wissen den Endpreis erst, wenn Sie angekommen sind. Für eine Fahrt in die Innenstadt ist die Spanne überschaubar. Für eine Fahrt nach Bern oder Davos ist sie es nicht – hier sollten Sie den Preis vor der Abfahrt ausdrücklich vereinbaren und sich bestätigen lassen.",
-          "Wir nennen hier bewusst keine Taxitarife: Sie unterscheiden sich je nach Unternehmen, Uhrzeit und Route und ändern sich regelmässig. Fragen Sie am Stand nach dem Tarif oder einem Festbetrag, bevor Sie einsteigen.",
-        ]},
-        { h: "Was ein Festpreis-Transfer anders macht", p: [
-          "Bei einem vorab gebuchten Transfer steht der Preis fest, bevor Sie abfliegen – pro Fahrzeug, unabhängig von Uhrzeit, Stau oder Umweg. Auf unseren Streckenseiten sehen Sie ihn transparent: jede Strecke – ob Winterthur, Zug, Luzern oder Basel – zum Festpreis nach Kilometertarif, pro Fahrzeug und für jede Klasse einzeln ausgewiesen. Im Preis enthalten sind Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung, Flugverfolgung und Kindersitze. Es gibt keine Gepäckgebühr; nachts (00–06 Uhr) gilt ein Nachttarif von 20 %, der vor der Buchung sichtbar ist.",
-          "Dazu kommt die Planbarkeit: Ihr Chauffeur ist da, wenn Sie landen, mit dem Fahrzeug, das Sie gebucht haben. Sie wählen vorher, ob Sie zu zweit in der E-Klasse, zu siebt in der V-Klasse oder zu dritt in der S-Klasse reisen. Und Sie erhalten eine Rechnung mit ausgewiesener Mehrwertsteuer – für Geschäftsreisende oft der ausschlaggebende Punkt.",
-        ]},
-        { h: "Wann das Taxi trotzdem sinnvoll ist", p: [
-          "Für spontane, kurze Fahrten in die Stadt am Tag, ohne viel Gepäck und ohne Kinder, ist das Taxi vom Stand eine gute Option. Sobald eine der folgenden Bedingungen zutrifft, lohnt sich die Vorabbuchung: Sie reisen zu mehr als vier Personen, Sie haben Skiausrüstung oder Sondergepäck, Sie landen spät abends oder nachts, Ihr Ziel liegt ausserhalb des Kantons Zürich, oder Sie möchten den Preis vorher kennen. In diesen Fällen ist der Festpreis-Transfer nicht nur bequemer, sondern in aller Regel auch die wirtschaftlichere Wahl.",
-        ]},
-      ],
-    },
-    en: {
-      title: "Taxi at Zurich Airport: Where to Find One, How the Fare Is Made Up – and When a Fixed-Price Transfer Is the Better Choice",
-      excerpt: "Taxi rank, meter, surcharges and waiting: how the taxi from Kloten works, where it falls short on longer journeys and what a pre-booked transfer does differently.",
-      body: [
-        { p: [
-          "The taxi is the most obvious choice after landing – you walk out, get in, drive off. For short journeys into the city that is often reasonable. On longer routes to Lucerne, Basel, Bern or the mountains, however, the limits of the system show. This article explains how the taxi at Zurich Airport works, which questions you should clarify beforehand and when a pre-booked transfer is the better decision.",
-        ]},
-        { h: "Where to find the taxi rank", p: [
-          "The taxi ranks are right outside the arrivals areas – you leave the arrivals hall and follow the \"Taxi\" signs. During the day there are usually enough vehicles; late in the evening, when several flights land at once or in bad weather, queues form. The waiting time cannot be predicted, and a vehicle with room for seven people or with a child seat is not guaranteed at the rank.",
-        ]},
-        { h: "How the taxi fare is made up", p: [
-          "Taxis in Zurich run on the meter: a base fare plus an amount per kilometre driven plus time spent in traffic. At night and on Sundays and public holidays different tariffs apply, and depending on the operator there may be surcharges for luggage or additional passengers. The crucial point: you only know the final fare when you have arrived. For a ride into the city centre the range is manageable. For a ride to Bern or Davos it is not – here you should explicitly agree the fare before departure and have it confirmed.",
-          "We deliberately do not quote taxi tariffs here: they differ by company, time of day and route and change regularly. Ask at the rank for the tariff or a fixed amount before you get in.",
-        ]},
-        { h: "What a fixed-price transfer does differently", p: [
-          "With a pre-booked transfer the price is fixed before you depart – per vehicle, regardless of time of day, traffic or detours. On our route pages you see it transparently: every route – whether Winterthur, Zug, Lucerne or Basel – at a fixed price by kilometre tariff, per vehicle and shown separately for each class. Included in the price are meet & greet in the arrivals hall, 60 minutes of waiting time after landing, flight tracking and child seats. There is no luggage fee; at night (midnight to 6 am) a night tariff of 20 % applies and is visible before booking.",
-          "Add to that predictability: your chauffeur is there when you land, with the vehicle you booked. You choose in advance whether to travel as a couple in the E-Class, as a group of seven in the V-Class or as three in the S-Class. And you receive an invoice with VAT shown – for business travellers often the deciding factor.",
-        ]},
-        { h: "When the taxi still makes sense", p: [
-          "For spontaneous, short daytime rides into the city, without much luggage and without children, the taxi from the rank is a good option. As soon as one of the following applies, pre-booking pays off: you travel with more than four people, you have ski equipment or special luggage, you land late in the evening or at night, your destination is outside the canton of Zurich, or you want to know the price in advance. In these cases the fixed-price transfer is not only more convenient but as a rule also the more economical choice.",
-        ]},
-      ],
-    },
-  },
 ];

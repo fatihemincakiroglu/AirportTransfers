@@ -8,9 +8,11 @@ export const longformPosts: BlogPost[] = [
   {
     slug: "uber-taxi-oder-privater-transfer-flughafen-zuerich",
     date: "2026-09-18",
+    updated: "2026-10-07",
     img: "/gallery/3.jpg",
     de: {
       title: "Uber, Taxi oder privater Transfer am Flughafen Zürich?",
+      seo: "Taxi, Uber oder Transfer am Flughafen Zürich?",
       excerpt: "Drei Wege vom Terminal in die Schweiz – und drei völlig verschiedene Erfahrungen. Wir vergleichen Wartezeit, Preislogik, Gepäck, Kinder, Nachtfahrten und Planbarkeit ehrlich, ohne Verkaufsgerede: Wann welche Option wirklich die richtige ist.",
       body: [
         { p: [
@@ -23,6 +25,9 @@ export const longformPosts: BlogPost[] = [
           "**Ride-Hailing-Apps** wie Uber funktionieren in Zürich, sind aber nicht so allgegenwärtig wie in London oder New York. Sie bestellen ein Fahrzeug per App, der Preis wird vorab angezeigt und richtet sich nach der aktuellen Nachfrage – landen mehrere Maschinen gleichzeitig, steigt er. Der Treffpunkt ist ein definierter Abholbereich, den Sie selbst finden müssen.",
           "Der **private Transfer** wird vor der Reise gebucht, mit Flugnummer, Ziel und Fahrzeugklasse. Der Preis steht fest, bevor Sie abfliegen, und ändert sich nicht. Ihr Chauffeur wartet mit Namensschild in der Ankunftshalle, verfolgt Ihren Flug und bringt Sie bis vor die Haustür – ob nach [Luzern](/zurich-airport-to-luzern), [Basel](/zurich-airport-to-basel) oder in ein Skidorf im Engadin.",
         ]},
+        { h3: "Wo Sie den Taxistand finden", p: [
+          "Die Taxistände liegen unmittelbar vor den Ankunftsbereichen – Sie verlassen die Ankunftshalle und folgen der Beschilderung «Taxi». Tagsüber stehen in der Regel ausreichend Fahrzeuge bereit; am späten Abend, bei mehreren gleichzeitigen Landungen oder bei schlechtem Wetter bilden sich Schlangen. Die Wartezeit lässt sich nicht vorhersagen, und ein Fahrzeug mit Platz für sieben Personen oder mit Kindersitz ist am Stand nicht garantiert.",
+        ]},
         { h: "2. Wartezeit nach der Landung", p: [
           "Beim Taxistand hängt alles vom Moment ab. An einem ruhigen Dienstagvormittag stehen Fahrzeuge bereit, und Sie sitzen in zwei Minuten. Wenn zwischen 22 und 23 Uhr drei Langstreckenflüge gleichzeitig landen, bildet sich eine Schlange, und die Wartezeit ist nicht vorhersehbar. Für ein Fahrzeug mit sieben Plätzen oder einem Kindersitz gibt es am Stand ohnehin keine Garantie – Sie nehmen, was kommt.",
           "Bei der App beginnt die Wartezeit erst, wenn Sie bestellen – also nachdem Sie Gepäck geholt, das Telefon eingeschaltet und den Abholbereich gefunden haben. Dann dauert es, bis ein Fahrer akzeptiert und anfährt. Bei hoher Nachfrage werden Fahrten storniert oder der Preis steigt, während Sie mit Koffern am Strassenrand stehen. In der Stadt funktioniert das gut; am Flughafen nach einem Nachtflug ist es der unsicherste Teil.",
@@ -32,16 +37,13 @@ export const longformPosts: BlogPost[] = [
           "Wir nennen hier bewusst keine Beträge – Taxitarife und App-Preise ändern sich je nach Anbieter, Uhrzeit und Tag. Wichtiger ist die Logik dahinter. Das Taxameter rechnet Grundgebühr plus Kilometer plus Zeit; jeder Stau, jede Umleitung und jeder Nachtzuschlag verändert den Endbetrag. Sie wissen den Preis erst, wenn Sie angekommen sind. Für die Innenstadt ist die Spanne klein, für Bern oder Davos ist sie es nicht.",
           "Die App zeigt den Preis vorab, was ein echter Fortschritt gegenüber dem Taxameter ist. Aber dieser Preis ist eine Momentaufnahme der Nachfrage: Regen, Feierabend, mehrere Landungen – und der Betrag, den Sie beim Öffnen der App sahen, ist zehn Minuten später ein anderer. Wer eine Stunde vor der Landung nachschaut, sieht nicht den Preis, den er später zahlt.",
           "Der Festpreis ist genau das: fest. Er gilt pro Fahrzeug, unabhängig von Uhrzeit, Wochentag, Stau oder Umweg, und er enthält Mehrwertsteuer, Wartezeit, Kindersitze und Gepäck. Wie ein solcher Preis kalkuliert wird und was er alles einschliesst, erklärt [Festpreis statt Taxameter](/blog/festpreis-transfers-erklaert). Die konkreten Beträge für alle Strecken stehen auf der [Preisseite](/preise).",
-        ], table: {
-          head: ["Kriterium", "Taxi vom Stand", "App (Uber & Co.)", "Privater Transfer"],
-          rows: [
-            ["Preis bekannt", "Erst am Ziel", "Vor der Fahrt, aber nachfrageabhängig", "Vor der Abreise, fest"],
-            ["Nachtzuschlag", "Ja, nach Taxameter", "Indirekt (höhere Nachfrage)", "20 % (00–06 Uhr), vorab bekannt"],
-            ["Gepäckgebühr", "Je nach Anbieter", "Nein", "Nein"],
-            ["Wartezeit inklusive", "Nein", "Wenige Minuten", "60 Min. nach Landung"],
-            ["Rechnung mit MwSt.", "Quittung", "App-Beleg", "Automatisch per E-Mail"],
-          ],
-        }},
+        ], table: { head: ["Kriterium", "Taxi vom Stand", "App (Uber & Co.)", "Privater Transfer"], rows: [
+          ["Preis bekannt", "Erst am Ziel", "Vor der Fahrt, aber nachfrageabhängig", "Vor der Abreise, fest"],
+          ["Nachtzuschlag", "Ja, nach Taxameter", "Indirekt (höhere Nachfrage)", "20 % (00–06 Uhr), vorab bekannt"],
+          ["Gepäckgebühr", "Je nach Anbieter", "Nein", "Nein"],
+          ["Wartezeit inklusive", "Nein", "Wenige Minuten", "60 Min. nach Landung"],
+          ["Rechnung mit MwSt.", "Quittung", "App-Beleg", "Automatisch per E-Mail"],
+        ]}},
         { h: "4. Gepäck: Wo der Unterschied sichtbar wird", p: [
           "Mit einem Handgepäck-Trolley ist jedes Fahrzeug gut. Der Unterschied beginnt beim zweiten grossen Koffer, spätestens bei Skitaschen, Golfbags oder einem Kinderwagen. Ein Taxi vom Stand ist meistens eine Limousine mit normalem Kofferraum; ob es Ihre Ausrüstung aufnimmt, sehen Sie erst, wenn Sie davorstehen. Ein grösseres Fahrzeug anzufordern ist möglich, aber nicht garantiert.",
           "Bei der App wählen Sie eine Fahrzeugkategorie, doch das konkrete Modell bestimmt der Fahrer, der die Fahrt annimmt. «XL» heisst mehr Sitze, nicht zwingend mehr Laderaum. Für Skigepäck gibt es keine Option, und der Fahrer darf ablehnen, wenn es nicht passt. Das ist kein Vorwurf an die Fahrer – es ist die Konsequenz eines Systems, das auf Stadtfahrten optimiert ist.",
@@ -50,7 +52,7 @@ export const longformPosts: BlogPost[] = [
         { h: "5. Reisen mit Kindern", p: [
           "In der Schweiz müssen Kinder bis zwölf Jahre oder 150 cm in einer geeigneten Rückhaltevorrichtung mitfahren – auch im Taxi. In der Praxis bedeutet das: Am Taxistand ist ein Kindersitz Glückssache. Manche Fahrer haben eine Sitzerhöhung im Kofferraum, viele nicht. Mit einem Säugling bleibt dann nur, die eigene Babyschale mitzubringen oder zu warten, bis ein passendes Fahrzeug kommt.",
           "Bei Apps ist das Bild ähnlich. In einigen Städten gibt es eine Kindersitz-Option, in Zürich ist sie nicht zuverlässig verfügbar. Die Alternative – ohne Sitz fahren – ist gesetzlich nicht erlaubt und sicherheitstechnisch keine Diskussion wert. Familien merken hier am deutlichsten, dass Ride-Hailing für Einzelpersonen in der Stadt gebaut wurde.",
-          "Beim privaten Transfer sind Babyschalen, Kindersitze und Sitzerhöhungen kostenlos und vor der Abholung montiert; Sie geben Alter und Anzahl bei der Buchung an. In der V-Klasse sitzen Eltern und Kinder einander gegenüber, was auf zwei Stunden ins Berner Oberland viel wert ist. Alles Weitere zu Regeln und Ablauf steht in [Mit Baby und Kleinkind ab Flughafen Zürich](/blog/mit-baby-und-kleinkind-ab-flughafen-zuerich-kindersitz-kinderwagen).",
+          "Beim privaten Transfer sind Babyschalen, Kindersitze und Sitzerhöhungen kostenlos und vor der Abholung montiert; Sie geben Alter und Anzahl bei der Buchung an. In der V-Klasse sitzen Eltern und Kinder einander gegenüber, was auf zwei Stunden ins Berner Oberland viel wert ist. Alles Weitere zu Regeln und Ablauf steht in [Mit Baby und Kleinkind ab Flughafen Zürich](/blog/mit-kindern-reisen-kindersitze-schweiz).",
         ], ul: [
           "**Taxi:** Kindersitz nicht garantiert, eigenen Sitz mitbringen",
           "**App:** Kindersitz-Option in Zürich nicht zuverlässig",
@@ -89,6 +91,7 @@ export const longformPosts: BlogPost[] = [
     },
     en: {
       title: "Uber, Taxi or Private Transfer at Zurich Airport?",
+      seo: "Taxi, Uber or Transfer at Zurich Airport?",
       excerpt: "Three ways from the terminal into Switzerland – and three completely different experiences. We compare waiting time, pricing logic, luggage, children, night journeys and predictability honestly, without a sales pitch: when each option is genuinely the right one.",
       body: [
         { p: [
@@ -101,6 +104,9 @@ export const longformPosts: BlogPost[] = [
           "**Ride-hailing apps** such as Uber work in Zurich, but they are not as ubiquitous as in London or New York. You order a car via the app, the price is shown in advance and depends on current demand – when several aircraft land at once, it rises. The meeting point is a designated pickup area that you have to find yourself.",
           "The **private transfer** is booked before the trip, with flight number, destination and vehicle class. The price is fixed before you depart and does not change. Your chauffeur waits with a name sign in the arrivals hall, tracks your flight and takes you to your front door – whether to [Lucerne](/zurich-airport-to-luzern), [Basel](/zurich-airport-to-basel) or a ski village in the Engadin.",
         ]},
+        { h3: "Where to find the taxi rank", p: [
+          "The taxi ranks are right outside the arrivals areas – you leave the arrivals hall and follow the \"Taxi\" signs. During the day there are usually enough vehicles; late in the evening, when several flights land at once or in bad weather, queues form. The waiting time cannot be predicted, and a vehicle with room for seven people or with a child seat is not guaranteed at the rank.",
+        ]},
         { h: "2. Waiting time after landing", p: [
           "At the taxi rank everything depends on the moment. On a quiet Tuesday morning cars are waiting and you are seated in two minutes. When three long-haul flights land between 10 and 11 pm, a queue forms and the waiting time is unpredictable. For a vehicle with seven seats or a child seat there is no guarantee at the rank anyway – you take what comes.",
           "With the app, waiting only begins once you order – after collecting luggage, switching on your phone and finding the pickup area. Then it takes time for a driver to accept and drive over. In high demand, rides get cancelled or the price rises while you stand at the kerb with suitcases. In the city it works well; at the airport after a night flight it is the least certain part.",
@@ -110,16 +116,13 @@ export const longformPosts: BlogPost[] = [
           "We deliberately quote no amounts here – taxi tariffs and app prices change by operator, hour and day. What matters is the logic behind them. The meter adds a base fare plus kilometres plus time; every traffic jam, every diversion and every night surcharge changes the final amount. You know the price only when you have arrived. For the city centre the range is small; for Bern or Davos it is not.",
           "The app shows the price in advance, which is a real improvement over the meter. But that price is a snapshot of demand: rain, rush hour, several landings – and the amount you saw when opening the app is a different one ten minutes later. Anyone checking an hour before landing does not see the price they will pay.",
           "The fixed price is exactly that: fixed. It applies per vehicle regardless of hour, weekday, traffic or detour, and it includes VAT, waiting time, child seats and luggage. How such a price is calculated and what it covers is explained in [Fixed price instead of meter](/blog/festpreis-transfers-erklaert). The actual amounts for all routes are on the [prices page](/preise).",
-        ], table: {
-          head: ["Criterion", "Taxi from the rank", "App (Uber etc.)", "Private transfer"],
-          rows: [
-            ["Price known", "Only at the destination", "Before the ride, but demand-based", "Before departure, fixed"],
-            ["Night surcharge", "Yes, by meter", "Indirectly (higher demand)", "20 % (midnight–6 am), known in advance"],
-            ["Luggage fee", "Depends on operator", "No", "No"],
-            ["Waiting included", "No", "A few minutes", "60 min after landing"],
-            ["Invoice with VAT", "Receipt", "App receipt", "Automatically by email"],
-          ],
-        }},
+        ], table: { head: ["Criterion", "Taxi from the rank", "App (Uber etc.)", "Private transfer"], rows: [
+          ["Price known", "Only at the destination", "Before the ride, but demand-based", "Before departure, fixed"],
+          ["Night surcharge", "Yes, by meter", "Indirectly (higher demand)", "20 % (midnight–6 am), known in advance"],
+          ["Luggage fee", "Depends on operator", "No", "No"],
+          ["Waiting included", "No", "A few minutes", "60 min after landing"],
+          ["Invoice with VAT", "Receipt", "App receipt", "Automatically by email"],
+        ]}},
         { h: "4. Luggage: where the difference shows", p: [
           "With a carry-on trolley any vehicle is fine. The difference begins with the second large suitcase, and certainly with ski bags, golf bags or a pushchair. A taxi from the rank is usually a saloon with a normal boot; whether it takes your equipment you only see when you stand in front of it. Requesting a larger vehicle is possible but not guaranteed.",
           "With the app you choose a vehicle category, but the actual model is decided by the driver who accepts the ride. \"XL\" means more seats, not necessarily more load space. There is no option for ski luggage, and the driver may decline if it does not fit. That is no criticism of drivers – it is the consequence of a system optimised for city rides.",
@@ -128,7 +131,7 @@ export const longformPosts: BlogPost[] = [
         { h: "5. Travelling with children", p: [
           "In Switzerland, children up to twelve years or 150 cm must travel in a suitable restraint – in taxis too. In practice this means: at the taxi rank a child seat is a matter of luck. Some drivers keep a booster in the boot, many do not. With an infant, the only options are bringing your own baby shell or waiting for a suitable vehicle.",
           "With apps the picture is similar. Some cities offer a child-seat option; in Zurich it is not reliably available. The alternative – riding without a seat – is not legal and not worth discussing from a safety point of view. Families notice most clearly here that ride-hailing was built for individuals in the city.",
-          "With a private transfer, baby shells, child seats and boosters are free and fitted before pickup; you state age and number when booking. In the V-Class, parents and children sit facing each other, which is worth a lot on two hours to the Bernese Oberland. Everything else on rules and procedure is in [With a baby or toddler from Zurich Airport](/blog/mit-baby-und-kleinkind-ab-flughafen-zuerich-kindersitz-kinderwagen).",
+          "With a private transfer, baby shells, child seats and boosters are free and fitted before pickup; you state age and number when booking. In the V-Class, parents and children sit facing each other, which is worth a lot on two hours to the Bernese Oberland. Everything else on rules and procedure is in [With a baby or toddler from Zurich Airport](/blog/mit-kindern-reisen-kindersitze-schweiz).",
         ], ul: [
           "**Taxi:** child seat not guaranteed, bring your own",
           "**App:** child-seat option not reliable in Zurich",
@@ -174,6 +177,7 @@ export const longformPosts: BlogPost[] = [
     img: "/gallery/17.jpg",
     de: {
       title: "Trinkgeld im Taxi in der Schweiz: Was ist üblich?",
+      seo: "Trinkgeld im Taxi in der Schweiz",
       excerpt: "Runden, prozentual oder gar nichts? Wie Trinkgeld in der Schweiz wirklich funktioniert – im Taxi, beim privaten Transfer, im Restaurant und im Hotel. Mit Tabelle für Reisende aus den USA, Grossbritannien, Deutschland und Asien.",
       body: [
         { p: [
@@ -189,7 +193,7 @@ export const longformPosts: BlogPost[] = [
         { h: "2. Trinkgeld im Taxi vom Stand", p: [
           "Beim klassischen Taxi ist das Aufrunden auf den nächsten Franken oder auf einen runden Betrag üblich. Kurze Stadtfahrt: einen oder zwei Franken. Längere Fahrt mit Gepäckhilfe: fünf Franken oder auf die nächste Zehnerstelle. Mehr ist nicht erwartet, weniger ist kein Affront. Wer mit Karte zahlt, sagt beim Betrag einfach «machen Sie x», und der Fahrer tippt es ein.",
           "Es gibt Situationen, in denen etwas mehr angemessen ist: Der Fahrer hat schwere Koffer über eine Treppe getragen, ist bei Schnee besonders vorsichtig gefahren, hat auf Sie gewartet oder einen Umweg für einen Zwischenhalt gemacht. Dann sind zehn Prozent oder ein zusätzlicher Fünfliber eine schöne Geste – aber immer noch freiwillig.",
-          "Umgekehrt gibt es keine Verpflichtung, wenn der Service schlecht war: unfreundlicher Ton, unnötiger Umweg, Zigarettengeruch im Wagen. Dann zahlen Sie den Taxameterbetrag und nichts darüber hinaus. Wie der Taxipreis in Zürich überhaupt zustande kommt, erklärt [Taxi am Flughafen Zürich](/blog/taxi-flughafen-zuerich-finden-kosten-alternativen).",
+          "Umgekehrt gibt es keine Verpflichtung, wenn der Service schlecht war: unfreundlicher Ton, unnötiger Umweg, Zigarettengeruch im Wagen. Dann zahlen Sie den Taxameterbetrag und nichts darüber hinaus. Wie der Taxipreis in Zürich überhaupt zustande kommt, erklärt [Taxi am Flughafen Zürich](/blog/uber-taxi-oder-privater-transfer-flughafen-zuerich).",
         ], ul: [
           "Kurze Stadtfahrt: auf den nächsten Franken aufrunden",
           "Längere Fahrt mit Gepäck: rund fünf Franken oder auf die Zehnerstelle",
@@ -250,6 +254,7 @@ export const longformPosts: BlogPost[] = [
     },
     en: {
       title: "Do You Tip Taxi Drivers in Switzerland?",
+      seo: "Tipping Taxi Drivers in Switzerland",
       excerpt: "Round up, a percentage or nothing at all? How tipping really works in Switzerland – in taxis, on a private transfer, in restaurants and hotels. With a table for travellers from the USA, the UK, Germany and Asia.",
       body: [
         { p: [
@@ -265,7 +270,7 @@ export const longformPosts: BlogPost[] = [
         { h: "2. Tipping in a taxi from the rank", p: [
           "In a classic taxi, rounding up to the next franc or to a round amount is customary. Short city ride: one or two francs. Longer ride with help with luggage: five francs or up to the next ten. More is not expected, less is no affront. If you pay by card, you simply say \"make it x\" when the amount comes up, and the driver keys it in.",
           "There are situations where a little more is appropriate: the driver carried heavy suitcases up a staircase, drove especially carefully in snow, waited for you or made a detour for a stop. Then ten percent or an extra five-franc coin is a nice gesture – but still voluntary.",
-          "Conversely, there is no obligation if the service was poor: unfriendly tone, unnecessary detour, cigarette smell in the car. Then you pay the meter amount and nothing beyond. How the taxi fare in Zurich is made up in the first place is explained in [Taxi at Zurich Airport](/blog/taxi-flughafen-zuerich-finden-kosten-alternativen).",
+          "Conversely, there is no obligation if the service was poor: unfriendly tone, unnecessary detour, cigarette smell in the car. Then you pay the meter amount and nothing beyond. How the taxi fare in Zurich is made up in the first place is explained in [Taxi at Zurich Airport](/blog/uber-taxi-oder-privater-transfer-flughafen-zuerich).",
         ], ul: [
           "Short city ride: round up to the next franc",
           "Longer ride with luggage: around five francs or up to the next ten",
@@ -333,6 +338,7 @@ export const longformPosts: BlogPost[] = [
     img: "/gallery/1.jpg",
     de: {
       title: "7 Fehler, die Sie am Flughafen Zürich vermeiden sollten",
+      seo: "7 Fehler am Flughafen Zürich vermeiden",
       excerpt: "Falscher Ankunftsbereich, kein Kindersitz, Trinkgeld in Euro, spontane Nachtfahrt ohne Plan: Die häufigsten Fehler von Erstbesuchern am Flughafen Zürich – und wie Sie jeden einzelnen mit einer Minute Vorbereitung vermeiden.",
       body: [
         { p: [
@@ -406,6 +412,7 @@ export const longformPosts: BlogPost[] = [
     },
     en: {
       title: "7 Mistakes to Avoid at Zurich Airport",
+      seo: "7 Mistakes to Avoid at Zurich Airport",
       excerpt: "Wrong arrivals area, no child seat, tipping in euros, a spontaneous night journey without a plan: the most common mistakes first-time visitors make at Zurich Airport – and how to avoid every single one with a minute of preparation.",
       body: [
         { p: [
@@ -486,6 +493,7 @@ export const longformPosts: BlogPost[] = [
     img: "/gallery/5.jpg",
     de: {
       title: "5 Orte unter 90 Minuten ab Flughafen Zürich",
+      seo: "5 Ausflugsziele nahe Flughafen Zürich",
       excerpt: "Rheinfall, Luzern, Zug, Winterthur, Einsiedeln: Fünf Ziele, die Sie in weniger als eineinhalb Stunden ab Ankunftshalle erreichen – mit dem, was sich dort an einem halben Tag lohnt, den besten Kombinationen und ehrlichen Hinweisen, wann der Zug reicht.",
       body: [
         { p: [
@@ -560,6 +568,7 @@ export const longformPosts: BlogPost[] = [
     },
     en: {
       title: "5 Places Under 90 Minutes from Zurich Airport",
+      seo: "5 Day Trips Near Zurich Airport",
       excerpt: "Rhine Falls, Lucerne, Zug, Winterthur, Einsiedeln: five destinations you reach in less than an hour and a half from the arrivals hall – with what is worth doing there in half a day, the best combinations and honest notes on when the train is enough.",
       body: [
         { p: [
@@ -641,6 +650,7 @@ export const longformPosts: BlogPost[] = [
     img: "/gallery/18.jpg",
     de: {
       title: "Firmentransfers in Zürich: Rechnung, MwSt. und Spesen",
+      seo: "Firmentransfers Zürich: Rechnung & MwSt.",
       excerpt: "Wie Unternehmen Flughafentransfers so buchen, dass Buchhaltung, Reisende und Assistenz zufrieden sind: Sammelrechnung mit ausgewiesener Mehrwertsteuer, Kostenstellen, Gäste-Abholung mit Firmennamen, Stornierungsregeln und ein Prozess, der ohne Rückfragen läuft.",
       body: [
         { p: [
@@ -716,6 +726,7 @@ export const longformPosts: BlogPost[] = [
     },
     en: {
       title: "Corporate Transfers in Zurich: Invoices and VAT",
+      seo: "Corporate Transfers Zurich: Invoices & VAT",
       excerpt: "How companies book airport transfers so that accounting, travellers and assistants are all happy: consolidated invoices with VAT shown, cost centres, guest pickups with the company name, cancellation rules and a process that runs without queries.",
       body: [
         { p: [
@@ -798,6 +809,7 @@ export const longformPosts: BlogPost[] = [
     img: "/gallery/8.jpg",
     de: {
       title: "Mit Hund oder Katze ab Flughafen Zürich",
+      seo: "Mit Hund oder Katze ab Flughafen Zürich",
       excerpt: "Einreise mit Haustier, Abholung am Tierterminal, Transportbox im Fahrzeug, Hundetransfers ohne Aufpreis: Alles, was Sie wissen müssen, wenn Ihr Vierbeiner in Zürich landet – von den Dokumenten bis zur Fahrt ins Hotel oder in die Berge.",
       body: [
         { p: [
@@ -828,7 +840,7 @@ export const longformPosts: BlogPost[] = [
         { h: "4. Wer holt ab: Fahrer, Sie, oder beide?", p: [
           "Der einfachste Ablauf: Sie landen, holen Ihr Kabinentier, und der Fahrer wartet mit Namensschild in der Halle wie bei jeder anderen Fahrt. Bei Frachtraumtieren aus der EU holen Sie das Tier am Ausgabepunkt und kommen dann in die Halle. Bei Tieren aus Drittstaaten fahren Sie mit dem Fahrer zum Tierterminal.",
           "Wir holen Tiere nicht ohne Sie ab – aus gutem Grund: Die Übergabe verlangt Ihre Papiere und Ihre Unterschrift, und das Tier soll nach einem langen Flug ein bekanntes Gesicht sehen, nicht einen fremden Fahrer. Was wir tun: warten, fahren, helfen, Box tragen, Wasser bereithalten.",
-          "Geben Sie bei der Buchung Tierart, Grösse und Transportweg an. Ein Chihuahua in der Kabinentasche und ein Bernhardiner in der Frachtbox sind zwei sehr verschiedene Fahrten – die Fahrzeugwahl und die Vorbereitung hängen davon ab. Wie die Ankunft grundsätzlich abläuft, zeigt [Ankunft am Flughafen Zürich: Fahrer finden](/blog/ankunft-flughafen-zuerich-fahrer-finden).",
+          "Geben Sie bei der Buchung Tierart, Grösse und Transportweg an. Ein Chihuahua in der Kabinentasche und ein Bernhardiner in der Frachtbox sind zwei sehr verschiedene Fahrten – die Fahrzeugwahl und die Vorbereitung hängen davon ab. Wie die Ankunft grundsätzlich abläuft, zeigt [Ankunft am Flughafen Zürich: Fahrer finden](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
         ]},
         { h: "5. Im Fahrzeug: Box, Gurt, Decke – ohne Aufpreis", p: [
           "Wir nehmen Hunde und Katzen ohne Aufpreis mit. Die Regel ist dieselbe wie überall in der Schweiz: Das Tier muss so gesichert sein, dass es Fahrer und Insassen nicht gefährdet – in einer Transportbox, mit einem Sicherheitsgurt-Geschirr oder hinter einem Trenngitter im Laderaum. Ein Hund auf dem Schoss oder frei auf der Rückbank ist nicht erlaubt und wäre bei einer Bremsung gefährlich.",
@@ -880,6 +892,7 @@ export const longformPosts: BlogPost[] = [
     },
     en: {
       title: "Flying with a Dog or Cat via Zurich Airport",
+      seo: "Flying with a Pet via Zurich Airport",
       excerpt: "Entry with a pet, pickup at the animal terminal, carrier in the vehicle, dog transfers at no extra charge: everything you need to know when your four-legged companion lands in Zurich – from documents to the drive to the hotel or the mountains.",
       body: [
         { p: [
@@ -910,7 +923,7 @@ export const longformPosts: BlogPost[] = [
         { h: "4. Who collects: driver, you, or both?", p: [
           "The simplest procedure: you land, collect your cabin animal, and the driver waits with a name sign in the hall as on any other ride. For hold animals from the EU you collect the animal at the handover point and then come to the hall. For animals from third countries you drive with the driver to the animal terminal.",
           "We do not collect animals without you – for good reason: the handover requires your papers and your signature, and after a long flight the animal should see a familiar face, not a stranger. What we do: wait, drive, help, carry the crate, keep water ready.",
-          "State the animal's species, size and transport route when booking. A Chihuahua in a cabin bag and a St. Bernard in a hold crate are two very different rides – vehicle choice and preparation depend on it. How arrival works in general is shown in [Arriving at Zurich Airport: finding your driver](/blog/ankunft-flughafen-zuerich-fahrer-finden).",
+          "State the animal's species, size and transport route when booking. A Chihuahua in a cabin bag and a St. Bernard in a hold crate are two very different rides – vehicle choice and preparation depend on it. How arrival works in general is shown in [Arriving at Zurich Airport: finding your driver](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
         ]},
         { h: "5. In the vehicle: crate, belt, blanket – at no extra charge", p: [
           "We take dogs and cats at no extra charge. The rule is the same as everywhere in Switzerland: the animal must be secured so that it does not endanger driver and passengers – in a carrier, with a seat-belt harness or behind a partition in the load space. A dog on the lap or loose on the back seat is not permitted and would be dangerous under braking.",
