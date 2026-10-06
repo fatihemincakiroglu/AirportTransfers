@@ -1,12 +1,17 @@
 // Tarayıcı tarafı mesafe hesabı (anahtarsız): Photon geocode + OSRM yol ağı; olmazsa kuş uçuşu × 1.25.
+// Müşteri listeden bir yer seçtiyse o noktanın koordinatı doğrudan kullanılır (yeniden arama yok).
 // Sunucu (lib/distance.ts) aynı zinciri doğrulama için kullanır; erişemezse tarayıcının km'sini kabul eder.
-const ZRH = { lat: 47.4582, lon: 8.5555 };
+import { ZRH, expandAbbrev, haversineKm } from "./places";
+import { recallPlace } from "./placeCoords";
+
 const isAirport = (s: string) => /zrh|flughafen z|zurich airport|zürich airport|flughafen zürich/i.test(s);
 
 async function geocode(text: string, signal?: AbortSignal): Promise<{ lat: number; lon: number } | null> {
   if (isAirport(text)) return ZRH;
+  const picked = recallPlace(text);
+  if (picked) return picked;
   try {
-    const r = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(text)}&limit=1&lat=${ZRH.lat}&lon=${ZRH.lon}`, { signal });
+    const r = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(expandAbbrev(text))}&limit=1&lat=${ZRH.lat}&lon=${ZRH.lon}`, { signal });
     if (!r.ok) return null;
     const d = (await r.json()) as { features: { geometry: { coordinates: [number, number] } }[] };
     const c = d.features?.[0]?.geometry?.coordinates;
@@ -14,13 +19,6 @@ async function geocode(text: string, signal?: AbortSignal): Promise<{ lat: numbe
   } catch {
     return null;
   }
-}
-
-function haversineKm(a: { lat: number; lon: number }, b: { lat: number; lon: number }): number {
-  const R = 6371, toRad = (d: number) => (d * Math.PI) / 180;
-  const dLat = toRad(b.lat - a.lat), dLon = toRad(b.lon - a.lon);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a.lat)) * Math.cos(toRad(b.lat)) * Math.sin(dLon / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
 }
 
 /** Yol mesafesi km (1 ondalık); adresler bulunamazsa null */

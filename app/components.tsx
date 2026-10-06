@@ -15,6 +15,8 @@ import { LANGS, LANG_NAMES } from "./paths";
 import { useLang } from "./providers";
 import { openConsentSettings } from "./consent";
 import { zurichParts, earliestBookable, isPastZurich, isTooSoonZurich } from "./lib/zurichTime";
+import { photonUrl, toSuggestions, KIND_ICON, type PhotonFeature, type PlaceSuggestion } from "./lib/places";
+import { rememberPlace } from "./lib/placeCoords";
 
 // ── Yardımcılar ────────────────────────────────────────────────
 export const waHref = (text?: string) =>
@@ -294,32 +296,17 @@ export const norm = (s: string) =>
 /**
  * Yer alanı — dünya geneli otomatik tamamlama.
  * Yerel liste (havalimanı, sabit rotalar, İsviçre yerleri) anında; 2. harften itibaren
- * /api/places (OpenStreetMap/Photon) sonuçları eklenir. Kullanıcı istediği metni de yazabilir.
+ * Photon/OpenStreetMap sonuçları eklenir (lib/places.ts). Kullanıcı istediği metni de yazabilir.
+ * - Öneriler iki satır: ad + (sokak · mahalle · ilçe · posta kodu şehir), türüne göre ikon
+ * - "Mh., Cd., Sk., Str." gibi kısaltmalar aramadan önce açılır
+ * - Seçilen önerinin koordinatı saklanır → fiyat tam o noktaya göre hesaplanır
  */
-type PlaceSuggestion = { label: string; sub?: string };
-
-/** Photon/OSM özelliklerini "Ad, Şehir, Bölge · Ülke" önerisine çevirir (sunucu vekiliyle aynı mantık) */
-function photonToSuggestions(features: { properties: Record<string, string | undefined> }[]): PlaceSuggestion[] {
-  const out: PlaceSuggestion[] = [];
-  const seen = new Set<string>();
-  for (const f of features) {
-    const p = f.properties;
-    const name = p.name ?? p.street ?? "";
-    if (!name) continue;
-    const city = p.city && p.city !== name ? p.city : "";
-    const state = p.state && p.state !== city && p.state !== name ? p.state : "";
-    const parts = [name, city, state].filter(Boolean);
-    const street = p.street && p.street !== name ? `${p.street}${p.housenumber ? " " + p.housenumber : ""}` : "";
-    const label = street ? `${street}, ${parts.join(", ")}` : parts.join(", ");
-    const key = `${label}|${p.country ?? ""}`.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-    out.push({ label, sub: p.country ?? "" });
-  }
-  return out;
-}
-// Havalimanı önerisi dile göre başa eklenir; listedeki Almanca kopyası çıkarılır
 const localPlaces = (lang: string) => [airportName(lang, true), ...SWISS_PLACES.filter((p) => !/flughafen/i.test(p)), ...NEARBY_PLACES];
+
+const PLACE_TIP = {
+  en: "Can't find the exact address or hotel? Pick the street or area — you can add the hotel name and house number in the last step.",
+  de: "Genaue Adresse oder Hotel nicht gefunden? Wählen Sie Strasse oder Quartier – Hotelname und Hausnummer können Sie im letzten Schritt angeben.",
+};
 
 export function PlaceField({ label, icon, value, placeholder, onChange }: {
   label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
@@ -327,40 +314,58 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
   const { lang } = useLang();
   const [open, setOpen] = useState(false);
   const [remote, setRemote] = useState<PlaceSuggestion[]>([]);
+  const [searchedFor, setSearchedFor] = useState(""); // uzak araması tamamlanan sorgu
   const q = norm(value.trim());
 
-  // Uzak arama: 150 ms gecikme, önceki istek iptal edilir; tarayıcı Photon'a doğrudan gider (tek atlama),
+  // Uzak arama: 200 ms gecikme, önceki istek iptal edilir; tarayıcı Photon'a doğrudan gider (tek atlama),
   // olmazsa sunucu vekili (/api/places) devreye girer
   useEffect(() => {
     let alive = true;
     const ctrl = new AbortController();
     /* eslint-disable react-hooks/set-state-in-effect -- harici arama (fetch) senkronu; kısa sorguda sonuç temizlenir */
-    if (q.length < 2) { setRemote([]); return; }
+    if (q.length < 2) { setRemote([]); setSearchedFor(""); return; }
     /* eslint-enable react-hooks/set-state-in-effect */
     const t = setTimeout(async () => {
       const text = value.trim();
+      let items: PlaceSuggestion[] | null = null;
       try {
-        const r = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(text)}&lang=${lang}&limit=8&lat=47.4582&lon=8.5555`, { signal: ctrl.signal });
-        const d = (await r.json()) as { features: { properties: Record<string, string | undefined> }[] };
-        if (alive) setRemote(photonToSuggestions(d.features ?? []));
+        const r = await fetch(photonUrl(text, lang), { signal: ctrl.signal });
+        if (!r.ok) throw new Error(String(r.status));
+        const d = (await r.json()) as { features: PhotonFeature[] };
+        items = toSuggestions(d.features ?? []);
       } catch {
+        if (ctrl.signal.aborted) return;
         try {
           const r = await fetch(`/api/places?q=${encodeURIComponent(text)}&lang=${lang}`, { signal: ctrl.signal });
-          const d = (await r.json()) as { items: { label: string; sub: string }[] };
-          if (alive) setRemote(d.items ?? []);
+          const d = (await r.json()) as { items: PlaceSuggestion[] };
+          items = d.items ?? [];
         } catch { /* öneri gelmezse yerel liste yeter */ }
       }
-    }, 150);
+      if (!alive) return;
+      setRemote(items ?? []);
+      setSearchedFor(q);
+    }, 200);
     return () => { alive = false; ctrl.abort(); clearTimeout(t); };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- value.trim() değişimi q üzerinden izlenir
   }, [q, lang]);
 
   const local: PlaceSuggestion[] = q.length >= 1
-    ? localPlaces(lang).filter((p) => norm(p).includes(q) && norm(p) !== q).slice(0, 4).map((p) => ({ label: p }))
+    ? localPlaces(lang)
+        .filter((p) => norm(p).includes(q) && norm(p) !== q)
+        .slice(0, 3)
+        .map((p) => ({ title: p, detail: "", country: "", value: p, kind: /flughafen|airport/i.test(p) ? "airport" : "city" }))
     : [];
-  const seen = new Set(local.map((p) => norm(p.label)));
-  const merged = [...local, ...remote.filter((r) => !seen.has(norm(r.label)) && norm(r.label) !== q)].slice(0, 8);
-  const show = open && merged.length > 0;
+  const seen = new Set(local.map((p) => norm(p.value)));
+  const merged = [...local, ...remote.filter((r) => !seen.has(norm(r.value)) && norm(r.value) !== q)].slice(0, 9);
+  // İpucu: müşteri birkaç harf yazdıysa ve arama bittiyse listenin altında (ya da sonuç yoksa tek başına)
+  const showTip = q.length >= 4 && searchedFor === q;
+  const show = open && (merged.length > 0 || showTip);
+
+  const pick = (p: PlaceSuggestion) => {
+    rememberPlace(p.value, p.lat, p.lon);
+    onChange(p.value);
+    setOpen(false);
+  };
 
   return (
     <div className="relative">
@@ -373,7 +378,9 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
           onChange={(e) => { onChange(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 120)}
+          onKeyDown={(e) => { if (e.key === "Enter" && open && merged[0]) { e.preventDefault(); pick(merged[0]); } }}
           autoComplete="off"
+          title={value}
         />
         {value && (
           <button
@@ -385,20 +392,28 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
         )}
       </div>
       {show && (
-        <ul className="absolute z-30 mt-2 max-h-64 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
+        <ul className="absolute z-30 mt-2 max-h-80 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
           {merged.map((p) => (
-            <li key={p.label + (p.sub ?? "")}>
+            <li key={p.value}>
               <button
                 type="button"
-                onMouseDown={(e) => { e.preventDefault(); onChange(p.sub ? `${p.label}, ${p.sub}` : p.label); setOpen(false); }}
-                className="flex w-full items-center gap-2.5 px-3.5 py-2.5 text-left text-sm font-medium text-stone-700 transition-colors hover:bg-[#FBF7EE]"
+                onMouseDown={(e) => { e.preventDefault(); pick(p); }}
+                className="flex w-full items-start gap-2.5 px-3.5 py-2.5 text-left transition-colors hover:bg-[#FBF7EE]"
               >
-                <span className="text-xs" style={{ color: C.gold }}>📍</span>
-                <span className="min-w-0 flex-1 truncate">{p.label}</span>
-                {p.sub && <span className="shrink-0 text-[11px] text-stone-400">{p.sub}</span>}
+                <span className="mt-0.5 shrink-0 text-sm" aria-hidden="true">{KIND_ICON[p.kind]}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-semibold text-stone-800">{p.title}</span>
+                  {p.detail && <span className="block truncate text-[12px] text-stone-500">{p.detail}</span>}
+                </span>
+                {p.country && <span className="mt-0.5 shrink-0 text-[11px] text-stone-400">{p.country}</span>}
               </button>
             </li>
           ))}
+          {showTip && (
+            <li className="border-t border-stone-100 px-3.5 pb-1.5 pt-2.5 text-[11px] leading-snug text-stone-500">
+              💡 {PLACE_TIP[lang === "de" ? "de" : "en"]}
+            </li>
+          )}
         </ul>
       )}
     </div>

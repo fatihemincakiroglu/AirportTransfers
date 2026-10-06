@@ -12,6 +12,7 @@ import {
 } from "../../components";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
+import { coordHints } from "../../lib/placeCoords";
 import { isValidEmail, phoneIssue } from "../../lib/validation";
 import { DIAL_CODES, POPULAR_DIAL, dialOf, flagOf, countryNamer } from "../../lib/dialCodes";
 
@@ -153,14 +154,21 @@ export default function Buchung() {
 
   // Talebi panele kaydeder (WhatsApp/e-posta akışını etkilemez; sessizce çalışır)
   // v: araç seçimi setState ile aynı render'da henüz "chosen"a yansımadığından açıkça geçilir (taslak kaydı)
-  const bookingPayload = (ref: string, channel: "site" | "taslak", v: (typeof fleet)[number] | null = chosen) => ({
+  const bookingPayload = (ref: string, channel: "site" | "taslak", v: (typeof fleet)[number] | null = chosen) => {
+    const pickup = showCustom ? custom!.from : reversed ? n : ZRH;
+    const dropoff = showCustom ? custom!.to : reversed ? ZRH : n;
+    return {
         ref, channel, lang,
-        pickup: showCustom ? custom!.from : reversed ? n : ZRH,
-        dropoff: showCustom ? custom!.to : reversed ? ZRH : n,
+        pickup,
+        dropoff,
         stops: stops.join(" | "),
         date, time,
         // Sunucu tarafı fiyat doğrulaması için (sabit rota / saatlik: fiyat yeniden hesaplanır)
-        pricing: { routeKey: route?.slug ?? null, vehicleId: v?.id ?? null, hours: hourly ? hourlyHours : null, km: quote?.km ?? null },
+        // places: müşterinin listeden seçtiği noktaların koordinatları (sunucu doğrulayarak kullanır)
+        pricing: {
+          routeKey: route?.slug ?? null, vehicleId: v?.id ?? null, hours: hourly ? hourlyHours : null, km: quote?.km ?? null,
+          places: showCustom ? coordHints([pickup, dropoff, ...stops]) : {},
+        },
         pax: Number(f.pax) || null,
         luggage: Number(f.pax) || null, // bagaj sorulmuyor; yolcu sayısı kadar varsayılır
         vehicle: v ? `${localName(v.name, lang)} · ${v.car}` : null,
@@ -175,8 +183,10 @@ export default function Buchung() {
           extras.child ? `${D.child[0]}: ${extras.child}` : "",
           extras.ski ? `${D.ski[0]}: ${extras.ski}` : "",
         ].filter(Boolean).join(", "),
-    notes: f.notes,
-  });
+    // Tam adres / otel adı ayrı alandan gelir; panel, e-posta ve takvimde görünsün diye notun başına eklenir
+    notes: [f.address.trim() ? `${ADDR.prefix}: ${f.address.trim()}` : "", f.notes.trim()].filter(Boolean).join("\n"),
+    };
+  };
 
   const saveBooking = (ref: string, channel: "site" | "taslak", v: (typeof fleet)[number] | null = chosen) => {
     try {
@@ -227,8 +237,12 @@ export default function Buchung() {
   const [extras, setExtras] = useState({ baby: 0, child: 0, ski: 0 });
   const [f, setF] = useState({
     name: "", surname: "", email: "", phone: "",
-    flight: "", nameboard: "", pax: "2", luggage: "2", notes: "",
+    flight: "", nameboard: "", pax: "2", luggage: "2", notes: "", address: "",
   });
+  // Tam adres / otel adı alanı (adres aramasında bulunamayan detaylar için)
+  const ADDR = lang === "de"
+    ? { label: "Genaue Adresse oder Hotelname", ph: "z. B. Hotel Schweizerhof, Bahnhofplatz 7 – Eingang Seite Bahnhof", hint: "Optional – hilft dem Fahrer, Sie direkt vor der Tür abzuholen.", prefix: "Genaue Adresse" }
+    : { label: "Exact address or hotel name", ph: "e.g. Hotel Schweizerhof, Bahnhofplatz 7 – station-side entrance", hint: "Optional – helps the driver pick you up right at the door.", prefix: "Exact address" };
   const [accepted, setAccepted] = useState(false);
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
   const [reversed, setReversed] = useState(false);
@@ -824,6 +838,12 @@ export default function Buchung() {
                 <div className="mt-4 grid gap-4 sm:grid-cols-2">
                   <input className={inputCls} placeholder={`${D.flight} (${lang === "de" ? "optional, für Flugverfolgung" : "optional, for flight tracking"})`} value={f.flight} onChange={(e) => set("flight", e.target.value)} />
                   <input className={inputCls} placeholder={D.nameboard} value={f.nameboard} onChange={(e) => set("nameboard", e.target.value)} />
+                </div>
+
+                <div className="mt-4">
+                  <label className="mb-1.5 block text-xs font-bold uppercase tracking-wide text-stone-500">🏨 {ADDR.label}</label>
+                  <input className={inputCls} placeholder={ADDR.ph} value={f.address} onChange={(e) => set("address", e.target.value)} maxLength={200} />
+                  <p className="mt-1 text-[11px] text-stone-500">{ADDR.hint}</p>
                 </div>
 
                 <textarea rows={4} className={`${inputCls} mt-4`} placeholder={D.notes} value={f.notes} onChange={(e) => set("notes", e.target.value)} />
