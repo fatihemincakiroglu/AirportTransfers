@@ -7,6 +7,598 @@ import type { BlogPost } from "./blogContent";
 
 export const guidePosts: BlogPost[] = [
   {
+    slug: "lounges-flughafen-zuerich-zugang",
+    date: "2026-10-07",
+    img: "/hero/hero-3.jpg",
+    de: {
+      title: "Lounges am Flughafen Zürich: Welche es gibt, wie Sie hineinkommen und welche zu Ihrem Gate passt",
+      seo: "Lounges am Flughafen Zürich: Zugang & Tipps",
+      excerpt: "SWISS-Lounges, Aspire, Marhaba, Primeclass: Zürich hat eine der grössten Lounge-Auswahlen Europas. Welche Lounge in welchem Bereich liegt, wer mit Vielfliegerstatus, Kreditkarte oder Tagespass hineinkommt, warum das Gate entscheidet – und wie Sie die Zeit vor dem Abflug ohne Hektik nutzen.",
+      body: [
+        { p: [
+          "Eine Lounge macht aus Wartezeit Erholung: ein ruhiger Platz, etwas zu essen, gutes WLAN, manchmal eine Dusche nach dem Nachtflug. Zürich ist als Drehkreuz der SWISS besonders gut ausgestattet – mit zahlreichen Airline-Lounges und mehreren unabhängigen Lounges, die auch ohne Business-Class-Ticket zugänglich sind.",
+          "Dieser Guide erklärt, welche Lounges es gibt, wo sie liegen, wie Sie Zugang erhalten und worauf Sie achten sollten. Zugangsregeln und Preise ändern sich; prüfen Sie die Details vor der Reise auf der Website des Flughafens, Ihrer Airline oder Ihres Lounge-Programms.",
+        ]},
+        { h: "Das Wichtigste zuerst: Ihr Gate entscheidet", p: [
+          "Der Flughafen Zürich hat zwei Zonen hinter der Sicherheitskontrolle: den Schengen-Bereich mit den Gates A und B im Airside Center und den Nicht-Schengen-Bereich mit den Gates D und E, für den Sie durch die Passkontrolle müssen. Lounges im Dock E erreichen Sie nur mit der Skymetro.",
+          "Für die Wahl der Lounge heisst das: Fliegen Sie innerhalb Europas im Schengenraum, kommen nur Lounges im Airside Center in Frage. Fliegen Sie nach London, Dubai oder New York, wählen Sie eine Lounge auf der Nicht-Schengen-Seite. Wie der Flughafen aufgebaut ist, erklärt [Flughafen Zürich einfach erklärt](/blog/flughafen-zuerich-terminals-docks-erklaert).",
+        ]},
+        { h: "Die Lounges im Überblick", p: [
+          "Eine vereinfachte Übersicht der wichtigsten Lounges (Stand Oktober 2026):",
+        ], table: { head: ["Lounge", "Bereich", "Zugang (vereinfacht)"], rows: [
+          ["SWISS Business, Senator und First Lounges", "Airside Center (A/B), Gates D und Dock E", "Ticketklasse oder Status bei SWISS und Star Alliance"],
+          ["Aspire Lounge", "Airside Center (Schengen)", "Lounge-Programme, Tagespass"],
+          ["Marhaba Lounge", "Airside Center (Schengen)", "Lounge-Programme, Tagespass"],
+          ["Aspire Lounge E", "Dock E (Nicht-Schengen)", "Lounge-Programme, Tagespass"],
+          ["Primeclass Lounge", "Dock E (Nicht-Schengen)", "Lounge-Programme, Tagespass, Partner-Airlines"],
+          ["Airline-Lounges, z. B. Emirates", "Dock E", "Premium-Gäste der jeweiligen Airline"],
+        ]}},
+        { h: "Die SWISS-Lounges", p: [
+          "Als Heimatflughafen der SWISS hat Zürich das grösste Netz an SWISS-Lounges: Business Lounges für Gäste mit Business-Class-Ticket, Senator Lounges für Vielflieger mit hohem Status und First Lounges für First-Class-Passagiere. Sie liegen in allen Bereichen, sodass Sie meist eine Lounge in der Nähe Ihres Gates finden.",
+          "Zugang haben je nach Lounge Gäste mit entsprechendem Ticket bei SWISS und vielen Star-Alliance-Partnern sowie Inhaber eines passenden Vielfliegerstatus. Wer mit einer anderen Star-Alliance-Airline reist, kann die SWISS-Lounges oft ebenfalls nutzen.",
+        ]},
+        { h: "Unabhängige Lounges: für alle zugänglich", p: [
+          "Wer keinen Status hat und Economy fliegt, ist nicht ausgeschlossen. Die Aspire Lounges, die Marhaba Lounge und die Primeclass Lounge nehmen Gäste unabhängig von Airline und Klasse auf – mit einem Tagespass oder über Lounge-Programme wie Priority Pass, die oft in Premium-Kreditkarten enthalten sind.",
+          "Zu Spitzenzeiten, etwa am frühen Morgen und am Nachmittag vor den Langstreckenabflügen, können diese Lounges voll sein, und der Einlass wird dann begrenzt. Wer sicher gehen will, reserviert einen Tagespass vorab, sofern die Lounge das anbietet.",
+        ]},
+        { h: "Für wen sich eine Lounge lohnt", p: [
+          "Eine Lounge lohnt sich vor allem, wenn Sie länger warten: bei Umstiegen von mehr als zwei Stunden, bei Verspätungen, nach einem Nachtflug mit Wunsch nach einer Dusche oder wenn Sie vor dem Abflug noch arbeiten müssen. Für Familien mit kleinen Kindern ist der ruhigere Raum oft Gold wert.",
+          "Bei einem kurzen Aufenthalt von unter einer Stunde ist der Gewinn dagegen klein, besonders wenn das Gate im Dock E liegt und Sie noch Passkontrolle und Skymetro vor sich haben. Wie viel Zeit Sie vor dem Abflug einplanen sollten, steht in [Wie früh am Flughafen Zürich sein?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+        ]},
+        { h: "Ankunftslounges: gibt es nicht wirklich", p: [
+          "Anders als manche Drehkreuze hat Zürich kein grosses Angebot an Ankunftslounges für alle Reisenden. Wer nach einem Nachtflug landet, findet aber Alternativen: Hotels direkt am Flughafen bieten teils Day-Use-Zimmer an, und nach der Ankunft ist man in der Regel schnell draussen.",
+          "Am entspanntesten ist es, wenn nach der Landung niemand mehr suchen muss: Ihr Fahrer wartet mit Namensschild in der Ankunftshalle, und die 60 Minuten Wartezeit beginnen erst mit der tatsächlichen Landung. Ideen für Hotels finden Sie in [Hotels am Flughafen Zürich](/blog/hotels-flughafen-zuerich-uebernachten).",
+        ]},
+        { h: "Für Geschäftsreisende und VIPs", p: [
+          "Für besonders diskrete oder schnelle Abläufe bietet der Flughafen Zürich einen eigenen VIP-Service mit separater Abfertigung an. Für Geschäftsreisende, die regelmässig ab Zürich fliegen, lohnt sich ausserdem ein Blick auf Status- und Kreditkartenprogramme, die Lounge-Zugang beinhalten.",
+          "Kombiniert mit einem Transfer, der Sie direkt vor der Abflughalle absetzt, wird der Weg vom Büro zum Gate so kurz wie möglich. Tipps für effiziente Geschäftsreisen stehen in [Geschäftsreise Zürich: 5 Gewohnheiten](/blog/business-travel-zuerich-tipps).",
+        ]},
+        { h: "Häufige Fragen zu Lounges in Zürich", p: []},
+        { h3: "Kann ich eine Lounge in Zürich mit Economy-Ticket nutzen?", p: [
+          "Ja, die unabhängigen Lounges wie Aspire, Marhaba und Primeclass bieten Tagespässe an oder akzeptieren Lounge-Programme, unabhängig von der Ticketklasse.",
+        ]},
+        { h3: "Welche Lounge passt zu meinem Gate?", p: [
+          "Für die Gates A und B eine Lounge im Airside Center, für die Gates D und E eine Lounge auf der Nicht-Schengen-Seite, im Fall von Dock E nach der Skymetro.",
+        ]},
+        { h3: "Gibt es Duschen in den Lounges?", p: [
+          "Mehrere Lounges bieten Duschen an, vor allem auf der Langstreckenseite. Prüfen Sie die Ausstattung der jeweiligen Lounge vorab.",
+        ]},
+        { h3: "Kann ich nach der Ankunft in eine Lounge?", p: [
+          "Ankunftslounges gibt es in Zürich kaum. Hotels am Flughafen bieten teils Zimmer für den Tag an.",
+        ]},
+        { h3: "Wie früh sollte ich kommen, um die Lounge zu nutzen?", p: [
+          "Rechnen Sie zur normalen Empfehlung von zwei bis drei Stunden die gewünschte Lounge-Zeit hinzu, behalten Sie aber die Öffnungszeiten der Check-in-Schalter im Blick.",
+          "Jetzt [Fahrt zum Flughafen buchen](/buchung) – entspannt ankommen, mehr Zeit in der Lounge.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Lounges at Zurich Airport: Which Ones Exist, How to Get In and Which Suits Your Gate",
+      seo: "Zurich Airport Lounges: Access & Tips",
+      excerpt: "SWISS lounges, Aspire, Marhaba, Primeclass: Zurich has one of Europe's largest lounge selections. Which lounge is in which area, who gets in with frequent-flyer status, a credit card or a day pass, why your gate decides – and how to use the time before departure without rushing.",
+      body: [
+        { p: [
+          "A lounge turns waiting time into rest: a quiet seat, something to eat, good Wi-Fi, sometimes a shower after a night flight. As the SWISS hub, Zurich is particularly well equipped – with numerous airline lounges and several independent lounges that are accessible even without a business-class ticket.",
+          "This guide explains which lounges exist, where they are, how to get access and what to watch out for. Access rules and prices change; check the details before you travel on the website of the airport, your airline or your lounge programme.",
+        ]},
+        { h: "First things first: your gate decides", p: [
+          "Zurich Airport has two zones beyond security: the Schengen area with gates A and B in the Airside Center, and the non-Schengen area with gates D and E, for which you pass through passport control. Lounges in Dock E can only be reached by the Skymetro.",
+          "For your choice of lounge this means: if you fly within Europe in the Schengen area, only lounges in the Airside Center are an option. If you fly to London, Dubai or New York, choose a lounge on the non-Schengen side. How the airport is laid out is explained in [Zurich Airport explained simply](/blog/flughafen-zuerich-terminals-docks-erklaert).",
+        ]},
+        { h: "The lounges at a glance", p: [
+          "A simplified overview of the main lounges (as of October 2026):",
+        ], table: { head: ["Lounge", "Area", "Access (simplified)"], rows: [
+          ["SWISS Business, Senator and First Lounges", "Airside Center (A/B), gates D and Dock E", "Ticket class or status with SWISS and Star Alliance"],
+          ["Aspire Lounge", "Airside Center (Schengen)", "Lounge programmes, day pass"],
+          ["Marhaba Lounge", "Airside Center (Schengen)", "Lounge programmes, day pass"],
+          ["Aspire Lounge E", "Dock E (non-Schengen)", "Lounge programmes, day pass"],
+          ["Primeclass Lounge", "Dock E (non-Schengen)", "Lounge programmes, day pass, partner airlines"],
+          ["Airline lounges, e.g. Emirates", "Dock E", "Premium guests of the respective airline"],
+        ]}},
+        { h: "The SWISS lounges", p: [
+          "As SWISS's home airport, Zurich has the largest network of SWISS lounges: Business Lounges for guests with a business-class ticket, Senator Lounges for frequent flyers with high status and First Lounges for first-class passengers. They are located in all areas, so you will usually find a lounge near your gate.",
+          "Depending on the lounge, access is granted to guests with the relevant ticket on SWISS and many Star Alliance partners, as well as holders of a suitable frequent-flyer status. If you are flying with another Star Alliance airline, you can often use the SWISS lounges too.",
+        ]},
+        { h: "Independent lounges: open to everyone", p: [
+          "If you have no status and fly economy, you are not excluded. The Aspire lounges, the Marhaba Lounge and the Primeclass Lounge admit guests regardless of airline and class – with a day pass or through lounge programmes such as Priority Pass, which are often included in premium credit cards.",
+          "At peak times, for example early in the morning and in the afternoon before the long-haul departures, these lounges can be full and entry is then limited. If you want to be sure, reserve a day pass in advance where the lounge offers this.",
+        ]},
+        { h: "Who a lounge is worthwhile for", p: [
+          "A lounge is worthwhile above all if you have a longer wait: connections of more than two hours, delays, after a night flight when you want a shower, or if you need to work before departure. For families with small children the quieter space is often worth its weight in gold.",
+          "On a short stay of under an hour, by contrast, the gain is small, especially if your gate is in Dock E and you still have passport control and the Skymetro ahead of you. How much time to allow before departure is explained in [How early should you be at Zurich Airport?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+        ]},
+        { h: "Arrival lounges: not really an option", p: [
+          "Unlike some hubs, Zurich has no large range of arrival lounges for all travellers. If you land after a night flight, there are alternatives, though: hotels right at the airport partly offer day-use rooms, and after arrival you are usually out quickly.",
+          "It is most relaxed when nobody has to search after landing: your driver waits with a name sign in the arrivals hall, and the 60 minutes of waiting time only start with the actual landing. Hotel ideas are in [Hotels at Zurich Airport](/blog/hotels-flughafen-zuerich-uebernachten).",
+        ]},
+        { h: "For business travellers and VIPs", p: [
+          "For particularly discreet or fast processes, Zurich Airport offers its own VIP service with separate handling. For business travellers who fly regularly from Zurich, status and credit card programmes that include lounge access are also worth a look.",
+          "Combined with a transfer that drops you right in front of the departures hall, the way from the office to the gate becomes as short as possible. Tips for efficient business trips are in [Business travel Zurich: 5 habits](/blog/business-travel-zuerich-tipps).",
+        ]},
+        { h: "Frequently asked questions about lounges in Zurich", p: []},
+        { h3: "Can I use a lounge in Zurich with an economy ticket?", p: [
+          "Yes, the independent lounges such as Aspire, Marhaba and Primeclass offer day passes or accept lounge programmes, regardless of ticket class.",
+        ]},
+        { h3: "Which lounge suits my gate?", p: [
+          "For gates A and B a lounge in the Airside Center; for gates D and E a lounge on the non-Schengen side, which for Dock E means after the Skymetro.",
+        ]},
+        { h3: "Are there showers in the lounges?", p: [
+          "Several lounges offer showers, especially on the long-haul side. Check the facilities of the lounge in advance.",
+        ]},
+        { h3: "Can I use a lounge after arrival?", p: [
+          "There are hardly any arrival lounges in Zurich. Hotels at the airport partly offer rooms for the day.",
+        ]},
+        { h3: "How early should I arrive to use the lounge?", p: [
+          "Add your desired lounge time to the usual recommendation of two to three hours, but keep the opening times of the check-in counters in mind.",
+          "[Book your ride to the airport now](/buchung) – arrive relaxed, more time in the lounge.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "gepaeck-verloren-flughafen-zuerich-was-tun",
+    date: "2026-10-07",
+    img: "/hero/hero-2.jpg",
+    de: {
+      title: "Gepäck verloren, verspätet oder beschädigt am Flughafen Zürich: Was jetzt zu tun ist",
+      seo: "Gepäck verloren am Flughafen Zürich: Was tun?",
+      excerpt: "Das Band steht still, Ihr Koffer ist nicht da: Was Sie noch am Flughafen tun müssen, welche Fristen gelten, was Ihnen nach dem Montrealer Übereinkommen zusteht, wie die Nachlieferung ins Hotel funktioniert – und was mit Ihrem wartenden Fahrer passiert.",
+      body: [
+        { p: [
+          "Kaum etwas verdirbt die Ankunft so sehr wie ein leeres Gepäckband. Die gute Nachricht: Die allermeisten verspäteten Koffer tauchen innerhalb weniger Tage wieder auf und werden nachgeliefert. Entscheidend ist, dass Sie in den ersten Minuten das Richtige tun – sonst wird es später schwierig, Ihre Ansprüche durchzusetzen.",
+          "Dieser Guide erklärt Schritt für Schritt, was bei verspätetem, verlorenem oder beschädigtem Gepäck am Flughafen Zürich zu tun ist. Er ersetzt keine Rechtsberatung; massgebend sind die Bedingungen Ihrer Airline und die geltenden Abkommen.",
+        ]},
+        { h: "Schritt 1: Den Gepäckausgabebereich nicht verlassen", p: [
+          "Melden Sie das Problem, bevor Sie durch den Zoll in die öffentliche Ankunftshalle gehen. Im Gepäckausgabebereich gibt es Schalter für Gepäckermittlung, an denen Sie den Verlust oder Schaden aufnehmen lassen. Viele Airlines bieten die Meldung zusätzlich online oder per App an.",
+          "Sie erhalten einen Bericht, meist als Property Irregularity Report (PIR) bezeichnet, mit einer Referenznummer. Diese Nummer ist der Schlüssel für alles Weitere: Suche, Nachlieferung und Entschädigung. Fotografieren Sie den Bericht und bewahren Sie Gepäckabschnitt und Bordkarte auf.",
+        ]},
+        { h: "Schritt 2: Die richtigen Angaben machen", p: [
+          "Je genauer Ihre Angaben, desto schneller wird der Koffer gefunden:",
+        ], ul: [
+          "**Beschreibung des Koffers:** Marke, Farbe, Grösse, Material, Besonderheiten wie Anhänger oder Aufkleber.",
+          "**Inhalt:** einige auffällige Gegenstände, die das Gepäck eindeutig machen.",
+          "**Lieferadresse:** das Hotel mit vollständiger Adresse und Ihre Aufenthaltsdauer; bei Bergorten auch, ob das Hotel nur mit der Bahn erreichbar ist.",
+          "**Erreichbarkeit:** eine Telefonnummer, unter der Sie im Ausland erreichbar sind, und Ihre E-Mail-Adresse.",
+        ]},
+        { h: "Schritt 3: Ihr Fahrer wartet – sagen Sie Bescheid", p: [
+          "Wenn Sie einen Transfer gebucht haben, wartet Ihr Fahrer in der Ankunftshalle. Im Preis sind 60 Minuten Wartezeit nach der tatsächlichen Landung enthalten; die Meldung von verlorenem Gepäck kann aber länger dauern, wenn vor dem Schalter eine Schlange steht.",
+          "Schicken Sie uns in diesem Fall kurz eine WhatsApp-Nachricht, sobald Sie wissen, dass es länger dauert. Der Fahrer weiss dann Bescheid und muss sich keine Sorgen machen, dass Sie den Treffpunkt verpasst haben. Wie das Treffen in der Ankunftshalle funktioniert, steht in [Ankunft 1 oder Ankunft 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
+        ]},
+        { h: "Die Fristen: unbedingt einhalten", p: [
+          "Für internationale Flüge regelt das Montrealer Übereinkommen die Haftung der Airlines für Gepäck. Wichtig sind vor allem die Fristen für die schriftliche Meldung an die Airline:",
+        ], table: { head: ["Fall", "Frist für die schriftliche Meldung"], rows: [
+          ["Beschädigtes Gepäck oder fehlender Inhalt", "innerhalb von 7 Tagen nach Erhalt"],
+          ["Verspätetes Gepäck", "innerhalb von 21 Tagen, nachdem es Ihnen zur Verfügung gestellt wurde"],
+          ["Verlorenes Gepäck", "gilt als verloren, wenn es nach 21 Tagen nicht aufgetaucht ist"],
+        ]}},
+        { p: [
+          "Die Haftung der Airline ist pro Person begrenzt; seit Ende 2024 liegt die Obergrenze bei 1'519 Sonderziehungsrechten, einer Recheneinheit des Internationalen Währungsfonds. Ersetzt wird grundsätzlich der nachgewiesene Schaden, nicht automatisch der Höchstbetrag. Für wertvolle Gegenstände lohnt sich vor dem Flug eine Wertdeklaration bei der Airline oder eine Reisegepäckversicherung.",
+        ]},
+        { h: "Notwendige Einkäufe: Belege aufbewahren", p: [
+          "Wenn Ihr Koffer verspätet ist, dürfen Sie in angemessenem Rahmen das Nötigste kaufen: Zahnbürste, Wäsche, etwas Kleidung, bei einer Bergreise auch warme Sachen. Bewahren Sie alle Belege auf und reichen Sie sie zusammen mit der Referenznummer bei der Airline ein. Was angemessen ist, hängt von den Umständen ab; Luxuseinkäufe werden in der Regel nicht ersetzt.",
+          "Viele Airlines geben am Schalter auch ein kleines Notfallset aus. Fragen Sie danach.",
+        ]},
+        { h: "Die Nachlieferung: ins Hotel, auch in die Berge", p: [
+          "Wird Ihr Koffer gefunden, liefert ihn die Airline in der Regel an die angegebene Adresse nach. In die Stadt geht das oft innerhalb von ein bis zwei Tagen; in Bergorte und vor allem in autofreie Orte wie Zermatt oder Wengen kann es länger dauern, weil der Kurier bis zur letzten Station fährt und das Hotel den Rest übernimmt.",
+          "Verfolgen Sie den Status mit der Referenznummer online. Wenn die Airline Ihnen anbietet, den Koffer selbst am Flughafen abzuholen, und Sie das wollen, können Sie dafür eine Fahrt bei uns buchen.",
+        ]},
+        { h: "Beschädigtes Gepäck", p: [
+          "Ist der Koffer da, aber beschädigt – ein gebrochener Griff, ein abgerissenes Rad, ein aufgeplatzter Reissverschluss –, melden Sie das ebenfalls noch im Gepäckausgabebereich und lassen Sie den Schaden dokumentieren. Machen Sie Fotos. Entdecken Sie einen Schaden am Inhalt erst im Hotel, melden Sie ihn innerhalb von sieben Tagen schriftlich bei der Airline.",
+        ]},
+        { h: "So beugen Sie vor", p: [
+          "Ein paar einfache Massnahmen machen den Unterschied, falls etwas schiefgeht:",
+        ], ul: [
+          "**Wichtiges ins Handgepäck:** Medikamente, Dokumente, Ladegeräte, eine Garnitur Wäsche und bei Bergreisen eine warme Schicht.",
+          "**Koffer kennzeichnen:** Namensschild mit Telefonnummer innen und aussen, alte Anhänger entfernen.",
+          "**Foto vom Koffer und vom Inhalt** vor dem Abflug machen.",
+          "**Gepäck-Tracker** in den Koffer legen, damit Sie selbst sehen, wo er ist.",
+          "**Genug Umsteigezeit** einplanen; knappe Anschlüsse sind die häufigste Ursache für verspätetes Gepäck.",
+        ]},
+        { h: "Häufige Fragen zu verlorenem Gepäck", p: []},
+        { h3: "Wo melde ich verlorenes Gepäck am Flughafen Zürich?", p: [
+          "Am Schalter für Gepäckermittlung im Gepäckausgabebereich, bevor Sie in die öffentliche Ankunftshalle gehen. Viele Airlines bieten zusätzlich eine Online-Meldung an.",
+        ]},
+        { h3: "Wie lange habe ich Zeit, einen Schaden zu melden?", p: [
+          "Bei Beschädigung sieben Tage nach Erhalt, bei Verspätung 21 Tage, nachdem Ihnen das Gepäck zur Verfügung gestellt wurde.",
+        ]},
+        { h3: "Wann gilt ein Koffer als verloren?", p: [
+          "Wenn er 21 Tage nach dem vorgesehenen Ankunftstag nicht aufgetaucht ist.",
+        ]},
+        { h3: "Wartet der Fahrer, wenn die Meldung länger dauert?", p: [
+          "Schreiben Sie uns per WhatsApp, sobald absehbar ist, dass es länger dauert. So kann der Fahrer planen und weiss, dass Sie noch kommen.",
+        ]},
+        { h3: "Bringt die Airline den Koffer auch nach Zermatt?", p: [
+          "In der Regel ja, an die angegebene Adresse. In autofreie Orte kann die Lieferung etwas länger dauern.",
+          "Jetzt [Transfer ab Flughafen Zürich buchen](/buchung) – Fahrer wartet in der Ankunftshalle.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Luggage Lost, Delayed or Damaged at Zurich Airport: What to Do Now",
+      seo: "Lost Luggage at Zurich Airport: What to Do",
+      excerpt: "The belt has stopped and your suitcase is not there: what you need to do while still at the airport, which deadlines apply, what you are entitled to under the Montreal Convention, how delivery to your hotel works – and what happens with your waiting driver.",
+      body: [
+        { p: [
+          "Few things spoil an arrival like an empty baggage belt. The good news: the vast majority of delayed suitcases turn up within a few days and are delivered. What matters is doing the right thing in the first few minutes – otherwise it becomes difficult to assert your claims later.",
+          "This guide explains step by step what to do with delayed, lost or damaged luggage at Zurich Airport. It does not replace legal advice; your airline's conditions and the applicable conventions apply.",
+        ]},
+        { h: "Step 1: do not leave the baggage claim area", p: [
+          "Report the problem before you go through customs into the public arrivals hall. In the baggage claim area there are baggage services counters where you can have the loss or damage recorded. Many airlines also offer reporting online or via their app.",
+          "You receive a report, usually called a Property Irregularity Report (PIR), with a reference number. This number is the key to everything that follows: search, delivery and compensation. Photograph the report and keep your baggage tag and boarding pass.",
+        ]},
+        { h: "Step 2: give the right details", p: [
+          "The more precise your details, the faster the suitcase is found:",
+        ], ul: [
+          "**Description of the suitcase:** brand, colour, size, material, distinguishing features such as tags or stickers.",
+          "**Contents:** a few distinctive items that make the luggage unique.",
+          "**Delivery address:** the hotel with its full address and the length of your stay; for mountain resorts, also whether the hotel can only be reached by train.",
+          "**Contact:** a phone number on which you can be reached abroad, and your email address.",
+        ]},
+        { h: "Step 3: your driver is waiting – let us know", p: [
+          "If you have booked a transfer, your driver is waiting in the arrivals hall. The price includes 60 minutes of waiting time after the actual landing, but reporting lost luggage can take longer if there is a queue at the counter.",
+          "In that case, send us a quick WhatsApp message as soon as you know it will take longer. The driver is then informed and need not worry that you have missed the meeting point. How the meeting in the arrivals hall works is explained in [Arrival 1 or Arrival 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
+        ]},
+        { h: "The deadlines: be sure to meet them", p: [
+          "For international flights the Montreal Convention governs airlines' liability for luggage. The deadlines for written notification to the airline are particularly important:",
+        ], table: { head: ["Case", "Deadline for written notification"], rows: [
+          ["Damaged luggage or missing contents", "within 7 days of receipt"],
+          ["Delayed luggage", "within 21 days of it being placed at your disposal"],
+          ["Lost luggage", "considered lost if it has not turned up after 21 days"],
+        ]}},
+        { p: [
+          "The airline's liability is limited per person; since the end of 2024 the ceiling has been 1,519 Special Drawing Rights, a unit of account of the International Monetary Fund. In principle the proven loss is compensated, not automatically the maximum amount. For valuable items, a declaration of value with the airline or travel luggage insurance before the flight is worthwhile.",
+        ]},
+        { h: "Essential purchases: keep the receipts", p: [
+          "If your suitcase is delayed, you may buy the essentials within reason: a toothbrush, underwear, some clothing, and for a mountain trip warm things too. Keep all receipts and submit them to the airline together with the reference number. What is reasonable depends on the circumstances; luxury purchases are usually not reimbursed.",
+          "Many airlines also hand out a small emergency kit at the counter. Ask for one.",
+        ]},
+        { h: "Delivery: to your hotel, even in the mountains", p: [
+          "When your suitcase is found, the airline usually delivers it to the address you gave. In the city this often happens within one or two days; to mountain resorts, and especially car-free villages such as Zermatt or Wengen, it can take longer because the courier goes to the last station and the hotel takes care of the rest.",
+          "Track the status online with your reference number. If the airline offers you the option of collecting the suitcase yourself at the airport and you want to do so, you can book a ride with us for it.",
+        ]},
+        { h: "Damaged luggage", p: [
+          "If the suitcase arrives but is damaged – a broken handle, a torn-off wheel, a burst zip – report it while still in the baggage claim area and have the damage documented. Take photos. If you only discover damage to the contents at the hotel, report it to the airline in writing within seven days.",
+        ]},
+        { h: "How to prevent problems", p: [
+          "A few simple measures make all the difference if something goes wrong:",
+        ], ul: [
+          "**Essentials in your hand luggage:** medication, documents, chargers, a change of underwear and, for mountain trips, a warm layer.",
+          "**Label your suitcase:** a name tag with your phone number inside and outside; remove old tags.",
+          "**Take a photo of the suitcase and its contents** before departure.",
+          "**Put a luggage tracker** in your suitcase so you can see where it is yourself.",
+          "**Allow enough connection time**; tight connections are the most common cause of delayed luggage.",
+        ]},
+        { h: "Frequently asked questions about lost luggage", p: []},
+        { h3: "Where do I report lost luggage at Zurich Airport?", p: [
+          "At the baggage services counter in the baggage claim area, before you go into the public arrivals hall. Many airlines also offer online reporting.",
+        ]},
+        { h3: "How long do I have to report damage?", p: [
+          "Seven days after receipt for damage, 21 days after the luggage was placed at your disposal for delay.",
+        ]},
+        { h3: "When is a suitcase considered lost?", p: [
+          "If it has not turned up 21 days after the intended day of arrival.",
+        ]},
+        { h3: "Will the driver wait if reporting takes longer?", p: [
+          "Message us on WhatsApp as soon as it becomes clear that it will take longer. That way the driver can plan and knows you are still coming.",
+        ]},
+        { h3: "Will the airline deliver my suitcase to Zermatt?", p: [
+          "Usually yes, to the address you gave. Delivery to car-free villages can take a little longer.",
+          "[Book a transfer from Zurich Airport now](/buchung) – your driver waits in the arrivals hall.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "barrierefrei-reisen-flughafen-zuerich-transfer",
+    date: "2026-10-07",
+    img: "/gallery/20.jpg",
+    de: {
+      title: "Barrierefrei ab Flughafen Zürich: Assistenz, Rollstuhl, Rollator und der passende Transfer",
+      seo: "Barrierefrei ab Flughafen Zürich reisen",
+      excerpt: "Mit Rollstuhl, Rollator, eingeschränkter Mobilität oder im hohen Alter vom Flugzeug bis zur Hoteltür: wie die kostenlose Assistenz am Flughafen Zürich funktioniert, wann Sie sie anmelden, welches Fahrzeug passt, was faltbare und nicht faltbare Rollstühle bedeuten – und wie Sie die Reise ohne Stress planen.",
+      body: [
+        { p: [
+          "Für Reisende mit eingeschränkter Mobilität beginnt der Stress oft nicht im Flugzeug, sondern danach: lange Wege, Gepäckband, Gedränge in der Ankunftshalle, die Frage, wie man mit Rollstuhl oder Rollator ins Auto oder in den Zug kommt. Mit der richtigen Planung lässt sich fast alles davon vermeiden.",
+          "Dieser Guide erklärt, wie die Assistenz am Flughafen Zürich funktioniert, was Sie vorab erledigen sollten und worauf es beim Transfer ankommt – ehrlich, auch dort, wo wir an Grenzen stossen.",
+        ]},
+        { h: "Die Assistenz am Flughafen: kostenlos, aber anmelden", p: [
+          "Am Flughafen Zürich gibt es für Reisende mit eingeschränkter Mobilität einen Assistenzdienst, der Sie vom Flugzeug bis in die Ankunftshalle begleitet – auf Wunsch mit Rollstuhl, durch Pass- und Zollkontrolle und zum Gepäckband. Beim Abflug funktioniert das umgekehrt. Der Dienst ist für Reisende kostenlos.",
+          "Wichtig: Melden Sie den Bedarf bei Ihrer Airline an, idealerweise bei der Buchung und spätestens 48 Stunden vor dem Flug. Geben Sie an, ob Sie kurze Strecken gehen können, ob Sie Treppen bewältigen und ob Sie einen eigenen Rollstuhl mitbringen. Je genauer die Angaben, desto besser ist die Hilfe vor Ort vorbereitet.",
+        ]},
+        { h: "Was Sie der Airline mitteilen sollten", p: [
+          "Airlines unterscheiden verschiedene Stufen der Unterstützung. Für eine gute Vorbereitung helfen diese Angaben:",
+        ], ul: [
+          "**Mobilität:** ob Sie längere Strecken nicht gehen können, Treppen nicht bewältigen oder vollständig auf einen Rollstuhl angewiesen sind.",
+          "**Eigener Rollstuhl:** Art (manuell oder elektrisch), Gewicht, Masse und bei Elektrorollstühlen der Batterietyp.",
+          "**Weitere Hilfsmittel:** Rollator, Gehstöcke, medizinische Geräte, Sauerstoff.",
+          "**Begleitung:** ob Sie allein oder mit einer Begleitperson reisen.",
+          "**Assistenzhund:** Assistenzhunde reisen nach den Regeln der Airline meist in der Kabine mit.",
+        ]},
+        { h: "Ankunft: Assistenz und Fahrer treffen sich", p: [
+          "Bei der Ankunft begleitet Sie die Assistenz bis in die öffentliche Ankunftshalle. Dort wartet Ihr Fahrer mit einem Namensschild. Teilen Sie uns bei der Buchung mit, dass Sie mit Assistenz ankommen; der Fahrer weiss dann, dass es etwas länger dauern kann, und hält Ausschau nach Ihnen.",
+          "Die 60 Minuten Wartezeit beginnen mit der tatsächlichen Landung. Wenn die Assistenz länger braucht, etwa weil der Rollstuhl erst aus dem Frachtraum kommt, schreiben Sie uns kurz per WhatsApp. Wie der Treffpunkt funktioniert, steht in [Ankunft 1 oder Ankunft 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
+        ]},
+        { h: "Welches Fahrzeug passt?", p: [
+          "Die richtige Fahrzeugklasse hängt von den Hilfsmitteln ab:",
+        ], table: { head: ["Situation", "Empfehlung"], rows: [
+          ["Gehbehinderung, Gehstock, kurze Strecken möglich", "E-Klasse oder S-Klasse, bequemer Einstieg, Fahrer hilft"],
+          ["Faltbarer Rollstuhl oder Rollator", "E-Klasse für 1–2 Personen, V-Klasse mit mehr Gepäck oder Begleitung"],
+          ["Faltbarer Elektro-Scooter", "V-Klasse, Masse und Gewicht vorab angeben"],
+          ["Nicht faltbarer Elektrorollstuhl, Sitzen im Rollstuhl nötig", "Spezialfahrzeug mit Rampe – bitte vorab anfragen"],
+        ]}},
+        { h: "Ehrlich: nicht faltbare Elektrorollstühle", p: [
+          "Unsere Fahrzeuge sind Mercedes-Limousinen und -Vans ohne Rampe. Faltbare Rollstühle, Rollatoren und viele faltbare Scooter transportieren wir problemlos, und die Fahrer helfen beim Ein- und Aussteigen. Wer jedoch im Rollstuhl sitzend befördert werden muss oder einen schweren, nicht faltbaren Elektrorollstuhl hat, braucht ein Spezialfahrzeug mit Rampe oder Lift.",
+          "Fragen Sie uns in diesem Fall vor der Buchung. Wir sagen Ihnen offen, ob wir die Fahrt abdecken können, und helfen Ihnen, eine passende Lösung zu finden – lieber eine ehrliche Antwort vorab als eine Überraschung in der Ankunftshalle.",
+        ]},
+        { h: "Was der Fahrer übernimmt", p: [
+          "Unsere Chauffeure helfen beim Gepäck, beim Ein- und Aussteigen und beim Verladen von Rollstuhl oder Rollator. Auf Wunsch fährt der Fahrer so nah wie möglich an den Hoteleingang heran und begleitet Sie bis zur Rezeption.",
+          "Für längere Strecken, etwa in die Berge, lassen sich Pausen einplanen; sagen Sie dem Fahrer einfach, wann Sie anhalten möchten. Für die Rückfahrt zum Flughafen planen wir die Abholung so, dass genug Zeit für die Assistenz beim Abflug bleibt. Wie viel Zeit Sie am Flughafen einplanen, steht in [Wie früh am Flughafen Zürich sein?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+        ]},
+        { h: "Ältere Reisende und Reisende mit unsichtbaren Einschränkungen", p: [
+          "Nicht jede Einschränkung ist sichtbar. Wer nach einem langen Flug schnell erschöpft ist, Orientierungsschwierigkeiten hat oder schlecht hört, profitiert ebenso von einer ruhigen, planbaren Ankunft. Schreiben Sie uns im Notizfeld, was Ihnen hilft – zum Beispiel, dass der Fahrer lieber per Nachricht als per Anruf Kontakt aufnimmt oder dass Sie etwas mehr Zeit brauchen.",
+          "Für Familien mit älteren Angehörigen, die zum ersten Mal in die Schweiz reisen, ist ein Transfer oft die entspannteste Lösung: ein Fahrer, ein Fahrzeug, kein Umsteigen.",
+        ]},
+        { h: "Barrierefreiheit in Zug und Hotel", p: [
+          "Wer in der Schweiz mit der Bahn weiterreist, kann bei den SBB eine Ein- und Ausstiegshilfe anmelden. Viele Bergbahnen sind teilweise barrierefrei, aber nicht alle; prüfen Sie das vorab, besonders bei autofreien Orten wie Zermatt oder Wengen.",
+          "Bei Hotels lohnt sich eine direkte Rückfrage, ob das Zimmer wirklich schwellenfrei ist, ob es eine bodengleiche Dusche gibt und ob der Eingang ohne Stufen erreichbar ist. Tragen Sie die Adresse bei der Buchung genau ein; der Fahrer wählt dann den besten Halteplatz.",
+        ]},
+        { h: "Häufige Fragen zu barrierefreien Transfers", p: []},
+        { h3: "Ist die Assistenz am Flughafen Zürich kostenlos?", p: [
+          "Ja, für Reisende ist sie kostenlos. Melden Sie sie bei Ihrer Airline an, spätestens 48 Stunden vor dem Flug.",
+        ]},
+        { h3: "Kann ich einen faltbaren Rollstuhl mitnehmen?", p: [
+          "Ja, faltbare Rollstühle und Rollatoren transportieren wir in allen Fahrzeugklassen; mit viel Gepäck empfehlen wir die V-Klasse.",
+        ]},
+        { h3: "Haben Sie Fahrzeuge mit Rampe?", p: [
+          "Unsere Fahrzeuge haben keine Rampe. Für nicht faltbare Elektrorollstühle fragen Sie uns bitte vorab, damit wir gemeinsam eine Lösung finden.",
+        ]},
+        { h3: "Darf mein Assistenzhund mitfahren?", p: [
+          "Ja, Assistenzhunde sind willkommen. Mehr zum Reisen mit Hunden steht in [Mit Hund oder Katze ab Flughafen Zürich](/blog/mit-hund-oder-katze-ab-flughafen-zuerich-transfer).",
+        ]},
+        { h3: "Wartet der Fahrer, wenn die Assistenz länger braucht?", p: [
+          "Geben Sie bei der Buchung an, dass Sie mit Assistenz ankommen, und schreiben Sie per WhatsApp, wenn es länger dauert. Der Fahrer stellt sich darauf ein.",
+          "Jetzt [Transfer anfragen oder buchen](/buchung) – sagen Sie uns im Notizfeld, was Sie brauchen.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Accessible Travel From Zurich Airport: Assistance, Wheelchair, Rollator and the Right Transfer",
+      seo: "Accessible Travel From Zurich Airport",
+      excerpt: "With a wheelchair, rollator, reduced mobility or in old age, from the plane to the hotel door: how the free assistance at Zurich Airport works, when to book it, which vehicle fits, what folding and non-folding wheelchairs mean – and how to plan the journey without stress.",
+      body: [
+        { p: [
+          "For travellers with reduced mobility the stress often does not start on the plane but afterwards: long walks, the baggage belt, crowds in the arrivals hall, the question of how to get into the car or train with a wheelchair or rollator. With the right planning, almost all of it can be avoided.",
+          "This guide explains how assistance at Zurich Airport works, what to arrange in advance and what matters for the transfer – honestly, including where we reach our limits.",
+        ]},
+        { h: "Assistance at the airport: free, but book it", p: [
+          "Zurich Airport has an assistance service for travellers with reduced mobility that accompanies you from the aircraft to the arrivals hall – with a wheelchair if needed, through passport and customs control and to the baggage belt. On departure it works the other way round. The service is free of charge for travellers.",
+          "Important: notify your airline of your needs, ideally when booking and at the latest 48 hours before the flight. State whether you can walk short distances, whether you can manage stairs and whether you are bringing your own wheelchair. The more precise the information, the better the help on site is prepared.",
+        ]},
+        { h: "What to tell the airline", p: [
+          "Airlines distinguish different levels of support. These details help with good preparation:",
+        ], ul: [
+          "**Mobility:** whether you cannot walk longer distances, cannot manage stairs or depend completely on a wheelchair.",
+          "**Your own wheelchair:** type (manual or electric), weight, dimensions and, for electric wheelchairs, the battery type.",
+          "**Other aids:** rollator, walking sticks, medical devices, oxygen.",
+          "**Companion:** whether you are travelling alone or with a companion.",
+          "**Assistance dog:** assistance dogs usually travel in the cabin according to the airline's rules.",
+        ]},
+        { h: "Arrival: assistance and driver meet", p: [
+          "On arrival the assistance accompanies you to the public arrivals hall. There your driver waits with a name sign. Tell us when booking that you are arriving with assistance; the driver then knows it may take a little longer and will look out for you.",
+          "The 60 minutes of waiting time start with the actual landing. If the assistance takes longer, for example because the wheelchair has to come out of the hold first, send us a quick WhatsApp message. How the meeting point works is explained in [Arrival 1 or Arrival 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
+        ]},
+        { h: "Which vehicle fits?", p: [
+          "The right vehicle class depends on your mobility aids:",
+        ], table: { head: ["Situation", "Recommendation"], rows: [
+          ["Walking difficulties, walking stick, short distances possible", "E-Class or S-Class, comfortable entry, driver helps"],
+          ["Folding wheelchair or rollator", "E-Class for 1–2 people, V-Class with more luggage or a companion"],
+          ["Folding mobility scooter", "V-Class, give dimensions and weight in advance"],
+          ["Non-folding power wheelchair, must stay seated in it", "Special vehicle with ramp – please ask in advance"],
+        ]}},
+        { h: "Honestly: non-folding power wheelchairs", p: [
+          "Our vehicles are Mercedes saloons and vans without a ramp. We transport folding wheelchairs, rollators and many folding scooters without any problem, and the drivers help with getting in and out. However, anyone who needs to travel seated in their wheelchair or has a heavy, non-folding power wheelchair needs a special vehicle with a ramp or lift.",
+          "In that case, please ask us before booking. We will tell you openly whether we can cover the journey and help you find a suitable solution – better an honest answer in advance than a surprise in the arrivals hall.",
+        ]},
+        { h: "What the driver takes care of", p: [
+          "Our chauffeurs help with luggage, with getting in and out and with loading the wheelchair or rollator. On request the driver pulls up as close as possible to the hotel entrance and accompanies you to reception.",
+          "For longer journeys, for example to the mountains, breaks can be planned; simply tell the driver when you would like to stop. For the return to the airport we plan the pickup so there is enough time for assistance on departure. How much time to allow at the airport is explained in [How early should you be at Zurich Airport?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+        ]},
+        { h: "Older travellers and travellers with invisible impairments", p: [
+          "Not every impairment is visible. Anyone who tires quickly after a long flight, has difficulty finding their way or is hard of hearing also benefits from a calm, predictable arrival. Tell us in the notes field what helps you – for example, that the driver should contact you by message rather than by phone, or that you need a little more time.",
+          "For families with older relatives visiting Switzerland for the first time, a transfer is often the most relaxed solution: one driver, one vehicle, no changes.",
+        ]},
+        { h: "Accessibility on trains and in hotels", p: [
+          "If you continue by train in Switzerland, you can request boarding and alighting assistance from SBB. Many mountain railways are partly accessible, but not all; check in advance, especially for car-free resorts such as Zermatt or Wengen.",
+          "With hotels it is worth asking directly whether the room is genuinely step-free, whether there is a level-access shower and whether the entrance can be reached without steps. Enter the address precisely when booking; the driver will then choose the best place to stop.",
+        ]},
+        { h: "Frequently asked questions about accessible transfers", p: []},
+        { h3: "Is assistance at Zurich Airport free?", p: [
+          "Yes, it is free for travellers. Book it with your airline at the latest 48 hours before the flight.",
+        ]},
+        { h3: "Can I bring a folding wheelchair?", p: [
+          "Yes, we transport folding wheelchairs and rollators in all vehicle classes; with a lot of luggage we recommend the V-Class.",
+        ]},
+        { h3: "Do you have vehicles with a ramp?", p: [
+          "Our vehicles do not have a ramp. For non-folding power wheelchairs, please ask us in advance so we can find a solution together.",
+        ]},
+        { h3: "May my assistance dog come along?", p: [
+          "Yes, assistance dogs are welcome. More on travelling with dogs is in [Flying with a dog or cat via Zurich Airport](/blog/mit-hund-oder-katze-ab-flughafen-zuerich-transfer).",
+        ]},
+        { h3: "Will the driver wait if the assistance takes longer?", p: [
+          "Mention when booking that you are arriving with assistance, and message us on WhatsApp if it takes longer. The driver will plan accordingly.",
+          "[Enquire about or book a transfer now](/buchung) – tell us in the notes field what you need.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "beste-reisezeit-schweiz-monat-fuer-monat",
+    date: "2026-10-07",
+    img: "/gallery/5.jpg",
+    de: {
+      title: "Beste Reisezeit für die Schweiz: Monat für Monat – Wetter, Saisons, Anlässe und Zwischensaison",
+      seo: "Beste Reisezeit für die Schweiz",
+      excerpt: "Skifahren im Februar, Bergsommer im Juli, goldene Lärchen im Oktober, Weihnachtsmärkte im Dezember: wann die Schweiz für welche Reise am schönsten ist, wann es voll und teuer wird, welche Wochen Sie wegen der Zwischensaison meiden sollten – und was das für Ihre Anreise ab Zürich bedeutet.",
+      body: [
+        { p: [
+          "Die Schweiz hat keine schlechte Reisezeit, aber sehr unterschiedliche. Dasselbe Bergdorf ist im Februar ein Skiort, im Juli ein Wanderparadies und im November manchmal fast geschlossen. Wer weiss, was er sucht, findet für jede Reise den passenden Monat.",
+          "Dieser Guide geht die Monate durch, zeigt Hoch- und Zwischensaison und nennt die wichtigsten Anlässe. Am Ende finden Sie eine Kurzübersicht nach Reisetyp.",
+        ]},
+        { h: "Die Schweiz auf einen Blick: vier Reisezeiten", p: [
+          "Grob lassen sich vier Phasen unterscheiden:",
+        ], table: { head: ["Phase", "Monate", "Charakter"], rows: [
+          ["Wintersaison", "Mitte Dezember bis März", "Skifahren, Schnee, Weihnachts- und Neujahrsferien, Wintersport-Anlässe"],
+          ["Frühling und Zwischensaison", "April bis Mitte Juni", "Blüte im Tal und im Tessin, viele Bergbahnen in Revision, hohe Pässe noch zu"],
+          ["Bergsommer", "Mitte Juni bis September", "Pässe offen, Wandern, Seen, Festivals, Hauptsaison"],
+          ["Herbst und Zwischensaison", "Oktober bis Mitte Dezember", "Herbstfarben, Weinlese, ruhiger; im November viele Bergorte geschlossen"],
+        ]}},
+        { h: "Januar und Februar: Hochwinter", p: [
+          "Die beste Zeit für Skiferien mit sicherem Schnee. Die Tage sind kurz und kalt, die Berge sonnig und klar. Anfang Januar ist es nach den Feiertagen etwas ruhiger; im Februar füllen die Sportferien in der Schweiz und den Nachbarländern die Skiorte.",
+          "Wichtige Anlässe sind das WEF in Davos und die Lauberhornrennen in Wengen im Januar sowie die Basler Fasnacht im Februar oder März. Mehr dazu in [Lauberhornrennen Wengen](/blog/lauberhornrennen-wengen-anreise-transfer) und im [WEF-Transfer-Guide](/blog/wef-davos-transfer-guide).",
+        ]},
+        { h: "März: Frühlingsskifahren", p: [
+          "Lange, sonnige Tage und meist noch gute Schneeverhältnisse in den höheren Skigebieten. Im Tal beginnt der Frühling, im Tessin blühen die ersten Kamelien. Ostern kann je nach Jahr in den März oder April fallen und bringt dann viel Verkehr am Gotthard.",
+        ]},
+        { h: "April und Mai: Blüte und Zwischensaison", p: [
+          "Im Mittelland und im Tessin ist es jetzt besonders schön: Obstblüte, grüne Wiesen, angenehme Temperaturen. In den Bergen dagegen ist Zwischensaison: Viele Skigebiete schliessen nach Ostern, zahlreiche Bergbahnen und Hotels machen Revisionspause, und die hohen Alpenpässe sind noch geschlossen.",
+          "Für Städtereisen nach Zürich, Luzern, Bern oder Basel, für das Tessin und den Genfersee sind April und Mai ideal. Für Bergziele lohnt sich ein Blick auf die Öffnungszeiten von Bahnen und Hotels. Im Mai beginnt die Saison der Seeschifffahrt.",
+        ]},
+        { h: "Juni: Start in den Bergsommer", p: [
+          "Die Tage sind am längsten, die Alpwiesen blühen, und im Laufe des Monats öffnen die hohen Pässe wie Gotthard, Furka und Grimsel. Die Bergbahnen nehmen den Sommerbetrieb auf. Juni ist oft weniger voll als Juli und August und deshalb eine der schönsten Reisezeiten.",
+          "In Basel findet im Juni die Art Basel statt; Hotels sind dann früh ausgebucht.",
+        ]},
+        { h: "Juli und August: Hochsommer und Hauptsaison", p: [
+          "Die beliebteste Reisezeit: warm im Tal, angenehm in den Bergen, alle Bahnen und Pässe offen. Seen laden zum Baden ein, und die Festivals reihen sich aneinander – Montreux Jazz Festival, Street Parade in Zürich, Filmfestival Locarno, Lucerne Festival. Am 1. August feiert die Schweiz ihren Nationalfeiertag mit Feuerwerken und Höhenfeuern.",
+          "Die Kehrseite: Beliebte Ziele wie Luzern, Interlaken, Jungfraujoch und Zermatt sind voll, Hotels teuer, und an Samstagen staut es sich am Gotthard. Früh buchen lohnt sich. Zu den grossen Anlässen siehe [Sommer in Zürich](/blog/sommer-zuerich-street-parade-zueri-faescht-transfer) und unsere [Eventseite](/events).",
+        ]},
+        { h: "September: der Geheimtipp", p: [
+          "Für viele die beste Reisezeit überhaupt: stabiles Wetter, klare Fernsicht, angenehme Temperaturen und deutlich weniger Gedränge als im August. Bergbahnen und Pässe sind noch offen, im Wallis und am Genfersee beginnt die Weinlese. Ideal zum Wandern und für Rundreisen.",
+        ]},
+        { h: "Oktober: goldener Herbst", p: [
+          "Die Wälder färben sich, und im Engadin und Wallis leuchten die Lärchen gegen Ende des Monats golden. Im Tessin ist Kastanienzeit. In St. Gallen findet die Olma statt. Ab Mitte oder Ende Oktober beginnen viele Bergbahnen mit der Revisionspause, und einige Pässe schliessen.",
+        ]},
+        { h: "November: ruhig, mit Vorsicht planen", p: [
+          "November ist die ruhigste Zeit des Jahres. In den Städten ist das kein Problem, Ende des Monats öffnen die ersten Weihnachtsmärkte. In vielen Bergorten dagegen sind zahlreiche Hotels, Restaurants und Bahnen geschlossen, bis die Wintersaison beginnt. Gletscherskigebiete wie Zermatt oder der Titlis bei Engelberg sind oft schon offen.",
+        ]},
+        { h: "Dezember: Weihnachtsmärkte und Saisonstart", p: [
+          "Der Advent bringt Weihnachtsmärkte in Zürich, Basel, Luzern und Bern; Mitte Dezember beginnt in den meisten Skigebieten die Saison. Zwischen Weihnachten und Neujahr sind die Bergorte voll, der Spengler Cup in Davos und der Silvesterzauber in Zürich sind Höhepunkte. Mehr in [Weihnachtsmärkte ab Flughafen Zürich](/blog/weihnachtsmaerkte-zuerich-basel-transfer-dezember), [Spengler Cup Davos](/blog/spengler-cup-davos-anreise-transfer) und [Silvester in Zürich](/blog/silvester-zuerich-feuerwerk-transfer).",
+        ]},
+        { h: "Kurzübersicht nach Reisetyp", p: [
+          "Welcher Monat passt zu Ihnen?",
+        ], ul: [
+          "**Skiferien:** Januar bis März, schneesicher ab Mitte Dezember in hohen Lagen. Ziele in [Die besten Skigebiete ab Flughafen Zürich](/blog/skigebiete-ab-flughafen-zuerich-fahrzeit-transfer).",
+          "**Wandern und Berge:** Mitte Juni bis September, am schönsten im September.",
+          "**Städtereisen:** fast ganzjährig, besonders April bis Juni und September bis Oktober.",
+          "**Tessin und Seen:** April bis Oktober, mit Blüte im Frühling und Kastanien im Herbst.",
+          "**Weniger Gedränge, gute Preise:** Juni, September und Anfang Oktober.",
+          "**Meiden für Bergziele:** Ende April bis Mitte Juni und November, wegen der Zwischensaison.",
+        ]},
+        { h: "Was die Reisezeit für die Anreise bedeutet", p: [
+          "Die Jahreszeit beeinflusst auch die Fahrt ab Flughafen Zürich. Im Winter planen wir auf Bergstrecken mehr Zeit ein, an Wechselsamstagen sind die Zufahrten voll, und Skigepäck bis zu vier Säcken pro Fahrzeug ist inklusive. Im Sommer ist der Gotthard an Ferienwochenenden das Nadelöhr, und Pässe wie der Gotthardpass bieten landschaftliche Alternativen.",
+          "Unabhängig vom Monat gilt: Der Festpreis pro Fahrzeug steht vorab fest, Wochenenden und Feiertage kosten nichts extra, nur zwischen 00:00 und 06:00 Uhr gilt der Nachttarif von 20 %. Wie Sie die Abholzeit für die Rückreise berechnen, zeigt [Wann losfahren zum Flughafen Zürich?](/blog/wann-losfahren-zum-flughafen-zuerich-abholzeit-berechnen).",
+        ]},
+        { h: "Häufige Fragen zur besten Reisezeit", p: []},
+        { h3: "Wann ist die beste Reisezeit für die Schweiz?", p: [
+          "Für Berge und Wandern Mitte Juni bis September, besonders September; für Skiferien Januar bis März; für Städte und das Tessin Frühling und Herbst.",
+        ]},
+        { h3: "Wann ist es in der Schweiz am günstigsten?", p: [
+          "In der Zwischensaison und in ruhigen Wochen wie Anfang Januar, Juni und September. Beachten Sie aber, dass in der Zwischensaison viele Bergangebote geschlossen sind.",
+        ]},
+        { h3: "Ist das Jungfraujoch ganzjährig offen?", p: [
+          "Ja, das Jungfraujoch ist ganzjährig erreichbar; bei schlechtem Wetter ist die Sicht jedoch eingeschränkt.",
+        ]},
+        { h3: "Wann sind die Alpenpässe offen?", p: [
+          "Die hohen Pässe sind meist von Juni bis Oktober befahrbar. Die genauen Daten hängen vom Schnee ab.",
+        ]},
+        { h3: "Fahren Sie auch in der Zwischensaison in die Berge?", p: [
+          "Ja, ganzjährig. Prüfen Sie nur vorab, ob Ihr Hotel und die gewünschten Bahnen geöffnet sind.",
+          "Jetzt [Transfer ab Flughafen Zürich buchen](/buchung) – zu jeder Jahreszeit zum Festpreis.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Best Time to Visit Switzerland: Month by Month – Weather, Seasons, Events and Shoulder Season",
+      seo: "Best Time to Visit Switzerland",
+      excerpt: "Skiing in February, mountain summer in July, golden larches in October, Christmas markets in December: when Switzerland is at its best for which kind of trip, when it gets crowded and expensive, which weeks to avoid because of the shoulder season – and what that means for your journey from Zurich.",
+      body: [
+        { p: [
+          "Switzerland has no bad time to visit, but very different ones. The same mountain village is a ski resort in February, a hiking paradise in July and sometimes almost closed in November. If you know what you are looking for, you will find the right month for every trip.",
+          "This guide goes through the months, shows peak and shoulder seasons and names the most important events. At the end you will find a quick overview by type of trip.",
+        ]},
+        { h: "Switzerland at a glance: four travel seasons", p: [
+          "Roughly, four phases can be distinguished:",
+        ], table: { head: ["Phase", "Months", "Character"], rows: [
+          ["Winter season", "mid-December to March", "Skiing, snow, Christmas and New Year holidays, winter sports events"],
+          ["Spring and shoulder season", "April to mid-June", "Blossom in the valleys and Ticino, many mountain railways in maintenance, high passes still closed"],
+          ["Mountain summer", "mid-June to September", "Passes open, hiking, lakes, festivals, peak season"],
+          ["Autumn and shoulder season", "October to mid-December", "Autumn colours, grape harvest, quieter; in November many mountain resorts closed"],
+        ]}},
+        { h: "January and February: high winter", p: [
+          "The best time for a ski holiday with reliable snow. The days are short and cold, the mountains sunny and clear. Early January is a little quieter after the holidays; in February the sports holidays in Switzerland and neighbouring countries fill the ski resorts.",
+          "Important events are the WEF in Davos and the Lauberhorn races in Wengen in January, and Basel Fasnacht in February or March. More in [Lauberhorn races Wengen](/blog/lauberhornrennen-wengen-anreise-transfer) and in the [WEF transfer guide](/blog/wef-davos-transfer-guide).",
+        ]},
+        { h: "March: spring skiing", p: [
+          "Long, sunny days and usually still good snow in the higher ski areas. In the valleys spring begins, and the first camellias bloom in Ticino. Depending on the year, Easter can fall in March or April and then brings heavy traffic at the Gotthard.",
+        ]},
+        { h: "April and May: blossom and shoulder season", p: [
+          "The Swiss plateau and Ticino are particularly beautiful now: fruit blossom, green meadows, pleasant temperatures. In the mountains, however, it is shoulder season: many ski areas close after Easter, numerous mountain railways and hotels take a maintenance break, and the high Alpine passes are still closed.",
+          "For city breaks to Zurich, Lucerne, Bern or Basel, for Ticino and Lake Geneva, April and May are ideal. For mountain destinations, check the opening times of railways and hotels. In May the lake steamer season begins.",
+        ]},
+        { h: "June: the start of mountain summer", p: [
+          "The days are at their longest, the alpine meadows are in bloom, and during the month the high passes such as the Gotthard, Furka and Grimsel open. The mountain railways start their summer service. June is often less crowded than July and August and therefore one of the most beautiful times to travel.",
+          "Art Basel takes place in Basel in June; hotels book up early.",
+        ]},
+        { h: "July and August: high summer and peak season", p: [
+          "The most popular time to travel: warm in the valleys, pleasant in the mountains, all railways and passes open. The lakes invite you to swim, and the festivals follow one another – Montreux Jazz Festival, Street Parade in Zurich, Locarno Film Festival, Lucerne Festival. On 1 August Switzerland celebrates its national day with fireworks and bonfires on the hills.",
+          "The downside: popular destinations such as Lucerne, Interlaken, the Jungfraujoch and Zermatt are crowded, hotels expensive, and on Saturdays there are queues at the Gotthard. Booking early pays off. For the big events see [Summer in Zurich](/blog/sommer-zuerich-street-parade-zueri-faescht-transfer) and our [events page](/events).",
+        ]},
+        { h: "September: the insider tip", p: [
+          "For many the best time of all: settled weather, clear views, pleasant temperatures and far fewer crowds than in August. Mountain railways and passes are still open, and the grape harvest begins in Valais and around Lake Geneva. Ideal for hiking and round trips.",
+        ]},
+        { h: "October: golden autumn", p: [
+          "The forests change colour, and towards the end of the month the larches glow gold in the Engadin and Valais. In Ticino it is chestnut season. St. Gallen hosts the Olma fair. From mid or late October many mountain railways begin their maintenance break, and some passes close.",
+        ]},
+        { h: "November: quiet, plan with care", p: [
+          "November is the quietest time of the year. In the cities that is no problem, and at the end of the month the first Christmas markets open. In many mountain resorts, however, numerous hotels, restaurants and railways are closed until the winter season begins. Glacier ski areas such as Zermatt or the Titlis near Engelberg are often already open.",
+        ]},
+        { h: "December: Christmas markets and the start of the season", p: [
+          "Advent brings Christmas markets in Zurich, Basel, Lucerne and Bern; in mid-December the season starts in most ski areas. Between Christmas and New Year the mountain resorts are full, and the Spengler Cup in Davos and Silvesterzauber in Zurich are highlights. More in [Christmas markets from Zurich Airport](/blog/weihnachtsmaerkte-zuerich-basel-transfer-dezember), [Spengler Cup Davos](/blog/spengler-cup-davos-anreise-transfer) and [New Year's Eve in Zurich](/blog/silvester-zuerich-feuerwerk-transfer).",
+        ]},
+        { h: "Quick overview by type of trip", p: [
+          "Which month suits you?",
+        ], ul: [
+          "**Ski holidays:** January to March, snow-sure at high altitude from mid-December. Destinations in [The best ski resorts from Zurich Airport](/blog/skigebiete-ab-flughafen-zuerich-fahrzeit-transfer).",
+          "**Hiking and mountains:** mid-June to September, at its best in September.",
+          "**City breaks:** almost all year, especially April to June and September to October.",
+          "**Ticino and the lakes:** April to October, with blossom in spring and chestnuts in autumn.",
+          "**Fewer crowds, good prices:** June, September and early October.",
+          "**Avoid for mountain destinations:** late April to mid-June and November, because of the shoulder season.",
+        ]},
+        { h: "What the season means for your journey", p: [
+          "The time of year also affects the drive from Zurich Airport. In winter we allow more time on mountain routes, the access roads are busy on changeover Saturdays, and ski luggage of up to four bags per vehicle is included. In summer the Gotthard is the bottleneck on holiday weekends, and passes such as the Gotthard Pass offer scenic alternatives.",
+          "Whatever the month: the fixed price per vehicle is known in advance, weekends and public holidays cost nothing extra, and only between midnight and 6 am does the 20 % night tariff apply. How to calculate the pickup time for your return is shown in [When to leave for Zurich Airport?](/blog/wann-losfahren-zum-flughafen-zuerich-abholzeit-berechnen).",
+        ]},
+        { h: "Frequently asked questions about the best time to visit", p: []},
+        { h3: "When is the best time to visit Switzerland?", p: [
+          "For mountains and hiking mid-June to September, especially September; for ski holidays January to March; for cities and Ticino spring and autumn.",
+        ]},
+        { h3: "When is Switzerland cheapest?", p: [
+          "In the shoulder season and in quiet weeks such as early January, June and September. Note, however, that many mountain offerings are closed in the shoulder season.",
+        ]},
+        { h3: "Is the Jungfraujoch open all year?", p: [
+          "Yes, the Jungfraujoch can be reached all year round; in bad weather, however, visibility is limited.",
+        ]},
+        { h3: "When are the Alpine passes open?", p: [
+          "The high passes are usually open from June to October. The exact dates depend on the snow.",
+        ]},
+        { h3: "Do you drive to the mountains in the shoulder season too?", p: [
+          "Yes, all year round. Just check in advance whether your hotel and the railways you want are open.",
+          "[Book a transfer from Zurich Airport now](/buchung) – at a fixed price in every season.",
+        ]},
+      ],
+    },
+  },
+  {
     slug: "genf-oder-zuerich-flughafen-alpen",
     date: "2026-10-07",
     img: "/gallery/7.jpg",
