@@ -7,6 +7,564 @@ import type { BlogPost } from "./blogContent";
 
 export const guidePosts: BlogPost[] = [
   {
+    slug: "schweiz-reiseplan-7-tage-ab-zuerich",
+    date: "2026-10-07",
+    img: "/gallery/12.jpg",
+    de: {
+      title: "Schweiz in 7 Tagen ab Zürich: der Reiseplan mit Luzern, Jungfrau-Region und Zermatt",
+      seo: "Schweiz in 7 Tagen: Reiseplan ab Zürich",
+      excerpt: "Sieben Tage, drei Regionen, die grossen Klassiker ohne Hetze: ein erprobter Reiseplan ab Flughafen Zürich über Luzern, Interlaken und Grindelwald bis Zermatt – mit Tagesprogrammen, Varianten für Winter und Familien, Tipps zu Bahn und Transfer und der Frage, ob Sie über Zürich oder Genf zurückfliegen.",
+      body: [
+        { p: [
+          "Eine Woche ist genug, um die Schweiz zu verlieben – wenn man nicht versucht, alles zu sehen. Dieser Reiseplan konzentriert sich auf drei Regionen, die zusammen das Bild der Schweiz prägen: Luzern mit See und Bergen, die Jungfrau-Region mit Eiger, Mönch und Jungfrau, und Zermatt unter dem Matterhorn.",
+          "Jeder Tag hat ein Hauptprogramm und genug Luft. Die Reise funktioniert im Sommer wie im Winter, mit Anpassungen, die wir am Ende beschreiben.",
+        ]},
+        { h: "Der Plan auf einen Blick", p: [
+          "So verteilen sich die sieben Tage:",
+        ], table: { head: ["Tag", "Ort", "Programm"], rows: [
+          ["1", "Zürich → Luzern", "Ankunft, Transfer nach Luzern, Altstadt und Seepromenade"],
+          ["2", "Luzern", "Pilatus oder Rigi, Schifffahrt auf dem Vierwaldstättersee"],
+          ["3", "Luzern → Grindelwald", "Fahrt über den Brünig, Nachmittag in Grindelwald oder Interlaken"],
+          ["4", "Jungfrau-Region", "Jungfraujoch – Top of Europe"],
+          ["5", "Jungfrau-Region", "Lauterbrunnental, Mürren oder Schilthorn, alternativ ein ruhiger Tag"],
+          ["6", "Grindelwald → Zermatt", "Fahrt ins Wallis, Ankunft in Zermatt"],
+          ["7", "Zermatt → Abflug", "Gornergrat am Morgen, Rückreise nach Zürich oder Genf"],
+        ]}},
+        { h: "Tag 1: Ankunft und Luzern", p: [
+          "Nach der Landung in Zürich wartet der Fahrer in der Ankunftshalle, und rund eine Stunde später sind Sie am Vierwaldstättersee. Statt mit Koffern durch zwei Bahnhöfe zu gehen, beginnt die Reise entspannt. Den Nachmittag verbringen Sie mit einem Spaziergang über die Kapellbrücke, durch die Altstadt und entlang der Seepromenade.",
+          "Alles zur Fahrt steht in [Flughafen Zürich–Luzern](/blog/flughafen-zuerich-luzern-transfer-preis-dauer).",
+        ]},
+        { h: "Tag 2: Pilatus oder Rigi", p: [
+          "Der zweite Tag gehört einem der Luzerner Hausberge. Der Pilatus ist von Kriens per Gondel erreichbar, im Sommer auch mit der steilsten Zahnradbahn der Welt ab Alpnachstad – kombiniert mit einer Schifffahrt ergibt das die klassische «Goldene Rundfahrt». Die Rigi ist sanfter und besonders bei Sonnenuntergang schön.",
+          "Welcher Berg zu Ihnen passt, vergleicht [Jungfraujoch, Titlis oder Pilatus?](/blog/jungfraujoch-titlis-pilatus-vergleich). Wer einen Tag zur freien Verfügung möchte, findet in [Tagesausflug Luzern](/blog/luzern-tagesausflug-ab-zuerich) weitere Ideen.",
+        ]},
+        { h: "Tag 3: Über den Brünig ins Berner Oberland", p: [
+          "Die Fahrt von Luzern nach Grindelwald führt am Sarnersee und Lungerersee vorbei über den Brünigpass nach Brienz und Interlaken. Mit dem Transfer dauert sie rund eineinhalb Stunden, mit dem Panoramazug etwas länger. Am Nachmittag lohnt sich die Fahrt auf den Harder Kulm in Interlaken oder ein erster Spaziergang in Grindelwald.",
+          "Für die Übernachtung bietet sich Grindelwald an, weil Sie von dort am nächsten Morgen schnell am Jungfraujoch sind. Welches Dorf zu wem passt, erklärt [Jungfrau-Region für Einsteiger](/blog/jungfrau-region-guide-interlaken-grindelwald).",
+        ]},
+        { h: "Tag 4: Jungfraujoch", p: [
+          "Der Höhepunkt der Reise: Mit dem Eiger Express von Grindelwald zum Eigergletscher und weiter mit der Jungfraubahn auf das Jungfraujoch, den höchstgelegenen Bahnhof Europas. Oben warten der Blick auf den Aletschgletscher, der Eispalast und die Sphinx-Terrasse.",
+          "Planen Sie einen ganzen Tag ein, prüfen Sie am Morgen das Wetter und reservieren Sie in der Hochsaison Plätze vorab. Bei schlechter Sicht lohnt es sich, den Ausflug auf Tag 5 zu verschieben – dafür ist dieser Tag als Reserve gedacht.",
+        ]},
+        { h: "Tag 5: Lauterbrunnen, Mürren oder Ruhetag", p: [
+          "Das Lauterbrunnental mit seinen Wasserfällen ist einer der schönsten Orte der Schweiz. Von dort geht es mit der Bahn ins autofreie Mürren und weiter aufs Schilthorn mit dem Drehrestaurant. Wer es ruhiger mag, macht eine Schifffahrt auf dem Brienzersee oder eine Wanderung oberhalb von Grindelwald.",
+        ]},
+        { h: "Tag 6: Ins Wallis nach Zermatt", p: [
+          "Von Grindelwald fährt der Transfer über Spiez und Kandersteg, wo das Auto auf den Lötschberg-Autoverlad fährt, ins Wallis und weiter nach Täsch. Zermatt ist autofrei; der Shuttlezug bringt Sie in wenigen Minuten ins Dorf. Wer am Nachmittag ankommt, hat Zeit für einen ersten Blick aufs Matterhorn.",
+          "Details zur letzten Etappe stehen in [Zermatt-Transfer über Täsch](/blog/zermatt-transfer-flughafen-zuerich-taesch-autofrei).",
+        ]},
+        { h: "Tag 7: Gornergrat und Rückreise", p: [
+          "Am Morgen fahren Sie mit der Gornergratbahn auf über 3'000 Meter, mit Blick auf das Matterhorn und die Gletscher. Danach beginnt die Rückreise. Für die Fahrt von Täsch zum Flughafen Zürich planen wir knapp fünf Stunden; für einen Abendflug ist das gut machbar, für einen Mittagsflug zu knapp.",
+          "Die elegantere Lösung ist ein Gabelflug mit Rückflug ab Genf, das von Zermatt etwa gleich weit entfernt ist. Wann sich das lohnt, erklärt [Genf oder Zürich](/blog/genf-oder-zuerich-flughafen-alpen).",
+        ]},
+        { h: "Transfer, Bahn oder beides?", p: [
+          "Der Plan funktioniert mit der Bahn, mit Transfers oder kombiniert. Für Familien und Reisende mit viel Gepäck empfehlen wir Transfers an den Reisetagen 1, 3, 6 und 7 und die Bahn für die Ausflüge. So tragen Sie die Koffer nie durch Bahnhöfe, und für die Ausflugstage lohnt sich oft ein Flex-Pass.",
+          "Wie Sie Pass und Transfer kombinieren, steht in [Lohnt sich der Swiss Travel Pass?](/blog/swiss-travel-pass-lohnt-sich-vergleich-transfer). Alle Strecken können Sie im [Buchungsrechner](/buchung) einzeln oder als Zwischenstopps anlegen.",
+        ]},
+        { h: "Varianten für Winter und Familien", p: [
+          "Im Winter tauschen Sie die Wanderungen gegen Skitage: Grindelwald und Zermatt sind hervorragende Skigebiete, und das Jungfraujoch ist ganzjährig geöffnet. Der Brünigpass ist auch im Winter befahrbar; bei starkem Schneefall fährt der Fahrer über Bern.",
+          "Mit kleinen Kindern lohnt es sich, einen Ortswechsel zu streichen und dafür länger an einem Ort zu bleiben, etwa vier Nächte in der Jungfrau-Region. Kindersitze sind bei uns kostenlos.",
+        ]},
+        { h: "Häufige Fragen zum 7-Tage-Reiseplan", p: []},
+        { h3: "Ist eine Woche genug für die Schweiz?", p: [
+          "Für drei Regionen ja, wenn Sie nicht zu viel auf einmal wollen. Für das Tessin oder den Genfersee brauchen Sie zusätzliche Tage.",
+        ]},
+        { h3: "Kann ich den Plan auch umgekehrt reisen?", p: [
+          "Ja. Mit Ankunft in Genf beginnen Sie in Zermatt und fliegen ab Zürich zurück.",
+        ]},
+        { h3: "Brauche ich ein Auto?", p: [
+          "Nein. Bahn und Transfers decken alles ab; Zermatt, Wengen und Mürren sind ohnehin autofrei.",
+        ]},
+        { h3: "Wann ist die beste Reisezeit für diesen Plan?", p: [
+          "Mitte Juni bis September für Berge und Wandern, Januar bis März für den Winter. Mehr in [Beste Reisezeit für die Schweiz](/blog/beste-reisezeit-schweiz-monat-fuer-monat).",
+        ]},
+        { h3: "Kann ich alle Transfers auf einmal buchen?", p: [
+          "Ja. Buchen Sie die Fahrten nacheinander mit den jeweiligen Hotels als Abhol- und Zieladresse.",
+          "Jetzt [ersten Transfer buchen](/buchung) – Festpreis pro Fahrzeug, Gepäck inklusive.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Switzerland in 7 Days From Zurich: The Itinerary With Lucerne, the Jungfrau Region and Zermatt",
+      seo: "Switzerland in 7 Days: Itinerary From Zurich",
+      excerpt: "Seven days, three regions, the great classics without rushing: a proven itinerary from Zurich Airport via Lucerne, Interlaken and Grindelwald to Zermatt – with daily programmes, variations for winter and families, tips on train and transfer, and the question of whether to fly home via Zurich or Geneva.",
+      body: [
+        { p: [
+          "A week is enough to fall in love with Switzerland – as long as you do not try to see everything. This itinerary focuses on three regions that together shape the image of Switzerland: Lucerne with its lake and mountains, the Jungfrau region with the Eiger, Mönch and Jungfrau, and Zermatt beneath the Matterhorn.",
+          "Each day has a main programme and enough breathing space. The trip works in summer and winter, with adjustments described at the end.",
+        ]},
+        { h: "The plan at a glance", p: [
+          "This is how the seven days break down:",
+        ], table: { head: ["Day", "Place", "Programme"], rows: [
+          ["1", "Zurich → Lucerne", "Arrival, transfer to Lucerne, old town and lakeside promenade"],
+          ["2", "Lucerne", "Pilatus or Rigi, boat trip on Lake Lucerne"],
+          ["3", "Lucerne → Grindelwald", "Drive over the Brünig, afternoon in Grindelwald or Interlaken"],
+          ["4", "Jungfrau region", "Jungfraujoch – Top of Europe"],
+          ["5", "Jungfrau region", "Lauterbrunnen valley, Mürren or Schilthorn, alternatively a quiet day"],
+          ["6", "Grindelwald → Zermatt", "Drive to Valais, arrival in Zermatt"],
+          ["7", "Zermatt → departure", "Gornergrat in the morning, return to Zurich or Geneva"],
+        ]}},
+        { h: "Day 1: arrival and Lucerne", p: [
+          "After landing in Zurich, the driver waits in the arrivals hall, and around an hour later you are on Lake Lucerne. Instead of dragging suitcases through two stations, the trip begins in a relaxed way. Spend the afternoon strolling across the Chapel Bridge, through the old town and along the lakeside promenade.",
+          "Everything about the drive is in [Zurich Airport to Lucerne](/blog/flughafen-zuerich-luzern-transfer-preis-dauer).",
+        ]},
+        { h: "Day 2: Pilatus or Rigi", p: [
+          "The second day belongs to one of Lucerne's local mountains. Pilatus can be reached by gondola from Kriens and in summer also by the world's steepest cogwheel railway from Alpnachstad – combined with a boat trip this makes the classic \"Golden Round Trip\". The Rigi is gentler and especially beautiful at sunset.",
+          "Which mountain suits you is compared in [Jungfraujoch, Titlis or Pilatus?](/blog/jungfraujoch-titlis-pilatus-vergleich). If you would like a free day, [Lucerne day trip](/blog/luzern-tagesausflug-ab-zuerich) has more ideas.",
+        ]},
+        { h: "Day 3: over the Brünig to the Bernese Oberland", p: [
+          "The drive from Lucerne to Grindelwald passes Lake Sarnen and Lake Lungern, crosses the Brünig Pass and descends to Brienz and Interlaken. By transfer it takes around an hour and a half, by panoramic train a little longer. In the afternoon a ride up the Harder Kulm in Interlaken or a first stroll in Grindelwald is worthwhile.",
+          "Grindelwald is a good place to stay because from there you reach the Jungfraujoch quickly the next morning. Which village suits whom is explained in [Jungfrau region for beginners](/blog/jungfrau-region-guide-interlaken-grindelwald).",
+        ]},
+        { h: "Day 4: Jungfraujoch", p: [
+          "The highlight of the trip: take the Eiger Express from Grindelwald to the Eiger Glacier and continue on the Jungfrau Railway to the Jungfraujoch, Europe's highest railway station. At the top you can enjoy the view of the Aletsch Glacier, the Ice Palace and the Sphinx terrace.",
+          "Plan a whole day, check the weather in the morning and reserve seats in advance in high season. If visibility is poor, it is worth moving the excursion to day 5 – that day is intended as a reserve.",
+        ]},
+        { h: "Day 5: Lauterbrunnen, Mürren or a rest day", p: [
+          "The Lauterbrunnen valley with its waterfalls is one of the most beautiful places in Switzerland. From there the train takes you to car-free Mürren and on to the Schilthorn with its revolving restaurant. If you prefer something quieter, take a boat trip on Lake Brienz or a hike above Grindelwald.",
+        ]},
+        { h: "Day 6: to Valais and Zermatt", p: [
+          "From Grindelwald the transfer travels via Spiez and Kandersteg, where the car boards the Lötschberg car train, into Valais and on to Täsch. Zermatt is car-free; the shuttle train takes you into the village in a few minutes. If you arrive in the afternoon, there is time for a first look at the Matterhorn.",
+          "Details on the last leg are in [Zermatt transfer via Täsch](/blog/zermatt-transfer-flughafen-zuerich-taesch-autofrei).",
+        ]},
+        { h: "Day 7: Gornergrat and the journey home", p: [
+          "In the morning take the Gornergrat railway to over 3,000 metres, with views of the Matterhorn and the glaciers. Then the journey home begins. For the drive from Täsch to Zurich Airport we plan just under five hours; that works well for an evening flight but is too tight for a midday flight.",
+          "The more elegant solution is an open-jaw ticket flying home from Geneva, which is about the same distance from Zermatt. When that pays off is explained in [Geneva or Zurich](/blog/genf-oder-zuerich-flughafen-alpen).",
+        ]},
+        { h: "Transfer, train or both?", p: [
+          "The plan works by train, by transfer or combined. For families and travellers with a lot of luggage we recommend transfers on travel days 1, 3, 6 and 7 and the train for excursions. That way you never carry suitcases through stations, and a Flex Pass often pays off for the excursion days.",
+          "How to combine pass and transfer is explained in [Is the Swiss Travel Pass worth it?](/blog/swiss-travel-pass-lohnt-sich-vergleich-transfer). You can set up all routes in the [booking calculator](/buchung) individually or as stops.",
+        ]},
+        { h: "Variations for winter and families", p: [
+          "In winter swap the hikes for ski days: Grindelwald and Zermatt are excellent ski areas, and the Jungfraujoch is open all year. The Brünig Pass is passable in winter too; in heavy snowfall the driver takes the route via Bern.",
+          "With small children it is worth dropping one change of location and staying longer in one place instead, for example four nights in the Jungfrau region. Child seats are free with us.",
+        ]},
+        { h: "Frequently asked questions about the 7-day itinerary", p: []},
+        { h3: "Is a week enough for Switzerland?", p: [
+          "For three regions yes, if you do not try to do too much at once. For Ticino or Lake Geneva you need extra days.",
+        ]},
+        { h3: "Can I do the plan in reverse?", p: [
+          "Yes. Arriving in Geneva, you start in Zermatt and fly home from Zurich.",
+        ]},
+        { h3: "Do I need a car?", p: [
+          "No. Trains and transfers cover everything; Zermatt, Wengen and Mürren are car-free anyway.",
+        ]},
+        { h3: "When is the best time for this plan?", p: [
+          "Mid-June to September for mountains and hiking, January to March for winter. More in [Best time to visit Switzerland](/blog/beste-reisezeit-schweiz-monat-fuer-monat).",
+        ]},
+        { h3: "Can I book all transfers at once?", p: [
+          "Yes. Book the rides one after the other with the respective hotels as pickup and destination addresses.",
+          "[Book your first transfer now](/buchung) – fixed price per vehicle, luggage included.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "bezahlen-schweiz-euro-franken-karte",
+    date: "2026-10-07",
+    img: "/gallery/16.jpg",
+    de: {
+      title: "Bezahlen in der Schweiz: Kann man mit Euro zahlen? Franken, Karte, Bargeld und TWINT erklärt",
+      seo: "Mit Euro in der Schweiz zahlen? Die Antwort",
+      excerpt: "Schweizer Franken, Euro, Kreditkarte, Bargeld oder TWINT: wie Sie in der Schweiz am besten bezahlen, wo Euro akzeptiert werden und warum es sich selten lohnt, welche Fallen beim Umrechnen lauern – und wie Sie Ihren Transfer ab Flughafen Zürich bezahlen.",
+      body: [
+        { p: [
+          "Die Schweiz liegt mitten in Europa, hat aber eine eigene Währung: den Schweizer Franken. Für viele Besucher stellt sich deshalb vor der Reise die Frage, ob sie Franken wechseln müssen, ob Euro akzeptiert werden und ob die Kreditkarte überall funktioniert.",
+          "Dieser Guide beantwortet die häufigsten Fragen rund ums Bezahlen in der Schweiz – praktisch und ehrlich, mit Tipps, wie Sie unnötige Gebühren vermeiden.",
+        ]},
+        { h: "Die kurze Antwort", p: [
+          "Die Währung der Schweiz ist der Schweizer Franken (CHF). Euro werden an vielen Orten angenommen, vor allem an Bahnhöfen, in grösseren Geschäften, Hotels und in Touristenorten, aber nicht überall – und das Wechselgeld bekommen Sie meist in Franken, zu einem Kurs, der selten günstig ist.",
+          "Die einfachste Lösung für die meisten Reisenden ist die Karte: Kredit- und Debitkarten sowie kontaktloses Bezahlen mit dem Telefon funktionieren fast überall. Etwas Bargeld in Franken ist für kleine Beträge und abgelegene Orte trotzdem praktisch.",
+        ], table: { head: ["Zahlungsmittel", "Akzeptanz", "Tipp"], rows: [
+          ["Kredit- und Debitkarte", "fast überall, auch kontaktlos", "Immer in CHF abrechnen lassen"],
+          ["Apple Pay, Google Pay", "weit verbreitet", "Praktisch für kleine Beträge"],
+          ["Bargeld in CHF", "überall", "Kleinere Beträge für Berghütten und Märkte"],
+          ["Bargeld in Euro", "oft, aber nicht überall", "Wechselgeld in CHF, Kurs meist ungünstig"],
+          ["TWINT", "sehr verbreitet bei Einheimischen", "Für Besucher je nach Bank verfügbar"],
+        ]}},
+        { h: "Euro in der Schweiz: wann es geht und warum es sich selten lohnt", p: [
+          "Viele Geschäfte, Bahnhofsschalter, Hotels und Restaurants in Touristenorten nehmen Euro an, besonders in Grenznähe wie in Basel, Genf oder im Tessin. Der Kurs wird aber vom Geschäft festgelegt und enthält meist einen Aufschlag. Zudem erhalten Sie das Wechselgeld in Franken, sodass Sie am Ende doch Franken in der Tasche haben.",
+          "Für einen Kaffee oder eine Notlösung ist das in Ordnung. Für grössere Beträge zahlen Sie mit der Karte fast immer günstiger.",
+        ]},
+        { h: "Die wichtigste Falle: Zahlen in Ihrer Heimatwährung", p: [
+          "An vielen Kartenterminals und Geldautomaten werden Sie gefragt, ob Sie in Franken oder in Ihrer Heimatwährung, etwa in Euro oder Dollar, bezahlen möchten. Wählen Sie immer Franken. Bei der Umrechnung durch das Terminal, der sogenannten dynamischen Währungsumrechnung, ist der Kurs oft deutlich schlechter als der Ihrer eigenen Bank.",
+          "Dasselbe gilt am Geldautomaten: Lehnen Sie die angebotene Umrechnung ab und lassen Sie Ihre Bank umrechnen. Wie viel Gebühr Ihre Bank für Auslandszahlungen verlangt, sollten Sie vor der Reise prüfen.",
+        ]},
+        { h: "Bargeld: wie viel und wo", p: [
+          "Bargeld brauchen Sie in der Schweiz weniger als früher, aber nicht gar nicht. Praktisch ist es für kleine Bergrestaurants, Hofläden, Märkte, Trinkgelder und manchmal für öffentliche Toiletten. Ein kleiner Betrag in Franken genügt für die meisten Reisen.",
+          "Geldautomaten finden Sie an Flughafen, Bahnhöfen und in jedem grösseren Ort. Wechselstuben gibt es am Flughafen und an grossen Bahnhöfen; vergleichen Sie die Kurse, bevor Sie grössere Beträge wechseln.",
+        ]},
+        { h: "Trinkgeld: wie viel ist üblich?", p: [
+          "In der Schweiz ist der Service in Restaurants, Hotels und bei Taxis im Preis enthalten. Trinkgeld ist eine freundliche Geste, aber keine Pflicht; viele runden auf oder geben bei gutem Service einige Prozent. Alles Weitere steht in [Trinkgeld im Taxi in der Schweiz](/blog/trinkgeld-taxi-schweiz-was-ist-ueblich).",
+        ]},
+        { h: "Preise in der Schweiz: worauf Sie sich einstellen sollten", p: [
+          "Die Schweiz gehört zu den teureren Reiseländern. Restaurants, Hotels und Bergbahnen kosten deutlich mehr als in vielen Nachbarländern, während Supermärkte und Bäckereien günstigere Alternativen für Mittagessen und Snacks bieten. Wer viel mit Bahn und Bergbahnen unterwegs ist, spart mit einem passenden Pass – mehr dazu in [Lohnt sich der Swiss Travel Pass?](/blog/swiss-travel-pass-lohnt-sich-vergleich-transfer).",
+          "Gut zu wissen: In der Schweiz sind Preise grundsätzlich inklusive Mehrwertsteuer angeschrieben. Was auf dem Schild steht, zahlen Sie auch.",
+        ]},
+        { h: "So bezahlen Sie Ihren Transfer", p: [
+          "Unsere Preise sind Festpreise in Schweizer Franken und werden vor der Buchung angezeigt, inklusive Mehrwertsteuer. Bezahlen können Sie auf zwei Arten: online bei der Buchung mit Karte, TWINT, Apple Pay oder Google Pay, oder im Fahrzeug mit Karte, bar oder mit TWINT.",
+          "Wer aus dem Euroraum oder aus Übersee anreist, wählt am einfachsten die Online-Zahlung oder die Karte im Fahrzeug; die Umrechnung übernimmt dann Ihre Kartenfirma, und Sie brauchen nach der Landung kein Bargeld. Für Firmen gibt es auf Wunsch eine Rechnung mit ausgewiesener Mehrwertsteuer, siehe [Firmentransfers in Zürich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen).",
+        ]},
+        { h: "Häufige Fragen zum Bezahlen in der Schweiz", p: []},
+        { h3: "Kann man in der Schweiz mit Euro bezahlen?", p: [
+          "An vielen Orten ja, aber nicht überall. Das Wechselgeld erhalten Sie meist in Franken, und der Kurs ist oft ungünstig. Mit Karte zahlen Sie in der Regel günstiger.",
+        ]},
+        { h3: "Brauche ich Bargeld in der Schweiz?", p: [
+          "Wenig. Ein kleiner Betrag in Franken ist praktisch für Berghütten, Märkte und Trinkgelder; sonst funktioniert die Karte fast überall.",
+        ]},
+        { h3: "Soll ich am Terminal in Euro oder in Franken bezahlen?", p: [
+          "Immer in Franken. Die Umrechnung am Terminal ist meist teurer als die Ihrer Bank.",
+        ]},
+        { h3: "Kann ich den Transfer mit Kreditkarte bezahlen?", p: [
+          "Ja, online bei der Buchung oder im Fahrzeug. Ausserdem sind TWINT, Apple Pay, Google Pay und Barzahlung möglich.",
+        ]},
+        { h3: "Sind Preise in der Schweiz inklusive Mehrwertsteuer?", p: [
+          "Ja, angeschriebene Preise enthalten die Mehrwertsteuer. Auch unser Festpreis versteht sich inklusive Mehrwertsteuer.",
+          "Jetzt [Transfer buchen](/buchung) – Festpreis in CHF, online oder im Fahrzeug bezahlen.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Paying in Switzerland: Can You Pay in Euros? Francs, Cards, Cash and TWINT Explained",
+      seo: "Can You Pay in Euros in Switzerland?",
+      excerpt: "Swiss francs, euros, credit card, cash or TWINT: how best to pay in Switzerland, where euros are accepted and why it rarely pays off, which traps lurk in currency conversion – and how to pay for your transfer from Zurich Airport.",
+      body: [
+        { p: [
+          "Switzerland lies in the middle of Europe but has its own currency: the Swiss franc. Many visitors therefore wonder before their trip whether they need to change money into francs, whether euros are accepted and whether their credit card works everywhere.",
+          "This guide answers the most common questions about paying in Switzerland – practically and honestly, with tips on avoiding unnecessary fees.",
+        ]},
+        { h: "The short answer", p: [
+          "The currency of Switzerland is the Swiss franc (CHF). Euros are accepted in many places, especially at railway stations, larger shops, hotels and in tourist resorts, but not everywhere – and you usually get your change in francs, at a rate that is rarely favourable.",
+          "The simplest solution for most travellers is a card: credit and debit cards and contactless payment by phone work almost everywhere. A little cash in francs is still handy for small amounts and remote places.",
+        ], table: { head: ["Payment method", "Acceptance", "Tip"], rows: [
+          ["Credit and debit card", "almost everywhere, also contactless", "Always choose to pay in CHF"],
+          ["Apple Pay, Google Pay", "widespread", "Handy for small amounts"],
+          ["Cash in CHF", "everywhere", "Small amounts for mountain huts and markets"],
+          ["Cash in euros", "often, but not everywhere", "Change given in CHF, rate usually unfavourable"],
+          ["TWINT", "very common among locals", "Availability for visitors depends on the bank"],
+        ]}},
+        { h: "Euros in Switzerland: when it works and why it rarely pays off", p: [
+          "Many shops, station ticket counters, hotels and restaurants in tourist areas accept euros, especially near the borders such as in Basel, Geneva or Ticino. The exchange rate, however, is set by the business and usually includes a mark-up. You also get your change in francs, so you end up with francs in your pocket anyway.",
+          "For a coffee or as a fallback that is fine. For larger amounts paying by card is almost always cheaper.",
+        ]},
+        { h: "The biggest trap: paying in your home currency", p: [
+          "At many card terminals and ATMs you are asked whether you want to pay in francs or in your home currency, such as euros or dollars. Always choose francs. With conversion by the terminal, known as dynamic currency conversion, the rate is often considerably worse than your own bank's.",
+          "The same applies at ATMs: decline the offered conversion and let your bank do the conversion. Check before your trip how much your bank charges for payments abroad.",
+        ]},
+        { h: "Cash: how much and where", p: [
+          "You need less cash in Switzerland than you used to, but not none at all. It is handy for small mountain restaurants, farm shops, markets, tips and sometimes public toilets. A small amount in francs is enough for most trips.",
+          "You will find ATMs at the airport, at railway stations and in every larger town. There are bureaux de change at the airport and at major stations; compare rates before changing larger amounts.",
+        ]},
+        { h: "Tipping: how much is usual?", p: [
+          "In Switzerland service is included in the price in restaurants, hotels and taxis. A tip is a friendly gesture but not an obligation; many people round up or give a few per cent for good service. Everything else is in [Do you tip taxi drivers in Switzerland?](/blog/trinkgeld-taxi-schweiz-was-ist-ueblich).",
+        ]},
+        { h: "Prices in Switzerland: what to expect", p: [
+          "Switzerland is one of the more expensive countries to travel in. Restaurants, hotels and mountain railways cost considerably more than in many neighbouring countries, while supermarkets and bakeries offer cheaper alternatives for lunch and snacks. If you travel a lot by train and mountain railway, a suitable pass saves money – more in [Is the Swiss Travel Pass worth it?](/blog/swiss-travel-pass-lohnt-sich-vergleich-transfer).",
+          "Good to know: in Switzerland prices are always displayed including VAT. What is on the label is what you pay.",
+        ]},
+        { h: "How to pay for your transfer", p: [
+          "Our prices are fixed prices in Swiss francs and are shown before booking, including VAT. You can pay in two ways: online when booking by card, TWINT, Apple Pay or Google Pay, or in the vehicle by card, cash or TWINT.",
+          "If you are coming from the eurozone or from overseas, the easiest option is to pay online or by card in the vehicle; your card company then handles the conversion, and you need no cash after landing. For companies an invoice with VAT shown is available on request, see [Corporate transfers in Zurich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen).",
+        ]},
+        { h: "Frequently asked questions about paying in Switzerland", p: []},
+        { h3: "Can you pay in euros in Switzerland?", p: [
+          "In many places yes, but not everywhere. You usually get your change in francs, and the rate is often unfavourable. Paying by card is generally cheaper.",
+        ]},
+        { h3: "Do I need cash in Switzerland?", p: [
+          "Not much. A small amount in francs is handy for mountain huts, markets and tips; otherwise cards work almost everywhere.",
+        ]},
+        { h3: "Should I pay in euros or francs at the terminal?", p: [
+          "Always in francs. Conversion at the terminal is usually more expensive than your bank's.",
+        ]},
+        { h3: "Can I pay for the transfer by credit card?", p: [
+          "Yes, online when booking or in the vehicle. TWINT, Apple Pay, Google Pay and cash are also possible.",
+        ]},
+        { h3: "Are prices in Switzerland inclusive of VAT?", p: [
+          "Yes, displayed prices include VAT. Our fixed price also includes VAT.",
+          "[Book a transfer now](/buchung) – fixed price in CHF, pay online or in the vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "jungfraujoch-titlis-pilatus-vergleich",
+    date: "2026-10-07",
+    img: "/gallery/8.jpg",
+    de: {
+      title: "Jungfraujoch, Titlis oder Pilatus: Welcher Berg passt zu Ihrer Schweizreise?",
+      seo: "Jungfraujoch, Titlis oder Pilatus?",
+      excerpt: "Drei der berühmtesten Ausflugsberge der Schweiz – und dazu Rigi, Schilthorn und Gornergrat – im ehrlichen Vergleich: Höhe, Erlebnis, Schneegarantie, Zeitaufwand ab Zürich und für wen sich welcher Berg lohnt. Mit Tipps, wie Sie den Ausflug mit Ihrer Anreise kombinieren.",
+      body: [
+        { p: [
+          "Kaum eine Schweizreise kommt ohne Bergausflug aus. Die Frage ist nur: welcher? Jungfraujoch, Titlis und Pilatus sind die bekanntesten Namen, dazu kommen Rigi, Schilthorn und Gornergrat. Alle sind spektakulär, aber sie unterscheiden sich stark in Höhe, Erlebnis, Aufwand und Preis.",
+          "Dieser Guide vergleicht die Berge ehrlich und hilft Ihnen, den richtigen für Ihre Reise zu finden – je nachdem, wie viel Zeit Sie haben, wo Sie übernachten und was Sie erleben möchten.",
+        ]},
+        { h: "Die Berge auf einen Blick", p: [
+          "Die Fahrzeiten ab Flughafen Zürich sind unsere Planungswerte bis zum Ausgangsort des Ausflugs.",
+        ], table: { head: ["Berg", "Höhe (ca.)", "Ausgangsort", "Fahrzeit ab ZRH", "Ideal für"], rows: [
+          ["Jungfraujoch", "3'454 m (Bahnhof)", "Grindelwald, Lauterbrunnen", "etwa 160–170 Min.", "Gletscher, «Top of Europe», einmaliges Erlebnis"],
+          ["Titlis", "rund 3'000 m", "Engelberg", "etwa 113 Min.", "Schnee im Sommer, Cliff Walk, Tagesausflug"],
+          ["Pilatus", "2'128 m", "Luzern (Kriens, Alpnachstad)", "etwa 76 Min. bis Luzern", "Kurzer Ausflug, Zahnradbahn, Seeblick"],
+          ["Rigi", "1'798 m", "Vitznau, Weggis, Arth-Goldau", "etwa 76 Min. bis Luzern", "Familien, Sonnenuntergang, Swiss Travel Pass"],
+          ["Schilthorn", "2'970 m", "Stechelberg, Mürren", "etwa 160 Min. bis Lauterbrunnen", "Drehrestaurant, Eiger-Mönch-Jungfrau-Panorama"],
+          ["Gornergrat", "3'089 m", "Zermatt", "etwa 284 Min. bis Täsch", "Matterhorn-Blick"],
+        ]}},
+        { h: "Jungfraujoch: das grosse Erlebnis", p: [
+          "Das Jungfraujoch ist der höchstgelegene Bahnhof Europas und für viele der Höhepunkt einer Schweizreise. Sie fahren von Grindelwald mit dem Eiger Express zum Eigergletscher und dann mit der Jungfraubahn durch den Eiger und den Mönch hinauf. Oben erwarten Sie der Blick auf den Grossen Aletschgletscher, den längsten Gletscher der Alpen, der Eispalast, die Aussichtsterrasse der Sphinx und Schnee das ganze Jahr.",
+          "Die Nachteile: Es ist der teuerste der Ausflüge, braucht einen ganzen Tag und ist stark wetterabhängig – bei Nebel sehen Sie wenig. Wegen der Höhe sollten Reisende mit Herz- oder Kreislaufproblemen vorher ärztlichen Rat einholen. Am besten übernachten Sie in der Jungfrau-Region und entscheiden morgens nach dem Wetter. Mehr dazu in [Jungfrau-Region für Einsteiger](/blog/jungfrau-region-guide-interlaken-grindelwald).",
+        ]},
+        { h: "Titlis: Schnee garantiert, nah an Zürich", p: [
+          "Der Titlis über Engelberg ist der Gletscherberg, der Zürich am nächsten liegt. Mit der Rotair, einer der ersten drehenden Luftseilbahnen der Welt, fahren Sie auf rund 3'000 Meter. Oben locken der Cliff Walk, eine spektakuläre Hängebrücke am Fels, eine Gletschergrotte und Schnee auch im Hochsommer.",
+          "Der Titlis ist ideal, wenn Sie Schnee und Gletscher erleben wollen, aber keine Übernachtung in den Bergen planen. Als Tagesausflug ab Zürich oder Luzern ist er gut machbar; Engelberg erreichen Sie ab Flughafen in knapp zwei Stunden. Siehe [Transfer nach Engelberg](/zurich-airport-to-engelberg).",
+        ]},
+        { h: "Pilatus: der Hausberg von Luzern", p: [
+          "Der Pilatus ist der Klassiker für Gäste in Luzern. Im Sommerhalbjahr fahren Sie mit der steilsten Zahnradbahn der Welt ab Alpnachstad hinauf; das ganze Jahr geht es ab Kriens mit Gondel und Luftseilbahn. Kombiniert mit einer Schifffahrt über den Vierwaldstättersee ergibt das die beliebte «Goldene Rundfahrt».",
+          "Der Pilatus braucht nur einen halben Tag und lässt sich gut mit einem Stadtbummel in Luzern verbinden. Gletscher und ewigen Schnee gibt es hier nicht, dafür einen weiten Blick über den See und die Alpen. Wie Sie einen Tag in Luzern gestalten, beschreibt [Tagesausflug Luzern](/blog/luzern-tagesausflug-ab-zuerich).",
+        ]},
+        { h: "Rigi, Schilthorn und Gornergrat", p: [
+          "Die **Rigi**, die «Königin der Berge», ist sanfter und familienfreundlich, mit Europas erster Bergbahn ab Vitznau. Mit dem Swiss Travel Pass ist sie gratis, und der Sonnenuntergang über dem Mittelland ist legendär.",
+          "Das **Schilthorn** über Mürren bietet mit dem Drehrestaurant Piz Gloria einen Rundumblick auf Eiger, Mönch und Jungfrau und ist eine gute, oft günstigere Alternative zum Jungfraujoch. Der **Gornergrat** in Zermatt ist der Berg für den perfekten Matterhorn-Blick und lohnt sich für alle, die ohnehin in Zermatt übernachten.",
+        ]},
+        { h: "Welcher Berg passt zu Ihnen?", p: [
+          "Eine schnelle Entscheidungshilfe:",
+        ], ul: [
+          "**Nur ein Tag und Schnee gewünscht:** Titlis.",
+          "**Das ganz grosse Erlebnis, Zeit für eine Übernachtung:** Jungfraujoch.",
+          "**Halber Tag in Luzern:** Pilatus oder Rigi.",
+          "**Mit Kindern und Swiss Travel Pass:** Rigi.",
+          "**Eiger-Panorama zu einem moderateren Preis:** Schilthorn.",
+          "**Matterhorn:** Gornergrat.",
+        ]},
+        { h: "Ausflug und Anreise kombinieren", p: [
+          "Viele Gäste verbinden den Bergausflug geschickt mit der Anreise. Wer nach Engelberg fährt, ist am nächsten Morgen auf dem Titlis. Wer in Grindelwald oder Wengen übernachtet, startet direkt zum Jungfraujoch. Und wer in Luzern wohnt, hat Pilatus und Rigi vor der Haustür.",
+          "Für einen Bergtag ab Zürich ohne Übernachtung ist eine Stundenbuchung praktisch: Der Fahrer bringt Sie zur Talstation, wartet während des Ausflugs und fährt Sie am Abend zurück. Für Ziele mit Übernachtung buchen Sie einfach den Transfer ins Hotel. Ein kompletter Wochenplan steht in [Schweiz in 7 Tagen ab Zürich](/blog/schweiz-reiseplan-7-tage-ab-zuerich).",
+        ]},
+        { h: "Praktische Tipps für alle Bergausflüge", p: [
+          "Prüfen Sie am Morgen das Wetter und die Webcams der Bergbahn; bei Nebel lohnt sich oft ein anderer Tag. Nehmen Sie auch im Sommer eine warme Jacke, Sonnenbrille und Sonnencreme mit – auf 3'000 Metern ist es kalt und die Sonne stark. In der Hochsaison sind Reservationen für Jungfraujoch und Titlis empfehlenswert.",
+          "Viele Bergbahnen machen im Frühling und Spätherbst eine Revisionspause; wann das der Fall ist, steht in [Beste Reisezeit für die Schweiz](/blog/beste-reisezeit-schweiz-monat-fuer-monat).",
+        ]},
+        { h: "Häufige Fragen", p: []},
+        { h3: "Lohnt sich das Jungfraujoch?", p: [
+          "Bei gutem Wetter und mit genug Zeit ja – es ist ein einmaliges Erlebnis. Bei Nebel oder knappem Zeitplan sind Titlis oder Schilthorn oft die bessere Wahl.",
+        ]},
+        { h3: "Welcher Berg ist am nächsten an Zürich?", p: [
+          "Pilatus und Rigi bei Luzern, gefolgt vom Titlis in Engelberg.",
+        ]},
+        { h3: "Wo gibt es im Sommer Schnee?", p: [
+          "Auf dem Jungfraujoch und dem Titlis, beide mit Gletschern.",
+        ]},
+        { h3: "Kann ich das Jungfraujoch als Tagesausflug ab Zürich machen?", p: [
+          "Möglich, aber lang. Besser ist eine Übernachtung in der Jungfrau-Region.",
+        ]},
+        { h3: "Fahren Sie bis zur Talstation?", p: [
+          "Ja, nach Engelberg, Kriens, Alpnachstad, Vitznau, Grindelwald oder Stechelberg. Für Zermatt endet die Fahrt in Täsch.",
+          "Jetzt [Transfer oder Stundenbuchung anfragen](/buchung) – Festpreis pro Fahrzeug.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Jungfraujoch, Titlis or Pilatus: Which Mountain Suits Your Swiss Trip?",
+      seo: "Jungfraujoch, Titlis or Pilatus?",
+      excerpt: "Three of Switzerland's most famous excursion mountains – plus Rigi, Schilthorn and Gornergrat – compared honestly: altitude, experience, snow guarantee, time needed from Zurich and who each mountain is worth it for. With tips on combining the excursion with your journey.",
+      body: [
+        { p: [
+          "Hardly any Swiss trip is complete without a mountain excursion. The only question is: which one? The Jungfraujoch, Titlis and Pilatus are the best-known names, plus the Rigi, Schilthorn and Gornergrat. All are spectacular, but they differ greatly in altitude, experience, effort and price.",
+          "This guide compares the mountains honestly and helps you find the right one for your trip – depending on how much time you have, where you are staying and what you want to experience.",
+        ]},
+        { h: "The mountains at a glance", p: [
+          "Driving times from Zurich Airport are our planning values to the starting point of the excursion.",
+        ], table: { head: ["Mountain", "Altitude (approx.)", "Starting point", "Drive from ZRH", "Ideal for"], rows: [
+          ["Jungfraujoch", "3,454 m (station)", "Grindelwald, Lauterbrunnen", "about 160–170 min", "Glacier, \"Top of Europe\", once-in-a-lifetime experience"],
+          ["Titlis", "around 3,000 m", "Engelberg", "about 113 min", "Snow in summer, Cliff Walk, day trip"],
+          ["Pilatus", "2,128 m", "Lucerne (Kriens, Alpnachstad)", "about 76 min to Lucerne", "Short excursion, cogwheel railway, lake views"],
+          ["Rigi", "1,798 m", "Vitznau, Weggis, Arth-Goldau", "about 76 min to Lucerne", "Families, sunset, Swiss Travel Pass"],
+          ["Schilthorn", "2,970 m", "Stechelberg, Mürren", "about 160 min to Lauterbrunnen", "Revolving restaurant, Eiger-Mönch-Jungfrau panorama"],
+          ["Gornergrat", "3,089 m", "Zermatt", "about 284 min to Täsch", "Matterhorn views"],
+        ]}},
+        { h: "Jungfraujoch: the big experience", p: [
+          "The Jungfraujoch is Europe's highest railway station and for many the highlight of a Swiss trip. You travel from Grindelwald on the Eiger Express to the Eiger Glacier and then on the Jungfrau Railway up through the Eiger and the Mönch. At the top you find the view of the Great Aletsch Glacier, the longest glacier in the Alps, the Ice Palace, the Sphinx observation terrace and snow all year round.",
+          "The drawbacks: it is the most expensive of the excursions, takes a whole day and depends heavily on the weather – in fog you see little. Because of the altitude, travellers with heart or circulation problems should seek medical advice beforehand. It is best to stay in the Jungfrau region and decide in the morning based on the weather. More in [Jungfrau region for beginners](/blog/jungfrau-region-guide-interlaken-grindelwald).",
+        ]},
+        { h: "Titlis: snow guaranteed, close to Zurich", p: [
+          "The Titlis above Engelberg is the glacier mountain closest to Zurich. The Rotair, one of the world's first revolving cable cars, takes you up to around 3,000 metres. At the top the Cliff Walk, a spectacular suspension bridge on the rock face, a glacier cave and snow even in high summer await.",
+          "The Titlis is ideal if you want to experience snow and glaciers without planning a night in the mountains. As a day trip from Zurich or Lucerne it is very doable; you reach Engelberg from the airport in just under two hours. See [Transfer to Engelberg](/zurich-airport-to-engelberg).",
+        ]},
+        { h: "Pilatus: Lucerne's local mountain", p: [
+          "Pilatus is the classic for guests in Lucerne. In the summer half of the year you ride up on the world's steepest cogwheel railway from Alpnachstad; all year round you go from Kriens by gondola and aerial cableway. Combined with a boat trip across Lake Lucerne, this makes the popular \"Golden Round Trip\".",
+          "Pilatus only takes half a day and combines well with a stroll around Lucerne. There are no glaciers or eternal snow here, but a wide view over the lake and the Alps. How to spend a day in Lucerne is described in [Lucerne day trip](/blog/luzern-tagesausflug-ab-zuerich).",
+        ]},
+        { h: "Rigi, Schilthorn and Gornergrat", p: [
+          "The **Rigi**, the \"Queen of the Mountains\", is gentler and family-friendly, with Europe's first mountain railway from Vitznau. It is free with the Swiss Travel Pass, and the sunset over the Swiss plateau is legendary.",
+          "The **Schilthorn** above Mürren offers a panoramic view of the Eiger, Mönch and Jungfrau from the Piz Gloria revolving restaurant and is a good, often cheaper alternative to the Jungfraujoch. The **Gornergrat** in Zermatt is the mountain for the perfect Matterhorn view and is worthwhile for anyone staying in Zermatt anyway.",
+        ]},
+        { h: "Which mountain suits you?", p: [
+          "A quick decision guide:",
+        ], ul: [
+          "**Only one day and you want snow:** Titlis.",
+          "**The really big experience, time for an overnight stay:** Jungfraujoch.",
+          "**Half a day in Lucerne:** Pilatus or Rigi.",
+          "**With children and a Swiss Travel Pass:** Rigi.",
+          "**Eiger panorama at a more moderate price:** Schilthorn.",
+          "**Matterhorn:** Gornergrat.",
+        ]},
+        { h: "Combining the excursion and the journey", p: [
+          "Many guests cleverly combine the mountain excursion with their journey. If you travel to Engelberg, you are on the Titlis the next morning. If you stay in Grindelwald or Wengen, you set off straight for the Jungfraujoch. And if you stay in Lucerne, Pilatus and Rigi are on your doorstep.",
+          "For a mountain day from Zurich without an overnight stay, an hourly booking is practical: the driver takes you to the valley station, waits during the excursion and drives you back in the evening. For destinations with an overnight stay, simply book the transfer to your hotel. A complete week's plan is in [Switzerland in 7 days from Zurich](/blog/schweiz-reiseplan-7-tage-ab-zuerich).",
+        ]},
+        { h: "Practical tips for every mountain excursion", p: [
+          "Check the weather and the mountain railway's webcams in the morning; in fog another day is often worthwhile. Even in summer bring a warm jacket, sunglasses and sunscreen – at 3,000 metres it is cold and the sun is strong. In high season reservations for the Jungfraujoch and Titlis are recommended.",
+          "Many mountain railways take a maintenance break in spring and late autumn; when that happens is explained in [Best time to visit Switzerland](/blog/beste-reisezeit-schweiz-monat-fuer-monat).",
+        ]},
+        { h: "Frequently asked questions", p: []},
+        { h3: "Is the Jungfraujoch worth it?", p: [
+          "In good weather and with enough time, yes – it is a unique experience. In fog or on a tight schedule, the Titlis or Schilthorn are often the better choice.",
+        ]},
+        { h3: "Which mountain is closest to Zurich?", p: [
+          "Pilatus and Rigi near Lucerne, followed by the Titlis in Engelberg.",
+        ]},
+        { h3: "Where is there snow in summer?", p: [
+          "On the Jungfraujoch and the Titlis, both with glaciers.",
+        ]},
+        { h3: "Can I do the Jungfraujoch as a day trip from Zurich?", p: [
+          "Possible, but long. An overnight stay in the Jungfrau region is better.",
+        ]},
+        { h3: "Do you drive to the valley station?", p: [
+          "Yes, to Engelberg, Kriens, Alpnachstad, Vitznau, Grindelwald or Stechelberg. For Zermatt the drive ends in Täsch.",
+          "[Enquire about a transfer or hourly booking now](/buchung) – fixed price per vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "swiss-indoors-basel-anreise-transfer",
+    date: "2026-10-07",
+    img: "/gallery/20.jpg",
+    de: {
+      title: "Swiss Indoors Basel 2026: Termine, Tickets, Anreise zur St. Jakobshalle und Tipps für Tennisfans",
+      seo: "Swiss Indoors Basel 2026: Anreise & Tipps",
+      excerpt: "Vom 24. Oktober bis 1. November 2026 spielt die Tenniswelt in Basel: Was Sie über das ATP-500-Turnier in der St. Jakobshalle wissen sollten, wie Sie an Tickets kommen, wo Sie übernachten und wie Sie vom Flughafen Zürich und abends nach den Spielen entspannt hin- und zurückkommen.",
+      body: [
+        { p: [
+          "Ende Oktober wird Basel zur Tennishauptstadt der Schweiz. Die Swiss Indoors gehören zu den grössten Hallenturnieren der Welt und zur Kategorie ATP 500, der zweithöchsten Stufe der Tour unterhalb der Masters-Turniere. Jedes Jahr kommen rund 60'000 Zuschauer in die St. Jakobshalle, und die Liste der Sieger liest sich wie ein Who's who des Tennis – angeführt von Roger Federer, der das Turnier in seiner Heimatstadt zehnmal gewann.",
+          "Dieser Guide fasst zusammen, was Sie für einen Besuch 2026 wissen sollten: Termine, Tickets, Unterkunft und die Anreise vom Flughafen Zürich. Alle Angaben beruhen auf dem Stand Oktober 2026; den genauen Spielplan veröffentlicht der Veranstalter.",
+        ]},
+        { h: "Die Swiss Indoors 2026 auf einen Blick", p: [
+          "Die wichtigsten Eckdaten:",
+        ], table: { head: ["Eckdaten", "Swiss Indoors Basel 2026"], rows: [
+          ["Datum", "24. Oktober bis 1. November 2026 (Qualifikation am ersten Wochenende, Hauptfeld ab 26. Oktober)"],
+          ["Ort", "St. Jakobshalle, am südöstlichen Stadtrand von Basel"],
+          ["Kategorie", "ATP 500, Hartplatz in der Halle"],
+          ["Besucher", "rund 60'000 pro Turnier"],
+          ["Rekordsieger", "Roger Federer, 10 Titel"],
+          ["Sieger 2025", "João Fonseca"],
+        ]}},
+        { h: "Tickets und die beste Zeit für einen Besuch", p: [
+          "Tickets gibt es über den offiziellen Ticketverkauf der Swiss Indoors. Die Abendsessions und das Wochenende mit Halbfinal und Final sind am gefragtesten; wer bestimmte Spiele sehen will, sollte früh buchen. Unter der Woche sind die Tagessessions oft entspannter und bieten mehrere Spiele hintereinander.",
+          "Planen Sie genug Zeit für den Einlass ein, besonders vor den Abendspielen. In der Halle gibt es Gastronomie, sodass Sie auch einen ganzen Tag bleiben können.",
+        ]},
+        { h: "Anreise vom Flughafen Zürich", p: [
+          "Für die Fahrt vom Flughafen Zürich nach Basel planen wir auf der festen Strecke mit etwa 103 Minuten; ausserhalb der Stosszeiten geht es oft schneller. Die Route führt über die A1 und A3 durch den Aargau und das Fricktal. Alle Details zu Strecke, Preis und Stauzeiten stehen in [Flughafen Zürich–Basel](/blog/flughafen-zuerich-basel-transfer-preis-dauer-vergleich).",
+          "Die St. Jakobshalle liegt am südöstlichen Rand der Stadt, nahe der Autobahn. Der Fahrer kann Sie direkt an der Halle absetzen oder zuerst ins Hotel bringen. Wenn Sie am Ankunftstag schon ein Spiel sehen möchten, planen Sie einen Puffer ein; werktags am späten Nachmittag ist der Verkehr rund um Zürich dicht.",
+        ]},
+        { h: "Nach dem Abendspiel: so kommen Sie zurück", p: [
+          "Abendspiele enden oft spät. Trams und Busse halten direkt vor der Halle, sind nach Spielende aber voll. Wer in Zürich, Luzern oder Bern übernachtet oder am nächsten Morgen früh fliegt, profitiert von einer vorab gebuchten Rückfahrt.",
+          "Vereinbaren Sie mit dem Fahrer einen Treffpunkt etwas abseits des Haupteingangs und eine ungefähre Uhrzeit; schreiben Sie per WhatsApp, wenn das Spiel länger dauert. Fahrten zwischen 00:00 und 06:00 Uhr fallen unter den Nachttarif von 20 %, der bei der Buchung sofort angezeigt wird.",
+        ]},
+        { h: "Unterkunft: Basel, Umgebung oder Zürich", p: [
+          "Während der Turnierwoche sind Hotels in Basel gefragt. Gute Alternativen sind Orte in der Umgebung wie Pratteln, Muttenz oder Rheinfelden sowie – für Gäste, die ohnehin in Zürich wohnen – eine Rückfahrt am Abend. Wer im Dreiländereck übernachtet, etwa in Weil am Rhein oder Saint-Louis, braucht für die Fahrten über die Grenze einen gültigen Ausweis.",
+          "Tragen Sie bei der Buchung den Hotelnamen ein; der Fahrer plant dann die Anfahrt durch die Einbahnstrassen der Basler Innenstadt.",
+        ]},
+        { h: "Basel neben dem Tennis", p: [
+          "Zwischen den Spielen lohnt sich ein Abstecher in die Stadt: die Altstadt am Rhein, das Münster mit Blick über den Fluss, das Kunstmuseum und die Fondation Beyeler in Riehen. Ende Oktober ist es kühl, aber oft noch sonnig, und ein Spaziergang am Rheinufer gehört zu jedem Basel-Besuch.",
+          "Weitere Anlässe in Basel und der ganzen Schweiz finden Sie auf unserer [Eventseite](/events).",
+        ]},
+        { h: "Für Gruppen, Firmen und VIP-Gäste", p: [
+          "Viele Unternehmen nutzen die Swiss Indoors für Kundenevents. Für Gruppen bis sieben Personen ist die V-Klasse ideal, für grössere Gruppen koordinieren wir mehrere Fahrzeuge mit gemeinsamer Ankunft. Für Gäste mit besonderen Ansprüchen steht die S-Klasse zur Verfügung.",
+          "Die Rechnung mit ausgewiesener Mehrwertsteuer und auf Wunsch mit Kostenstelle ist in [Firmentransfers in Zürich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen) beschrieben. Für Abläufe mit mehreren Stationen, etwa Hotel, Halle und Restaurant, ist eine Stundenbuchung oft die einfachste Lösung.",
+        ]},
+        { h: "Häufige Fragen zu den Swiss Indoors", p: []},
+        { h3: "Wann finden die Swiss Indoors 2026 statt?", p: [
+          "Vom 24. Oktober bis 1. November 2026 in der St. Jakobshalle Basel, mit dem Hauptfeld ab dem 26. Oktober.",
+        ]},
+        { h3: "Wie lange dauert die Fahrt vom Flughafen Zürich nach Basel?", p: [
+          "Wir planen mit etwa 103 Minuten; ausserhalb der Stosszeiten geht es oft schneller.",
+        ]},
+        { h3: "Kann mich der Fahrer nach einem Abendspiel abholen?", p: [
+          "Ja. Vereinbaren Sie einen Treffpunkt etwas abseits des Haupteingangs und schreiben Sie per WhatsApp, wenn das Spiel länger dauert.",
+        ]},
+        { h3: "Fahren Sie auch von Basel zurück nach Zürich?", p: [
+          "Ja, zum Flughafen, in die Stadt Zürich oder an jede andere Adresse.",
+        ]},
+        { h3: "Gibt es Fahrzeuge für Firmengruppen?", p: [
+          "Ja. Bis sieben Personen pro V-Klasse; für grössere Gruppen koordinieren wir mehrere Fahrzeuge.",
+          "Jetzt [Transfer zu den Swiss Indoors buchen](/buchung) – Festpreis pro Fahrzeug.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Swiss Indoors Basel 2026: Dates, Tickets, Getting to the St. Jakobshalle and Tips for Tennis Fans",
+      seo: "Swiss Indoors Basel 2026: Travel Guide",
+      excerpt: "From 24 October to 1 November 2026 the tennis world plays in Basel: what you should know about the ATP 500 tournament at the St. Jakobshalle, how to get tickets, where to stay and how to travel relaxed from Zurich Airport and back after the evening matches.",
+      body: [
+        { p: [
+          "At the end of October Basel becomes Switzerland's tennis capital. The Swiss Indoors are among the largest indoor tournaments in the world and belong to the ATP 500 category, the tour's second-highest tier below the Masters events. Around 60,000 spectators come to the St. Jakobshalle every year, and the list of winners reads like a who's who of tennis – led by Roger Federer, who won the tournament in his home town ten times.",
+          "This guide summarises what you should know for a visit in 2026: dates, tickets, accommodation and the journey from Zurich Airport. All details are as of October 2026; the organiser publishes the exact order of play.",
+        ]},
+        { h: "The 2026 Swiss Indoors at a glance", p: [
+          "The key facts:",
+        ], table: { head: ["Key facts", "Swiss Indoors Basel 2026"], rows: [
+          ["Dates", "24 October to 1 November 2026 (qualifying on the first weekend, main draw from 26 October)"],
+          ["Venue", "St. Jakobshalle, on the south-eastern edge of Basel"],
+          ["Category", "ATP 500, indoor hard court"],
+          ["Visitors", "around 60,000 per tournament"],
+          ["Record winner", "Roger Federer, 10 titles"],
+          ["2025 winner", "João Fonseca"],
+        ]}},
+        { h: "Tickets and the best time to visit", p: [
+          "Tickets are available through the official Swiss Indoors ticket sales. The evening sessions and the weekend with the semi-finals and final are most in demand; if you want to see particular matches, book early. During the week the day sessions are often more relaxed and offer several matches in a row.",
+          "Allow enough time for entry, especially before evening matches. There is catering in the hall, so you can also stay for a whole day.",
+        ]},
+        { h: "Getting there from Zurich Airport", p: [
+          "For the drive from Zurich Airport to Basel we plan about 103 minutes on the fixed route; outside rush hours it is often quicker. The route follows the A1 and A3 through Aargau and the Fricktal. All details on the route, price and rush hours are in [Zurich Airport to Basel](/blog/flughafen-zuerich-basel-transfer-preis-dauer-vergleich).",
+          "The St. Jakobshalle is on the south-eastern edge of the city, close to the motorway. The driver can drop you right at the hall or take you to your hotel first. If you want to watch a match on your arrival day, allow a buffer; on weekday late afternoons traffic around Zurich is heavy.",
+        ]},
+        { h: "After the evening match: how to get back", p: [
+          "Evening matches often finish late. Trams and buses stop right in front of the hall but are full after the match. If you are staying in Zurich, Lucerne or Bern or flying early the next morning, a pre-booked return journey pays off.",
+          "Agree a meeting point with the driver a little away from the main entrance and an approximate time; message us on WhatsApp if the match runs late. Journeys between midnight and 6 am fall under the 20 % night tariff, which is shown immediately when booking.",
+        ]},
+        { h: "Accommodation: Basel, the surroundings or Zurich", p: [
+          "During tournament week hotels in Basel are in demand. Good alternatives are towns in the surrounding area such as Pratteln, Muttenz or Rheinfelden and – for guests staying in Zurich anyway – a return trip in the evening. If you stay in the tri-border area, for example in Weil am Rhein or Saint-Louis, you need valid ID for the cross-border journeys.",
+          "Enter the hotel name when booking; the driver will then plan the approach through the one-way streets of Basel's city centre.",
+        ]},
+        { h: "Basel beyond the tennis", p: [
+          "Between matches a trip into the city is worthwhile: the old town on the Rhine, the cathedral with its view over the river, the Kunstmuseum and the Fondation Beyeler in Riehen. At the end of October it is cool but often still sunny, and a walk along the Rhine is part of every visit to Basel.",
+          "More events in Basel and across Switzerland are on our [events page](/events).",
+        ]},
+        { h: "For groups, companies and VIP guests", p: [
+          "Many companies use the Swiss Indoors for client events. For groups of up to seven the V-Class is ideal; for larger groups we coordinate several vehicles arriving together. For guests with special requirements the S-Class is available.",
+          "Invoicing with VAT shown and, on request, a cost centre is described in [Corporate transfers in Zurich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen). For schedules with several stops, such as hotel, hall and restaurant, an hourly booking is often the simplest solution.",
+        ]},
+        { h: "Frequently asked questions about the Swiss Indoors", p: []},
+        { h3: "When are the 2026 Swiss Indoors?", p: [
+          "From 24 October to 1 November 2026 at the St. Jakobshalle Basel, with the main draw from 26 October.",
+        ]},
+        { h3: "How long is the drive from Zurich Airport to Basel?", p: [
+          "We plan about 103 minutes; outside rush hours it is often quicker.",
+        ]},
+        { h3: "Can the driver pick me up after an evening match?", p: [
+          "Yes. Agree a meeting point a little away from the main entrance and message us on WhatsApp if the match runs late.",
+        ]},
+        { h3: "Do you also drive from Basel back to Zurich?", p: [
+          "Yes, to the airport, to Zurich city or to any other address.",
+        ]},
+        { h3: "Are there vehicles for corporate groups?", p: [
+          "Yes. Up to seven people per V-Class; for larger groups we coordinate several vehicles.",
+          "[Book your Swiss Indoors transfer now](/buchung) – fixed price per vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
     slug: "lounges-flughafen-zuerich-zugang",
     date: "2026-10-07",
     img: "/hero/hero-3.jpg",
