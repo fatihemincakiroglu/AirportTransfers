@@ -10,6 +10,10 @@ import { useLang } from "../../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons } from "../../../components";
 import { blogPosts } from "../../../blogContent";
 import { readingTime, formatDate } from "../blog-client";
+import { relatedPosts, metaOf, blogCats } from "../../../blogTaxonomy";
+import { routes } from "../../../config";
+import { localName } from "../../../components";
+import PriceCalc from "../../../price-calc";
 
 /**
  * Paragraf içi hafif biçimlendirme: [metin](/ic-yol) → dile göre yerelleştirilmiş bağlantı,
@@ -55,8 +59,18 @@ export default function PostClient({ slug }: { slug: string }) {
   }
 
   const c = pickL(post, lang);
-  // İlgili yazılar: sıradaki 3 yazı (döngüsel)
-  const related = [1, 2, 3].map((o) => blogPosts[(idx + o) % blogPosts.length]);
+  // İlgili yazılar: konuya göre (ortak rota + kategori), yetmezse en yeniler
+  const related = relatedPosts(post.slug, 3);
+  const meta = metaOf(post.slug);
+  const cat = blogCats.find((x) => x.key === meta.cats[0]);
+  // Fiyat hesaplayıcı: varış yazının konusundan; gövdenin ~%40'ındaki ilk H2'nin önüne yerleşir
+  const mainRoute = meta.routes?.[0] ? routes.find((r) => r.slug === meta.routes![0]) : undefined;
+  const calcTo = meta.dest ?? (mainRoute ? localName(mainRoute.to, lang) : "");
+  const calcAt = (() => {
+    const from = Math.max(1, Math.floor(c.body.length * 0.4));
+    for (let i = from; i < c.body.length; i++) if (c.body[i].h) return i;
+    return c.body.length; // H2 yoksa gövdenin sonunda
+  })();
 
   return (
     <div className="min-h-screen" style={{ background: C.ivory, color: C.ink }}>
@@ -69,7 +83,13 @@ export default function PostClient({ slug }: { slug: string }) {
           <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
             <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
             <span className="text-stone-300">/</span>
-            <a href={P("/blog")} className="transition-colors hover:text-[#0C2E25]" style={{ color: C.pine }}>{B.title}</a>
+            <a href={P("/blog")} className="transition-colors hover:text-[#0C2E25]">{B.title}</a>
+            {cat && (
+              <>
+                <span className="text-stone-300">/</span>
+                <a href={`${P("/blog")}?kategorie=${cat.key}`} className="transition-colors hover:text-[#0C2E25]" style={{ color: C.pine }}>{pickL(cat.label, lang)}</a>
+              </>
+            )}
           </nav>
           <span className="mt-3 block h-0.5 w-10" style={{ background: C.gold }} />
           <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight md:text-[44px]" style={{ color: C.pine }}>{c.title}</h1>
@@ -101,7 +121,9 @@ export default function PostClient({ slug }: { slug: string }) {
       <article className="mx-auto max-w-3xl px-5 py-10 md:py-14">
         <p className="text-lg font-medium leading-relaxed text-stone-700">{c.excerpt}</p>
         {c.body.map((block, i) => (
-          <div key={i} className="mt-8">
+          <div key={i}>
+          {i === calcAt && <PriceCalc defaultTo={calcTo} source={`blog:${post.slug}`} />}
+          <div className="mt-8">
             {block.h && (
               <h2 className="text-xl font-extrabold tracking-tight" style={{ color: C.pine }}>
                 {block.h}
@@ -148,7 +170,9 @@ export default function PostClient({ slug }: { slug: string }) {
               </div>
             )}
           </div>
+          </div>
         ))}
+        {calcAt >= c.body.length && <PriceCalc defaultTo={calcTo} source={`blog:${post.slug}`} />}
 
         {/* CTA */}
         <div className="mt-12 flex flex-col items-center gap-4 rounded-2xl p-8 text-center text-white" style={{ background: C.pine }}>

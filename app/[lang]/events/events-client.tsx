@@ -55,37 +55,47 @@ export default function EventsClient() {
 
         {/* Etkinlik kartları — görsel üstte, sakin gövde, buton yerine metin CTA */}
         <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((e) => (
-            <a
-              key={e.slug}
-              href={bookHref(e.city)}
-              className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl"
-            >
-              <div className="relative h-52 overflow-hidden" style={{ background: C.pine }}>
-                <Image
-                  src={e.img}
-                  alt={e.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
-                />
-                <span aria-hidden className="absolute inset-x-0 bottom-0 h-16" style={{ background: "linear-gradient(180deg, transparent, rgba(8,33,27,0.45))" }} />
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: C.gold }}>
-                  {catLabel(e.cat)} · {pickL(e.when, lang)}
-                </p>
-                <h2 className="font-display mt-2 text-2xl font-semibold leading-snug" style={{ color: C.pine }}>
-                  {e.name}
-                </h2>
-                <p className="mt-2.5 flex-1 text-sm leading-relaxed text-stone-600">{pickL(e.desc, lang)}</p>
-                <p className="mt-5 flex items-center gap-2 text-sm font-bold underline-offset-4 group-hover:underline" style={{ color: C.pine, textDecorationColor: C.gold }}>
-                  {E.book}
-                  <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                </p>
-              </div>
-            </a>
-          ))}
+          {list.map((e) => {
+            const name = typeof e.name === "string" ? e.name : pickL(e.name, lang);
+            const main = e.guide ? P(`/blog/${e.guide}`) : bookHref(e.city);
+            return (
+              <article
+                key={e.slug}
+                className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition-all hover:-translate-y-1 hover:shadow-xl"
+              >
+                <a href={main} tabIndex={-1} aria-hidden className="relative block h-52 overflow-hidden" style={{ background: C.pine }}>
+                  <Image
+                    src={e.img}
+                    alt={name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.05]"
+                  />
+                  <span aria-hidden className="absolute inset-x-0 bottom-0 h-16" style={{ background: "linear-gradient(180deg, transparent, rgba(8,33,27,0.45))" }} />
+                </a>
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: C.goldText }}>
+                    {catLabel(e.cat)} · {pickL(e.when, lang)}
+                  </p>
+                  <h2 className="font-display mt-2 text-2xl font-semibold leading-snug" style={{ color: C.pine }}>
+                    <a href={main} className="hover:underline" style={{ textDecorationColor: C.gold }}>{name}</a>
+                  </h2>
+                  <p className="mt-2.5 flex-1 text-sm leading-relaxed text-stone-600">{pickL(e.desc, lang)}</p>
+                  <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-bold">
+                    {e.guide && (
+                      <a href={P(`/blog/${e.guide}`)} className="underline-offset-4 hover:underline" style={{ color: C.pine, textDecorationColor: C.gold }}>
+                        {lang === "de" ? "Anreise-Guide lesen" : "Read the travel guide"}
+                      </a>
+                    )}
+                    <a href={bookHref(e.city)} className="flex items-center gap-2 underline-offset-4 hover:underline" style={{ color: e.guide ? C.goldText : C.pine, textDecorationColor: C.gold }}>
+                      {E.book}
+                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                    </a>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
 
         {/* CTA */}

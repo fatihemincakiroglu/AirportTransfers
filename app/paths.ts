@@ -36,6 +36,7 @@ export const SEGMENTS: Record<string, Seg> = {
   staedte:         seg("staedte", "destinations"),
   preise:          seg("preise", "prices"),
   events:          seg("events", "events"),
+  hotels:          seg("hoteltransfer", "hotel-transfers"),
 };
 
 type L = LangCode;

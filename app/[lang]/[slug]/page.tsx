@@ -10,6 +10,8 @@ import { tx } from "../../i18nX";
 import { routeMeta } from "../../routeMeta";
 import type { Lang } from "../../i18n";
 import { LANGS, DEFAULT_LANG } from "../../paths";
+import { postsForRoute, teaserOf } from "../../blogTaxonomy";
+import { hotels } from "../../hotels";
 
 const nameOf = (to: string | { de: string; en: string }, lang: string) =>
   typeof to === "string" ? to : lang === "de" ? to.de : to.en;
@@ -145,7 +147,18 @@ export default async function Page({ params }: Params) {
       {jsonLd.map((obj, i) => (
         <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(obj) }} />
       ))}
-      <RouteClient slug={slug} />
+      <RouteClient
+        slug={slug}
+        guides={guidesFor(slug, lang)}
+        hotels={hotels.filter((h) => h.routeKey === slug).map((h) => ({ slug: h.slug, name: h.name }))}
+      />
     </>
   );
+}
+
+/** "Mehr zur Strecke" kutusu: sunucuda seçilir, istemciye yalnızca başlık/görsel/okuma süresi gider */
+function guidesFor(slug: string, lang: string) {
+  const { posts, isFallback } = postsForRoute(slug, 4);
+  const l = lang === "de" ? "de" : "en";
+  return { posts: posts.map((p) => teaserOf(p, l)), isFallback };
 }

@@ -820,6 +820,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             <li><a href={P("/fahrzeuge")} className="hover:text-white">{L.nav.fleet}</a></li>
             <li><a href={P("/galerie")} className="hover:text-white">{L.nav.gallery}</a></li>
             <li><a href={P("/blog")} className="hover:text-white">{L.blogSec.title}</a></li>
+            <li><a href={P("/hotels")} className="hover:text-white">{lang === "de" ? "Hoteltransfer" : "Hotel transfers"}</a></li>
           </ul>
         </div>
         <div>

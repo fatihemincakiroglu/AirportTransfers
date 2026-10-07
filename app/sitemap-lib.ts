@@ -4,6 +4,7 @@
 import { SITE_URL, routes } from "./config";
 import { allDestinationSlugs } from "./destinations";
 import { blogPosts } from "./blogContent";
+import { hotels } from "./hotels";
 import { localizePath, LANGS, DEFAULT_LANG, type LangCode } from "./paths";
 import { localizeSlugPath } from "./slugs";
 
@@ -39,6 +40,8 @@ const PAGES: [string, "weekly" | "monthly" | "yearly", number, string?][] = [
   ["/preise", "monthly", 0.8],
   ["/events", "monthly", 0.7],
   ["/blog", "weekly", 0.7],
+  ["/hotels", "monthly", 0.7],
+  ...hotels.map((h): [string, "monthly", number] => [`/hotels/${h.slug}`, "monthly", 0.6]),
   ...routes.map((r): [string, "monthly", number] => [`/${r.slug}`, "monthly", 0.8]),
   ...allDestinationSlugs().map((sl): [string, "monthly", number] => [`/${sl}`, "monthly", 0.6]),
   ...blogPosts.map((p): [string, "yearly", number, string] => [

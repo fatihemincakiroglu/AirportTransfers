@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 
 import { C, routes, fleet, KM_RATE, transferPrice, isNightTime, airportName } from "../../config";
 import { t } from "../../i18n";
+import type { PostTeaser } from "../../blogTaxonomy";
 import { useLang } from "../../providers";
 import { getRouteContent } from "../../routeContent";
 import {
@@ -14,7 +15,11 @@ import {
   RouteCard,
 } from "../../components";
 
-export default function RouteClient({ slug }: { slug: string }) {
+export type RouteGuides = { posts: PostTeaser[]; isFallback: boolean };
+
+type HotelLink = { slug: string; name: string };
+
+export default function RouteClient({ slug, guides, hotels }: { slug: string; guides?: RouteGuides; hotels?: HotelLink[] }) {
   const { lang, P } = useLang();
   const L = t[lang];
   const D = L.detail;
@@ -197,7 +202,7 @@ export default function RouteClient({ slug }: { slug: string }) {
       </section>
 
       {/* ── SEO içerik bölümleri ─────────────────────────────── */}
-      <RouteSeoContent slug={slug} />
+      <RouteSeoContent slug={slug} guides={guides ?? { posts: [], isFallback: true }} hotels={hotels ?? []} />
 
       <SiteFooter compact />
       <FloatingButtons />
@@ -206,7 +211,7 @@ export default function RouteClient({ slug }: { slug: string }) {
 }
 
 // ── Rota içerik bölümü: giriş, hızlı bilgiler, varış noktası, SSS, diğer rotalar ──
-function RouteSeoContent({ slug }: { slug: string }) {
+function RouteSeoContent({ slug, guides, hotels }: { slug: string; guides: RouteGuides; hotels: HotelLink[] }) {
   const { lang, P } = useLang();
   const L = t[lang];
   const D = L.detail;
@@ -266,6 +271,52 @@ function RouteSeoContent({ slug }: { slug: string }) {
               <p className="mt-3 leading-relaxed text-stone-700">{content.about}</p>
             </div>
           </div>
+        )}
+
+        {/* Mehr zur Strecke — ilgili blog rehberleri */}
+        {guides.posts.length > 0 && (
+          <div className="mt-12 rounded-2xl p-6 md:p-8" style={{ background: "#FBF7EE", boxShadow: `inset 3px 0 0 ${C.gold}` }}>
+            <h3 className="font-display text-2xl font-semibold" style={{ color: C.pine }}>
+              {guides.isFallback
+                ? (lang === "de" ? "Gut zu wissen vor der Fahrt" : "Good to know before your ride")
+                : (lang === "de" ? "Mehr zur Strecke" : "More about this route")}
+            </h3>
+            <p className="mt-1.5 text-sm text-stone-600">
+              {guides.isFallback
+                ? (lang === "de" ? "Treffpunkt, Verspätungen und Gepäck – kurz erklärt." : "Meeting point, delays and luggage – briefly explained.")
+                : (lang === "de" ? `Unsere Guides für Ihre Reise nach ${n}.` : `Our guides for your trip to ${n}.`)}
+            </p>
+            <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+              {guides.posts.map((p) => {
+                return (
+                  <li key={p.slug}>
+                    <a href={P(`/blog/${p.slug}`)} className="group flex h-full gap-3.5 rounded-xl bg-white p-3 ring-1 ring-black/5 transition-shadow hover:shadow-md">
+                      <span className="relative h-16 w-20 shrink-0 overflow-hidden rounded-lg" style={{ backgroundColor: C.pine }}>
+                        <Image src={p.img} alt="" fill sizes="80px" className="object-cover" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-[14px] font-bold leading-snug group-hover:underline" style={{ color: C.pine }}>{p.title}</span>
+                        <span className="mt-1 block text-[11px] text-stone-500">🕐 {p.minutes} {L.blogSec.minRead}</span>
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        )}
+
+        {/* Bu şehirdeki lüks oteller → otel transfer sayfaları */}
+        {hotels.length > 0 && (
+          <p className="mt-6 text-sm leading-relaxed text-stone-600">
+            {lang === "de" ? `Hoteltransfer in ${n}: ` : `Hotel transfers in ${n}: `}
+            {hotels.map((h, i) => (
+              <span key={h.slug}>
+                {i > 0 && ", "}
+                <a href={P(`/hotels/${h.slug}`)} className="font-bold underline decoration-[#C9A24B] underline-offset-2" style={{ color: C.pine }}>{h.name}</a>
+              </span>
+            ))}
+          </p>
         )}
 
         {/* SSS akordeon */}
