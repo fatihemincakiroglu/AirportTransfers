@@ -7,6 +7,560 @@ import type { BlogPost } from "./blogContent";
 
 export const guidePosts: BlogPost[] = [
   {
+    slug: "genf-oder-zuerich-flughafen-alpen",
+    date: "2026-10-07",
+    img: "/gallery/7.jpg",
+    de: {
+      title: "Genf oder Zürich: Welcher Flughafen ist der richtige für Ihre Alpenreise?",
+      seo: "Genf oder Zürich: Welcher Flughafen?",
+      excerpt: "Zermatt, Verbier, Gstaad, Interlaken, St. Moritz oder Luzern – je nach Ziel ist Genf oder Zürich der bessere Flughafen. Ein ehrlicher Vergleich nach Region, Flugangebot und Anreise, mit einer Übersicht, welche Orte näher an welchem Flughafen liegen, und Tipps für Gabelflüge.",
+      body: [
+        { p: [
+          "Wer in die Schweizer Alpen reist, hat meist zwei Flughäfen zur Wahl: Zürich im Nordosten und Genf im Südwesten des Landes. Beide sind gut angebunden, beide liegen nahe an grossen Ferienregionen – und doch kann die Wahl eine Anreise um Stunden verkürzen oder verlängern.",
+          "Als Transferanbieter in Zürich haben wir ein Interesse an Zürich, aber eine ehrliche Antwort hilft Ihnen mehr. Dieser Guide zeigt, welcher Flughafen für welches Ziel sinnvoll ist, worauf es beim Flugangebot ankommt und wie Sie beide Flughäfen klug kombinieren.",
+        ]},
+        { h: "Die beiden Flughäfen im Vergleich", p: [
+          "Zürich ist der grösste Flughafen der Schweiz und Drehkreuz der SWISS. Hier landen die meisten Langstreckenflüge aus Nordamerika, Asien und dem Nahen Osten, und das Angebot an Direktverbindungen ist am grössten. Genf ist kleiner, hat aber ebenfalls viele Verbindungen innerhalb Europas und einige Langstrecken; er liegt direkt an der französischen Grenze und hat auch einen französischen Sektor.",
+          "Für Reisende aus Übersee bedeutet das oft: Zürich ist mit einem Direktflug erreichbar, Genf nur mit Umsteigen. Ein Umsteigen in Europa kann die Zeitersparnis bei der Weiterfahrt schnell wieder aufheben.",
+        ], table: { head: ["Kriterium", "Zürich (ZRH)", "Genf (GVA)"], rows: [
+          ["Lage", "Nordostschweiz", "Südwestschweiz, an der Grenze zu Frankreich"],
+          ["Langstreckenflüge", "grösstes Angebot, SWISS-Drehkreuz", "kleineres Angebot"],
+          ["Nahe Regionen", "Zentralschweiz, Graubünden, Ostschweiz, Tessin", "Genfersee, Unterwallis, französische Alpen"],
+          ["Sprachregion", "Deutsch", "Französisch"],
+        ]}},
+        { h: "Welches Ziel liegt näher an welchem Flughafen?", p: [
+          "Als Faustregel gilt: Alles östlich einer Linie Bern–Brig erreichen Sie meist schneller ab Zürich, alles westlich davon ab Genf. Dazwischen liegt eine Zone, in der beide Flughäfen ähnlich gut funktionieren.",
+        ], table: { head: ["Region / Ort", "Meist günstiger ab"], rows: [
+          ["Luzern, Engelberg, Zug", "Zürich"],
+          ["Davos, Klosters, St. Moritz, Laax, Lenzerheide", "Zürich"],
+          ["Lugano, Locarno, Tessin", "Zürich"],
+          ["Interlaken, Grindelwald, Wengen", "beide ähnlich, oft Zürich"],
+          ["Bern", "beide ähnlich, oft Zürich"],
+          ["Zermatt, Saas-Fee", "beide ähnlich"],
+          ["Gstaad", "beide ähnlich, oft Genf"],
+          ["Verbier, Crans-Montana", "Genf"],
+          ["Lausanne, Montreux, Genfersee", "Genf"],
+          ["Chamonix (Frankreich)", "Genf"],
+        ]}},
+        { h: "Wann Zürich die bessere Wahl ist", p: [
+          "Zürich ist klar im Vorteil für die Zentral- und Ostschweiz: Luzern erreichen Sie in gut einer Stunde, Engelberg in knapp zwei, Davos und St. Moritz über Graubünden. Auch für das Tessin ist Zürich näher, die Fahrt durch den Gotthard bringt Sie direkt nach Lugano oder Locarno.",
+          "Dazu kommt das Flugangebot: Wer aus den USA, Asien oder dem Nahen Osten direkt fliegen möchte, findet in Zürich oft die einzige Nonstop-Verbindung. Für die Jungfrau-Region und Zermatt gleicht das die etwas längere Anreise häufig aus. Unsere festen Strecken ab Zürich sehen Sie auf der [Streckenseite](/strecken).",
+        ]},
+        { h: "Wann Genf die bessere Wahl ist", p: [
+          "Genf ist unschlagbar für die Genferseeregion – Lausanne, Montreux, Vevey – und für das Unterwallis mit Verbier und Crans-Montana. Auch Chamonix in Frankreich liegt von Genf aus nur rund eine Stunde entfernt. Wer dorthin reist und einen guten Flug nach Genf findet, sollte ihn nehmen.",
+          "Fliegen Sie trotzdem nach Zürich, etwa wegen eines Direktflugs, bringen wir Sie auch in die Westschweiz. Wir haben feste Strecken nach [Genf](/zurich-airport-to-geneva), [Lausanne](/zurich-airport-to-lausanne), [Montreux](/zurich-airport-to-montreux) und [Verbier](/zurich-airport-to-verbier).",
+        ]},
+        { h: "Zermatt: der Sonderfall", p: [
+          "Zermatt liegt etwa gleich weit von beiden Flughäfen entfernt. Ab Zürich führt die Fahrt über Bern und die Lötschberg-Autoverladung oder ganz auf der Strasse ins Wallis; ab Genf entlang des Genfersees und durch das Rhonetal. In beiden Fällen endet der Transfer in Täsch, weil Zermatt autofrei ist.",
+          "Hier entscheidet das Flugangebot. Wer einen Direktflug nach Zürich hat, fährt von dort. Alles zur Anreise beschreibt [Zermatt-Transfer über Täsch](/blog/zermatt-transfer-flughafen-zuerich-taesch-autofrei).",
+        ]},
+        { h: "Im Winter: Strassen, Pässe und Autoverlad", p: [
+          "Im Winter verändert sich die Rechnung manchmal. Viele Alpenpässe sind dann geschlossen, und die Verbindung von der Deutschschweiz ins Wallis führt entweder über die Lötschberg-Autoverladung zwischen Kandersteg und Goppenstein oder über die längere Strecke via Genfersee. An Wechselsamstagen bilden sich an der Autoverladung Wartezeiten, und auch das Rhonetal ist dann voll.",
+          "Für Ziele im Wallis lohnt es sich deshalb, im Winter beide Flughäfen zu prüfen und an Samstagen grosszügig zu planen. Für Graubünden, die Zentralschweiz und das Berner Oberland bleibt Zürich auch im Winter die naheliegende Wahl. Mehr zur Wintersaison steht in [Die besten Skigebiete ab Flughafen Zürich](/blog/skigebiete-ab-flughafen-zuerich-fahrzeit-transfer).",
+        ]},
+        { h: "Gabelflüge: in Zürich landen, ab Genf zurück", p: [
+          "Eine elegante Lösung für Rundreisen ist ein Gabelflug: Ankunft in Zürich, Rückflug ab Genf oder umgekehrt. So reisen Sie einmal quer durch die Schweiz, ohne den Weg zurückfahren zu müssen. Viele Airlines bieten solche Tickets ohne grossen Aufpreis an.",
+          "Eine typische Route: Zürich – Luzern – Interlaken – Zermatt – Genfersee – Genf. Für die Ankunft und die letzte Etappe mit Gepäck ist ein Transfer bequem, dazwischen fahren viele Reisende Bahn. Wie sich das am besten kombinieren lässt, steht in [Lohnt sich der Swiss Travel Pass?](/blog/swiss-travel-pass-lohnt-sich-vergleich-transfer).",
+        ]},
+        { h: "Häufige Fragen", p: []},
+        { h3: "Welcher Flughafen ist besser für Interlaken?", p: [
+          "Beide funktionieren. Ab Zürich planen wir mit etwa zweieinhalb Stunden; entscheidend ist meist, wohin es den besseren Flug gibt.",
+        ]},
+        { h3: "Welcher Flughafen ist besser für Verbier?", p: [
+          "Genf, weil Verbier deutlich näher liegt. Wer trotzdem in Zürich landet, kann einen Transfer ab Zürich buchen.",
+        ]},
+        { h3: "Fahren Sie auch von Zürich nach Genf?", p: [
+          "Ja, das ist eine unserer festen Strecken. Den Festpreis zeigt der Buchungsrechner.",
+        ]},
+        { h3: "Wo gibt es mehr Langstreckenflüge?", p: [
+          "In Zürich, dem Drehkreuz der SWISS. Genf hat ein kleineres Langstreckenangebot.",
+        ]},
+        { h3: "Lohnt sich ein Gabelflug Zürich–Genf?", p: [
+          "Für Rundreisen durch die ganze Schweiz oft ja, weil Sie die Rückfahrt sparen.",
+          "Jetzt [Transfer ab Flughafen Zürich buchen](/buchung) – Festpreis pro Fahrzeug.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Geneva or Zurich: Which Airport Is Right for Your Alpine Trip?",
+      seo: "Geneva or Zurich: Which Airport?",
+      excerpt: "Zermatt, Verbier, Gstaad, Interlaken, St. Moritz or Lucerne – depending on your destination, Geneva or Zurich is the better airport. An honest comparison by region, flight choice and onward journey, with an overview of which places are closer to which airport and tips for open-jaw trips.",
+      body: [
+        { p: [
+          "If you are travelling to the Swiss Alps, you usually have two airports to choose from: Zurich in the north-east and Geneva in the south-west of the country. Both are well connected, both are close to major holiday regions – and yet the choice can shorten or lengthen your journey by hours.",
+          "As a transfer company in Zurich we have an interest in Zurich, but an honest answer helps you more. This guide shows which airport makes sense for which destination, what matters in terms of flights and how to combine both airports cleverly.",
+        ]},
+        { h: "The two airports compared", p: [
+          "Zurich is Switzerland's largest airport and the SWISS hub. Most long-haul flights from North America, Asia and the Middle East land here, and the choice of direct connections is the widest. Geneva is smaller but also has many European connections and some long-haul routes; it lies right on the French border and also has a French sector.",
+          "For travellers from overseas this often means: Zurich can be reached on a direct flight, Geneva only with a connection. A connection in Europe can quickly cancel out any time saved on the onward drive.",
+        ], table: { head: ["Criterion", "Zurich (ZRH)", "Geneva (GVA)"], rows: [
+          ["Location", "north-eastern Switzerland", "south-western Switzerland, on the French border"],
+          ["Long-haul flights", "widest choice, SWISS hub", "smaller choice"],
+          ["Nearby regions", "Central Switzerland, Graubünden, eastern Switzerland, Ticino", "Lake Geneva, Lower Valais, French Alps"],
+          ["Language region", "German", "French"],
+        ]}},
+        { h: "Which destination is closer to which airport?", p: [
+          "As a rule of thumb: everything east of a line from Bern to Brig is usually quicker from Zurich, everything west of it from Geneva. In between there is a zone where both airports work similarly well.",
+        ], table: { head: ["Region / place", "Usually better from"], rows: [
+          ["Lucerne, Engelberg, Zug", "Zurich"],
+          ["Davos, Klosters, St. Moritz, Laax, Lenzerheide", "Zurich"],
+          ["Lugano, Locarno, Ticino", "Zurich"],
+          ["Interlaken, Grindelwald, Wengen", "both similar, often Zurich"],
+          ["Bern", "both similar, often Zurich"],
+          ["Zermatt, Saas-Fee", "both similar"],
+          ["Gstaad", "both similar, often Geneva"],
+          ["Verbier, Crans-Montana", "Geneva"],
+          ["Lausanne, Montreux, Lake Geneva", "Geneva"],
+          ["Chamonix (France)", "Geneva"],
+        ]}},
+        { h: "When Zurich is the better choice", p: [
+          "Zurich has a clear advantage for Central and eastern Switzerland: Lucerne is a little over an hour away, Engelberg just under two, Davos and St. Moritz via Graubünden. Zurich is also closer for Ticino; the drive through the Gotthard takes you straight to Lugano or Locarno.",
+          "Then there is the choice of flights: if you want to fly direct from the USA, Asia or the Middle East, Zurich often has the only non-stop connection. For the Jungfrau region and Zermatt this frequently makes up for the slightly longer drive. Our fixed routes from Zurich are on the [routes page](/strecken).",
+        ]},
+        { h: "When Geneva is the better choice", p: [
+          "Geneva is unbeatable for the Lake Geneva region – Lausanne, Montreux, Vevey – and for the Lower Valais with Verbier and Crans-Montana. Chamonix in France is also only around an hour from Geneva. If that is where you are going and you find a good flight to Geneva, take it.",
+          "If you still fly to Zurich, for example because of a direct flight, we will take you to western Switzerland too. We have fixed routes to [Geneva](/zurich-airport-to-geneva), [Lausanne](/zurich-airport-to-lausanne), [Montreux](/zurich-airport-to-montreux) and [Verbier](/zurich-airport-to-verbier).",
+        ]},
+        { h: "Zermatt: the special case", p: [
+          "Zermatt is about the same distance from both airports. From Zurich the drive goes via Bern and the Lötschberg car train or entirely by road into Valais; from Geneva along Lake Geneva and through the Rhône valley. In both cases the transfer ends in Täsch, because Zermatt is car-free.",
+          "Here the choice of flights decides. If you have a direct flight to Zurich, travel from there. Everything about the journey is in [Zermatt transfer via Täsch](/blog/zermatt-transfer-flughafen-zuerich-taesch-autofrei).",
+        ]},
+        { h: "In winter: roads, passes and car trains", p: [
+          "In winter the calculation sometimes changes. Many Alpine passes are closed, and the connection from German-speaking Switzerland into Valais runs either via the Lötschberg car train between Kandersteg and Goppenstein or via the longer route along Lake Geneva. On changeover Saturdays there are waits at the car train, and the Rhône valley is busy too.",
+          "For destinations in Valais it is therefore worth checking both airports in winter and planning generously on Saturdays. For Graubünden, Central Switzerland and the Bernese Oberland, Zurich remains the obvious choice in winter too. More on the winter season is in [The best ski resorts from Zurich Airport](/blog/skigebiete-ab-flughafen-zuerich-fahrzeit-transfer).",
+        ]},
+        { h: "Open jaw: land in Zurich, fly home from Geneva", p: [
+          "An elegant solution for round trips is an open-jaw ticket: arrive in Zurich, fly home from Geneva or the other way round. That way you cross Switzerland once without having to drive back. Many airlines offer such tickets without much of a surcharge.",
+          "A typical route: Zurich – Lucerne – Interlaken – Zermatt – Lake Geneva – Geneva. A transfer is convenient for arrival and the last leg with luggage, and many travellers take the train in between. How best to combine them is explained in [Is the Swiss Travel Pass worth it?](/blog/swiss-travel-pass-lohnt-sich-vergleich-transfer).",
+        ]},
+        { h: "Frequently asked questions", p: []},
+        { h3: "Which airport is better for Interlaken?", p: [
+          "Both work. From Zurich we plan about two and a half hours; what usually decides is where the better flight goes.",
+        ]},
+        { h3: "Which airport is better for Verbier?", p: [
+          "Geneva, because Verbier is considerably closer. If you land in Zurich anyway, you can book a transfer from Zurich.",
+        ]},
+        { h3: "Do you also drive from Zurich to Geneva?", p: [
+          "Yes, it is one of our fixed routes. The booking calculator shows the fixed price.",
+        ]},
+        { h3: "Where are there more long-haul flights?", p: [
+          "In Zurich, the SWISS hub. Geneva has a smaller long-haul offering.",
+        ]},
+        { h3: "Is an open-jaw Zurich–Geneva ticket worth it?", p: [
+          "For round trips through all of Switzerland, often yes, because you save the journey back.",
+          "[Book a transfer from Zurich Airport now](/buchung) – fixed price per vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "flughafen-zuerich-lugano-tessin-transfer",
+    date: "2026-10-07",
+    img: "/gallery/3.jpg",
+    de: {
+      title: "Vom Flughafen Zürich nach Lugano und ins Tessin: Gotthard, Fahrzeit und die schönsten Orte im Süden",
+      seo: "Flughafen Zürich–Lugano & Tessin: Transfer",
+      excerpt: "In gut drei bis vier Stunden vom Flughafen Zürich unter die Palmen: wie der Transfer nach Lugano, Locarno, Ascona und Bellinzona funktioniert, wann der Gotthard staut, welche Alternative der Fahrer wählt und welche Orte im Tessin zu Ihnen passen.",
+      body: [
+        { p: [
+          "Das Tessin ist die Schweiz mit italienischem Lebensgefühl: Palmen am Seeufer, Piazzas, Grotti mit Risotto und Merlot, dazu milde Winter und lange Sommer. Für viele Gäste ist es der Abschluss einer Schweizreise, für andere das Hauptziel – und erstaunlich viele reisen dafür über Zürich an.",
+          "Dieser Guide zeigt, wie der Transfer vom Flughafen Zürich ins Tessin funktioniert, welche Route der Fahrer wählt, wann es am Gotthard eng wird und welche Orte sich für welchen Aufenthalt eignen.",
+        ]},
+        { h: "Die Strecken auf einen Blick", p: [
+          "Die Fahrzeiten sind unsere Planungswerte für die festen Strecken inklusive Puffer; bei freier Fahrt am Gotthard sind Sie oft schneller.",
+        ], table: { head: ["Ziel", "Distanz ab ZRH", "Geplante Fahrzeit"], rows: [
+          ["[Bellinzona](/zurich-airport-to-bellinzona)", "rund 183 km", "etwa 219 Minuten"],
+          ["[Locarno](/zurich-airport-to-locarno)", "rund 201 km", "etwa 242 Minuten"],
+          ["[Lugano](/zurich-airport-to-lugano)", "rund 210 km", "etwa 252 Minuten"],
+          ["[Ascona](/flughafentransfer-ascona)", "kurz hinter Locarno", "Preis im Buchungsrechner"],
+        ]}},
+        { h: "So entsteht der Preis", p: [
+          "Für Lugano, Locarno und Bellinzona gelten feste Strecken mit einem Festpreis pro Fahrzeug, berechnet aus unserem Kilometertarif. Für andere Orte im Tessin berechnet der Buchungsrechner den Preis für Ihre genaue Adresse. Enthalten sind Meet & Greet, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Gepäck und Kindersitze; zwischen 00:00 und 06:00 Uhr gilt der Nachttarif von 20 %.",
+          "Weil der Preis pro Fahrzeug gilt, teilen sich Familien und Gruppen bis sieben Personen eine V-Klasse – bei Strecken dieser Länge ein spürbarer Unterschied zu Einzeltickets.",
+        ]},
+        { h: "Die Route: durch den Gotthard", p: [
+          "Vom Flughafen geht es auf der A4 und A2 Richtung Süden, am Vierwaldstättersee entlang durch das Urnerland bis Göschenen. Dort führt der Gotthard-Strassentunnel unter dem Massiv hindurch nach Airolo, und auf der anderen Seite beginnt das Tessin: die Leventina, Bellinzona mit seinen Burgen, dann der Monte Ceneri und Lugano.",
+          "Im Sommer ist auch die Fahrt über den Gotthardpass möglich, mit der historischen Tremola-Strasse und ihren Kopfsteinpflaster-Kehren. Das verlängert die Reise, ist aber ein Erlebnis; sagen Sie es dem Fahrer bei der Buchung, wenn Sie diese Variante wünschen.",
+        ]},
+        { h: "Stau am Gotthard: wann und was der Fahrer tut", p: [
+          "Der Gotthard ist an Ferientagen berüchtigt: Vor Ostern, an Pfingsten, an Auffahrt und an Sommersamstagen bilden sich vor den Tunnelportalen lange Kolonnen, Richtung Süden am Freitag und Samstag, Richtung Norden am Sonntag und Montag. Ausserhalb dieser Tage läuft der Verkehr meist flüssig.",
+          "Bei Stau weicht der Fahrer häufig über die A13 und den San-Bernardino-Tunnel aus, die bei Bellinzona wieder auf die Gotthard-Route trifft. Welche Route schneller ist, entscheidet er nach der aktuellen Lage. Für die Rückfahrt an einem Ferienwochenende planen Sie einen grosszügigen Puffer ein.",
+        ]},
+        { h: "Welcher Ort im Tessin passt zu Ihnen?", p: [
+          "Das Tessin ist vielseitiger, als es auf der Karte aussieht:",
+        ], ul: [
+          "**Lugano:** die grösste Stadt, mit Seepromenade, Einkaufsstrassen, Kongresszentrum und den Hausbergen Monte Brè und Monte San Salvatore. Ideal für Städtereisen und Geschäftsreisen.",
+          "**Locarno:** die Sonnenstube am Lago Maggiore, bekannt für die Piazza Grande und das Filmfestival im August.",
+          "**Ascona:** das elegante Nachbardorf von Locarno, mit Seepromenade, Boutiquen und gehobenen Hotels.",
+          "**Bellinzona:** die Hauptstadt mit drei Burgen, die zum UNESCO-Welterbe gehören, und einem guten Ausgangspunkt für Wanderungen.",
+          "**Morcote und Gandria:** malerische Dörfer am Luganersee, eher für einen Ausflug als für den ganzen Aufenthalt.",
+          "**Valle Verzasca und Valle Maggia:** grüne Täler mit Flüssen, Steinbrücken und Badeplätzen, ideal für Natur und Wandern.",
+        ]},
+        { h: "Beste Reisezeit", p: [
+          "Das Tessin hat das mildeste Klima der Schweiz. Im Frühling blühen Kamelien und Magnolien, oft schon Wochen früher als nördlich der Alpen; im Sommer ist es warm genug zum Baden in den Seen und Flüssen; der Herbst ist die Zeit der Kastanien und der Weinlese. Im August füllt das Filmfestival Locarno die Stadt, Hotels sind dann früh ausgebucht – mehr dazu auf unserer [Eventseite](/events).",
+        ]},
+        { h: "Weiter nach Italien", p: [
+          "Vom Tessin sind es nur wenige Kilometer nach Italien. Der Comer See liegt kurz hinter der Grenze bei Chiasso, Mailand rund eine Stunde weiter. Viele Gäste kombinieren das Tessin mit diesen Zielen oder fliegen ab Mailand zurück. Details finden Sie in [Vom Flughafen Zürich an den Comer See](/blog/zuerich-comer-see-transfer-tagesausflug) und [Von Zürich nach Mailand](/blog/zuerich-mailand-transfer-zug-auto-vergleich).",
+        ]},
+        { h: "Transfer oder Zug?", p: [
+          "Seit der Eröffnung des Gotthard-Basistunnels ist der Zug ins Tessin schnell, und für Alleinreisende mit leichtem Gepäck in Bahnhofsnähe eine gute Wahl. Ab Flughafen Zürich ist meist ein Umstieg nötig.",
+          "Der Transfer gewinnt für Familien und Gruppen, mit viel Gepäck, Golf- oder Velotaschen, für Hotels ausserhalb der Zentren, etwa in Ascona, an den Seeufern oder in den Tälern, und für alle, die nach einem Langstreckenflug direkt ankommen möchten.",
+        ]},
+        { h: "Häufige Fragen zum Transfer ins Tessin", p: []},
+        { h3: "Wie lange dauert die Fahrt vom Flughafen Zürich nach Lugano?", p: [
+          "Wir planen mit etwa 252 Minuten. Ohne Stau am Gotthard ist es oft deutlich weniger.",
+        ]},
+        { h3: "Was passiert bei Stau am Gotthard?", p: [
+          "Der Fahrer weicht bei Bedarf über den San Bernardino aus. Der Festpreis bleibt gleich.",
+        ]},
+        { h3: "Können wir über den Gotthardpass fahren?", p: [
+          "Im Sommer, wenn der Pass offen ist, ja. Geben Sie den Wunsch bei der Buchung an; die Fahrt dauert länger.",
+        ]},
+        { h3: "Fahren Sie auch nach Ascona oder ins Verzascatal?", p: [
+          "Ja. Geben Sie die Zieladresse ein, der Buchungsrechner zeigt den Preis.",
+        ]},
+        { h3: "Kann ich unterwegs in Luzern anhalten?", p: [
+          "Ja, Luzern liegt auf dem Weg. Fügen Sie im Buchungsformular einen Zwischenstopp hinzu.",
+          "Jetzt [Transfer ins Tessin buchen](/buchung) – Festpreis pro Fahrzeug.",
+        ]},
+      ],
+    },
+    en: {
+      title: "From Zurich Airport to Lugano and Ticino: Gotthard, Driving Time and the Most Beautiful Places in the South",
+      seo: "Zurich Airport to Lugano & Ticino: Transfer",
+      excerpt: "From Zurich Airport to the palm trees in a little over three to four hours: how the transfer to Lugano, Locarno, Ascona and Bellinzona works, when the Gotthard gets congested, which alternative the driver takes and which places in Ticino suit you.",
+      body: [
+        { p: [
+          "Ticino is Switzerland with an Italian way of life: palm trees on the lakeshore, piazzas, grotti serving risotto and Merlot, plus mild winters and long summers. For many guests it is the finale of a Swiss trip, for others the main destination – and a surprising number travel there via Zurich.",
+          "This guide shows how the transfer from Zurich Airport to Ticino works, which route the driver takes, when things get tight at the Gotthard and which places suit which kind of stay.",
+        ]},
+        { h: "The routes at a glance", p: [
+          "Driving times are our planning values for the fixed routes including a buffer; with free-flowing traffic at the Gotthard you are often quicker.",
+        ], table: { head: ["Destination", "Distance from ZRH", "Planned driving time"], rows: [
+          ["[Bellinzona](/zurich-airport-to-bellinzona)", "around 183 km", "about 219 minutes"],
+          ["[Locarno](/zurich-airport-to-locarno)", "around 201 km", "about 242 minutes"],
+          ["[Lugano](/zurich-airport-to-lugano)", "around 210 km", "about 252 minutes"],
+          ["[Ascona](/flughafentransfer-ascona)", "just beyond Locarno", "price in the booking calculator"],
+        ]}},
+        { h: "How the price is made up", p: [
+          "Lugano, Locarno and Bellinzona are fixed routes with a fixed price per vehicle, calculated from our per-kilometre tariff. For other places in Ticino, the booking calculator works out the price for your exact address. Included are meet & greet, 60 minutes of waiting time after landing, flight tracking, luggage and child seats; between midnight and 6 am the 20 % night tariff applies.",
+          "Because the price is per vehicle, families and groups of up to seven share one V-Class – on routes of this length a noticeable difference compared with individual tickets.",
+        ]},
+        { h: "The route: through the Gotthard", p: [
+          "From the airport the drive heads south on the A4 and A2, along Lake Lucerne and through the canton of Uri to Göschenen. There the Gotthard road tunnel runs under the massif to Airolo, and on the other side Ticino begins: the Leventina valley, Bellinzona with its castles, then Monte Ceneri and Lugano.",
+          "In summer you can also take the Gotthard Pass road, with the historic Tremola and its cobbled hairpin bends. This lengthens the journey but is an experience in itself; tell the driver when booking if you would like this option.",
+        ]},
+        { h: "Gotthard traffic: when, and what the driver does", p: [
+          "The Gotthard is notorious on holiday dates: before Easter, at Whitsun, at Ascension and on summer Saturdays long queues form in front of the tunnel portals – southbound on Fridays and Saturdays, northbound on Sundays and Mondays. Outside these dates traffic usually flows smoothly.",
+          "In heavy traffic the driver often switches to the A13 and the San Bernardino tunnel, which rejoins the Gotthard route at Bellinzona. He decides which route is faster based on the current situation. For a return trip on a holiday weekend, allow a generous buffer.",
+        ]},
+        { h: "Which place in Ticino suits you?", p: [
+          "Ticino is more varied than it looks on the map:",
+        ], ul: [
+          "**Lugano:** the largest city, with a lakeside promenade, shopping streets, a congress centre and the local mountains Monte Brè and Monte San Salvatore. Ideal for city breaks and business trips.",
+          "**Locarno:** the sunny spot on Lake Maggiore, known for the Piazza Grande and the film festival in August.",
+          "**Ascona:** Locarno's elegant neighbour, with a lakeside promenade, boutiques and upscale hotels.",
+          "**Bellinzona:** the cantonal capital with three castles that are a UNESCO World Heritage Site, and a good base for hikes.",
+          "**Morcote and Gandria:** picturesque villages on Lake Lugano, better for an excursion than for a whole stay.",
+          "**Valle Verzasca and Valle Maggia:** green valleys with rivers, stone bridges and swimming spots, ideal for nature and hiking.",
+        ]},
+        { h: "Best time to travel", p: [
+          "Ticino has the mildest climate in Switzerland. In spring camellias and magnolias bloom, often weeks earlier than north of the Alps; in summer it is warm enough to swim in the lakes and rivers; autumn is the time of chestnuts and the grape harvest. In August the Locarno Film Festival fills the town and hotels book up early – more on our [events page](/events).",
+        ]},
+        { h: "On to Italy", p: [
+          "From Ticino Italy is only a few kilometres away. Lake Como lies just beyond the border at Chiasso, Milan around an hour further. Many guests combine Ticino with these destinations or fly home from Milan. Details are in [From Zurich Airport to Lake Como](/blog/zuerich-comer-see-transfer-tagesausflug) and [From Zurich to Milan](/blog/zuerich-mailand-transfer-zug-auto-vergleich).",
+        ]},
+        { h: "Transfer or train?", p: [
+          "Since the Gotthard Base Tunnel opened, the train to Ticino has been fast, and for solo travellers with light luggage near the station it is a good choice. From Zurich Airport a change is usually needed.",
+          "The transfer wins for families and groups, with a lot of luggage, golf or bike bags, for hotels outside the centres – in Ascona, on the lakeshores or in the valleys – and for anyone who wants to arrive directly after a long-haul flight.",
+        ]},
+        { h: "Frequently asked questions about the Ticino transfer", p: []},
+        { h3: "How long is the drive from Zurich Airport to Lugano?", p: [
+          "We plan about 252 minutes. Without traffic at the Gotthard it is often considerably less.",
+        ]},
+        { h3: "What happens if there is traffic at the Gotthard?", p: [
+          "The driver switches to the San Bernardino if needed. The fixed price stays the same.",
+        ]},
+        { h3: "Can we drive over the Gotthard Pass?", p: [
+          "In summer, when the pass is open, yes. Mention it when booking; the drive takes longer.",
+        ]},
+        { h3: "Do you also drive to Ascona or the Verzasca valley?", p: [
+          "Yes. Enter the destination address and the booking calculator shows the price.",
+        ]},
+        { h3: "Can I stop in Lucerne on the way?", p: [
+          "Yes, Lucerne is on the way. Add an intermediate stop in the booking form.",
+          "[Book your Ticino transfer now](/buchung) – fixed price per vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "hotels-flughafen-zuerich-uebernachten",
+    date: "2026-10-07",
+    img: "/hero/hero-2.jpg",
+    de: {
+      title: "Hotels am Flughafen Zürich: Wo übernachten vor dem Frühflug oder nach der späten Landung?",
+      seo: "Hotels am Flughafen Zürich: die Optionen",
+      excerpt: "Zu Fuss ins Terminal, mit dem Shuttle in fünf Minuten oder doch lieber in die Stadt? Welche Hotels direkt am Flughafen Zürich liegen, welche in Glattbrugg, Opfikon und Rümlang, für wen sich ein Flughafenhotel lohnt – und wie Sie am nächsten Morgen entspannt in die Berge oder zum Abflug kommen.",
+      body: [
+        { p: [
+          "Ein Flug um 06:30 Uhr, eine Landung kurz vor Mitternacht, ein langer Umstieg: Es gibt viele Gründe, eine Nacht direkt am Flughafen Zürich zu verbringen. Rund um den Flughafen gibt es eine grosse Auswahl an Hotels – von Häusern, die zu Fuss mit dem Terminal verbunden sind, bis zu Hotels in den Nachbarorten mit Shuttle.",
+          "Dieser Guide gibt einen Überblick über die Lagen, hilft bei der Entscheidung zwischen Flughafenhotel und Stadthotel und zeigt, wie Sie die Nacht am Flughafen mit der Weiterreise am nächsten Tag verbinden. Preise und Shuttle-Konditionen ändern sich; prüfen Sie diese direkt beim Hotel.",
+        ]},
+        { h: "Direkt am Flughafen: zu Fuss ins Terminal", p: [
+          "Die bequemste Lage haben Hotels, die Sie ohne Shuttle erreichen:",
+        ], ul: [
+          "**Radisson Blu Hotel Zurich Airport:** direkt neben dem Flughafengebäude, über einen gedeckten Weg mit den Terminals verbunden und nur wenige Gehminuten vom Bahnhof entfernt.",
+          "**Hyatt Regency und Hyatt Place in The Circle:** im modernen Quartier The Circle gegenüber dem Terminal, mit Restaurants, Geschäften und einem Kongresszentrum. Zu Fuss in wenigen Minuten am Check-in.",
+        ]},
+        { p: [
+          "Diese Hotels sind ideal für sehr frühe Abflüge, späte Ankünfte und kurze Geschäftstermine in The Circle. Sie sind in der Regel teurer als Häuser in den Nachbarorten, sparen dafür aber jede Minute.",
+        ]},
+        { h: "In der Nähe: Glattbrugg, Opfikon, Kloten und Rümlang", p: [
+          "In den Gemeinden rund um den Flughafen liegen zahlreiche weitere Hotels, viele davon mit Shuttle zum Terminal. Bekannte Häuser sind etwa das Mövenpick Hotel Zürich-Airport und das Dorint Airport-Hotel in Glattbrugg, das Hilton Zurich Airport in Opfikon sowie mehrere Häuser in Rümlang und Kloten, vom Businesshotel bis zur günstigen Option.",
+          "Die Fahrt zum Terminal dauert meist nur wenige Minuten. Achten Sie bei der Buchung darauf, ob der Shuttle kostenlos ist, ab wann er am Morgen fährt und ob er zu Ihrer Abflugzeit schon verkehrt – gerade bei Abflügen vor 06:00 Uhr ist das nicht selbstverständlich.",
+        ], table: { head: ["Lage", "Weg zum Terminal", "Geeignet für"], rows: [
+          ["Am Flughafen / The Circle", "zu Fuss, wenige Minuten", "Frühflüge, späte Landung, kurze Termine"],
+          ["Glattbrugg / Opfikon", "Shuttle oder kurze Fahrt", "Preisbewusste, Messe Zürich, Geschäftsreisen"],
+          ["Kloten / Rümlang", "Shuttle oder kurze Fahrt", "Günstige Übernachtung, längere Aufenthalte"],
+          ["Zürich Stadt", "ca. 10–15 Min. mit dem Zug", "Wer abends noch etwas von Zürich sehen will"],
+        ]}},
+        { h: "Flughafenhotel oder Stadthotel?", p: [
+          "Ein Flughafenhotel lohnt sich, wenn die Nacht kurz ist: Frühflug, späte Landung, Umstieg mit Übernachtung. Wer dagegen den Abend nutzen möchte, übernachtet besser in Zürich; die Altstadt, der See und die Restaurants sind mit dem Zug in einer Viertelstunde erreichbar, und am nächsten Morgen sind Sie ebenso schnell am Flughafen.",
+          "Für einen Aufenthalt von 24 Stunden zwischen zwei Flügen haben wir einen eigenen Ablauf: [24 Stunden in Zürich](/blog/24-stunden-in-zuerich). Und wer nur einige Stunden Zeit hat, findet Ideen in [Zwischenlandung in Zürich](/blog/zwischenlandung-flughafen-zuerich-4-8-stunden-was-tun).",
+        ]},
+        { h: "Späte Landung: erst schlafen, dann in die Berge", p: [
+          "Wer abends spät landet und eigentlich nach Zermatt, St. Moritz oder Grindelwald will, sollte überlegen, die Nacht am Flughafen zu verbringen. Eine drei- bis fünfstündige Fahrt nach einem Langstreckenflug mitten in der Nacht ist anstrengend, und zwischen 00:00 und 06:00 Uhr gilt unser Nachttarif von 20 %.",
+          "Die entspanntere Variante: Übernachtung am Flughafen, ausgeschlafen frühstücken und am nächsten Morgen mit dem Transfer direkt vom Hotel in die Berge. Tragen Sie bei der Buchung einfach das Flughafenhotel als Abholadresse ein. Mehr zu späten Ankünften steht in [Nachtankunft am Flughafen Zürich](/blog/nachtankunft-flughafen-zuerich-nach-23-uhr).",
+        ]},
+        { h: "Frühflug: vom Hotel ans Terminal", p: [
+          "Bei Hotels direkt am Flughafen gehen Sie einfach zu Fuss. Bei Hotels in den Nachbarorten ist der Shuttle praktisch, wenn er früh genug fährt; sonst ist eine kurze Transferfahrt mit Gepäck die zuverlässigere Lösung, besonders für Familien oder Gruppen mit mehreren Koffern.",
+          "Wie viel Zeit Sie am Flughafen einplanen sollten, erklärt [Wie früh am Flughafen Zürich sein?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in). Bei Hotels direkt am Terminal genügt es, rund zwei Stunden vor einem Europaflug loszugehen.",
+        ]},
+        { h: "Für Geschäftsreisende: The Circle und Messe Zürich", p: [
+          "Seit der Eröffnung von The Circle ist der Flughafen selbst ein Geschäftsstandort mit Büros, Kongresszentrum und Hotels. Für Meetings dort ist ein Hotel am Flughafen ideal. Die Messe Zürich in Oerlikon liegt ebenfalls nah; Hotels in Glattbrugg und Opfikon sind dafür eine gute Basis.",
+          "Für Termine an mehreren Orten im Raum Zürich lohnt sich eine Stundenbuchung: Der Fahrer holt Sie im Hotel ab und wartet zwischen den Terminen. Die Rechnung mit ausgewiesener Mehrwertsteuer ist in [Firmentransfers in Zürich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen) beschrieben.",
+        ]},
+        { h: "Häufige Fragen zu Hotels am Flughafen Zürich", p: []},
+        { h3: "Welche Hotels sind zu Fuss vom Terminal erreichbar?", p: [
+          "Das Radisson Blu Hotel Zurich Airport sowie das Hyatt Regency und das Hyatt Place in The Circle.",
+        ]},
+        { h3: "Fahren die Hotel-Shuttles auch sehr früh?", p: [
+          "Das ist je nach Hotel unterschiedlich. Fragen Sie vor der Buchung nach den Zeiten, wenn Ihr Flug sehr früh startet.",
+        ]},
+        { h3: "Holen Sie mich auch im Flughafenhotel ab?", p: [
+          "Ja. Geben Sie das Hotel als Abholadresse an, zum Beispiel für die Fahrt in die Berge am Morgen nach einer späten Landung.",
+        ]},
+        { h3: "Lohnt sich ein Flughafenhotel vor einem Flug um 07:00 Uhr?", p: [
+          "Wenn Sie weiter als eine Stunde entfernt wohnen, oft ja – Sie gewinnen Schlaf und vermeiden den Nachttarif bei einer Abholung vor 06:00 Uhr.",
+        ]},
+        { h3: "Wie weit ist es vom Flughafen in die Stadt Zürich?", p: [
+          "Mit dem Zug etwa 10 bis 15 Minuten bis Zürich HB, mit dem Auto je nach Verkehr etwas länger.",
+          "Jetzt [Transfer ab Ihrem Hotel buchen](/buchung) – Festpreis pro Fahrzeug.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Hotels at Zurich Airport: Where to Stay Before an Early Flight or After a Late Landing",
+      seo: "Hotels at Zurich Airport: Your Options",
+      excerpt: "Walk to the terminal, take a five-minute shuttle or stay in the city after all? Which hotels are right at Zurich Airport, which are in Glattbrugg, Opfikon and Rümlang, who an airport hotel is worthwhile for – and how to travel relaxed to the mountains or your departure the next morning.",
+      body: [
+        { p: [
+          "A flight at 6:30 am, a landing just before midnight, a long layover: there are many reasons to spend a night right at Zurich Airport. Around the airport there is a wide choice of hotels – from properties connected to the terminal on foot to hotels in neighbouring towns with a shuttle.",
+          "This guide gives an overview of the locations, helps you decide between an airport hotel and a city hotel, and shows how to combine a night at the airport with onward travel the next day. Prices and shuttle conditions change; check them directly with the hotel.",
+        ]},
+        { h: "Right at the airport: walk to the terminal", p: [
+          "The most convenient location is offered by hotels you can reach without a shuttle:",
+        ], ul: [
+          "**Radisson Blu Hotel Zurich Airport:** right next to the airport building, connected to the terminals by a covered walkway and only a few minutes' walk from the station.",
+          "**Hyatt Regency and Hyatt Place at The Circle:** in the modern Circle quarter opposite the terminal, with restaurants, shops and a convention centre. A few minutes' walk to check-in.",
+        ]},
+        { p: [
+          "These hotels are ideal for very early departures, late arrivals and short business meetings at The Circle. They are usually more expensive than hotels in the neighbouring towns, but save every minute.",
+        ]},
+        { h: "Nearby: Glattbrugg, Opfikon, Kloten and Rümlang", p: [
+          "The towns around the airport have many more hotels, many with a shuttle to the terminal. Well-known names include the Mövenpick Hotel Zurich-Airport and the Dorint Airport-Hotel in Glattbrugg, the Hilton Zurich Airport in Opfikon and several properties in Rümlang and Kloten, from business hotels to budget options.",
+          "The ride to the terminal usually takes only a few minutes. When booking, check whether the shuttle is free, when it starts running in the morning and whether it operates at your departure time – especially for departures before 6 am this is not a given.",
+        ], table: { head: ["Location", "Way to the terminal", "Suitable for"], rows: [
+          ["At the airport / The Circle", "on foot, a few minutes", "Early flights, late landings, short meetings"],
+          ["Glattbrugg / Opfikon", "shuttle or short drive", "Budget-conscious, Messe Zürich, business trips"],
+          ["Kloten / Rümlang", "shuttle or short drive", "Cheaper overnight stays, longer stays"],
+          ["Zurich city", "approx. 10–15 min by train", "Anyone who wants to see some of Zurich in the evening"],
+        ]}},
+        { h: "Airport hotel or city hotel?", p: [
+          "An airport hotel pays off when the night is short: an early flight, a late landing, a layover with an overnight stay. If you want to make use of the evening, however, it is better to stay in Zurich; the old town, the lake and the restaurants are a quarter of an hour away by train, and the next morning you are back at the airport just as quickly.",
+          "For a 24-hour stay between two flights we have a dedicated schedule: [24 hours in Zurich](/blog/24-stunden-in-zuerich). And if you only have a few hours, you will find ideas in [Layover in Zurich](/blog/zwischenlandung-flughafen-zuerich-4-8-stunden-was-tun).",
+        ]},
+        { h: "Late landing: sleep first, then head for the mountains", p: [
+          "If you land late in the evening and actually want to go to Zermatt, St. Moritz or Grindelwald, consider spending the night at the airport. A three- to five-hour drive after a long-haul flight in the middle of the night is tiring, and between midnight and 6 am our 20 % night tariff applies.",
+          "The more relaxed option: stay at the airport, have a proper breakfast and take the transfer straight from the hotel to the mountains the next morning. Simply enter the airport hotel as your pickup address when booking. More on late arrivals is in [Late-night arrival at Zurich Airport](/blog/nachtankunft-flughafen-zuerich-nach-23-uhr).",
+        ]},
+        { h: "Early flight: from the hotel to the terminal", p: [
+          "From hotels right at the airport you simply walk. From hotels in neighbouring towns the shuttle is practical if it runs early enough; otherwise a short transfer with luggage is the more reliable solution, especially for families or groups with several suitcases.",
+          "How much time to allow at the airport is explained in [How early should you be at Zurich Airport?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in). From hotels right at the terminal it is enough to set off around two hours before a European flight.",
+        ]},
+        { h: "For business travellers: The Circle and Messe Zürich", p: [
+          "Since The Circle opened, the airport itself has become a business location with offices, a convention centre and hotels. For meetings there an airport hotel is ideal. Messe Zürich in Oerlikon is also close; hotels in Glattbrugg and Opfikon are a good base for it.",
+          "For meetings in several places around Zurich an hourly booking pays off: the driver picks you up at the hotel and waits between appointments. Invoicing with VAT shown is described in [Corporate transfers in Zurich](/blog/firmentransfers-zuerich-rechnung-mwst-spesen).",
+        ]},
+        { h: "Frequently asked questions about hotels at Zurich Airport", p: []},
+        { h3: "Which hotels can be reached on foot from the terminal?", p: [
+          "The Radisson Blu Hotel Zurich Airport and the Hyatt Regency and Hyatt Place at The Circle.",
+        ]},
+        { h3: "Do the hotel shuttles run very early?", p: [
+          "That varies from hotel to hotel. Ask about the times before booking if your flight leaves very early.",
+        ]},
+        { h3: "Will you pick me up at an airport hotel?", p: [
+          "Yes. Enter the hotel as your pickup address, for example for the drive to the mountains the morning after a late landing.",
+        ]},
+        { h3: "Is an airport hotel worth it before a 7 am flight?", p: [
+          "If you live more than an hour away, often yes – you gain sleep and avoid the night tariff for a pickup before 6 am.",
+        ]},
+        { h3: "How far is it from the airport to Zurich city?", p: [
+          "About 10 to 15 minutes by train to Zurich HB, a little longer by car depending on traffic.",
+          "[Book a transfer from your hotel now](/buchung) – fixed price per vehicle.",
+        ]},
+      ],
+    },
+  },
+  {
+    slug: "flughafen-zuerich-terminals-docks-erklaert",
+    date: "2026-10-07",
+    img: "/hero/hero-1.jpg",
+    de: {
+      title: "Flughafen Zürich einfach erklärt: Check-in 1, 2 und 3, Docks A, B, D und E und die Skymetro",
+      seo: "Flughafen Zürich: Terminals & Docks erklärt",
+      excerpt: "Zürich ist ein «One-Terminal»-Flughafen – und trotzdem verwirren Check-in-Bereiche, Docks, Gate-Buchstaben und die Skymetro viele Reisende. Wie der Flughafen aufgebaut ist, welche Gates für Schengen und Nicht-Schengen gelten, wie lange die Wege dauern und wo Sie Ihren Fahrer treffen.",
+      body: [
+        { p: [
+          "Auf dem Ticket steht «Gate E42», auf der Anzeigetafel «Check-in 3», und am Telefon fragt der Fahrer, ob Sie in Ankunft 1 oder 2 sind. Wer zum ersten Mal in Zürich ist, fragt sich schnell, wie viele Terminals dieser Flughafen eigentlich hat. Die gute Nachricht: Zürich ist kompakt und logisch aufgebaut, wenn man das Prinzip einmal kennt.",
+          "Dieser Guide erklärt den Aufbau des Flughafens Zürich Schritt für Schritt – vom Bahnhof über den Check-in bis zum Gate – und zeigt, wo Sie bei der Ankunft Ihren Fahrer treffen.",
+        ]},
+        { h: "Das Prinzip: ein Terminal, mehrere Docks", p: [
+          "Der Flughafen Zürich ist ein sogenannter One-Terminal-Flughafen. Es gibt ein zentrales Gebäude mit den Check-in-Bereichen, eine gemeinsame Sicherheitskontrolle und hinter der Kontrolle das Airside Center, von dem die Docks mit den Gates abgehen. Sie können also überall durch die Kontrolle gehen und erreichen trotzdem jedes Gate.",
+          "Laut Flughafen und Airlines brauchen Reisende vom Check-in bis zum Gate höchstens rund 30 Minuten. Das macht Zürich zu einem der angenehmsten Umsteigeflughäfen Europas.",
+        ], table: { head: ["Bereich", "Was dort passiert"], rows: [
+          ["Check-in 1, 2 und 3", "Schalter, Self-Check-in und Gepäckabgabe vor der Sicherheitskontrolle"],
+          ["Sicherheitskontrolle", "zentral, für alle Gates gemeinsam"],
+          ["Airside Center", "Shopping, Restaurants und Lounges hinter der Kontrolle, Verbindung zu den Docks"],
+          ["Gates A und B", "Flüge innerhalb des Schengenraums"],
+          ["Gates D und E", "Flüge ausserhalb des Schengenraums, mit Passkontrolle"],
+          ["Ankunft 1 und Ankunft 2", "öffentliche Ankunftshallen, Treffpunkt mit dem Fahrer"],
+        ]}},
+        { h: "Check-in 1, 2 und 3", p: [
+          "Die drei Check-in-Bereiche liegen alle vor der Sicherheitskontrolle. Check-in 1 und Check-in 2 befinden sich in der Abflughalle, Check-in 3 im Airport Center direkt über dem Bahnhof. Welcher Bereich für Sie gilt, hängt von der Airline ab und steht auf der Anzeigetafel und in der Buchungsbestätigung; die SWISS etwa nutzt Check-in 1 und Check-in 3.",
+          "Wer online eingecheckt hat und nur Handgepäck dabeihat, geht direkt zur Sicherheitskontrolle. Mit aufgegebenem Gepäck führt der Weg zuerst zum Schalter oder zur Self-Bag-Drop-Station Ihrer Airline.",
+        ]},
+        { h: "Die Gates: A, B, D und E", p: [
+          "Nach der Sicherheitskontrolle gelangen Sie ins Airside Center. Von hier gehen die Docks ab:",
+        ], ul: [
+          "**Dock A:** Gates A, Flüge innerhalb des Schengenraums, etwa nach Deutschland, Frankreich, Italien, Spanien oder Skandinavien.",
+          "**Dock B mit den Gates B und D:** Die Gates B bedienen Schengen-Flüge, die Gates D im selben Dock Nicht-Schengen-Flüge, etwa nach London. Für D geht es durch die Passkontrolle.",
+          "**Dock E:** das Langstrecken-Dock mit den Gates E, für Flüge ausserhalb des Schengenraums, etwa nach Nordamerika, Asien oder in den Nahen Osten. Es liegt zwischen den Pisten und ist nur mit der Skymetro erreichbar.",
+        ]},
+        { h: "Die Skymetro zum Dock E", p: [
+          "Die Skymetro ist eine kleine, fahrerlose Bahn, die das Airside Center in rund drei Minuten mit dem Dock E verbindet und dabei unter einer Piste hindurchfährt. Sie fährt im Pendelbetrieb ohne Fahrplan, Sie müssen also nur einsteigen. Vorher passieren Sie die Passkontrolle.",
+          "Verwechseln Sie die Skymetro nicht mit dem Zug in die Stadt: Sie verkehrt nur innerhalb des Sicherheitsbereichs. Planen Sie für den Weg zu einem E-Gate inklusive Passkontrolle und Skymetro etwas mehr Zeit ein als für die Gates A oder B.",
+        ]},
+        { h: "Bahnhof, Parkhäuser und The Circle", p: [
+          "Der Bahnhof Zürich Flughafen liegt direkt unter dem Airport Center; von dort führen Rolltreppen und Lifte zu Check-in 3 und in die Abflughalle. Die Parkhäuser P1, P2 und P3 sind direkt mit dem Gebäude verbunden – Details und Preise stehen in [Parkieren am Flughafen Zürich](/blog/parkieren-flughafen-zuerich-preise-alternative).",
+          "Gegenüber dem Terminal liegt The Circle mit Hotels, Restaurants, Büros und einem Kongresszentrum. Welche Hotels zu Fuss erreichbar sind, zeigt [Hotels am Flughafen Zürich](/blog/hotels-flughafen-zuerich-uebernachten). Wer Zeit hat, besucht die Zuschauerterrasse mit Blick auf das Vorfeld.",
+        ]},
+        { h: "Bei der Ankunft: Ankunft 1 oder Ankunft 2", p: [
+          "Nach der Landung folgen Sie den Schildern zur Gepäckausgabe und zum Ausgang. Es gibt zwei öffentliche Ankunftshallen: Ankunft 1 und Ankunft 2. Welche für Sie gilt, hängt vom Flug ab; Ihr Fahrer kennt sie anhand der Flugnummer und wartet mit Namensschild direkt am Ausgang.",
+          "Alles zum Treffpunkt, zur Wartezeit und dazu, was Sie tun, wenn Sie sich nicht gleich finden, steht in [Ankunft 1 oder Ankunft 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
+        ]},
+        { h: "Beim Abflug: wo der Fahrer Sie absetzt", p: [
+          "Bei der Fahrt zum Flughafen setzt der Fahrer Sie vor der Abflughalle ab, möglichst nah am Check-in-Bereich Ihrer Airline. Sagen Sie ihm einfach, ob Sie zu Check-in 1, 2 oder 3 müssen; steht es noch nicht fest, bringt er Sie zum zentralen Eingang, von dem aus alle Bereiche in wenigen Minuten erreichbar sind.",
+          "Wie viel Zeit Sie am Flughafen einplanen sollten, erklärt [Wie früh am Flughafen Zürich sein?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+        ]},
+        { h: "Häufige Fragen zum Aufbau des Flughafens Zürich", p: []},
+        { h3: "Wie viele Terminals hat der Flughafen Zürich?", p: [
+          "Eigentlich eines: Zürich ist ein One-Terminal-Flughafen mit drei Check-in-Bereichen und mehreren Docks mit den Gates A, B, D und E.",
+        ]},
+        { h3: "Wie komme ich zu den Gates E?", p: [
+          "Nach der Sicherheits- und der Passkontrolle mit der Skymetro, die in rund drei Minuten zum Dock E fährt.",
+        ]},
+        { h3: "Welche Gates sind für Schengen-Flüge?", p: [
+          "Die Gates A und B. Die Gates D und E bedienen Flüge ausserhalb des Schengenraums.",
+        ]},
+        { h3: "Wo ist der Bahnhof?", p: [
+          "Direkt unter dem Airport Center, mit Rolltreppen zu Check-in 3 und zur Abflughalle.",
+        ]},
+        { h3: "Wo treffe ich meinen Fahrer?", p: [
+          "In der öffentlichen Ankunftshalle, Ankunft 1 oder Ankunft 2, direkt nach dem Ausgang. Der Fahrer wartet mit einem Namensschild.",
+          "Jetzt [Transfer ab Flughafen Zürich buchen](/buchung) – Meet & Greet in der Ankunftshalle inklusive.",
+        ]},
+      ],
+    },
+    en: {
+      title: "Zurich Airport Explained Simply: Check-in 1, 2 and 3, Docks A, B, D and E and the Skymetro",
+      seo: "Zurich Airport: Terminals & Docks Explained",
+      excerpt: "Zurich is a one-terminal airport – and yet check-in areas, docks, gate letters and the Skymetro confuse many travellers. How the airport is laid out, which gates are for Schengen and non-Schengen flights, how long the walks take and where to meet your driver.",
+      body: [
+        { p: [
+          "Your ticket says \"Gate E42\", the departure board says \"Check-in 3\", and on the phone the driver asks whether you are in Arrival 1 or 2. Anyone in Zurich for the first time soon wonders how many terminals this airport actually has. The good news: Zurich is compact and logically laid out once you know the principle.",
+          "This guide explains the layout of Zurich Airport step by step – from the station via check-in to the gate – and shows where to meet your driver on arrival.",
+        ]},
+        { h: "The principle: one terminal, several docks", p: [
+          "Zurich Airport is a so-called one-terminal airport. There is one central building with the check-in areas, a shared security check and, beyond security, the Airside Center from which the docks with the gates extend. So you can go through security anywhere and still reach every gate.",
+          "According to the airport and airlines, travellers need at most around 30 minutes from check-in to the gate. That makes Zurich one of the most pleasant transfer airports in Europe.",
+        ], table: { head: ["Area", "What happens there"], rows: [
+          ["Check-in 1, 2 and 3", "Counters, self check-in and bag drop before security"],
+          ["Security check", "central, shared for all gates"],
+          ["Airside Center", "shops, restaurants and lounges beyond security, connection to the docks"],
+          ["Gates A and B", "flights within the Schengen area"],
+          ["Gates D and E", "flights outside the Schengen area, with passport control"],
+          ["Arrival 1 and Arrival 2", "public arrivals halls, meeting point with the driver"],
+        ]}},
+        { h: "Check-in 1, 2 and 3", p: [
+          "All three check-in areas are before security. Check-in 1 and Check-in 2 are in the departures hall, Check-in 3 is in the Airport Center directly above the railway station. Which area applies to you depends on the airline and is shown on the departure board and in your booking confirmation; SWISS, for example, uses Check-in 1 and Check-in 3.",
+          "If you have checked in online and only have hand luggage, go straight to security. With checked luggage, first go to your airline's counter or self bag-drop station.",
+        ]},
+        { h: "The gates: A, B, D and E", p: [
+          "After security you enter the Airside Center. The docks extend from here:",
+        ], ul: [
+          "**Dock A:** gates A, flights within the Schengen area, for example to Germany, France, Italy, Spain or Scandinavia.",
+          "**Dock B with gates B and D:** gates B serve Schengen flights, gates D in the same dock serve non-Schengen flights, for example to London. For D you pass through passport control.",
+          "**Dock E:** the long-haul dock with gates E, for flights outside the Schengen area, for example to North America, Asia or the Middle East. It lies between the runways and can only be reached by the Skymetro.",
+        ]},
+        { h: "The Skymetro to Dock E", p: [
+          "The Skymetro is a small driverless train that connects the Airside Center with Dock E in around three minutes, passing under a runway. It runs as a shuttle without a timetable, so you simply get on. You pass through passport control beforehand.",
+          "Do not confuse the Skymetro with the train to the city: it only runs within the security area. Allow a little more time to reach an E gate, including passport control and the Skymetro, than for gates A or B.",
+        ]},
+        { h: "Railway station, car parks and The Circle", p: [
+          "Zürich Flughafen railway station lies directly beneath the Airport Center; escalators and lifts lead up to Check-in 3 and the departures hall. Car parks P1, P2 and P3 are directly connected to the building – details and prices are in [Parking at Zurich Airport](/blog/parkieren-flughafen-zuerich-preise-alternative).",
+          "Opposite the terminal is The Circle, with hotels, restaurants, offices and a convention centre. Which hotels can be reached on foot is shown in [Hotels at Zurich Airport](/blog/hotels-flughafen-zuerich-uebernachten). If you have time, visit the observation deck overlooking the apron.",
+        ]},
+        { h: "On arrival: Arrival 1 or Arrival 2", p: [
+          "After landing, follow the signs to baggage claim and the exit. There are two public arrivals halls: Arrival 1 and Arrival 2. Which one applies depends on your flight; your driver knows it from the flight number and waits with a name sign right at the exit.",
+          "Everything about the meeting point, waiting time and what to do if you do not find each other straight away is in [Arrival 1 or Arrival 2?](/blog/ankunft-1-oder-ankunft-2-treffpunkt-fahrer-flughafen-zuerich).",
+        ]},
+        { h: "On departure: where the driver drops you off", p: [
+          "On the way to the airport the driver drops you in front of the departures hall, as close as possible to your airline's check-in area. Just tell him whether you need Check-in 1, 2 or 3; if it is not yet known, he takes you to the central entrance, from where all areas are a few minutes away.",
+          "How much time to allow at the airport is explained in [How early should you be at Zurich Airport?](/blog/wie-frueh-am-flughafen-zuerich-sein-check-in).",
+        ]},
+        { h: "Frequently asked questions about the layout of Zurich Airport", p: []},
+        { h3: "How many terminals does Zurich Airport have?", p: [
+          "Essentially one: Zurich is a one-terminal airport with three check-in areas and several docks with gates A, B, D and E.",
+        ]},
+        { h3: "How do I get to the E gates?", p: [
+          "After security and passport control, take the Skymetro, which reaches Dock E in around three minutes.",
+        ]},
+        { h3: "Which gates are for Schengen flights?", p: [
+          "Gates A and B. Gates D and E serve flights outside the Schengen area.",
+        ]},
+        { h3: "Where is the railway station?", p: [
+          "Directly beneath the Airport Center, with escalators up to Check-in 3 and the departures hall.",
+        ]},
+        { h3: "Where do I meet my driver?", p: [
+          "In the public arrivals hall, Arrival 1 or Arrival 2, right after the exit. The driver waits with a name sign.",
+          "[Book a transfer from Zurich Airport now](/buchung) – meet & greet in the arrivals hall included.",
+        ]},
+      ],
+    },
+  },
+  {
     slug: "spengler-cup-davos-anreise-transfer",
     date: "2026-10-07",
     img: "/gallery/13.jpg",
