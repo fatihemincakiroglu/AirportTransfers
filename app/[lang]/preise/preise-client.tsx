@@ -1,10 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { C, fleet, transferPrice, hourlyPrice, HOURLY, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, KM_RATE, KM_TIERS, TRANSFER_MIN_PRICE } from "../../config";
+import { C, fleet, transferPrice, hourlyPrice, HOURLY, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, KM_RATE, BASE_FARE, INCLUDED_KM } from "../../config";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import { TopBar, SiteHeader, SiteFooter, FloatingButtons, PageHero, localName } from "../../components";
+
+/** Fiyat tablosundaki örnek mesafeler (gündüz tarifesi) */
+const SAMPLE_KM = [10, 25, 50, 100, 150, 250];
 
 // Bölüm başlığı: küçük harf aralıklı etiket + eriyen altın çizgi (site imzası)
 // Modül seviyesinde — her render'da yeniden oluşmaz (react-hooks/static-components)
@@ -76,57 +79,50 @@ export default function PreiseClient() {
                   </span>
                   <span className="text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>{lang === "de" ? "pro km" : "per km"}</span>
                 </p>
-                <p className="text-xs text-stone-400">{lang === "de" ? `+ Grundpreis nach Distanz · ab CHF ${TRANSFER_MIN_PRICE[v.id]}` : `+ base fare by distance · from CHF ${TRANSFER_MIN_PRICE[v.id]}`}</p>
+                <p className="text-xs text-stone-400">{lang === "de" ? `+ Grundpreis CHF ${BASE_FARE[v.id]} (inkl. erste ${INCLUDED_KM} km)` : `+ base fare CHF ${BASE_FARE[v.id]} (incl. first ${INCLUDED_KM} km)`}</p>
               </a>
             ))}
           </div>
         </div>
 
         {/* ── Rota tablosu ── */}
-        {/* Kilometertarif: dilim tabanı + km ücreti; örnek mesafeler */}
+        {/* Kilometertarif: sabit fiyat (ilk INCLUDED_KM km) + aşan km × km ücreti; örnek mesafeler */}
         <div className="mt-16">
           <SectionLabel>{lang === "de" ? "So berechnet sich Ihr Festpreis" : "How your fixed price is calculated"}</SectionLabel>
           <p className="mt-2 max-w-2xl text-sm text-stone-600">
             {lang === "de"
-              ? "Grundpreis nach Distanz + gefahrene Kilometer × Kilometerpreis der Fahrzeugklasse. Die Distanz wird bei der Buchung aus der tatsächlichen Fahrstrecke ermittelt – für jede Adresse in der Schweiz und den Nachbarländern."
-              : "Base fare by distance + kilometres driven × the class kilometre rate. The distance is determined at booking from the actual driving route – for any address in Switzerland and neighbouring countries."}
+              ? `Grundpreis inkl. der ersten ${INCLUDED_KM} km + jeder weitere Kilometer × Kilometerpreis der Fahrzeugklasse. Die Distanz wird bei der Buchung aus der tatsächlichen Fahrstrecke ermittelt – für jede Adresse in der Schweiz und den Nachbarländern.`
+              : `Base fare incl. the first ${INCLUDED_KM} km + each additional kilometre × the class kilometre rate. The distance is determined at booking from the actual driving route – for any address in Switzerland and neighbouring countries.`}
           </p>
           <div className="mt-6 overflow-x-auto rounded-2xl bg-white shadow-md ring-1 ring-black/5">
             <table className="w-full text-sm">
               <thead>
                 <tr style={{ background: C.pine }}>
                   <th className="px-5 py-3 text-left text-[11px] font-extrabold uppercase tracking-wider text-white">{lang === "de" ? "Distanz" : "Distance"}</th>
-                  <th className="px-5 py-3 text-left text-[11px] font-extrabold uppercase tracking-wider text-white">{lang === "de" ? "Grundpreis" : "Base fare"}</th>
+                  
                   {fleet.map((v) => (
                     <th key={v.id} className="px-5 py-3 text-right text-[11px] font-extrabold uppercase tracking-wider text-white">{typeof v.name === "string" ? v.name : v.name[lang]}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {KM_TIERS.map((tier, i) => {
-                  const lo = i === 0 ? 0 : KM_TIERS[i - 1].upTo!;
-                  const label = tier.upTo === null ? `${lo}+ km` : `${lo}–${tier.upTo} km`;
-                  const sample = tier.upTo === null ? 100 : Math.round((lo + tier.upTo) / 2);
-                  return (
-                    <tr key={i} className={i % 2 ? "bg-[#FBF9F3]" : "bg-white"}>
-                      <td className="px-5 py-3 font-bold" style={{ color: C.pine }}>{label}</td>
-                      <td className="px-5 py-3 text-stone-600">CHF {tier.base}</td>
-                      {fleet.map((v) => (
-                        <td key={v.id} className="px-5 py-3 text-right tabular-nums text-stone-700">
-                          <span className="text-[11px] text-stone-400">{lang === "de" ? "z. B." : "e.g."} {sample} km → </span>
-                          <b>CHF {transferPrice(sample, v.id).toFixed(2)}</b>
-                        </td>
-                      ))}
-                    </tr>
-                  );
-                })}
+                {SAMPLE_KM.map((km, i) => (
+                  <tr key={km} className={i % 2 ? "bg-[#FBF9F3]" : "bg-white"}>
+                    <td className="px-5 py-3 font-bold" style={{ color: C.pine }}>{km <= INCLUDED_KM ? `0–${INCLUDED_KM} km` : `${km} km`}</td>
+                    {fleet.map((v) => (
+                      <td key={v.id} className="px-5 py-3 text-right tabular-nums text-stone-700">
+                        <b>CHF {transferPrice(km, v.id).toFixed(2)}</b>
+                      </td>
+                    ))}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
           <p className="mt-3 text-xs text-stone-500">
             {lang === "de"
-              ? `Kilometerpreis: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Mindestpreise: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${TRANSFER_MIN_PRICE[v.id]}`).join(" · ")}. Alle Preise pro Fahrzeug, inkl. MwSt., Meet & Greet, Flugverfolgung, 60 Min. Wartezeit und Kindersitzen.`
-              : `Kilometre rate: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Minimum fares: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${TRANSFER_MIN_PRICE[v.id]}`).join(" · ")}. All prices per vehicle, incl. VAT, meet & greet, flight tracking, 60 min waiting time and child seats.`}
+              ? `Kilometerpreis ab ${INCLUDED_KM} km: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Grundpreis inkl. ${INCLUDED_KM} km: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.de} CHF ${BASE_FARE[v.id]}`).join(" · ")}. Alle Preise pro Fahrzeug, inkl. MwSt., Meet & Greet, Flugverfolgung, 60 Min. Wartezeit und Kindersitzen.`
+              : `Kilometre rate after ${INCLUDED_KM} km: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${KM_RATE[v.id].toFixed(2)}`).join(" · ")}. Base fare incl. ${INCLUDED_KM} km: ${fleet.map((v) => `${typeof v.name === "string" ? v.name : v.name.en} CHF ${BASE_FARE[v.id]}`).join(" · ")}. All prices per vehicle, incl. VAT, meet & greet, flight tracking, 60 min waiting time and child seats.`}
           </p>
           <a href={P("/buchung")} className="mt-6 inline-block rounded-full px-6 py-3 text-sm font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5" style={{ background: C.gold, color: C.pine }}>
             {lang === "de" ? "Preis für meine Adresse berechnen" : "Calculate the price for my address"} →

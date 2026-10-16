@@ -73,15 +73,15 @@ export type LocalName = string | { de: string; en: string };
 // ─────────────────────────────────────────────────────────────
 export type VehicleId = "business_class_e" | "business_family_v" | "premium_s";
 
-/** Mesafe dilimleri: üst sınır (km, son dilim sınırsız) ve taban fiyat (CHF). Dahil km = 0. */
-export const KM_TIERS: { upTo: number | null; base: number }[] = [
-  { upTo: 10, base: 52 }, { upTo: 20, base: 37 }, { upTo: 30, base: 27 },
-  { upTo: 40, base: 17 }, { upTo: 50, base: 15 }, { upTo: null, base: 20 },
-];
-/** Araç başına km ücreti (CHF/km) */
-export const KM_RATE: Record<VehicleId, number> = { business_class_e: 2.8, business_family_v: 3.4, premium_s: 5.5 };
-/** Araç başına başlangıç (minimum) fiyatı */
-export const TRANSFER_MIN_PRICE: Record<VehicleId, number> = { business_class_e: 83, business_family_v: 87, premium_s: 80 };
+/**
+ * Gündüz transfer tarifesi (10/2026): ilk 10 km sabit fiyat, sonrası her km için araç km ücreti.
+ * Örnek E-Class 25 km → 83 + 15 × 3.00 = 128 CHF.
+ */
+export const INCLUDED_KM = 10;
+/** Araç başına sabit fiyat (ilk INCLUDED_KM km dahil, CHF) — aynı zamanda en düşük transfer fiyatı */
+export const BASE_FARE: Record<VehicleId, number> = { business_class_e: 83, business_family_v: 85, premium_s: 100 };
+/** Araç başına km ücreti (CHF/km) — INCLUDED_KM'den sonraki her km */
+export const KM_RATE: Record<VehicleId, number> = { business_class_e: 3.0, business_family_v: 3.4, premium_s: 5.5 };
 /** Gece tarifesi 00:00–06:00: transfer %20, saatlik %30 */
 export const NIGHT_FROM = "00:00", NIGHT_TO = "06:00";
 export const NIGHT_SURCHARGE_TRANSFER = 0.20;
@@ -97,12 +97,12 @@ export function isNightTime(time?: string | null): boolean {
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-/** Adresten adrese fiyat: taban(dilim) + km × araç ücreti, gece zammı, minimum, 0.01 yuvarlama */
+/** Adresten adrese fiyat: sabit fiyat (ilk 10 km) + aşan km × araç ücreti, gece zammı, 0.01 yuvarlama */
 export function transferPrice(km: number, vehicle: VehicleId, time?: string | null): number {
-  const tier = KM_TIERS.find((t) => t.upTo === null || km <= t.upTo) ?? KM_TIERS[KM_TIERS.length - 1];
-  let p = tier.base + km * KM_RATE[vehicle];
+  const extraKm = Math.max(0, km - INCLUDED_KM);
+  let p = BASE_FARE[vehicle] + extraKm * KM_RATE[vehicle];
   if (isNightTime(time)) p *= 1 + NIGHT_SURCHARGE_TRANSFER;
-  return round2(Math.max(TRANSFER_MIN_PRICE[vehicle], p));
+  return round2(p);
 }
 
 /** Saatlik fiyat: max(zaman, saat×25km×ücret), gece zammı, 5 CHF'e yukarı yuvarlama */
@@ -150,15 +150,12 @@ export const routes: { slug: string; to: LocalName; km: number; min: number; pri
   ROUTE_DATA.map((r) => ({ ...r, price: routeBasePrice(r.km) }));
 
 
-// Filo — gerçek araçlar. Görseller opsiyonel: public/fleet/
-// Filo — gerçek araçlar. `mult` = fiyat çarpanı (rota Business fiyatı × mult).
-// Çarpanlar rezervasyon ekranınızdaki oranlardan türetildi — gerekirse düzelt:
-// Business 1.00 · Business&Family ≈1.19 · Premium ≈1.87 · VIP 2.20 (tahmin)
+// Filo — gerçek araçlar. Görseller opsiyonel: public/fleet/. Fiyatlar BASE_FARE + KM_RATE'ten.
 // `id` = ölçüm için sabit araç kimliği (dataLayer vehicle_id / item_id), görünen ada bağlı değil.
-export const fleet: { id: VehicleId; name: LocalName; car: string; pax: number; bags: number; img: string; mult: number }[] = [
-  { id: "business_class_e", name: "Business Class", car: "Mercedes-Benz E-Class", pax: 2, bags: 2, img: "/fleet/e-class.webp", mult: 1.0 },
-  { id: "business_family_v", name: { de: "Business & Family Class", en: "Business & Family Class" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.webp", mult: 1.19 },
-  { id: "premium_s", name: "Premium Class", car: "Mercedes-Benz S-Class", pax: 3, bags: 3, img: "/fleet/s-class.webp", mult: 1.87 },
+export const fleet: { id: VehicleId; name: LocalName; car: string; pax: number; bags: number; img: string }[] = [
+  { id: "business_class_e", name: "Business Class", car: "Mercedes-Benz E-Class", pax: 2, bags: 2, img: "/fleet/e-class.webp" },
+  { id: "business_family_v", name: { de: "Business & Family Class", en: "Business & Family Class" }, car: "Mercedes-Benz V-Class", pax: 7, bags: 7, img: "/fleet/v-class.webp" },
+  { id: "premium_s", name: "Premium Class", car: "Mercedes-Benz S-Class", pax: 3, bags: 3, img: "/fleet/s-class.webp" },
 ];
 
 // Formlardaki maksimum yolcu sayısı (en büyük araca göre)
@@ -255,8 +252,12 @@ export const NEARBY_PLACES: string[] = [
   "Vaduz, Liechtenstein", "Schaan, Liechtenstein",
 ];
 
-// Özel güzergâhlar (sabit rota dışı, mesafe bilinmiyor) için Business Class tahmini taban;
-// kesin fiyat kabulde teyit edilir. Araç farkı km ücreti oranıyla uygulanır (vehicleFactor).
-export const CUSTOM_BASE_PRICE = 250.0;
-/** Araçlar arası oran (tahmini fiyatlarda E-Class'a göre) */
-export const vehicleFactor = (vehicle: VehicleId) => KM_RATE[vehicle] / KM_RATE.business_class_e;
+/** Para biçimi: tam sayıysa "83", değilse "128.50" (SSS ve yapısal veri metinleri için) */
+export const chfText = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(2));
+
+/** Yapısal veri priceRange: en ucuz sabit fiyat – sabit rotaların en pahalı Premium gündüz fiyatı */
+export const PRICE_RANGE = (() => {
+  const lo = Math.min(...Object.values(BASE_FARE));
+  const hi = Math.max(...ROUTE_DATA.map((r) => transferPrice(r.km, "premium_s")));
+  return `CHF ${lo} - CHF ${Math.ceil(hi)}`;
+})();

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WHATSAPP_NUMBER, GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL } from "../config";
+import { WHATSAPP_NUMBER, GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL, PRICE_RANGE } from "../config";
 import { pageMeta } from "../pageMeta";
 import { langAlternates, localizePath } from "../paths";
 import Home from "./home-client";
@@ -26,7 +26,7 @@ export default function Page() {
     sameAs: [GOOGLE_BUSINESS_URL, COMPANY_MAPS_URL],
     name: "ZRH Airport Taxi",
     telephone: `+${WHATSAPP_NUMBER}`,
-    priceRange: "CHF 88 - CHF 1000",
+    priceRange: PRICE_RANGE,
     address: { "@type": "PostalAddress", streetAddress: "Ifangstrasse 12, Stock 2", postalCode: "8302", addressLocality: "Kloten", addressCountry: "CH" },
     areaServed: { "@type": "Country", name: "Switzerland" },
     openingHoursSpecification: { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"], opens: "00:00", closes: "23:59" },

@@ -4,6 +4,13 @@
 //  araç/bagaj, çocuk, evcil hayvan, sınır ötesi, saatlik, kurumsal, otofrei hedefler.
 //  Tüm gruplar FAQPage şemasına girer.
 // ─────────────────────────────────────────────────────────────
+import { BASE_FARE, KM_RATE, INCLUDED_KM, HOURLY, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, chfText } from "./config";
+
+// Fiyat rakamları elle yazılmaz — config'ten gelir (tarife değişince SSS de değişir).
+const fare = (v: keyof typeof BASE_FARE) => chfText(BASE_FARE[v]);
+const rate = (v: keyof typeof KM_RATE) => KM_RATE[v].toFixed(2);
+const nightT = Math.round(NIGHT_SURCHARGE_TRANSFER * 100), nightH = Math.round(NIGHT_SURCHARGE_HOURLY * 100);
+
 export type FaqGroup = { title: string; list: [string, string][] };
 
 export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
@@ -11,10 +18,10 @@ export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
     {
       title: "Preise & Zahlung",
       list: [
-        ["Wie wird der Preis berechnet?", "Nach Kilometertarif: ein Grundpreis nach Distanz plus gefahrene Kilometer × Kilometerpreis der Fahrzeugklasse (Business Class CHF 2.80, Business & Family Class CHF 3.40, Premium Class CHF 5.50 pro km). Die Distanz wird bei der Buchung aus der tatsächlichen Fahrstrecke ermittelt. Der Preis gilt pro Fahrzeug, inkl. MwSt."],
-        ["Was kostet ein Taxi vom Flughafen Zürich in die Stadt?", "Das hängt von der genauen Adresse ab; für Zürich-Innenstadt liegt die Business Class beim Mindestpreis von CHF 83, die Business & Family Class bei CHF 87. Geben Sie Ihre Adresse im Buchungsassistenten ein – der Festpreis erscheint sofort, ohne Anmeldung."],
-        ["Gibt es einen Mindestpreis?", "Ja: Business Class CHF 83, Business & Family Class CHF 87, Premium Class CHF 80. Liegt der berechnete Kilometerpreis darunter, gilt der Mindestpreis."],
-        ["Gibt es einen Nachtzuschlag?", "Zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von 20 % (Stundenbuchungen 30 %). Er wird bei der Buchung sofort im Preis angezeigt. Tagsüber, am Wochenende und an Feiertagen gibt es keine Zuschläge."],
+        ["Wie wird der Preis berechnet?", `Nach Kilometertarif: Die ersten ${INCLUDED_KM} km sind im Grundpreis enthalten (Business Class CHF ${fare("business_class_e")}, Business & Family Class CHF ${fare("business_family_v")}, Premium Class CHF ${fare("premium_s")}), jeder weitere Kilometer kostet Business Class CHF ${rate("business_class_e")}, Business & Family Class CHF ${rate("business_family_v")}, Premium Class CHF ${rate("premium_s")}. Die Distanz wird bei der Buchung aus der tatsächlichen Fahrstrecke ermittelt. Der Preis gilt pro Fahrzeug, inkl. MwSt.`],
+        ["Was kostet ein Taxi vom Flughafen Zürich in die Stadt?", `Das hängt von der genauen Adresse ab. Bis ${INCLUDED_KM} km gilt der Grundpreis (Business Class CHF ${fare("business_class_e")}, Business & Family Class CHF ${fare("business_family_v")}); die Zürcher Innenstadt liegt knapp darüber, der Preis also nur wenige Franken über dem Grundpreis. Geben Sie Ihre Adresse im Buchungsassistenten ein – der Festpreis erscheint sofort, ohne Anmeldung.`],
+        ["Gibt es einen Mindestpreis?", `Ja, der Grundpreis ist zugleich der Mindestpreis und enthält die ersten ${INCLUDED_KM} km: Business Class CHF ${fare("business_class_e")}, Business & Family Class CHF ${fare("business_family_v")}, Premium Class CHF ${fare("premium_s")}.`],
+        ["Gibt es einen Nachtzuschlag?", `Zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von ${nightT} % (Stundenbuchungen ${nightH} %). Er wird bei der Buchung sofort im Preis angezeigt. Tagsüber, am Wochenende und an Feiertagen gibt es keine Zuschläge.`],
         ["Kann ich online bezahlen?", "Ja, sicher über Stripe mit Kreditkarte, TWINT, Apple Pay oder Google Pay – direkt im letzten Buchungsschritt. Alternativ bezahlen Sie im Fahrzeug bar, mit Karte oder TWINT."],
         ["Bekomme ich eine Rechnung mit Mehrwertsteuer?", "Ja, automatisch per E-Mail für jede Fahrt: mit Buchungsreferenz, Strecke, Betrag netto, MwSt. und brutto. Firmenkunden erhalten auf Wunsch eine monatliche Sammelrechnung."],
         ["Wie schnell bekomme ich mein Geld bei einer Stornierung zurück?", "Bei Stornierung bis 24 Stunden vorher oder wenn wir eine Anfrage ablehnen, wird eine Online-Zahlung automatisch vollständig zurückerstattet. Je nach Bank ist der Betrag innerhalb von 3 bis 10 Werktagen sichtbar."],
@@ -49,7 +56,7 @@ export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
         ["Wie lange dauert die Fahrt nach Luzern, Basel oder Bern?", "Bei normalem Verkehr: Luzern rund 75 Minuten, Basel rund 1 Stunde 45, Bern rund 2 Stunden 20. Davos rund 3 Stunden 15, St. Moritz rund 4 Stunden 15, Zermatt (bis Täsch) rund 4 Stunden 45."],
         ["Zermatt und Wengen sind autofrei – wie funktioniert der Transfer?", "Der Transfer endet an der Talstation: für Zermatt in Täsch (Shuttle-Zug in wenigen Minuten), für Wengen in Lauterbrunnen (Zahnradbahn). Der Fahrer hilft mit dem Gepäck bis zum Zug."],
         ["Kann ich Zwischenstopps einbauen?", "Ja, bis zu drei Zwischenstopps im Buchungsformular; die Distanz und damit der Preis werden entsprechend berechnet. Für längere Aufenthalte unterwegs ist die Stundenbuchung die passende Form."],
-        ["Bieten Sie Stundenbuchungen an?", "Ja: erste Stunde CHF 80, jede weitere CHF 72, inklusive 25 km pro Stunde; bei längeren Strecken gilt der Kilometerpreis der Klasse. Ideal für Stadttouren, Termine, Events und Ausflüge mit Wartezeit."],
+        ["Bieten Sie Stundenbuchungen an?", `Ja: erste Stunde CHF ${HOURLY.firstHour}, jede weitere CHF ${HOURLY.extraHour}, inklusive ${HOURLY.kmPerHour} km pro Stunde; bei längeren Strecken gilt der Kilometerpreis der Klasse. Ideal für Stadttouren, Termine, Events und Ausflüge mit Wartezeit.`],
         ["Kann ich auch die Rückfahrt zum Flughafen buchen?", "Ja, zum gleichen Kilometertarif. Wählen Sie Ihre Adresse als Abholort und den Flughafen als Ziel – am besten direkt nach der Hinfahrt, dann ist beides fixiert."],
       ],
     },
@@ -69,10 +76,10 @@ export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
     {
       title: "Prices & payment",
       list: [
-        ["How is the price calculated?", "By kilometre tariff: a base fare by distance plus kilometres driven × the class kilometre rate (Business Class CHF 2.80, Business & Family Class CHF 3.40, Premium Class CHF 5.50 per km). The distance is determined at booking from the actual driving route. The price is per vehicle, incl. VAT."],
-        ["How much is a taxi from Zurich Airport to the city?", "It depends on the exact address; for central Zurich the Business Class is at the minimum fare of CHF 83, the Business & Family Class at CHF 87. Enter your address in the booking assistant – the fixed price appears immediately, no sign-up needed."],
-        ["Is there a minimum fare?", "Yes: Business Class CHF 83, Business & Family Class CHF 87, Premium Class CHF 80. If the calculated kilometre price is lower, the minimum fare applies."],
-        ["Is there a night surcharge?", "Between midnight and 6 am a night tariff of 20 % applies (hourly bookings 30 %). It is shown in the price immediately when booking. Daytime, weekends and public holidays carry no surcharges."],
+        ["How is the price calculated?", `By kilometre tariff: the first ${INCLUDED_KM} km are included in the base fare (Business Class CHF ${fare("business_class_e")}, Business & Family Class CHF ${fare("business_family_v")}, Premium Class CHF ${fare("premium_s")}); each additional kilometre costs Business Class CHF ${rate("business_class_e")}, Business & Family Class CHF ${rate("business_family_v")}, Premium Class CHF ${rate("premium_s")}. The distance is determined at booking from the actual driving route. The price is per vehicle, incl. VAT.`],
+        ["How much is a taxi from Zurich Airport to the city?", `It depends on the exact address. Up to ${INCLUDED_KM} km the base fare applies (Business Class CHF ${fare("business_class_e")}, Business & Family Class CHF ${fare("business_family_v")}); central Zurich is just beyond that, so the price is only a few francs above the base fare. Enter your address in the booking assistant – the fixed price appears immediately, no sign-up needed.`],
+        ["Is there a minimum fare?", `Yes, the base fare is also the minimum fare and includes the first ${INCLUDED_KM} km: Business Class CHF ${fare("business_class_e")}, Business & Family Class CHF ${fare("business_family_v")}, Premium Class CHF ${fare("premium_s")}.`],
+        ["Is there a night surcharge?", `Between midnight and 6 am a night tariff of ${nightT} % applies (hourly bookings ${nightH} %). It is shown in the price immediately when booking. Daytime, weekends and public holidays carry no surcharges.`],
         ["Can I pay online?", "Yes, securely via Stripe with credit card, TWINT, Apple Pay or Google Pay – right in the last booking step. Alternatively pay in the vehicle by cash, card or TWINT."],
         ["Do I get an invoice with VAT?", "Yes, automatically by email for every journey: with booking reference, route, net amount, VAT and gross amount. Corporate clients can receive a monthly consolidated invoice on request."],
         ["How quickly do I get my money back after a cancellation?", "For cancellations up to 24 hours before, or if we decline a request, an online payment is refunded automatically in full. Depending on your bank the amount is visible within 3 to 10 business days."],
@@ -107,7 +114,7 @@ export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
         ["How long does the drive to Lucerne, Basel or Bern take?", "In normal traffic: Lucerne around 75 minutes, Basel around 1 hour 45, Bern around 2 hours 20. Davos around 3 hours 15, St. Moritz around 4 hours 15, Zermatt (to Täsch) around 4 hours 45."],
         ["Zermatt and Wengen are car-free – how does the transfer work?", "The transfer ends at the valley station: for Zermatt in Täsch (shuttle train in a few minutes), for Wengen in Lauterbrunnen (cog railway). The driver helps with the luggage to the train."],
         ["Can I add stops on the way?", "Yes, up to three stops in the booking form; distance and therefore price are calculated accordingly. For longer stays on the way, the hourly booking is the right format."],
-        ["Do you offer hourly bookings?", "Yes: first hour CHF 80, each additional hour CHF 72, including 25 km per hour; for longer distances the class kilometre rate applies. Ideal for city tours, appointments, events and excursions with waiting time."],
+        ["Do you offer hourly bookings?", `Yes: first hour CHF ${HOURLY.firstHour}, each additional hour CHF ${HOURLY.extraHour}, including ${HOURLY.kmPerHour} km per hour; for longer distances the class kilometre rate applies. Ideal for city tours, appointments, events and excursions with waiting time.`],
         ["Can I also book the return to the airport?", "Yes, at the same kilometre tariff. Choose your address as pickup and the airport as destination – ideally right after the outbound journey, so both are fixed."],
       ],
     },

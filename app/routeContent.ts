@@ -12,7 +12,7 @@ export type RouteContent = {
   faq: [string, string][]; // soru-cevap listesi
 };
 
-import { routes, fleet, type LocalName } from "./config";
+import { routes, fleet, chfText, NIGHT_SURCHARGE_TRANSFER, type LocalName } from "./config";
 
 const nameOf = (n: LocalName, lang: "de" | "en") => (typeof n === "string" ? n : n[lang]);
 const dur = (min: number, lang: "de" | "en") =>
@@ -32,35 +32,46 @@ export function extraRouteFaq(slug: string, lang: "de" | "en"): [string, string]
   const d = dur(r.min, lang);
   if (lang === "de") return [
     [`Fahren Sie auch nachts vom Flughafen Zürich nach ${n}?`,
-     `Ja, wir fahren rund um die Uhr – auch bei Landungen nach Mitternacht – zum Festpreis; zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von 20 %, der bei der Buchung sofort angezeigt wird. Wichtig: Anfragen, die zwischen 23:00 und 06:00 Uhr eingehen und innerhalb der nächsten zwei Stunden starten sollen, können wir online nicht annehmen; buchen Sie Nachtfahrten deshalb im Voraus oder kontaktieren Sie uns per WhatsApp.`],
+     `Ja, wir fahren rund um die Uhr – auch bei Landungen nach Mitternacht – zum Festpreis; zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von ${Math.round(NIGHT_SURCHARGE_TRANSFER * 100)} %, der bei der Buchung sofort angezeigt wird. Wichtig: Anfragen, die zwischen 23:00 und 06:00 Uhr eingehen und innerhalb der nächsten zwei Stunden starten sollen, können wir online nicht annehmen; buchen Sie Nachtfahrten deshalb im Voraus oder kontaktieren Sie uns per WhatsApp.`],
     [`Wie viele Personen und Koffer passen ins Fahrzeug nach ${n}?`,
      `Business Class (${e.car}): bis ${e.pax} Personen und ${e.bags} Koffer. Business & Family Class (${v.car}): bis ${v.pax} Personen und ${v.bags} Koffer. Premium Class (${sC.car}): bis ${sC.pax} Personen und ${sC.bags} Koffer. Der Preis jeder Klasse wird bei der Buchung nach Kilometertarif berechnet. Handgepäck zählt in der Regel nicht mit; Skitaschen befördern wir kostenlos (max. 4 pro Fahrzeug).`],
     [`Bieten Sie auch die Rückfahrt von ${n} zum Flughafen Zürich an?`,
      `Ja, zum gleichen Festpreis. Ihr Chauffeur holt Sie an Ihrer Adresse in ${n} ab und bringt Sie in rund ${d} zum Abflugterminal. Bei der Buchung wählen Sie einfach ${n} als Abholort und den Flughafen als Ziel – oder buchen Sie Hin- und Rückfahrt direkt nacheinander.`],
     [`Ist der Preis nach ${n} pro Person oder pro Fahrzeug?`,
-     `Pro Fahrzeug – unabhängig davon, ob eine oder ${e.pax} Personen mitfahren (bzw. ${v.pax} im Van). Im Festpreis enthalten sind Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und die Mehrwertsteuer. Für Gepäck und Wochenende fallen keine Gebühren an; zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von 20 %.`],
+     `Pro Fahrzeug – unabhängig davon, ob eine oder ${e.pax} Personen mitfahren (bzw. ${v.pax} im Van). Im Festpreis enthalten sind Meet & Greet in der Ankunftshalle, 60 Minuten Wartezeit nach der Landung, Flugverfolgung, Kindersitze und die Mehrwertsteuer. Für Gepäck und Wochenende fallen keine Gebühren an; zwischen 00:00 und 06:00 Uhr gilt ein Nachttarif von ${Math.round(NIGHT_SURCHARGE_TRANSFER * 100)} %.`],
     [`Wie bezahle ich den Transfer nach ${n} und kann ich stornieren?`,
      `Sie bezahlen sicher online per Karte während der Buchung und erhalten eine Rechnung mit ausgewiesener Mehrwertsteuer. Bis 24 Stunden vor der Abholung stornieren Sie kostenlos; der volle Betrag wird automatisch zurückerstattet.`],
   ];
   return [
     [`Do you also drive from Zurich Airport to ${n} at night?`,
-     `Yes, we operate around the clock – including landings after midnight – at a fixed price; between midnight and 6 am a night tariff of 20 % applies, shown immediately when booking. Important: requests received between 11 pm and 6 am for journeys due to start within the next two hours cannot be accepted online; please book night transfers in advance or contact us via WhatsApp.`],
+     `Yes, we operate around the clock – including landings after midnight – at a fixed price; between midnight and 6 am a night tariff of ${Math.round(NIGHT_SURCHARGE_TRANSFER * 100)} % applies, shown immediately when booking. Important: requests received between 11 pm and 6 am for journeys due to start within the next two hours cannot be accepted online; please book night transfers in advance or contact us via WhatsApp.`],
     [`How many people and suitcases fit in the vehicle to ${n}?`,
      `Business Class (${e.car}): up to ${e.pax} people and ${e.bags} suitcases. Business & Family Class (${v.car}): up to ${v.pax} people and ${v.bags} suitcases. Premium Class (${sC.car}): up to ${sC.pax} people and ${sC.bags} suitcases. The price of each class is calculated at booking by kilometre tariff. Hand luggage does not usually count; ski bags travel free (max. 4 per vehicle).`],
     [`Do you also offer the return journey from ${n} to Zurich Airport?`,
      `Yes, at the same fixed price. Your chauffeur collects you at your address in ${n} and brings you to the departures terminal in around ${d}. When booking, simply choose ${n} as pickup and the airport as destination – or book outbound and return one after the other.`],
     [`Is the price to ${n} per person or per vehicle?`,
-     `Per vehicle – whether one or ${e.pax} people travel (or ${v.pax} in the van). The fixed price includes meet & greet in the arrivals hall, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. There are no fees for luggage or weekends; between midnight and 6 am a night tariff of 20 % applies.`],
+     `Per vehicle – whether one or ${e.pax} people travel (or ${v.pax} in the van). The fixed price includes meet & greet in the arrivals hall, 60 minutes of waiting time after landing, flight tracking, child seats and VAT. There are no fees for luggage or weekends; between midnight and 6 am a night tariff of ${Math.round(NIGHT_SURCHARGE_TRANSFER * 100)} % applies.`],
     [`How do I pay for the transfer to ${n}, and can I cancel?`,
      `You pay securely online by card during booking and receive an invoice with VAT shown. Up to 24 hours before pickup you can cancel free of charge; the full amount is refunded automatically.`],
   ];
 }
 
-/** Rota içeriği + üretilmiş ek SSS (sayfa ve şema aynı listeyi kullanır) */
+/**
+ * Rota içeriği + üretilmiş ek SSS (sayfa ve şema aynı listeyi kullanır).
+ * Elle yazılmış metinlerde fiyat yazılmaz: "{PRICE}" yer tutucusu burada rotanın
+ * gündüz Business Class fiyatıyla (config → transferPrice) doldurulur — tarife değişince metin de değişir.
+ */
 export function getRouteContent(slug: string, lang: "de" | "en"): RouteContent | undefined {
   const c = routeContent[slug]?.[lang];
   if (!c) return undefined;
-  return { ...c, faq: [...c.faq, ...extraRouteFaq(slug, lang)] };
+  const r = routes.find((x) => x.slug === slug);
+  const fill = (t: string) => (r ? t.replaceAll("{PRICE}", chfText(r.price)) : t);
+  return {
+    intro: c.intro.map(fill),
+    aboutTitle: c.aboutTitle,
+    about: fill(c.about),
+    faq: [...c.faq.map(([q, a]) => [fill(q), fill(a)] as [string, string]), ...extraRouteFaq(slug, lang)],
+  };
 }
 
 export const routeContent: Record<string, { de: RouteContent; en: RouteContent }> = {
@@ -75,7 +86,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Die Stadt am Zugersee verbindet mittelalterliche Altstadt mit internationalem Business: Zytturm, Seepromenade und die berühmten Sonnenuntergänge über dem Pilatus auf der einen Seite – Hauptsitze globaler Unternehmen auf der anderen. Auch der Ausblick vom Zugerberg lohnt einen Abstecher.",
       faq: [
         ["Wie lange dauert der Transfer vom Flughafen Zürich nach Zug?", "Die Fahrt über die A4 dauert je nach Verkehr rund 55 Minuten für die 46 km lange Strecke. Zu Stosszeiten planen wir automatisch einen Puffer ein."],
-        ["Was kostet ein Taxi vom Flughafen Zürich nach Zug?", "Der Festpreis beginnt bei CHF 138.69 in der Business Class (Mercedes E-Klasse) – pro Fahrzeug, nicht pro Person, inkl. MwSt. und Gebühren."],
+        ["Was kostet ein Taxi vom Flughafen Zürich nach Zug?", "Der Festpreis beginnt bei CHF {PRICE} in der Business Class (Mercedes E-Klasse) – pro Fahrzeug, nicht pro Person, inkl. MwSt. und Gebühren."],
         ["Wartet der Fahrer bei einer Flugverspätung?", "Ja. Wir verfolgen Ihren Flug in Echtzeit und passen die Abholzeit kostenlos an – inklusive Gratis-Wartezeit nach der Landung."],
         ["Kann ich einen Kindersitz reservieren?", "Ja, Babyschalen und Kindersitze stellen wir auf Wunsch kostenlos bereit. Geben Sie die Anzahl einfach bei der Buchung an."],
       ],
@@ -90,7 +101,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "The town on Lake Zug pairs a medieval old town with international business: the Zytturm clock tower, the lake promenade and famously colourful sunsets on one side – global corporate headquarters on the other. The viewpoint on the Zugerberg is well worth a detour.",
       faq: [
         ["How long does the transfer from Zurich Airport to Zug take?", "The 46 km drive via the A4 takes around 55 minutes depending on traffic. During rush hour we automatically plan a buffer."],
-        ["How much is a taxi from Zurich Airport to Zug?", "Fixed prices start at CHF 138.69 in Business Class (Mercedes E-Class) – per vehicle, not per person, including VAT and fees."],
+        ["How much is a taxi from Zurich Airport to Zug?", "Fixed prices start at CHF {PRICE} in Business Class (Mercedes E-Class) – per vehicle, not per person, including VAT and fees."],
         ["Will the driver wait if my flight is delayed?", "Yes. We monitor your flight in real time and adjust the pickup at no cost – free waiting time after landing is included."],
         ["Can I reserve a child seat?", "Yes, baby and child seats are provided free of charge on request. Simply state the number when booking."],
       ],
@@ -108,7 +119,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Luzern gilt als eine der schönsten Städte der Schweiz: die hölzerne Kapellbrücke mit dem Wasserturm, die Museggmauer, das Löwendenkmal und die Uferpromenade am Vierwaldstättersee. Von hier starten Schiffe, Zahnradbahnen und Seilbahnen zu Rigi, Pilatus und Titlis.",
       faq: [
         ["Wie lange dauert die Fahrt vom Flughafen Zürich nach Luzern?", "Für die 63 km rechnen wir rund 1 Stunde 15 Minuten. Ihr Fahrer wählt je nach Verkehrslage die schnellste Route."],
-        ["Was kostet der Transfer nach Luzern?", "Ab CHF 189.75 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt., ohne versteckte Zuschläge."],
+        ["Was kostet der Transfer nach Luzern?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt., ohne versteckte Zuschläge."],
         ["Holen Sie auch nachts oder früh morgens ab?", "Ja, unser Service ist rund um die Uhr verfügbar – ideal für Frühflüge ab Zürich und späte Landungen."],
         ["Können wir unterwegs einen Fotostopp machen?", "Kurze Stopps sind nach Absprache mit dem Fahrer möglich. Für längere Aufenthalte empfehlen wir unseren stundenweisen Chauffeurservice."],
       ],
@@ -123,7 +134,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Lucerne is considered one of Switzerland's most beautiful cities: the wooden Chapel Bridge with its water tower, the Musegg Wall, the Lion Monument and the lakeside promenade. Boats, cogwheel railways and cable cars depart from here to Rigi, Pilatus and Titlis.",
       faq: [
         ["How long is the drive from Zurich Airport to Lucerne?", "Allow around 1 hour 15 minutes for the 63 km. Your driver picks the fastest route depending on traffic."],
-        ["How much does the transfer to Lucerne cost?", "From CHF 189.75 in Business Class – a fixed price per vehicle incl. VAT, with no hidden surcharges."],
+        ["How much does the transfer to Lucerne cost?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT, with no hidden surcharges."],
         ["Do you also pick up at night or early in the morning?", "Yes, our service runs around the clock – ideal for early flights from Zurich and late landings."],
         ["Can we make a photo stop on the way?", "Short stops are possible by arrangement with the driver. For longer visits we recommend our hourly chauffeur service."],
       ],
@@ -141,7 +152,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Basel ist die Kunst- und Kulturmetropole der Schweiz: das Kunstmuseum, die Fondation Beyeler, das Münster hoch über dem Rhein und die Fähren, die sich nur mit der Strömung übersetzen lassen. Als Messestadt und Grenzstadt zu Deutschland und Frankreich ist Basel zudem ein wichtiger Geschäftsstandort.",
       faq: [
         ["Wie lange dauert der Transfer vom Flughafen Zürich nach Basel?", "Für die 86 km über die A3 benötigen wir je nach Verkehr rund 1 Stunde 45 Minuten."],
-        ["Was kostet die Fahrt nach Basel?", "Ab CHF 258.50 in der Business Class – Festpreis pro Fahrzeug, auch während Messen ohne Aufschlag."],
+        ["Was kostet die Fahrt nach Basel?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, auch während Messen ohne Aufschlag."],
         ["Fahren Sie auch zum EuroAirport Basel-Mulhouse?", "Ja, wir bedienen auch Ziele im Dreiländereck inklusive EuroAirport – fragen Sie uns einfach per WhatsApp an."],
         ["Ist genug Platz für Messegepäck und Rollups?", "Unsere V-Klasse bietet Platz für bis zu 7 Gepäckstücke; sperriges Material transportieren wir nach Absprache gerne."],
       ],
@@ -156,7 +167,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Basel is Switzerland's capital of art and culture: the Kunstmuseum, the Fondation Beyeler, the Minster high above the Rhine and the current-driven ferries crossing the river. As a trade-fair city bordering Germany and France, Basel is also a major business location.",
       faq: [
         ["How long does the transfer from Zurich Airport to Basel take?", "Allow around 1 hour 45 minutes for the 86 km via the A3, depending on traffic."],
-        ["How much is the ride to Basel?", "From CHF 258.50 in Business Class – a fixed price per vehicle, with no surcharge even during trade fairs."],
+        ["How much is the ride to Basel?", "From CHF {PRICE} in Business Class – a fixed price per vehicle, with no surcharge even during trade fairs."],
         ["Do you also drive to EuroAirport Basel-Mulhouse?", "Yes, we serve destinations across the tri-border area including EuroAirport – just ask us via WhatsApp."],
         ["Is there enough space for trade-fair luggage and roll-ups?", "Our V-Class carries up to 7 pieces of luggage; bulky items are welcome by prior arrangement."],
       ],
@@ -174,7 +185,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Genf ist die internationalste Stadt der Schweiz: Sitz der UNO, des IKRK und unzähliger Organisationen, berühmt für den Jet d'eau, die Altstadt um die Kathedrale St. Peter und die Uhrmacherkunst. Die Lage am westlichen Ende des Genfersees macht die Stadt auch zum Tor nach Frankreich.",
       faq: [
         ["Wie lange dauert die Fahrt von Zürich nach Genf?", "Für die rund 266 km planen wir etwa 5 Stunden 20 Minuten ein – inklusive Pausen nach Ihren Wünschen."],
-        ["Was kostet der Transfer nach Genf?", "Ab CHF 798.50 in der Business Class – als Festpreis pro Fahrzeug oft günstiger als mehrere Erste-Klasse-Bahntickets mit Gepäck."],
+        ["Was kostet der Transfer nach Genf?", "Ab CHF {PRICE} in der Business Class – als Festpreis pro Fahrzeug oft günstiger als mehrere Erste-Klasse-Bahntickets mit Gepäck."],
         ["Können wir unterwegs Pausen einlegen?", "Selbstverständlich. Ihr Fahrer hält auf Wunsch an Raststätten oder für einen Kaffee – die Fahrt richtet sich nach Ihnen."],
         ["Bieten Sie auch die Strecke Genf → Flughafen Zürich an?", "Ja, alle Strecken fahren wir in beide Richtungen. Geben Sie bei der Buchung einfach die gewünschte Abholadresse an."],
       ],
@@ -189,7 +200,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Geneva is Switzerland's most international city: home to the UN, the ICRC and countless organisations, famous for the Jet d'eau, the old town around St. Peter's Cathedral and its watchmaking heritage. Its position at the western tip of Lake Geneva also makes it the gateway to France.",
       faq: [
         ["How long is the drive from Zurich to Geneva?", "Plan around 5 hours 20 minutes for the 266 km – including breaks whenever you like."],
-        ["How much does the transfer to Geneva cost?", "From CHF 798.50 in Business Class – as a fixed price per vehicle it is often cheaper than several first-class rail tickets with luggage."],
+        ["How much does the transfer to Geneva cost?", "From CHF {PRICE} in Business Class – as a fixed price per vehicle it is often cheaper than several first-class rail tickets with luggage."],
         ["Can we take breaks along the way?", "Of course. Your driver stops at service areas or for a coffee on request – the journey follows your schedule."],
         ["Do you also offer Geneva → Zurich Airport?", "Yes, every route runs in both directions. Simply state your preferred pickup address when booking."],
       ],
@@ -207,7 +218,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Die Berner Altstadt gehört zum UNESCO-Welterbe: sechs Kilometer Lauben, der Zytglogge-Turm, das Münster mit dem höchsten Kirchturm der Schweiz und die Aareschlaufe, in der im Sommer die Berner flussschwimmen. Als Hauptstadt vereint Bern Politik, Geschichte und Gemütlichkeit.",
       faq: [
         ["Wie lange dauert der Transfer vom Flughafen Zürich nach Bern?", "Für die 117 km über die A1 rechnen wir rund 2 Stunden 20 Minuten, je nach Verkehrsaufkommen."],
-        ["Was kostet die Fahrt nach Bern?", "Ab CHF 352.50 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt. und Gebühren."],
+        ["Was kostet die Fahrt nach Bern?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt. und Gebühren."],
         ["Fahren Sie bis in die Altstadt?", "Ja, soweit es die Verkehrsführung erlaubt, bringen wir Sie bis vor die Tür – ansonsten zum nächstmöglichen Halt."],
         ["Ist der Rücktransfer zum gleichen Preis buchbar?", "Ja, Hin- und Rückfahrt kosten gleich viel. Bei Buchung beider Wege koordinieren wir die Zeiten gerne für Sie."],
       ],
@@ -222,7 +233,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Bern's old town is a UNESCO World Heritage site: six kilometres of arcades, the Zytglogge clock tower, the Minster with Switzerland's tallest church spire and the Aare loop where locals float downriver in summer. As the capital, Bern combines politics, history and a famously relaxed pace.",
       faq: [
         ["How long does the transfer from Zurich Airport to Bern take?", "Allow around 2 hours 20 minutes for the 117 km via the A1, depending on traffic."],
-        ["How much is the ride to Bern?", "From CHF 352.50 in Business Class – a fixed price per vehicle incl. VAT and fees."],
+        ["How much is the ride to Bern?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT and fees."],
         ["Do you drive into the old town?", "Yes, as far as traffic rules allow we take you right to the door – otherwise to the nearest possible stop."],
         ["Can I book the return at the same price?", "Yes, outbound and return cost the same. If you book both, we happily coordinate the timings for you."],
       ],
@@ -240,7 +251,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Zwischen Thuner- und Brienzersee gelegen, ist Interlaken der Ausgangspunkt für Eiger, Mönch und Jungfrau: Ausflüge aufs Jungfraujoch, Paragliding über der Höhematte, Schifffahrten auf türkisblauen Seen und Bergdörfer wie Grindelwald, Wengen und Lauterbrunnen liegen direkt vor der Tür.",
       faq: [
         ["Wie lange dauert der Transfer nach Interlaken?", "Für die 125 km planen Sie rund 2 Stunden 30 Minuten ein – je nach Route via Luzern/Brünig oder Bern."],
-        ["Was kostet die Fahrt vom Flughafen Zürich nach Interlaken?", "Ab CHF 375.63 in der Business Class – Festpreis pro Fahrzeug, ideal auch für Familien und Gruppen."],
+        ["Was kostet die Fahrt vom Flughafen Zürich nach Interlaken?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, ideal auch für Familien und Gruppen."],
         ["Transportieren Sie Ski- und Snowboardgepäck?", "Ja, Skitaschen befördern wir kostenlos (max. 4 pro Fahrzeug). Bitte bei der Buchung angeben."],
         ["Fahren Sie auch weiter nach Grindelwald, Wengen oder Lauterbrunnen?", "Ja, wir bedienen die gesamte Jungfrau-Region – wählen Sie einfach die entsprechende Strecke oder fragen Sie uns an."],
       ],
@@ -255,7 +266,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Set between Lake Thun and Lake Brienz, Interlaken is the base for the Eiger, Mönch and Jungfrau: trips to the Jungfraujoch, paragliding over the Höhematte, cruises on turquoise lakes and mountain villages such as Grindelwald, Wengen and Lauterbrunnen are all on the doorstep.",
       faq: [
         ["How long does the transfer to Interlaken take?", "Plan around 2 hours 30 minutes for the 125 km – via Lucerne/Brünig or Bern depending on conditions."],
-        ["How much is the ride from Zurich Airport to Interlaken?", "From CHF 375.63 in Business Class – a fixed price per vehicle, ideal for families and groups."],
+        ["How much is the ride from Zurich Airport to Interlaken?", "From CHF {PRICE} in Business Class – a fixed price per vehicle, ideal for families and groups."],
         ["Do you carry ski and snowboard luggage?", "Yes, ski bags travel free of charge (max. 4 per vehicle). Please state them when booking."],
         ["Do you continue to Grindelwald, Wengen or Lauterbrunnen?", "Yes, we serve the entire Jungfrau region – simply pick the relevant route or send us a request."],
       ],
@@ -273,7 +284,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Der Geburtsort des Wintertourismus glänzt mit Champagner-Klima, dem gefrorenen See mit White Turf und Polo, Gletscherpanoramen an der Diavolezza und der Bernina-Bahnstrecke, die zum UNESCO-Welterbe zählt. Im Sommer locken Segeln, Wandern und das Engadiner Licht, das schon Künstler wie Segantini inspirierte.",
       faq: [
         ["Wie lange dauert der Transfer nach St. Moritz?", "Für die rund 213 km planen wir etwa 4 Stunden 15 Minuten ein. Im Winter kann die Route über den Vereina-Autoverlad führen – Ihr Fahrer entscheidet nach aktueller Lage."],
-        ["Was kostet die Fahrt Zürich–St. Moritz?", "Ab CHF 638.00 in der Business Class – Festpreis pro Fahrzeug inkl. Pässe, Vignette und MwSt."],
+        ["Was kostet die Fahrt Zürich–St. Moritz?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. Pässe, Vignette und MwSt."],
         ["Sind die Strassen im Winter sicher befahrbar?", "Ja. Unsere Fahrzeuge sind komplett winterbereift, die Fahrer alpenerfahren. Bei kritischer Witterung weichen wir auf den Autoverlad aus."],
         ["Nehmen Sie Ski- und Snowboardgepäck mit?", "Selbstverständlich – Skitaschen transportieren wir kostenlos, bis 4 Stück pro Fahrzeug. Bitte bei der Buchung angeben."],
       ],
@@ -288,7 +299,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "The birthplace of winter tourism shines with its champagne climate, the frozen lake hosting White Turf and polo, glacier panoramas at Diavolezza and the UNESCO-listed Bernina railway line. In summer, sailing, hiking and the famous Engadin light that inspired painters like Segantini take over.",
       faq: [
         ["How long does the transfer to St. Moritz take?", "Plan around 4 hours 15 minutes for the roughly 213 km. In winter the route may use the Vereina car shuttle – your driver decides based on conditions."],
-        ["How much is the Zurich–St. Moritz ride?", "From CHF 638.00 in Business Class – a fixed price per vehicle including passes, vignette and VAT."],
+        ["How much is the Zurich–St. Moritz ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle including passes, vignette and VAT."],
         ["Are the roads safe in winter?", "Yes. Our vehicles run full winter tyres and our drivers are alpine-experienced. In critical weather we switch to the car shuttle."],
         ["Do you carry ski and snowboard luggage?", "Of course – ski bags travel free, up to 4 per vehicle. Please state them when booking."],
       ],
@@ -307,7 +318,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
       faq: [
         ["Fahren Sie direkt bis nach Zermatt?", "Zermatt ist autofrei – wir bringen Sie bis zum Matterhorn Terminal Täsch (5 km vor Zermatt). Von dort fährt alle 20 Minuten der Shuttle-Zug ins Dorf; Elektrotaxis stehen ebenfalls bereit."],
         ["Wie lange dauert der Transfer?", "Rund 4 Stunden 45 Minuten für die 237 km via Rhonetal – deutlich entspannter als die Bahnverbindung mit mehrfachem Umsteigen."],
-        ["Was kostet die Fahrt nach Zermatt/Täsch?", "Ab CHF 711.00 in der Business Class – Festpreis pro Fahrzeug, inkl. MwSt. und Gepäck."],
+        ["Was kostet die Fahrt nach Zermatt/Täsch?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, inkl. MwSt. und Gepäck."],
         ["Lohnt sich der Transfer gegenüber dem Zug?", "Zu viert mit Wintersportgepäck: fast immer. Tür-zu-Terminal, keine Umstiege, Abfahrt wann Sie wollen – auch nachts."],
       ],
     },
@@ -322,7 +333,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
       faq: [
         ["Do you drive directly into Zermatt?", "Zermatt is car-free – we take you to the Matterhorn Terminal in Täsch (5 km before Zermatt). A shuttle train runs to the village every 20 minutes; electro-taxis are available too."],
         ["How long does the transfer take?", "Around 4 hours 45 minutes for the 237 km via the Rhone valley – far more relaxed than the rail connection with multiple changes."],
-        ["How much is the ride to Zermatt/Täsch?", "From CHF 711.00 in Business Class – a fixed price per vehicle incl. VAT and luggage."],
+        ["How much is the ride to Zermatt/Täsch?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT and luggage."],
         ["Is the transfer worth it versus the train?", "With four people and winter-sports luggage: almost always. Door-to-terminal, no changes, departure whenever you want – even at night."],
       ],
     },
@@ -339,7 +350,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Auf 1'560 Metern vereint Davos alpinen Grossstadtcharakter mit legendären Skigebieten: Parsenn mit der Weissfluh, das freeride-berühmte Jakobshorn, dazu Langlaufloipen, das grösste Natureisfeld Europas und im Januar das Weltwirtschaftsforum. Die Schatzalp erinnert an Thomas Manns «Zauberberg».",
       faq: [
         ["Wie lange dauert der Transfer nach Davos?", "Rund 3 Stunden 15 Minuten für 161 km – je nach Verkehr auf der A3 am Walensee."],
-        ["Was kostet die Fahrt Zürich–Davos?", "Ab CHF 484.50 in der Business Class, Festpreis pro Fahrzeug – auch während des WEF ohne Zuschlag."],
+        ["Was kostet die Fahrt Zürich–Davos?", "Ab CHF {PRICE} in der Business Class, Festpreis pro Fahrzeug – auch während des WEF ohne Zuschlag."],
         ["Fahren Sie auch nach Klosters?", "Ja, Klosters liegt auf der Route – nennen Sie bei der Buchung einfach Ihre Zieladresse."],
         ["Sind Transfers während des WEF möglich?", "Ja, mit frühzeitiger Buchung. Unsere Fahrer kennen die Sicherheitszonen und Umleitungen während der Forumswoche."],
       ],
@@ -354,7 +365,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "At 1,560 m, Davos combines an alpine city feel with legendary ski areas: Parsenn with the Weissfluh, freeride-famous Jakobshorn, plus cross-country trails, Europe's largest natural ice rink and, each January, the World Economic Forum. The Schatzalp still echoes Thomas Mann's 'Magic Mountain'.",
       faq: [
         ["How long does the transfer to Davos take?", "Around 3 hours 15 minutes for 161 km – depending on traffic along Lake Walen on the A3."],
-        ["How much is the Zurich–Davos ride?", "From CHF 484.50 in Business Class, fixed per vehicle – no surcharge even during the WEF."],
+        ["How much is the Zurich–Davos ride?", "From CHF {PRICE} in Business Class, fixed per vehicle – no surcharge even during the WEF."],
         ["Do you also serve Klosters?", "Yes, Klosters is on the way – simply state your exact address when booking."],
         ["Are transfers possible during the WEF?", "Yes, with early booking. Our drivers know the security zones and diversions during forum week."],
       ],
@@ -372,7 +383,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Lausanne steigt in Terrassen vom See zur gotischen Kathedrale hinauf: Olympisches Museum in Ouchy, das lebendige Quartier Flon, Metro statt Tram (die einzige der Schweiz) – und vor der Haustür die UNESCO-Weinterrassen des Lavaux mit Blick auf die Savoyer Alpen.",
       faq: [
         ["Wie lange dauert der Transfer nach Lausanne?", "Rund 4 Stunden 20 Minuten für 215 km über die A1 – mit Pausen nach Ihren Wünschen."],
-        ["Was kostet die Fahrt Zürich–Lausanne?", "Ab CHF 646.50 in der Business Class – Festpreis pro Fahrzeug, oft günstiger als mehrere 1.-Klasse-Billette."],
+        ["Was kostet die Fahrt Zürich–Lausanne?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, oft günstiger als mehrere 1.-Klasse-Billette."],
         ["Fahren Sie auch nach Ouchy oder ins Lavaux?", "Ja, wir bringen Sie an jede Adresse – auch zu Weingütern in Epesses, Rivaz oder St-Saphorin."],
         ["Ist der Rücktransfer zum Flughafen buchbar?", "Ja, jede Strecke fahren wir in beide Richtungen zum gleichen Festpreis."],
       ],
@@ -387,7 +398,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Lausanne climbs in terraces from the lake to its Gothic cathedral: the Olympic Museum in Ouchy, the lively Flon district, a metro instead of trams (Switzerland's only one) – and on the doorstep, the UNESCO wine terraces of Lavaux facing the Savoy Alps.",
       faq: [
         ["How long does the transfer to Lausanne take?", "Around 4 hours 20 minutes for 215 km via the A1 – with breaks whenever you wish."],
-        ["How much is the Zurich–Lausanne ride?", "From CHF 646.50 in Business Class – a fixed price per vehicle, often cheaper than several first-class rail tickets."],
+        ["How much is the Zurich–Lausanne ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle, often cheaper than several first-class rail tickets."],
         ["Do you also drive to Ouchy or the Lavaux?", "Yes, we take you to any address – including wineries in Epesses, Rivaz or St-Saphorin."],
         ["Can I book the return to the airport?", "Yes, every route runs both ways at the same fixed price."],
       ],
@@ -405,7 +416,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Montreux schmiegt sich zwischen Weinberge und Genfersee: die Uferpromenade mit Freddie-Mercury-Statue, das weltberühmte Jazz Festival, das Wasserschloss Chillon und die GoldenPass-Linie in die Berge. Dank Mikroklima gedeihen hier Palmen und Zypressen – Riviera-Gefühl mit Alpenblick.",
       faq: [
         ["Wie lange dauert der Transfer nach Montreux?", "Etwa 4 Stunden 50 Minuten für 243 km – die Schlussetappe führt malerisch dem Genfersee entlang."],
-        ["Was kostet die Fahrt Zürich–Montreux?", "Ab CHF 730.50 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Montreux?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Gibt es Transfers während des Jazz Festivals?", "Ja – buchen Sie früh, die Festivalwochen sind stark nachgefragt. Der Festpreis bleibt unverändert."],
         ["Können wir am Schloss Chillon halten?", "Ein Fotostopp ist nach Absprache möglich; für eine Besichtigung empfehlen wir unseren stundenweisen Service."],
       ],
@@ -420,7 +431,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Montreux nestles between vineyards and Lake Geneva: the lakeside promenade with the Freddie Mercury statue, the world-famous Jazz Festival, the water castle of Chillon and the GoldenPass line into the mountains. A microclimate lets palms and cypresses thrive – Riviera feeling with an Alpine backdrop.",
       faq: [
         ["How long does the transfer to Montreux take?", "About 4 hours 50 minutes for 243 km – the final stretch runs scenically along Lake Geneva."],
-        ["How much is the Zurich–Montreux ride?", "From CHF 730.50 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Montreux ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you run transfers during the Jazz Festival?", "Yes – book early, festival weeks are in high demand. The fixed price stays the same."],
         ["Can we stop at Chillon Castle?", "A photo stop is possible by arrangement; for a full visit we recommend our hourly service."],
       ],
@@ -438,7 +449,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Die grösste Stadt des Tessins verbindet Schweizer Verlässlichkeit mit italienischem Lebensgefühl: Arkaden und Piazze der Altstadt, die Seepromenade zum Parco Ciani, Aussichtsberge Monte Brè und San Salvatore und das Dolce Vita der Grotti, in denen Merlot und Polenta serviert werden.",
       faq: [
         ["Wie lange dauert der Transfer nach Lugano?", "Rund 4 Stunden 10 Minuten für 210 km. Vor Feiertagen kann der Gotthard Wartezeiten haben – Ihr Fahrer kalkuliert das ein oder weicht via San Bernardino aus."],
-        ["Was kostet die Fahrt Zürich–Lugano?", "Ab CHF 630.50 in der Business Class – Festpreis pro Fahrzeug, Tunnel und Vignette inklusive."],
+        ["Was kostet die Fahrt Zürich–Lugano?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, Tunnel und Vignette inklusive."],
         ["Fahren Sie auch nach Ascona, Morcote oder Como?", "Ja – das ganze Tessin und auf Anfrage auch grenznahe Ziele in Italien. Nennen Sie einfach Ihre Adresse."],
         ["Was passiert bei Stau am Gotthard?", "Der Festpreis gilt unabhängig von der Fahrzeit. Bei absehbarem Stau wählt Ihr Fahrer die Ausweichroute über den San Bernardino."],
       ],
@@ -453,7 +464,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Ticino's largest city pairs Swiss reliability with Italian lifestyle: arcades and piazzas in the old town, the lakeside walk to Parco Ciani, panoramic peaks Monte Brè and San Salvatore, and the dolce vita of grotti serving Merlot and polenta.",
       faq: [
         ["How long does the transfer to Lugano take?", "Around 4 hours 10 minutes for 210 km. Before holidays the Gotthard can jam – your driver plans for it or diverts via the San Bernardino."],
-        ["How much is the Zurich–Lugano ride?", "From CHF 630.50 in Business Class – a fixed price per vehicle, tunnel and vignette included."],
+        ["How much is the Zurich–Lugano ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle, tunnel and vignette included."],
         ["Do you also drive to Ascona, Morcote or Como?", "Yes – all of Ticino and, on request, nearby destinations in Italy. Just state your address."],
         ["What if there's a Gotthard traffic jam?", "The fixed price applies regardless of duration. If a jam is foreseeable, your driver takes the San Bernardino alternative."],
       ],
@@ -471,7 +482,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Das Gletscherdorf liegt spektakulär unter Eiger, Wetterhorn und Schreckhorn: Eiger Express und Jungfraubahn zum «Top of Europe», der First mit Cliff Walk und Trottibike-Abfahrten, im Winter 160 Pistenkilometer der Region – und im Sommer die vielleicht berühmteste Wanderkulisse der Alpen.",
       faq: [
         ["Wie lange dauert der Transfer nach Grindelwald?", "Rund 2 Stunden 50 Minuten für 142 km – via Luzern und Brünigpass oder via Bern, je nach Verkehr."],
-        ["Was kostet die Fahrt Zürich–Grindelwald?", "Ab CHF 425.00 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Grindelwald?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Bringen Sie uns zum Eiger-Express-Terminal?", "Ja, gerne direkt zur Talstation des Grindelwald Terminals – ideal für die Weiterreise aufs Jungfraujoch oder nach Mürren."],
         ["Transportieren Sie Ski- und Wandergepäck?", "Skitaschen kostenlos (max. 4), sperriges Gepäck nach Absprache. Für Familien empfiehlt sich die V-Klasse mit 7 Gepäckplätzen."],
       ],
@@ -486,7 +497,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "The glacier village sits spectacularly beneath Eiger, Wetterhorn and Schreckhorn: Eiger Express and Jungfrau Railway to the 'Top of Europe', the First with its Cliff Walk and trotti-bike descents, 160 km of regional pistes in winter – and in summer, perhaps the most famous hiking backdrop in the Alps.",
       faq: [
         ["How long does the transfer to Grindelwald take?", "Around 2 hours 50 minutes for 142 km – via Lucerne and the Brünig Pass or via Bern, depending on traffic."],
-        ["How much is the Zurich–Grindelwald ride?", "From CHF 425.00 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Grindelwald ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Can you take us to the Eiger Express terminal?", "Yes, happily straight to the Grindelwald Terminal valley station – ideal for continuing to the Jungfraujoch or Mürren."],
         ["Do you carry ski and hiking luggage?", "Ski bags free of charge (max. 4); bulky items by arrangement. For families, the V-Class with 7 luggage spaces is ideal."],
       ],
@@ -504,7 +515,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Verbier ist die Freeride-Hauptstadt der Alpen: Hausberg des Xtreme Verbier auf dem Bec des Rosses, 410 Pistenkilometer der 4 Vallées bis zum Mont Fort auf 3'330 Metern, dazu ein internationales Publikum, das Après-Ski im Farinet ebenso schätzt wie das Klassikfestival im Sommer.",
       faq: [
         ["Wie lange dauert der Transfer nach Verbier?", "Rund 5 Stunden 25 Minuten für 270 km – inklusive der Bergstrasse ab Le Châble. Im Winter fahren wir mit voller Winterausrüstung."],
-        ["Was kostet die Fahrt Zürich–Verbier?", "Ab CHF 809.50 in der Business Class – Festpreis pro Fahrzeug, unabhängig von Saison und Uhrzeit."],
+        ["Was kostet die Fahrt Zürich–Verbier?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, unabhängig von Saison und Uhrzeit."],
         ["Fahren Sie bis ins Dorf hinauf?", "Ja, direkt bis zu Ihrer Unterkunft in Verbier – kein Umsteigen auf die Gondel in Le Châble nötig."],
         ["Nehmen Sie Ski- und Freeride-Ausrüstung mit?", "Selbstverständlich, kostenlos bis 4 Skitaschen. Für Gruppen mit viel Material empfehlen wir die V-Klasse."],
       ],
@@ -519,7 +530,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Verbier is the freeride capital of the Alps: home mountain of the Xtreme Verbier on the Bec des Rosses, 410 km of 4 Vallées pistes up to Mont Fort at 3,330 m, plus an international crowd that loves après-ski at the Farinet as much as the classical music festival in summer.",
       faq: [
         ["How long does the transfer to Verbier take?", "Around 5 hours 25 minutes for 270 km – including the mountain road from Le Châble. In winter we run full winter equipment."],
-        ["How much is the Zurich–Verbier ride?", "From CHF 809.50 in Business Class – a fixed price per vehicle, regardless of season or time of day."],
+        ["How much is the Zurich–Verbier ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle, regardless of season or time of day."],
         ["Do you drive all the way up to the village?", "Yes, straight to your accommodation in Verbier – no gondola change in Le Châble required."],
         ["Do you carry ski and freeride gear?", "Of course, free of charge up to 4 ski bags. For groups with lots of kit we recommend the V-Class."],
       ],
@@ -538,7 +549,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
       faq: [
         ["Fahren Sie direkt nach Wengen?", "Wengen ist autofrei – wir bringen Sie zur Talstation Lauterbrunnen (Parkhaus/Bahnhof). Von dort fährt die Wengernalpbahn alle 30 Minuten in 14 Minuten hinauf."],
         ["Wie lange dauert der Transfer?", "Rund 2 Stunden 40 Minuten bis Lauterbrunnen für 133 km – plus die kurze Bahnfahrt nach Wengen."],
-        ["Was kostet die Fahrt?", "Ab CHF 400.50 in der Business Class – Festpreis pro Fahrzeug bis Lauterbrunnen, inkl. Gepäckservice bis zur Bahn."],
+        ["Was kostet die Fahrt?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug bis Lauterbrunnen, inkl. Gepäckservice bis zur Bahn."],
         ["Klappt das auch zum Lauberhorn-Rennen?", "Ja, mit früher Buchung. An den Rennwochenenden planen wir zusätzliche Pufferzeit für die Anfahrt ein."],
       ],
     },
@@ -553,7 +564,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
       faq: [
         ["Do you drive directly to Wengen?", "Wengen is car-free – we take you to the Lauterbrunnen valley station (car park/rail station). From there the Wengernalp railway runs up every 30 minutes, taking 14 minutes."],
         ["How long does the transfer take?", "Around 2 hours 40 minutes to Lauterbrunnen for 133 km – plus the short train ride to Wengen."],
-        ["How much does the ride cost?", "From CHF 400.50 in Business Class – a fixed price per vehicle to Lauterbrunnen, incl. luggage service to the train."],
+        ["How much does the ride cost?", "From CHF {PRICE} in Business Class – a fixed price per vehicle to Lauterbrunnen, incl. luggage service to the train."],
         ["Does this work for the Lauberhorn race weekend?", "Yes, with early booking. On race weekends we plan extra buffer time for the approach."],
       ],
     },
@@ -570,7 +581,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Das Herzstück St. Gallens ist Weltkulturerbe: Der barocke Stiftsbezirk mit der berühmten Stiftsbibliothek und ihren 170'000 Bänden zählt zu den schönsten Bibliothekssälen der Welt. Dazu kommen die erkerreiche Altstadt, die rote «Stadtlounge» von Pipilotti Rist und die Nähe zu Appenzell und Bodensee.",
       faq: [
         ["Wie lange dauert der Transfer nach St. Gallen?", "Rund 1 Stunde 37 Minuten für 81 km über die A1 – zu Stosszeiten mit etwas Puffer."],
-        ["Was kostet die Fahrt Zürich–St. Gallen?", "Ab CHF 243.50 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–St. Gallen?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Fahren Sie auch an den Bodensee oder nach Appenzell?", "Ja, Rorschach, Arbon, Appenzell und weitere Ziele der Ostschweiz bedienen wir gerne – fragen Sie einfach an."],
         ["Gibt es Rückfahrten am selben Tag?", "Ja, für Tagestermine koordinieren wir Hin- und Rückfahrt oder Ihr Fahrer wartet vor Ort (stundenweiser Service)."],
       ],
@@ -585,7 +596,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "St. Gallen's heart is a World Heritage Site: the baroque Abbey District with its famous library of 170,000 volumes ranks among the most beautiful library halls on earth. Add the oriel-studded old town, Pipilotti Rist's red 'City Lounge' and easy reach of Appenzell and Lake Constance.",
       faq: [
         ["How long does the transfer to St. Gallen take?", "Around 1 hour 37 minutes for 81 km via the A1 – with a little buffer at rush hour."],
-        ["How much is the Zurich–St. Gallen ride?", "From CHF 243.50 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–St. Gallen ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you also serve Lake Constance or Appenzell?", "Yes, Rorschach, Arbon, Appenzell and other eastern-Swiss destinations – just ask."],
         ["Same-day returns possible?", "Yes, for day appointments we coordinate outbound and return, or your driver waits on site (hourly service)."],
       ],
@@ -603,7 +614,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Seit über 5'000 Jahren besiedelt, überrascht Chur mit einer mediterran anmutenden Altstadt, der Kathedrale im Hof, Torkeln und Weinbergen am Stadtrand – und dem Hausberg Brambrüesch, den man direkt aus der Altstadt per Bahn erreicht. Bündner Gerstensuppe und Capuns inklusive.",
       faq: [
         ["Wie lange dauert der Transfer nach Chur?", "Rund 2 Stunden 45 Minuten für 135 km über die A3/A13 – mit Walensee-Panorama unterwegs."],
-        ["Was kostet die Fahrt Zürich–Chur?", "Ab CHF 406.50 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Chur?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Fahren Sie auch nach Arosa, Lenzerheide oder Flims?", "Ja, alle Bündner Destinationen auf Anfrage – nennen Sie Ihr Ziel, wir nennen den Festpreis."],
         ["Erreichen wir den Glacier Express?", "Ja, wir koordinieren die Ankunft am Bahnhof Chur gerne mit Ihrer Zugverbindung – inklusive Zeitpuffer."],
       ],
@@ -618,7 +629,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Settled for over 5,000 years, Chur surprises with an almost Mediterranean old town, the cathedral in its court, wine presses and vineyards at the town's edge – and its home mountain Brambrüesch, reached by cable car straight from the old town. Grisons barley soup and capuns included.",
       faq: [
         ["How long does the transfer to Chur take?", "Around 2 hours 45 minutes for 135 km via the A3/A13 – with Lake Walen views on the way."],
-        ["How much is the Zurich–Chur ride?", "From CHF 406.50 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Chur ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you also serve Arosa, Lenzerheide or Flims?", "Yes, all Graubünden destinations on request – name your destination and we'll name the fixed price."],
         ["Will we make the Glacier Express?", "Yes, we happily coordinate arrival at Chur station with your train connection – buffer included."],
       ],
@@ -636,7 +647,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Die sechstgrösste Stadt der Schweiz ist heimliche Kulturhauptstadt: Sammlung Oskar Reinhart und Kunst Museum, das Fotomuseum im alten Industriequartier, dazu die grösste Fussgänger-Altstadt des Landes und das Technorama in Sichtweite – Industriegeschichte, die zu Museen, Lofts und Musikclubs wurde.",
       faq: [
         ["Wie lange dauert der Transfer nach Winterthur?", "Nur rund 35 Minuten für 30 km – je nach Verkehr auf der A1."],
-        ["Was kostet die Fahrt Flughafen–Winterthur?", "Ab CHF 88.90 in der Business Class – Festpreis pro Fahrzeug, keine Zuschläge zu Randzeiten."],
+        ["Was kostet die Fahrt Flughafen–Winterthur?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug, keine Zuschläge zu Randzeiten."],
         ["Lohnt sich das gegenüber der S-Bahn?", "Mit Gepäck, zu zweit oder mit knappem Zeitplan: ja. Tür zu Tür sind Sie meist schneller als mit Umsteigen am Flughafenbahnhof."],
         ["Fahren Sie auch früh morgens zum Flughafen?", "Rund um die Uhr – die Strecke ist bei Frühabflügen ab Winterthur besonders gefragt."],
       ],
@@ -651,7 +662,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Switzerland's sixth-largest city is a secret culture capital: the Oskar Reinhart collection and Kunst Museum, the photography museum in the old industrial quarter, the country's largest pedestrian old town and the Technorama nearby – industrial history reborn as museums, lofts and music clubs.",
       faq: [
         ["How long does the transfer to Winterthur take?", "Only around 35 minutes for 30 km – depending on A1 traffic."],
-        ["How much is the airport–Winterthur ride?", "From CHF 88.90 in Business Class – a fixed price per vehicle, no off-peak surcharges."],
+        ["How much is the airport–Winterthur ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle, no off-peak surcharges."],
         ["Is it worth it versus the S-Bahn?", "With luggage, as a pair or on a tight schedule: yes. Door to door you're usually faster than changing at the airport station."],
         ["Do you also drive to the airport early in the morning?", "Around the clock – this route is especially popular for early departures from Winterthur."],
       ],
@@ -669,7 +680,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Locarno ist die wärmste Stadt der Schweiz: die Piazza Grande mit ihrem Filmfestival im August, die Wallfahrtskirche Madonna del Sasso hoch über dem See, Kamelienpark und Palmenpromenade – und die wilden Täler Verzasca und Maggia mit smaragdgrünen Flussbädern direkt vor der Tür.",
       faq: [
         ["Wie lange dauert der Transfer nach Locarno?", "Rund 4 Stunden für 201 km durch den Gotthard – bei Stau weicht Ihr Fahrer über den San Bernardino aus."],
-        ["Was kostet die Fahrt Zürich–Locarno?", "Ab CHF 604.00 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Locarno?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Fahren Sie auch nach Ascona oder ins Verzascatal?", "Ja, das ganze Sopraceneri bedienen wir – auch Ascona, Brissago und die Seitentäler."],
         ["Transfers zum Filmfestival möglich?", "Ja, mit früher Buchung – im August ist Locarno stark ausgelastet, der Festpreis bleibt gleich."],
       ],
@@ -684,7 +695,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Locarno is Switzerland's warmest town: the Piazza Grande with its August film festival, the pilgrimage church Madonna del Sasso high above the lake, camellia park and palm-lined promenade – plus the wild Verzasca and Maggia valleys with emerald river pools on the doorstep.",
       faq: [
         ["How long does the transfer to Locarno take?", "Around 4 hours for 201 km through the Gotthard – in case of jams your driver diverts via the San Bernardino."],
-        ["How much is the Zurich–Locarno ride?", "From CHF 604.00 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Locarno ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you also drive to Ascona or the Verzasca valley?", "Yes, we serve the whole Sopraceneri – including Ascona, Brissago and the side valleys."],
         ["Transfers for the film festival?", "Yes, with early booking – Locarno fills up in August, but the fixed price stays the same."],
       ],
@@ -702,7 +713,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Über der mittelalterlichen Altstadt thront das Schloss Thun mit seinem Rittersaal; unten teilt die Aare die Stadt in Gassen mit Hochtrottoirs – begehbaren zweistöckigen Läden, wie es sie nur hier gibt. Vom Quai starten Schiffe Richtung Spiez, Oberhofen und Interlaken, während Surfer auf der Flusswelle «Mühleschleuse» reiten.",
       faq: [
         ["Wie lange dauert der Transfer nach Thun?", "Rund 2 Stunden 50 Minuten für 142 km – via Bern über die A1/A6."],
-        ["Was kostet die Fahrt Zürich–Thun?", "Ab CHF 425.00 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Thun?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Fahren Sie auch nach Spiez, Oberhofen oder Gunten?", "Ja, alle Orte am Thunersee bedienen wir – geben Sie einfach Ihre Zieladresse an."],
         ["Weiterfahrt nach Gstaad möglich?", "Ja, über das Simmental fahren wir Sie gerne weiter – fragen Sie den Festpreis für Ihre Wunschstrecke an."],
       ],
@@ -717,7 +728,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Thun Castle with its knights' hall crowns the medieval old town; below, the Aare splits the town into lanes with 'Hochtrottoirs' – walkable two-storey shopfronts found nowhere else. Boats leave the quay for Spiez, Oberhofen and Interlaken, while surfers ride the standing river wave at the Mühleschleuse.",
       faq: [
         ["How long does the transfer to Thun take?", "Around 2 hours 50 minutes for 142 km – via Bern on the A1/A6."],
-        ["How much is the Zurich–Thun ride?", "From CHF 425.00 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Thun ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you also serve Spiez, Oberhofen or Gunten?", "Yes, all villages around Lake Thun – simply state your destination address."],
         ["Can we continue to Gstaad?", "Yes, we happily drive you on through the Simmental – ask for the fixed price of your preferred route."],
       ],
@@ -735,7 +746,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Über 7'000 Jahre Siedlungsgeschichte machen Sion zu einem der ältesten Orte der Schweiz: die Burghügel Valère mit der ältesten spielbaren Orgel der Welt und Tourbillon, verwinkelte Altstadtgassen, dazu 300 Sonnentage, Walliser Weine wie Fendant und Petite Arvine – und die Viertausender stets am Horizont.",
       faq: [
         ["Wie lange dauert der Transfer nach Sion?", "Rund 5 Stunden 25 Minuten für 271 km – durchs Rhonetal mit Pausen nach Wunsch."],
-        ["Was kostet die Fahrt Zürich–Sion?", "Ab CHF 812.00 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Sion?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Fahren Sie weiter nach Nendaz, Anzère oder Evolène?", "Ja, alle Stationen rund um Sion bedienen wir direkt – nennen Sie Ihre Unterkunft bei der Buchung."],
         ["Gibt es die Strecke auch ab Genf?", "Unser Standard ist ZRH; Transfers ab anderen Flughäfen organisieren wir auf Anfrage gerne."],
       ],
@@ -750,7 +761,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Over 7,000 years of settlement make Sion one of Switzerland's oldest places: the castle hills of Valère – home to the world's oldest playable organ – and Tourbillon, winding old-town lanes, 300 days of sunshine, Valais wines like Fendant and Petite Arvine – and four-thousand-metre peaks always on the horizon.",
       faq: [
         ["How long does the transfer to Sion take?", "Around 5 hours 25 minutes for 271 km – through the Rhone valley with breaks on request."],
-        ["How much is the Zurich–Sion ride?", "From CHF 812.00 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Sion ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you continue to Nendaz, Anzère or Evolène?", "Yes, we serve all resorts around Sion directly – state your accommodation when booking."],
         ["Is this route also available from Geneva?", "Our standard is ZRH; transfers from other airports can gladly be arranged on request."],
       ],
@@ -768,7 +779,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Drei Burgen wachen über Bellinzona – Castelgrande, Montebello und Sasso Corbaro, zusammen UNESCO-Welterbe und das besterhaltene mittelalterliche Wehrensemble der Alpen. Samstags verwandelt der Markt die Altstadt in ein südländisches Fest aus Alpkäse, Brot und Merlot.",
       faq: [
         ["Wie lange dauert der Transfer nach Bellinzona?", "Rund 3 Stunden 40 Minuten für 183 km durch den Gotthardtunnel."],
-        ["Was kostet die Fahrt Zürich–Bellinzona?", "Ab CHF 548.00 in der Business Class – Festpreis pro Fahrzeug inkl. Tunnel und Vignette."],
+        ["Was kostet die Fahrt Zürich–Bellinzona?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. Tunnel und Vignette."],
         ["Halten Sie bei den Burgen?", "Ein Fotostopp am Castelgrande ist nach Absprache möglich – für Besichtigungen empfehlen wir den stundenweisen Service."],
         ["Fahren Sie weiter ins Misox oder Bleniotal?", "Ja, alle Tessiner und Südbündner Täler bedienen wir auf Anfrage."],
       ],
@@ -783,7 +794,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Three castles watch over Bellinzona – Castelgrande, Montebello and Sasso Corbaro, together a UNESCO World Heritage Site and the best-preserved medieval fortification ensemble in the Alps. On Saturdays the market turns the old town into a southern feast of alpine cheese, bread and Merlot.",
       faq: [
         ["How long does the transfer to Bellinzona take?", "Around 3 hours 40 minutes for 183 km through the Gotthard tunnel."],
-        ["How much is the Zurich–Bellinzona ride?", "From CHF 548.00 in Business Class – a fixed price per vehicle incl. tunnel and vignette."],
+        ["How much is the Zurich–Bellinzona ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. tunnel and vignette."],
         ["Can we stop at the castles?", "A photo stop at Castelgrande is possible by arrangement – for visits we recommend our hourly service."],
         ["Do you continue into the Misox or Blenio valley?", "Yes, we serve all Ticino and southern Graubünden valleys on request."],
       ],
@@ -801,7 +812,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Fribourg besitzt eines der grössten zusammenhängenden mittelalterlichen Stadtbilder Europas: 200 gotische Fassaden über der Saaneschlucht, die Kathedrale St. Nikolaus mit ihrem 76-Meter-Turm, gedeckte Holzbrücken und die steile Standseilbahn, die – einzigartig – mit Abwasser als Ballast fährt.",
       faq: [
         ["Wie lange dauert der Transfer nach Fribourg?", "Rund 3 Stunden für 155 km über die A1 via Bern."],
-        ["Was kostet die Fahrt Zürich–Fribourg?", "Ab CHF 464.00 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Fribourg?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Fahren Sie weiter nach Gruyères oder Charmey?", "Ja, das ganze Greyerzerland bedienen wir gerne – ideal kombinierbar mit einem Stopp bei der Schaukäserei."],
         ["Setzen Sie in der Unterstadt ab?", "Soweit die engen Gassen es erlauben, ja – ansonsten am nächstmöglichen Punkt mit kurzem Fussweg."],
       ],
@@ -816,7 +827,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Fribourg holds one of Europe's largest intact medieval townscapes: 200 Gothic façades above the Sarine gorge, St. Nicholas Cathedral with its 76-metre tower, covered wooden bridges and a steep funicular that – uniquely – runs on wastewater as ballast.",
       faq: [
         ["How long does the transfer to Fribourg take?", "Around 3 hours for 155 km via Bern on the A1."],
-        ["How much is the Zurich–Fribourg ride?", "From CHF 464.00 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Fribourg ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Do you continue to Gruyères or Charmey?", "Yes, we gladly serve the whole Gruyère region – ideally combined with a stop at the show dairy."],
         ["Do you drop off in the lower town?", "As far as the narrow lanes allow, yes – otherwise at the nearest point with a short walk."],
       ],
@@ -834,7 +845,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Über der erkergeschmückten Altstadt thront die kreisrunde Munot-Festung; wenige Kilometer flussabwärts donnert der Rheinfall mit 600'000 Litern pro Sekunde über die Felsen – Europas grösster Wasserfall. Dazu Riesling-Reben am Stadtrand und Rheinschifffahrten bis Stein am Rhein.",
       faq: [
         ["Wie lange dauert der Transfer nach Schaffhausen?", "Rund 1 Stunde für 50 km – je nach Verkehr im Raum Winterthur."],
-        ["Was kostet die Fahrt Zürich–Schaffhausen?", "Ab CHF 148.50 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Schaffhausen?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Können wir am Rheinfall anhalten?", "Ja – ein Fotostopp ist nach Absprache möglich, für längere Besuche empfehlen wir den stundenweisen Service."],
         ["Fahren Sie auch nach Stein am Rhein oder über die Grenze?", "Ja, Stein am Rhein, Neuhausen und grenznahe deutsche Ziele bedienen wir auf Anfrage."],
       ],
@@ -849,7 +860,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "The circular Munot fortress crowns the oriel-decorated old town; a few kilometres downstream the Rhine Falls thunder over the rocks at 600,000 litres per second – Europe's largest waterfall. Add Riesling vineyards at the town's edge and river cruises to Stein am Rhein.",
       faq: [
         ["How long does the transfer to Schaffhausen take?", "Around 1 hour for 50 km – depending on traffic around Winterthur."],
-        ["How much is the Zurich–Schaffhausen ride?", "From CHF 148.50 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Schaffhausen ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Can we stop at the Rhine Falls?", "Yes – a photo stop is possible by arrangement; for longer visits we recommend our hourly service."],
         ["Do you also drive to Stein am Rhein or across the border?", "Yes, Stein am Rhein, Neuhausen and nearby German destinations on request."],
       ],
@@ -867,7 +878,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "Seit 1120 prägt das Benediktinerkloster das Dorf – heute mit Schaukäserei im Innenhof. Darüber thront der Titlis (3'238 m) mit der drehbaren Rotair-Gondel, Gletschergrotte und Hängebrücke; die Nordabfahrt Laub gilt unter Freeridern als eine der grossartigsten der Alpen.",
       faq: [
         ["Wie lange dauert der Transfer nach Engelberg?", "Rund 1 Stunde 55 Minuten für 94 km – via Luzern und Stans."],
-        ["Was kostet die Fahrt Zürich–Engelberg?", "Ab CHF 282.50 in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
+        ["Was kostet die Fahrt Zürich–Engelberg?", "Ab CHF {PRICE} in der Business Class – Festpreis pro Fahrzeug inkl. MwSt."],
         ["Bringen Sie uns zur Titlis-Talstation?", "Ja, gerne direkt zur Talstation Titlis Xpress oder zu jeder anderen Adresse im Dorf."],
         ["Transportieren Sie Wintersportgepäck?", "Skitaschen kostenlos (max. 4 pro Fahrzeug); für Gruppen mit viel Ausrüstung empfehlen wir die V-Klasse."],
       ],
@@ -882,7 +893,7 @@ export const routeContent: Record<string, { de: RouteContent; en: RouteContent }
         "The Benedictine monastery has shaped the village since 1120 – today with a show dairy in its courtyard. Above it towers the Titlis (3,238 m) with the rotating Rotair gondola, glacier cave and suspension bridge; the north-facing Laub run counts among freeriding's greatest descents in the Alps.",
       faq: [
         ["How long does the transfer to Engelberg take?", "Around 1 hour 55 minutes for 94 km – via Lucerne and Stans."],
-        ["How much is the Zurich–Engelberg ride?", "From CHF 282.50 in Business Class – a fixed price per vehicle incl. VAT."],
+        ["How much is the Zurich–Engelberg ride?", "From CHF {PRICE} in Business Class – a fixed price per vehicle incl. VAT."],
         ["Can you take us to the Titlis valley station?", "Yes, happily straight to the Titlis Xpress valley station or any other address in the village."],
         ["Do you carry winter-sports luggage?", "Ski bags free of charge (max. 4 per vehicle); for groups with lots of gear we recommend the V-Class."],
       ],
