@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
   if (!dbReady) return NextResponse.json({ ok: false }, { status: 503 });
   await ensureSchema();
   const [b] = (await sql`
-    SELECT ref, status, payment_status, price, vehicle, dropoff, source, updated_at, lang
+    SELECT ref, status, payment_status, price, vehicle, dropoff, source, updated_at, paid_at, created_at, lang
     FROM bookings WHERE ref = ${ref.startsWith("#") ? ref : "#" + ref} LIMIT 1`) as unknown as
-    { ref: string; status: string; payment_status: string | null; price: string | null; vehicle: string | null; dropoff: string | null; source: string | null; updated_at: string | null; lang: string | null }[];
+    { ref: string; status: string; payment_status: string | null; price: string | null; vehicle: string | null; dropoff: string | null; source: string | null; updated_at: string | null; paid_at: string | null; created_at: string | null; lang: string | null }[];
   if (!b) return NextResponse.json({ ok: false, status: "not_found" }, { status: 404 });
 
   const state = b.status === "confirmed" || b.status === "done" ? "confirmed"
@@ -23,7 +23,10 @@ export async function GET(req: NextRequest) {
     : b.status === "cancelled" ? "cancelled"
     : "pending";
   const res: Record<string, unknown> = { ok: true, ref: b.ref, status: state, payment_status: b.payment_status ?? "none", lang: b.lang };
-  // Makbuz yalnızca web kaynaklı ve onaylanmış kayıtlar için (panelden/telefondan açılanlar tarayıcı aynası almaz)
-  if (state === "confirmed" && (b.source ?? "site") === "site") res.receipt = issueReceipt({ ...b, confirmed_at: b.updated_at });
+  // Makbuz (Satın Alma aynası) yalnızca web kaynaklı kayıtlar için: Stripe ödemesi alındıysa veya onaylandıysa.
+  // Reddedilen/iptal edilenler ve panelden/telefondan açılanlar makbuz almaz. Satın alma anı = ödeme anı (yoksa talep anı).
+  const purchased = state === "confirmed" || (state === "pending" && b.payment_status === "paid");
+  if (purchased && (b.source ?? "site") === "site" && Number(b.price) > 0)
+    res.receipt = issueReceipt({ ...b, purchased_at: b.paid_at ?? b.created_at, confirmed_at: b.updated_at });
   return NextResponse.json(res, { headers: { "Cache-Control": "no-store" } });
 }

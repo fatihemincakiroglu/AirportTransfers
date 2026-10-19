@@ -21,8 +21,9 @@ Spec: *ZRH Airport Taxi — Data Layer Technical Specification v1.3.5*. Bu dokü
 | `vehicle_select` | araç kartına tıklama (her tıklama yeni id) | `vehicle.*`, `ecommerce.items[0]` |
 | `booking_begin` | araç seçiminin hemen ardından (adım 3) | `booking`, `ecommerce` |
 | `booking_payment_info` | ödeme yöntemi seçimi | `payment.selected_payment_type` twint/cash/card |
-| `booking_submit` | "Ödemeye geç" tıklandığında, `/api/checkout` isteğinden hemen önce | satış DEĞİL |
-| `booking_error` | müsaitlik/gece kuralı slotu reddettiğinde | `error.error_code=SLOT_UNAVAILABLE`, `booking.step` |
+| `booking_submit` | sunucu talebi kabul ettikten SONRA: `/api/bookings` `{ok:true}` (araçta ödeme) veya `/api/checkout` Stripe URL döndürünce (yönlendirmeden hemen önce) | `booking.booking_id` (dedup) — satış DEĞİL |
+| `booking_complete` | Satın Alma. `/api/bookings` başarılı yanıtındaki imzalı makbuzla hemen; Stripe'ta bekleme sayfası `/api/booking-status` ödeme alındı (`paid`) makbuzu verince. Rezervasyon başına 1 kez (localStorage kilidi, `event_id=purchase_<ref>`) | `event_source=backend`, `booking.*`, `ecommerce.*` (net value, tax, items[] + `tax_unit_value`/`gross_unit_value`), `mirror.*` (`expires_at` = issued + 60 sn, `google_ads_value_basis=gross`) |
+| `booking_error` | müsaitlik/gece kuralı slotu reddettiğinde; ayrıca gönderim başarısız olduğunda (onay ekranı yerine hata + WhatsApp) | `error.error_code=SLOT_UNAVAILABLE` / `NETWORK` / `API_<status>[_<hata>]`, `error.error_type=availability` / `submit`, `booking.step` |
 | `contact_form_start` | formda ilk yazma | `contact.form_id=contact_main`, `form_interaction_id` |
 | `contact_form_success` | `/api/contact` `{ok,id}` döndüğünde | `contact.lead_id` (contacts.id), `form_attempt_id` |
 | `contact_form_error` | API hata/bilinmeyen | `error.error_code`, `contact.failure_stage` |

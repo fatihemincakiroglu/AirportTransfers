@@ -13,7 +13,7 @@ export type Receipt = {
   gross_value: number; net_value: number; tax_value: number;
   items: { item_id: string; item_name: string; item_category: string; item_category2: string; item_variant: string; price: number; quantity: number }[];
   issued_at: string;               // ISO
-  expires_at: string;              // makbuz geçerliliği (24 saat)
+  expires_at: string;              // makbuz geçerliliği (issued_at + 60 sn — GTM şartı)
   dedup_deadline_at: string;       // browser mirror için son an (48 saat)
   sig: string;                     // HMAC-SHA256(secret, alanlar)
 };
@@ -25,7 +25,7 @@ function sign(payload: Omit<Receipt, "sig">): string {
   return crypto.createHmac("sha256", secret()).update(base).digest("hex");
 }
 
-export function issueReceipt(b: { ref: string; price: string | number | null; vehicle: string | null; dropoff: string | null; confirmed_at?: string | null }): Receipt {
+export function issueReceipt(b: { ref: string; price: string | number | null; vehicle: string | null; dropoff: string | null; confirmed_at?: string | null; purchased_at?: string | null }): Receipt {
   const gross = Math.round(Number(b.price ?? 0) * 100) / 100;
   const netC = Math.round((gross * 100) / (1 + VAT_RATE));
   const net = netC / 100, tax = Math.round(gross * 100 - netC) / 100;
@@ -33,13 +33,14 @@ export function issueReceipt(b: { ref: string; price: string | number | null; ve
   const hourly = /Stundenmiete|Hourly hire/i.test(b.dropoff ?? "");
   const type = hourly ? "hourly" : "transfer";
   const issued = new Date();
-  const anchor = b.confirmed_at ? new Date(b.confirmed_at) : issued;
+  const anchorIso = b.purchased_at ?? b.confirmed_at;
+  const anchor = anchorIso ? new Date(anchorIso) : issued;
   const payload: Omit<Receipt, "sig"> = {
     kind: "backend_receipt", event_id: `purchase_${b.ref}`, booking_id: b.ref, booking_type: type, currency: "CHF",
     gross_value: gross, net_value: net, tax_value: tax,
     items: v ? [{ item_id: `${type}_${v.id}`, item_name: type === "hourly" ? "Hourly Chauffeur" : "Private Transfer", item_category: type, item_category2: v.id.replace(/_[a-z]$/, ""), item_variant: v.id, price: net, quantity: 1 }] : [],
     issued_at: issued.toISOString(),
-    expires_at: new Date(issued.getTime() + 24 * 3600_000).toISOString(),
+    expires_at: new Date(issued.getTime() + 60_000).toISOString(),
     dedup_deadline_at: new Date(anchor.getTime() + 48 * 3600_000).toISOString(),
   };
   return { ...payload, sig: sign(payload) };

@@ -10,6 +10,7 @@ import {
   localName, inputCls, labelCls, ExtrasCounter,
   waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime, isTooSoonDateTime,
 } from "../../components";
+import { mirrorPurchase, type Receipt } from "../../lib/purchase-mirror";
 import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
 import { resolveTrip } from "../../lib/trip";
@@ -43,6 +44,8 @@ export default function Buchung() {
   const [sending, setSending] = useState(false);
   // Gönderim anında alışa 60 dk'dan az kaldıysa / geçmişe düştüyse: online talep yerine WhatsApp
   // (engel, hangi tarih/saat için verildiğini tutar; tarih/saat değişince kendiliğinden kalkar)
+  // Gönderim sunucuda başarısız oldu (hata kodu) → onay ekranı yerine hata + WhatsApp
+  const [submitError, setSubmitError] = useState<{ code: string; ref: string } | null>(null);
   const [blockedAt, setBlockedAt] = useState<{ kind: "too_soon" | "past_datetime"; at: string } | null>(null);
   // Stripe'tan dönüş: ödeme başarılıysa onay ekranı, iptalse uyarı
   const [payResult] = useState(() => {
@@ -67,10 +70,21 @@ export default function Buchung() {
     const measurement = await captureIdentity();
     const payload = { ...bookingPayload(r, "site"), measurement };
 
-    // Ölçüm: doğrulama geçti, API isteği hemen ardından (spec §14.2A) — satış DEĞİL
-    pushEvent("booking_submit", {
-      booking: { booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
+    // Ölçüm: booking_submit YALNIZCA sunucu talebi kabul ettikten sonra basılır (kaybolan talepler
+    // Ads'te dönüşüm sayılmasın). booking_id ile aynı talep iki kez sayılmaz — satış DEĞİL.
+    const submitted = () => pushEvent("booking_submit", {
+      booking: { booking_id: r, booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
     }, { idPrefix: "submit" });
+    // Sunucu/ağ hatası: müşteriye hata + WhatsApp gösterilir, booking_error basılır
+    const failed = (code: string) => {
+      pushEvent("booking_error", {
+        booking: { booking_id: r, booking_type: bookingType, step: STEP_NAMES[3], booking_channel: "web" },
+        error: { error_code: code, error_type: "submit" },
+      }, { idPrefix: "error" });
+      setSubmitError({ code, ref: r });
+      setSending(false);
+    };
+    setSubmitError(null);
 
     // Yalnızca "Online bezahlen" seçildiyse Stripe; araç içi ödemelerde talep doğrudan iletilir.
     // Fiyat henüz hesaplanamadıysa online ödeme açılmaz (tutar belirsiz) — talep iletilir, fiyat kabulde bildirilir.
@@ -81,38 +95,49 @@ export default function Buchung() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        const data = await res.json();
+        const data = await res.json().catch(() => null);
         if (data?.error === "too_soon" || data?.error === "past_datetime") {
           setSubmitBlocked(data.error);
           setSending(false);
           return;
         }
-        if (data?.ok && data.url) {
+        if (res.ok && data?.ok && data.url) {
+          submitted(); // Stripe sayfasına gitmeden hemen önce, sunucu talebi kaydettikten sonra
           window.location.assign(data.url); // Stripe ödeme sayfası
           return;
         }
       } catch {
-        /* ödeme başlatılamadı — talep yine de iletilir */
+        /* ödeme başlatılamadı — talep araç içi ödeme olarak iletilmeyi dener */
       }
       // Stripe açılamadı: kayıt "ödeme bekliyor" olarak iletilir, e-posta ödendi demez
       payload.payment = lang === "de" ? "Online (Zahlung ausstehend)" : "Online (payment pending)";
     }
 
+    let res: Response;
+    let data: { ok?: boolean; error?: string; receipt?: Receipt } | null;
     try {
-      const res = await fetch("/api/bookings", {
+      res = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await res.json().catch(() => null);
-      if (data?.error === "too_soon" || data?.error === "past_datetime") {
-        setSubmitBlocked(data.error);
-        setSending(false);
-        return;
-      }
+      data = await res.json().catch(() => null);
     } catch {
-      /* ağ hatası olsa da müşteriye onay gösterilir */
+      failed("NETWORK"); // bağlantı koptu: talep sunucuya ulaşmadı
+      return;
     }
+    if (data?.error === "too_soon" || data?.error === "past_datetime") {
+      setSubmitBlocked(data.error);
+      setSending(false);
+      return;
+    }
+    // Onay ekranı YALNIZCA sunucu kaydı doğruladığında
+    if (!res.ok || data?.ok !== true) {
+      failed(`API_${res.status}${data?.error ? `_${data.error}` : ""}`);
+      return;
+    }
+    submitted();
+    mirrorPurchase(data.receipt); // Satın Alma: sunucu makbuzuyla, rezervasyon başına bir kez
     setSending(false);
     setDoneRef(r);
   };
@@ -420,6 +445,29 @@ export default function Buchung() {
       </a>
     </div>
   );
+
+  // Gönderim hatasında WhatsApp mesajı: tüm rezervasyon bilgileri önceden doldurulur
+  const failedWaText = (ref: string) => {
+    const p = bookingPayload(ref, "site");
+    const de = lang === "de";
+    return [
+      de ? "Buchungsanfrage (Website-Fehler)" : "Booking request (website error)",
+      p.ref ? `${de ? "Referenz" : "Reference"}: ${p.ref}` : "",
+      `${p.pickup} → ${p.dropoff}`,
+      p.stops ? `${de ? "Zwischenstopps" : "Stops"}: ${p.stops}` : "",
+      `${de ? "Datum" : "Date"}: ${p.date} ${p.time}`,
+      p.vehicle ? `${de ? "Fahrzeug" : "Vehicle"}: ${p.vehicle}` : "",
+      p.price ? `${de ? "Preis" : "Price"}: CHF ${Number(p.price).toFixed(2)}` : "",
+      p.pax ? `${de ? "Personen" : "Passengers"}: ${p.pax}` : "",
+      p.flight ? `${de ? "Flug" : "Flight"}: ${p.flight}` : "",
+      p.extras ? `${de ? "Extras" : "Extras"}: ${p.extras}` : "",
+      `${de ? "Name" : "Name"}: ${p.firstName} ${p.lastName}`,
+      `${de ? "Telefon" : "Phone"}: ${p.phone}`,
+      `E-Mail: ${p.email}`,
+      p.payment ? `${de ? "Zahlung" : "Payment"}: ${p.payment}` : "",
+      p.notes ? `${de ? "Notiz" : "Note"}: ${p.notes}` : "",
+    ].filter(Boolean).join("\n");
+  };
 
   // Adım 2'ye yeni bir aramayla gelindiğinde: booking_search → booking_results_view (araç listesi)
   useEffect(() => {
@@ -861,6 +909,28 @@ export default function Buchung() {
                   <p className="mt-3 text-center text-xs font-semibold" style={{ color: "#B91C1C" }}>
                     {lang === "de" ? "Dieser Zeitpunkt liegt inzwischen in der Vergangenheit – bitte Datum oder Uhrzeit im ersten Schritt anpassen." : "This time is now in the past – please adjust the date or time in the first step."}
                   </p>
+                )}
+                {submitError && (
+                  <div role="alert" className="mt-3 rounded-2xl border p-4" style={{ borderColor: "#FECACA", background: "#FEF2F2" }}>
+                    <p className="text-sm font-bold" style={{ color: "#991B1B" }}>
+                      ⚠ {lang === "de" ? "Ihre Anfrage konnte nicht übermittelt werden" : "Your request could not be sent"}
+                    </p>
+                    <p className="mt-1.5 text-sm leading-relaxed" style={{ color: "#991B1B" }}>
+                      {lang === "de"
+                        ? "Es ist ein technischer Fehler aufgetreten – Ihre Buchung ist noch NICHT bei uns eingegangen. Bitte versuchen Sie es erneut oder senden Sie uns die Anfrage per WhatsApp; die Angaben sind bereits ausgefüllt."
+                        : "A technical error occurred – your booking has NOT reached us yet. Please try again or send us the request via WhatsApp; the details are already filled in."}
+                    </p>
+                    <a
+                      href={waHref(failedWaText(submitError.ref))}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-track-location="booking_error"
+                      className="mt-3 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wide text-white"
+                      style={{ background: "#25D366" }}
+                    >
+                      💬 {lang === "de" ? "Per WhatsApp senden" : "Send via WhatsApp"}
+                    </a>
+                  </div>
                 )}
                 {pay === ONLINE_PAY && <p className="mt-3 text-center text-xs text-stone-500">🔒 {X.pay.note}</p>}
                 <p className="mt-1.5 text-center text-xs text-stone-500">{D.confirmNote}</p>

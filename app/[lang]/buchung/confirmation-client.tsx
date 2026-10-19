@@ -1,18 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { C, WHATSAPP_NUMBER, PHONE_DISPLAY } from "../../config";
 import { useLang } from "../../providers";
 import { TopBar, SiteHeader, SiteFooter } from "../../components";
-import { pushEvent } from "../../lib/analytics";
+import { mirrorPurchase, type Receipt } from "../../lib/purchase-mirror";
 
-type Receipt = {
-  kind: "backend_receipt"; event_id: string; booking_id: string; booking_type: "transfer" | "hourly"; currency: "CHF";
-  gross_value: number; net_value: number; tax_value: number;
-  items: { item_id: string; item_name: string; item_category: string; item_category2: string; item_variant: string; price: number; quantity: number }[];
-  issued_at: string; expires_at: string; dedup_deadline_at: string; sig: string;
-};
 type Status = { ok: boolean; ref?: string; status?: "pending" | "confirmed" | "declined" | "cancelled" | "not_found"; payment_status?: string; receipt?: Receipt };
 
 const T = {
@@ -45,7 +39,7 @@ const T = {
  *  mode="pending": Stripe sonrası bekleme; 4 sn'de bir /api/booking-status; confirmed → mirror → /confirmation
  *  mode="confirmed": onay sayfası (e-postadaki bağlantı da buraya gelir); makbuz varsa ve daha önce basılmadıysa mirror
  *
- * booking_complete tarayıcıda YALNIZCA backend makbuzuyla, referans başına bir kez basılır (localStorage kilidi).
+ * booking_complete tarayıcıda YALNIZCA backend makbuzuyla, referans başına bir kez basılır (lib/purchase-mirror).
  */
 export default function ConfirmationClient({ mode }: { mode: "pending" | "confirmed" }) {
   const { lang, P } = useLang();
@@ -53,28 +47,6 @@ export default function ConfirmationClient({ mode }: { mode: "pending" | "confir
   const params = useSearchParams();
   const ref = (params.get("ref") ?? "").trim();
   const [st, setSt] = useState<Status | null>(null);
-  const pushed = useRef(false);
-
-  const mirror = (r: Receipt) => {
-    if (pushed.current) return;
-    const key = `zrh_purchase_${r.booking_id}`;
-    try { if (localStorage.getItem(key)) { pushed.current = true; return; } } catch { /* depolama kapalı: yine de tek seferlik */ }
-    if (new Date(r.dedup_deadline_at).getTime() < Date.now() || new Date(r.expires_at).getTime() < Date.now()) return;
-    pushed.current = true;
-    try { localStorage.setItem(key, new Date().toISOString()); } catch { /* yok say */ }
-    pushEvent("booking_complete", {
-      event_source: "backend",
-      booking: {
-        booking_id: r.booking_id, transaction_id: r.booking_id, booking_type: r.booking_type, booking_status: "confirmed",
-        booking_channel: "web", price_status: "final", currency: r.currency,
-        gross_value: r.gross_value, net_value: r.net_value, tax_value: r.tax_value, shipping_value: 0,
-      },
-      ecommerce: { transaction_id: r.booking_id, value: r.net_value, currency: r.currency, tax: r.tax_value, items: r.items },
-      mirror: { kind: r.kind, purchase_dispatch_allowed: true, google_ads_browser_allowed: true, issued_at: r.issued_at, expires_at: r.expires_at, dedup_deadline_at: r.dedup_deadline_at },
-      source: { interaction_channel: "web" },
-    }, { id: r.event_id });
-  };
-
   useEffect(() => {
     if (!ref) return;
     let alive = true;
@@ -85,8 +57,9 @@ export default function ConfirmationClient({ mode }: { mode: "pending" | "confir
         const d = (await r.json()) as Status;
         if (!alive) return;
         setSt(d);
-        if (d.status === "confirmed" && d.receipt) {
-          mirror(d.receipt);
+        // Makbuz: Stripe ödemesi alındığında veya rezervasyon onaylandığında gelir → Satın Alma (bir kez)
+        if (d.receipt) mirrorPurchase(d.receipt);
+        if (d.status === "confirmed") {
           if (mode === "pending") { window.location.replace(`${P("/buchung/confirmation")}?ref=${encodeURIComponent(ref)}`); return; }
         }
         if (mode === "pending" && (d.status === "pending" || !d.ok)) timer = setTimeout(tick, 4000);

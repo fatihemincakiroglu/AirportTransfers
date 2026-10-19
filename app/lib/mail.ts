@@ -156,7 +156,7 @@ function button(href: string, label: string, bg: string, fg = "#ffffff") {
 }
 
 /** Yeni rezervasyon talebi bildirimi (işletmeye) — kabul/ret düğmeleriyle */
-export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
+export async function sendBookingMail(b: Record<string, unknown>, id?: number, opts: { failure?: string } = {}) {
   const tx = getTransporter();
   if (!tx) return;
   const user = process.env.GMAIL_USER!;
@@ -177,7 +177,16 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
     </p>`
     : "";
 
+  // Sunucu kaydı başarısız olduysa: talep panelde YOK, müşteri hata ekranı gördü → işletme aramalı
+  const failureBanner = opts.failure
+    ? `<p style="margin:0 0 20px;padding:14px 16px;border-radius:12px;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;font-size:14px;line-height:1.5">
+        <b>⚠ Bu talep panele KAYDEDİLEMEDİ.</b><br>Müşteriye hata mesajı ve WhatsApp butonu gösterildi. Lütfen müşteriyle doğrudan iletişime geçin.<br>
+        <span style="font-size:12px;color:#B91C1C">Hata: ${esc(opts.failure)}</span>
+      </p>`
+    : "";
+
   const body = `
+    ${failureBanner}
     ${routeCard({ pickup: b.pickup, dropoff: b.dropoff, stops: b.stops, date: b.date, time: b.time, labels: { stops: "Ara duraklar" } })}
     ${vehicleBlock(b.vehicle, v ? `${v.pax} yolcu · ${v.bags} bagaj` : undefined)}
 
@@ -217,7 +226,7 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
     </p>`;
 
   const html = shell({
-    eyebrow: paid ? "Yeni rezervasyon · Ödendi" : "Yeni rezervasyon talebi",
+    eyebrow: opts.failure ? "Kayıt hatası · Müşteriyi arayın" : paid ? "Yeni rezervasyon · Ödendi" : "Yeni rezervasyon talebi",
     title: `${esc(b.ref ?? "")}<span style="font-size:16px;color:${C.muted};font-weight:400"> &nbsp;·&nbsp; ${esc(who)}</span>`,
     body,
     footerNote: "Bu e-posta yalnızca işletmeye gönderilir.",
@@ -228,7 +237,7 @@ export async function sendBookingMail(b: Record<string, unknown>, id?: number) {
       from: `"ZRH Airport Taxi" <${user}>`,
       to,
       replyTo: typeof b.email === "string" && b.email ? b.email : undefined,
-      subject: `${paid ? "[Bezahlt] " : ""}Yeni rezervasyon ${b.ref ?? ""} — ${b.dropoff ?? ""} (${b.date ?? ""} ${b.time ?? ""})`,
+      subject: `${opts.failure ? "[KAYIT HATASI] " : ""}${paid ? "[Bezahlt] " : ""}Yeni rezervasyon ${b.ref ?? ""} — ${b.dropoff ?? ""} (${b.date ?? ""} ${b.time ?? ""})`,
       html,
     }));
   } catch (e) {

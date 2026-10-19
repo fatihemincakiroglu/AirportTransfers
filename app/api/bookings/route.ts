@@ -4,6 +4,7 @@ import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../
 import { sendBookingMail } from "../../lib/mail";
 import { captureMeasurement } from "../../lib/measurement";
 import { serverPriceAsync } from "../../lib/pricing";
+import { issueReceipt } from "../../lib/receipt";
 import { contactProblems } from "../../lib/validation";
 import { isPastZurich, isTooSoonZurich, MIN_LEAD_MINUTES } from "../../lib/zurichTime";
 
@@ -12,12 +13,28 @@ export const runtime = "nodejs";
 const str = (v: unknown, max = 500) => (typeof v === "string" ? v.slice(0, max) : null);
 const num = (v: unknown) => (typeof v === "number" && isFinite(v) ? v : null);
 
+/** Kayıt başarısız: talep kaybolmasın diye işletmeye tüm bilgilerle uyarı e-postası (taslaklar hariç) */
+async function alertFailure(b: Record<string, unknown> | null, reason: string) {
+  if (!b || str(b.channel, 20) === "taslak") return;
+  try { await sendBookingMail(b, undefined, { failure: reason }); } catch (e) { console.error("[api/bookings] uyarı e-postası gönderilemedi", e); }
+}
+
 export async function POST(req: NextRequest) {
-  if (!dbReady) return NextResponse.json({ ok: false, reason: "db-off" }, { status: 200 });
+  let b: Record<string, unknown> | null = null;
   try {
-    const b = await req.json();
+    b = await req.json();
+  } catch {
+    return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
+  }
+  if (!b || typeof b !== "object") return NextResponse.json({ ok: false, error: "bad_json" }, { status: 400 });
+  if (!dbReady) {
+    console.error("[api/bookings] DATABASE_URL tanımlı değil — kayıt yapılamadı", b.ref);
+    await alertFailure(b, "Veritabanı bağlı değil (DATABASE_URL)");
+    return NextResponse.json({ ok: false, error: "db_off" }, { status: 503 });
+  }
+  try {
     const ref = str(b.ref, 32);
-    if (!ref) return NextResponse.json({ ok: false }, { status: 400 });
+    if (!ref) return NextResponse.json({ ok: false, error: "missing_ref" }, { status: 400 });
 
     // Taslak dışında (gerçek talep) ad, soyad, geçerli e-posta ve telefon zorunlu
     if (str(b.channel, 20) !== "taslak") {
@@ -33,6 +50,7 @@ export async function POST(req: NextRequest) {
       if (str(b.channel, 20) !== "taslak" && isTooSoonZurich(b.date, time, 10)) return NextResponse.json({ ok: false, error: "too_soon", minLeadMinutes: MIN_LEAD_MINUTES }, { status: 400 });
     }
     await ensureSchema();
+    const price = (await serverPriceAsync(b)) ?? num(b.price);
     const mm = captureMeasurement(req, b); // onay + kimlik anlık görüntüsü (yalnızca izinli alanlar)
     await sql`
       INSERT INTO bookings (
@@ -43,7 +61,7 @@ export async function POST(req: NextRequest) {
       ) VALUES (
         ${ref}, ${str(b.lang, 5)}, ${str(b.channel, 20)}, ${str(b.pickup)}, ${str(b.dropoff)},
         ${str(b.stops)}, ${str(b.date, 20)}, ${str(b.time, 10)},
-        ${num(b.pax)}, ${num(b.luggage)}, ${str(b.vehicle, 120)}, ${(await serverPriceAsync(b)) ?? num(b.price)}, ${str(b.payment, 40)},
+        ${num(b.pax)}, ${num(b.luggage)}, ${str(b.vehicle, 120)}, ${price}, ${str(b.payment, 40)},
         ${str(b.firstName, 80)}, ${str(b.lastName, 80)}, ${str(b.email, 160)}, ${str(b.phone, 40)},
         ${str(b.flight, 40)}, ${str(b.nameboard, 120)}, ${str(b.extras, 200)}, ${str(b.notes, 1000)},
         ${mm.ga_client_id}, ${mm.ga_session_id}, ${mm.fbp}, ${mm.fbc}, ${mm.client_ip}, ${mm.client_ua},
@@ -93,9 +111,14 @@ export async function POST(req: NextRequest) {
       await sendBookingMail(b, saved?.id);
     }
 
-    return NextResponse.json({ ok: true });
+    // Satın Alma aynası: gerçek talep kaydedildiyse ve fiyat biliniyorsa imzalı makbuz (tarayıcı booking_complete basar)
+    const receipt = !isDraft && price && price > 0
+      ? issueReceipt({ ref, price, vehicle: str(b.vehicle, 120), dropoff: str(b.dropoff) })
+      : undefined;
+    return NextResponse.json({ ok: true, ...(receipt ? { receipt } : {}) });
   } catch (e) {
-    console.error("[api/bookings]", e);
-    return NextResponse.json({ ok: false }, { status: 500 });
+    console.error("[api/bookings] kayıt başarısız", b?.ref, e);
+    await alertFailure(b, e instanceof Error ? e.message.slice(0, 300) : String(e).slice(0, 300));
+    return NextResponse.json({ ok: false, error: "server_error" }, { status: 500 });
   }
 }
