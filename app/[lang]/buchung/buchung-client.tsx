@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, airportName } from "../../config";
+import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, airportName, CITY_CENTER, chfText } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls, ExtrasCounter,
-  waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime, isTooSoonDateTime,
+  waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime, isTooSoonDateTime, TrustLine,
 } from "../../components";
-import { mirrorPurchase, type Receipt } from "../../lib/purchase-mirror";
-import { pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
+import { mirrorPurchase, markSubmitted, type Receipt } from "../../lib/purchase-mirror";
+import { dlBookingId, pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
 import { resolveTrip } from "../../lib/trip";
 import { coordHints } from "../../lib/placeCoords";
@@ -72,13 +72,13 @@ export default function Buchung() {
 
     // Ölçüm: booking_submit YALNIZCA sunucu talebi kabul ettikten sonra basılır (kaybolan talepler
     // Ads'te dönüşüm sayılmasın). booking_id ile aynı talep iki kez sayılmaz — satış DEĞİL.
-    const submitted = () => pushEvent("booking_submit", {
-      booking: { booking_id: r, booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
-    }, { idPrefix: "submit" });
+    const submitted = () => { markSubmitted(dlBookingId(r)); pushEvent("booking_submit", {
+      booking: { booking_id: dlBookingId(r), booking_type: bookingType, ...(searchIdRef.current ? { search_id: searchIdRef.current } : {}), ...money(total), booking_channel: "web" },
+    }, { idPrefix: "submit" }); };
     // Sunucu/ağ hatası: müşteriye hata + WhatsApp gösterilir, booking_error basılır
     const failed = (code: string) => {
       pushEvent("booking_error", {
-        booking: { booking_id: r, booking_type: bookingType, step: STEP_NAMES[3], booking_channel: "web" },
+        booking: { booking_id: dlBookingId(r), booking_type: bookingType, step: STEP_NAMES[3], booking_channel: "web" },
         error: { error_code: code, error_type: "submit" },
       }, { idPrefix: "error" });
       setSubmitError({ code, ref: r });
@@ -102,7 +102,7 @@ export default function Buchung() {
           return;
         }
         if (res.ok && data?.ok && data.url) {
-          submitted(); // Stripe sayfasına gitmeden hemen önce, sunucu talebi kaydettikten sonra
+          // booking_submit burada BASILMAZ: online ödemede ödeme doğrulandıktan sonra onay sayfasında basılır (T12)
           window.location.assign(data.url); // Stripe ödeme sayfası
           return;
         }
@@ -585,13 +585,34 @@ export default function Buchung() {
 
       {/* Başlık + adım göstergesi — fildişi zeminde kesintisiz */}
       <section style={{ background: C.ivory }}>
-        <div className="mx-auto max-w-7xl px-5 pb-8 pt-8">
+        <div className="mx-auto max-w-7xl px-5 pb-6 pt-4 md:pb-8 md:pt-8">
           <nav className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
             <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
             <span className="text-stone-300">/</span>
             <span style={{ color: C.pine }}>{B.title}</span>
           </nav>
-          <h1 className="sr-only">{B.title}</h1>
+          {/* Görünür başlık + örnek sabit fiyatlar + güven satırı (T8): "Fixed Prices" reklam bağlantısı buraya geliyor */}
+          {step === 1 && (
+            <>
+              <h1 className="font-display mt-3 text-2xl font-semibold leading-tight md:text-4xl" style={{ color: C.pine }}>
+                {lang === "de" ? "Flughafentaxi Zürich buchen – zum Festpreis" : "Book your Zurich Airport Taxi – Fixed Price"}
+              </h1>
+              <div className="mt-3 flex gap-2 overflow-x-auto pb-1 text-xs [scrollbar-width:none]">
+                <span className="shrink-0 self-center font-bold uppercase tracking-wider text-stone-500">{lang === "de" ? "Beispiele:" : "Examples:"}</span>
+                {[
+                  { label: lang === "de" ? "Zürich Stadt" : "Zurich City", price: transferPrice(CITY_CENTER.km, "business_class_e") },
+                  ...routes.filter((r) => ["zurich-airport-to-zug", "zurich-airport-to-luzern", "zurich-airport-to-zermatt"].includes(r.slug))
+                    .map((r) => ({ label: localName(r.to, lang), price: r.price })),
+                ].map((x) => (
+                  <span key={x.label} className="shrink-0 rounded-full bg-white px-3 py-1.5 font-semibold text-stone-700 ring-1 ring-black/10">
+                    {x.label} <b style={{ color: C.pine }}>CHF {chfText(x.price)}</b>
+                  </span>
+                ))}
+              </div>
+              <TrustLine className="mt-2" />
+            </>
+          )}
+          {step !== 1 && <h1 className="sr-only">{lang === "de" ? "Flughafentaxi Zürich buchen – zum Festpreis" : "Book your Zurich Airport Taxi – Fixed Price"}</h1>}
 
           {/* Stepper */}
           <ol className="mt-4 flex flex-wrap gap-2">
@@ -688,16 +709,20 @@ export default function Buchung() {
               {/* Tarih / Saat */}
               <div className="mt-4 grid grid-cols-2 gap-4">
                 <div>
-                  <label className={labelCls}>📅 {L.form.date}</label>
-                  <div className={fieldWrap}>
+                  <label className="block">
+                  <span className={labelCls}>📅 {L.form.date}</span>
+                  <span className={fieldWrap}>
                     <input type="date" min={todayISO()} className={fieldInput} value={date} onChange={(e) => setDate(e.target.value)} />
-                  </div>
+                  </span>
+                  </label>
                 </div>
                 <div>
-                  <label className={labelCls}>🕐 {L.form.time}</label>
-                  <div className={fieldWrap}>
+                  <label className="block">
+                  <span className={labelCls}>🕐 {L.form.time}</span>
+                  <span className={fieldWrap}>
                     <input type="time" min={minTimeFor(date)} className={fieldInput} value={time} onChange={(e) => setTime(e.target.value)} />
-                  </div>
+                  </span>
+                  </label>
                 </div>
               </div>
               {pastTime && (
@@ -743,7 +768,10 @@ export default function Buchung() {
               <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>{D.selectCar}</h2>
               <div className="space-y-4">
                 {sorted.map((v, i) => (
-                  <div key={i} className="grid gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 sm:grid-cols-[200px_1fr_auto] sm:items-center">
+                  // Kartın tamamı seçim yapar (Clarity: karta dokunulup bir şey olmuyordu — T18)
+                  <div key={i} role="button" tabIndex={0} onClick={() => selectVehicle(i)}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectVehicle(i); } }}
+                    className="grid cursor-pointer gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 transition-shadow hover:shadow-lg hover:ring-[#C9A24B]/60 sm:grid-cols-[200px_1fr_auto] sm:items-center">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={v.img} alt={v.car} className="mx-auto h-24 object-contain" />
                     <div>
@@ -760,7 +788,8 @@ export default function Buchung() {
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button
-                        onClick={() => selectVehicle(i)}
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); selectVehicle(i); }}
                         className="w-full rounded-full px-6 py-2.5 text-sm font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
                         style={{ background: C.pine }}
                       >
@@ -1109,7 +1138,7 @@ export default function Buchung() {
       )}
 
       <SiteFooter compact />
-      <FloatingButtons />
+      <FloatingButtons hideBook />
     </div>
   );
 }

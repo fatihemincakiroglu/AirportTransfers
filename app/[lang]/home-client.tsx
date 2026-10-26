@@ -3,13 +3,13 @@
 import Image from "next/image";
 
 import { useEffect, useState } from "react";
-import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor } from "../config";
+import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor, CITY_CENTER, transferPrice, chfText } from "../config";
 import { t } from "../i18n";
 import { tx } from "../i18nX";
 import { useLang } from "../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  BookingCard, RouteCard, FleetCard, Eyebrow,
+  BookingCard, RouteCard, FleetCard, Eyebrow, GoogleRatingBadge, PayBadges, localName, waHref,
 } from "../components";
 
 // ── Yorum marquee'si — modül seviyesinde tanımlı (her render'da yeniden oluşmaz) ──
@@ -109,13 +109,49 @@ export default function Home() {
           </div>
         ))}
 
-        <div className="relative mx-auto grid max-w-7xl gap-8 px-5 pb-16 pt-6 text-white md:grid-cols-[1.15fr_0.85fr] md:gap-12 md:pb-24 md:pt-24">
-          <div className="order-2 flex flex-col justify-center md:order-1">
-            <h1 className="font-display text-4xl font-semibold leading-[1.08] md:text-7xl">
-              {lang === "de" ? "Zürich Flughafen" : "Airport Zurich"}
-              <br />
-              <span style={{ color: C.gold }}>{lang === "de" ? "Privater Transfer" : "Private Transfer"}</span>
+        {/* Mobilde sıra: başlık + şehir fiyatı → form → güven rozetleri. Masaüstünde sol sütun üst/alt, form sağda (T7) */}
+        <div className="relative mx-auto grid max-w-7xl gap-6 px-5 pb-16 pt-5 text-white md:grid-cols-[1.15fr_0.85fr] md:grid-rows-[auto_1fr] md:gap-x-12 md:gap-y-8 md:pb-24 md:pt-24">
+          <div className="md:col-start-1 md:row-start-1 md:self-end">
+            <h1 className="font-display text-[2rem] font-semibold leading-[1.08] md:text-6xl">
+              {lang === "de" ? "Flughafentaxi Zürich" : "Zurich Airport Taxi"}
+              <span className="mt-1 block text-[1.35rem] md:text-4xl" style={{ color: C.gold }}>
+                {lang === "de" ? "Privattransfer zum Festpreis" : "Fixed-Price Private Transfer"}
+              </span>
             </h1>
+            {/* Fiyat kartı: en çok aranan rota (şehir merkezi) + 2 popüler rota */}
+            <div className="mt-4 rounded-2xl bg-white/10 p-3.5 ring-1 ring-white/15 backdrop-blur md:max-w-xl">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold leading-tight">
+                  {lang === "de" ? "Flughafen → Zürich Stadt" : "Airport → Zurich City"}
+                  <span className="block text-xs font-normal text-white/70">~{CITY_CENTER.min} {lang === "de" ? "Min." : "min"} · {lang === "de" ? "Festpreis pro Fahrzeug" : "fixed price per vehicle"}</span>
+                </p>
+                <p className="font-display text-3xl font-semibold" style={{ color: C.gold }}>CHF {chfText(transferPrice(CITY_CENTER.km, "business_class_e"))}</p>
+              </div>
+              <div className="mt-2.5 flex flex-wrap gap-1.5">
+                {routes.filter((r) => ["zurich-airport-to-zug", "zurich-airport-to-luzern", "zurich-airport-to-zermatt"].includes(r.slug)).map((r) => (
+                  <a key={r.slug} href={P(`/${r.slug}`)} className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-bold ring-1 ring-white/20 hover:bg-white/20">
+                    {localName(r.to, lang)} · CHF {chfText(r.price)}
+                  </a>
+                ))}
+              </div>
+              <a
+                href={waHref(lang === "de" ? "Hallo, ich möchte einen Transfer ab Flughafen Zürich." : "Hello, I'd like a transfer from Zurich Airport.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-location="home_hero"
+                className="mt-3 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-[#128C4A] px-4 text-sm font-extrabold text-white active:scale-95"
+              >
+                💬 {lang === "de" ? "Preis per WhatsApp anfragen" : "Ask via WhatsApp"}
+              </a>
+            </div>
+          </div>
+
+          <div className="md:col-start-2 md:row-span-2 md:row-start-1">
+            <BookingCard />
+          </div>
+
+          <div className="flex flex-col md:col-start-1 md:row-start-2">
+            <div className="mb-4 flex flex-wrap items-center gap-2"><GoogleRatingBadge dark /><PayBadges dark /></div>
             {/* Güven rozetleri — 2x2 + puan kartı */}
             <div className="mt-6 grid grid-cols-2 gap-2 md:gap-3">
               {X.heroBadges.map((b, i) => (
@@ -150,10 +186,6 @@ export default function Home() {
                 </button>
               ))}
             </div>
-          </div>
-
-          <div className="order-1 md:order-2">
-            <BookingCard />
           </div>
         </div>
       </section>

@@ -116,3 +116,14 @@ GA4 Purchase yalnızca sunucudan gelir; GTM'de `booking_complete` için GA4 etik
 - Onay e-postasındaki "Buchung ansehen" bağlantısı da `/buchung/confirmation?ref=…`'e gider; makbuz süresi içindeyse ve daha önce basılmadıysa ayna orada basılır (araç içi ödeme / sayfayı kapatan müşteriler).
 - Tarayıcı kendi başına Purchase üretmez; Stripe yönlendirmesi tetikleyici değildir. Sunucu tarafı `booking_complete` (GA4 MP / Meta CAPI) aynen devam eder; GTM'de Google Ads Purchase etiketi `booking_complete` + `mirror.google_ads_browser_allowed` ile tetiklenir.
 - Panelden/telefondan açılan kayıtlar (source ≠ site) makbuz almaz.
+
+
+## 10/2026 güncellemesi (Geliştirici İş Listesi 23.10.2026)
+- **booking_id / transaction_id / event_id:** dataLayer'da yalnızca harf, rakam, `_`, `-` (panel referansı `#AB12CD34` → `AB12CD34`, `event_id = purchase_AB12CD34`).
+- **Makbuz zamanları:** `mirror.issued_at`, `expires_at` (= issued + 60), `dedup_deadline_at` (≤ event_time + 48 saat) **unix saniye tam sayı**; sitedeki kontrol `x * 1000 < Date.now()`.
+- **Satın Alma yolları:** araçta ödeme → `/en/booking` · `/de/buchung`; online ödeme → bekleme sayfası (`/…/pending-confirmation`) makbuz gelince `/en/booking/confirmation` · `/de/buchung/bestaetigung` sayfasına geçer ve Satın Alma **orada** basılır. Bekleme sayfasında hiçbir satış olayı basılmaz.
+- **booking_submit (online ödeme):** Stripe'a gitmeden önce DEĞİL; ödeme doğrulandıktan sonra onay sayfasında, `booking_complete`'ten hemen önce, rezervasyon başına bir kez.
+- **URL temizliği:** `utm_term` artık hiçbir durumda adreste kalmaz (izinli: gclid, gbraid, wbraid, fbclid, utm_source, utm_medium, utm_campaign, utm_id, utm_content).
+- **whatsapp_click:** `contact.ref` = mesaja eklenen 6 karakterlik ref kodu. Kod ↔ gclid/gbraid/wbraid/UTM eşlemesi sunucuda (`wa_refs`, Admin → WhatsApp Ref, CSV).
+- **Gelişmiş dönüşümler:** `booking_complete` içinde `user_data.sha256_email_address` / `user_data.sha256_phone_number` (SHA-256; e-posta küçük harf/boşluksuz, telefon E.164) — yalnızca pazarlama onayı varsa. Ham kişisel veri dataLayer'a konmaz.
+- **items[]:** her kalemde `price`, `tax_unit_value`, `gross_unit_value`, `quantity`.

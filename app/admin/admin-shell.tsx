@@ -15,6 +15,7 @@ const NAV: [string, string, string][] = [
   ["/admin/yarim-kalan", "Yarım Kalanlar", "◔"],
   ["/admin/faturalar", "Faturalar", "🧾"],
   ["/admin/talepler", "İletişim Talepleri", "✉"],
+  ["/admin/whatsapp", "WhatsApp Ref", "💬"],
   ["/admin/loglar", "Sistem Logları", "☰"],
 ];
 

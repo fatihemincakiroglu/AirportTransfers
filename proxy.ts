@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SEGMENTS, findInternalKey, LANGS, DEFAULT_LANG } from "./app/paths";
+import { SEGMENTS, findInternalKey, findInternalSub, localizeSub, LANGS, DEFAULT_LANG } from "./app/paths";
 
 const LOCALES = LANGS;
 const DEFAULT_LOCALE = DEFAULT_LANG;
@@ -22,16 +22,23 @@ export function proxy(req: NextRequest) {
       const key = findInternalKey(seg);
       if (key) {
         const publicSeg = SEGMENTS[key][lang];
-        if (seg === publicSeg && seg !== key) {
+        // İkinci seviye (örn. /de/buchung/bestaetigung ↔ iç klasör confirmation)
+        const rest = parts.slice(2);
+        const sub = rest[0];
+        const subKey = sub ? findInternalSub(key, sub) : null;
+        const publicSub = subKey ? localizeSub(key, subKey, lang) : sub;
+        const restPublic = rest.length ? "/" + [publicSub, ...rest.slice(1)].join("/") : "";
+        const restInternal = rest.length ? "/" + [subKey ?? sub, ...rest.slice(1)].join("/") : "";
+        if (seg !== publicSeg || (subKey && sub !== publicSub)) {
+          // Yanlış dilde segment (örn. /en/kontakt, /de/buchung/confirmation) → doğrusuna yönlendir
+          const url = req.nextUrl.clone();
+          url.pathname = `/${lang}/${publicSeg}${restPublic}`;
+          res = NextResponse.redirect(url, 308);
+        } else if (seg !== key || restInternal !== rest.map((x) => "/" + x).join("")) {
           // Doğru görünen ad (örn. /en/contact) → içerideki klasöre rewrite
           const url = req.nextUrl.clone();
-          url.pathname = `/${lang}/${key}${parts.slice(2).length ? "/" + parts.slice(2).join("/") : ""}`;
+          url.pathname = `/${lang}/${key}${restInternal}`;
           res = NextResponse.rewrite(url);
-        } else if (seg !== publicSeg) {
-          // Yanlış dilde segment (örn. /en/kontakt) → doğrusuna yönlendir
-          const url = req.nextUrl.clone();
-          url.pathname = `/${lang}/${publicSeg}${parts.slice(2).length ? "/" + parts.slice(2).join("/") : ""}`;
-          res = NextResponse.redirect(url, 308);
         } else {
           res = NextResponse.next();
         }

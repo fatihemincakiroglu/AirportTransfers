@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
   if (!dbReady) return NextResponse.json({ ok: false }, { status: 503 });
   await ensureSchema();
   const [b] = (await sql`
-    SELECT ref, status, payment_status, price, vehicle, dropoff, source, updated_at, paid_at, created_at, lang
+    SELECT ref, status, payment_status, price, vehicle, dropoff, source, updated_at, paid_at, created_at, lang, email, phone
     FROM bookings WHERE ref = ${ref.startsWith("#") ? ref : "#" + ref} LIMIT 1`) as unknown as
-    { ref: string; status: string; payment_status: string | null; price: string | null; vehicle: string | null; dropoff: string | null; source: string | null; updated_at: string | null; paid_at: string | null; created_at: string | null; lang: string | null }[];
+    { ref: string; status: string; payment_status: string | null; price: string | null; vehicle: string | null; dropoff: string | null; source: string | null; updated_at: string | null; paid_at: string | null; created_at: string | null; lang: string | null; email: string | null; phone: string | null }[];
   if (!b) return NextResponse.json({ ok: false, status: "not_found" }, { status: 404 });
 
   const state = b.status === "confirmed" || b.status === "done" ? "confirmed"
@@ -27,6 +27,6 @@ export async function GET(req: NextRequest) {
   // Reddedilen/iptal edilenler ve panelden/telefondan açılanlar makbuz almaz. Satın alma anı = ödeme anı (yoksa talep anı).
   const purchased = state === "confirmed" || (state === "pending" && b.payment_status === "paid");
   if (purchased && (b.source ?? "site") === "site" && Number(b.price) > 0)
-    res.receipt = issueReceipt({ ...b, purchased_at: b.paid_at ?? b.created_at, confirmed_at: b.updated_at });
+    res.receipt = issueReceipt({ ref: b.ref, price: b.price, vehicle: b.vehicle, dropoff: b.dropoff, email: b.email, phone: b.phone, purchased_at: b.paid_at ?? b.created_at, confirmed_at: b.updated_at });
   return NextResponse.json(res, { headers: { "Cache-Control": "no-store" } });
 }

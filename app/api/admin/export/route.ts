@@ -16,10 +16,17 @@ export async function GET(req: NextRequest) {
   if (!dbReady) return NextResponse.json({ ok: false }, { status: 503 });
   await ensureSchema();
 
-  const type = req.nextUrl.searchParams.get("type") === "contacts" ? "contacts" : "bookings";
+  const t = req.nextUrl.searchParams.get("type");
+  const type = t === "contacts" ? "contacts" : t === "wa_refs" ? "wa_refs" : "bookings";
   let head: string[]; let rows: Record<string, unknown>[];
 
-  if (type === "contacts") {
+  if (type === "wa_refs") {
+    // Google Ads offline dönüşüm yüklemesi için ham liste (dönüşüm adı/değeri satış kapanınca eklenir)
+    head = ["Ref", "GCLID", "GBRAID", "WBRAID", "İlk görülme", "Son tıklama", "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_term", "utm_content", "Giriş sayfası", "Son sayfa", "Dil", "Tık"];
+    const r = await sql`SELECT ref, gclid, gbraid, wbraid, created_at, last_click_at, utm_source, utm_medium, utm_campaign, utm_id, utm_term, utm_content, landing_page, last_page, lang, clicks
+                        FROM wa_refs ORDER BY last_click_at DESC`;
+    rows = r as unknown as Record<string, unknown>[];
+  } else if (type === "contacts") {
     head = ["Tarih", "Dil", "Ad", "E-posta", "Telefon", "Mesaj"];
     const r = await sql`SELECT created_at, lang, name, email, phone, message FROM contacts ORDER BY created_at DESC`;
     rows = r as unknown as Record<string, unknown>[];

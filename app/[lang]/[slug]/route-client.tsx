@@ -12,12 +12,24 @@ import { getRouteContent } from "../../routeContent";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
   localName, inputCls, labelCls, todayISO, minTimeFor,
-  RouteCard,
+  RouteCard, TrustLine, GoogleRatingBadge, PayBadges, waHref,
 } from "../../components";
 
 export type RouteGuides = { posts: PostTeaser[]; isFallback: boolean };
 
 type HotelLink = { slug: string; name: string };
+
+/** Araçla girilemeyen yerler: transferin nerede bittiği ilk ekranda açıkça yazılır (T5 notu) */
+const ARRIVAL_NOTE: Record<string, { de: string; en: string }> = {
+  "zurich-airport-to-zermatt": {
+    en: "Zermatt is car-free: we drive you to the Matterhorn Terminal in Täsch. The shuttle train to Zermatt leaves every 20 min (12 min ride); luggage trolleys are right at the platform.",
+    de: "Zermatt ist autofrei: Wir fahren Sie bis zum Matterhorn Terminal Täsch. Der Shuttle-Zug nach Zermatt fährt alle 20 Min. (12 Min. Fahrt); Gepäckwagen stehen direkt am Perron.",
+  },
+  "zurich-airport-to-wengen": {
+    en: "Wengen is car-free: we drive you to Lauterbrunnen station. The Wengernalpbahn runs every 30 min and takes 14 min up to Wengen.",
+    de: "Wengen ist autofrei: Wir fahren Sie bis zum Bahnhof Lauterbrunnen. Die Wengernalpbahn fährt alle 30 Min. in 14 Min. nach Wengen.",
+  },
+};
 
 export default function RouteClient({ slug, guides, hotels }: { slug: string; guides?: RouteGuides; hotels?: HotelLink[] }) {
   const { lang, P } = useLang();
@@ -123,7 +135,7 @@ export default function RouteClient({ slug, guides, hotels }: { slug: string; gu
       <SiteHeader active="strecken" />
 
       <section style={{ background: C.ivory }}>
-        <div className="mx-auto max-w-7xl px-5 pb-8 pt-8">
+        <div className="mx-auto max-w-7xl px-5 pb-6 pt-4 md:pb-8 md:pt-8">
           <nav className="flex flex-wrap items-center gap-2 text-[11px] font-bold uppercase tracking-[0.2em] text-stone-400">
             <a href={P("/")} className="transition-colors hover:text-[#0C2E25]">{L.nav.home}</a>
             <span className="text-stone-300">/</span>
@@ -142,6 +154,55 @@ export default function RouteClient({ slug, guides, hotels }: { slug: string; gu
               {lang === "de" ? "Festpreis pro Fahrzeug" : "Fixed price per vehicle"}
             </span>
           </p>
+
+          {/* İlk ekran (T2): fiyat + süre + WhatsApp + Rezervasyon, kaydırmadan görünür */}
+          <div className="mt-5 rounded-2xl bg-white p-4 shadow-md ring-1 ring-black/5 md:max-w-2xl md:p-5">
+            <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+              <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-stone-500">
+                  {lang === "de" ? "Festpreis ab" : "Fixed price from"}
+                </p>
+                <p className="font-display text-4xl font-semibold leading-none" style={{ color: C.pine }}>
+                  {chf(transferPrice(route.km, "business_class_e"))}
+                </p>
+                <p className="mt-1 text-xs text-stone-500">
+                  {fleet[0].car} · {lang === "de" ? `bis ${fleet[0].pax} Personen` : `up to ${fleet[0].pax} passengers`}
+                </p>
+              </div>
+              <p className="text-xs leading-snug text-stone-600">
+                <b style={{ color: C.pine }}>{fleet[1].car}</b> {lang === "de" ? `(bis ${fleet[1].pax} Personen):` : `(up to ${fleet[1].pax} passengers):`}{" "}
+                {chf(transferPrice(route.km, "business_family_v"))}
+                <br />
+                {lang === "de"
+                  ? `≈ CHF ${Math.round(transferPrice(route.km, "business_family_v") / fleet[1].pax)} pro Person bei ${fleet[1].pax} Personen`
+                  : `≈ CHF ${Math.round(transferPrice(route.km, "business_family_v") / fleet[1].pax)} per person for ${fleet[1].pax}`}
+              </p>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <a
+                href={waHref(lang === "de" ? `Hallo, ich möchte einen Transfer ${pickupLabel} → ${dropoffLabel}.` : `Hello, I'd like a transfer ${pickupLabel} → ${dropoffLabel}.`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track-location="route_hero"
+                className="flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-[#128C4A] px-4 text-sm font-extrabold text-white shadow-sm active:scale-95"
+              >
+                💬 WhatsApp
+              </a>
+              <a
+                href={bookingHref()}
+                className="flex min-h-[48px] items-center justify-center rounded-full px-4 text-sm font-extrabold uppercase tracking-wide active:scale-95"
+                style={{ background: C.gold, color: C.pine }}
+              >
+                {lang === "de" ? "Jetzt buchen" : "Book now"}
+              </a>
+            </div>
+            <TrustLine className="mt-3" />
+            {ARRIVAL_NOTE[slug] && <p className="mt-3 rounded-xl bg-[#FBF7EE] px-3 py-2 text-xs leading-relaxed text-stone-700">ℹ️ {ARRIVAL_NOTE[slug][lang]}</p>}
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <GoogleRatingBadge />
+            <PayBadges />
+          </div>
         </div>
         <div aria-hidden className="mx-auto h-px max-w-7xl px-5">
           <div className="h-px w-full" style={{ background: `linear-gradient(90deg, ${C.gold} 0%, ${C.gold}66 30%, transparent 75%)` }} />
@@ -151,14 +212,14 @@ export default function RouteClient({ slug, guides, hotels }: { slug: string; gu
       <section className="mx-auto grid max-w-7xl gap-6 px-5 py-10 lg:grid-cols-[1.7fr_1fr] md:py-14">
         <div>
           <div className="mb-6 grid grid-cols-2 gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5">
-            <div>
-              <label className={labelCls}>📅 {L.form.date}</label>
+            <label className="block">
+              <span className={labelCls}>📅 {L.form.date}</span>
               <input type="date" min={todayISO()} className={inputCls} value={date} onChange={(e) => setDate(e.target.value)} />
-            </div>
-            <div>
-              <label className={labelCls}>🕐 {L.form.time}</label>
+            </label>
+            <label className="block">
+              <span className={labelCls}>🕐 {L.form.time}</span>
               <input type="time" min={minTimeFor(date)} className={inputCls} value={time} onChange={(e) => setTime(e.target.value)} />
-            </div>
+            </label>
           </div>
 
           <h2 className="font-display mb-4 text-2xl font-semibold" style={{ color: C.pine }}>
@@ -166,7 +227,8 @@ export default function RouteClient({ slug, guides, hotels }: { slug: string; gu
           </h2>
           <div className="space-y-4">
             {sorted.map((v, i) => (
-              <div key={i} className="grid gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 sm:grid-cols-[200px_1fr_auto] sm:items-center">
+              // Kartın tamamı rezervasyona götürür (T18 ölü tıklama)
+              <a key={i} href={bookingHref()} className="grid gap-4 rounded-2xl bg-white p-5 shadow-md ring-1 ring-black/5 transition-shadow hover:shadow-lg hover:ring-[#C9A24B]/60 sm:grid-cols-[200px_1fr_auto] sm:items-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={v.img} alt={v.car} className="mx-auto h-24 object-contain" />
                 <div>
@@ -185,15 +247,14 @@ export default function RouteClient({ slug, guides, hotels }: { slug: string; gu
                     {D.priceNote}
                     {night ? (lang === "de" ? " Inkl. Nachtzuschlag." : " Incl. night surcharge.") : ""}
                   </p>
-                  <a
-                    href={bookingHref()}
+                  <span
                     className="inline-block w-full rounded-full px-6 py-2.5 text-center text-sm font-extrabold uppercase tracking-wider text-white transition-transform hover:-translate-y-0.5 sm:w-auto"
                     style={{ background: C.pine }}
                   >
                     {D.select}
-                  </a>
+                  </span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

@@ -697,7 +697,7 @@ export const hotels: Hotel[] = [
         "Weil Zermatt für Autos gesperrt ist, endet jeder Transfer in Täsch, rund fünf Kilometer vor dem Dorf. Ihr Chauffeur bringt Sie vom Flughafen Zürich zum Matterhorn Terminal Täsch, hilft mit dem Gepäck auf den Shuttlezug, und nach rund zwölf Minuten Fahrt sind Sie im Zentrum. Diese Strecke ist bei uns ein Festpreis.",
       ],
       arrival: [
-        "Die rund 237 Kilometer nach Täsch dauern bei normalem Verkehr etwa 4 Stunden 45 Minuten. Je nach Saison und Verkehr führt die Route über die Furka-Verladung oder über Bern und den Lötschberg-Autoverlad ins Wallis. Im Matterhorn Terminal Täsch stehen Gepäckwagen bereit, der Shuttlezug fährt in kurzen Abständen.",
+        "Die rund 237 Kilometer nach Täsch dauern bei normalem Verkehr etwa 3 Stunden 30 Minuten. Je nach Saison und Verkehr führt die Route über die Furka-Verladung oder über Bern und den Lötschberg-Autoverlad ins Wallis. Im Matterhorn Terminal Täsch stehen Gepäckwagen bereit, der Shuttlezug fährt in kurzen Abständen.",
         "Am Bahnhof Zermatt warten elektrische Hoteltaxis und Shuttles vieler Hotels. Melden Sie Ihre Ankunftszeit direkt beim Mont Cervin Palace an – zu Fuss sind es mit leichtem Gepäck nur wenige Minuten die Bahnhofstrasse hinauf.",
       ],
       tips: [
@@ -717,7 +717,7 @@ export const hotels: Hotel[] = [
         "Because Zermatt is closed to cars, every transfer ends in Täsch, about five kilometres below the village. Your chauffeur drives you from Zurich Airport to the Matterhorn Terminal Täsch and helps with your luggage onto the shuttle train; about twelve minutes later you are in the centre. This route is a fixed price with us.",
       ],
       arrival: [
-        "The roughly 237 kilometres to Täsch take about 4 hours 45 minutes in normal traffic. Depending on season and traffic the route uses the Furka car train or runs via Bern and the Lötschberg car train into the Valais. At the Matterhorn Terminal Täsch luggage trolleys are available and the shuttle train runs at short intervals.",
+        "The roughly 237 kilometres to Täsch take about 3 hours 30 minutes in normal traffic. Depending on season and traffic the route uses the Furka car train or runs via Bern and the Lötschberg car train into the Valais. At the Matterhorn Terminal Täsch luggage trolleys are available and the shuttle train runs at short intervals.",
         "At Zermatt station, electric hotel taxis and many hotels' shuttles are waiting. Let the Mont Cervin Palace know your arrival time directly – with light luggage it's only a few minutes' walk up Bahnhofstrasse.",
       ],
       tips: [

@@ -25,5 +25,13 @@ export async function GET(req: NextRequest) {
       RETURNING id`) as unknown as { id: number }[];
     drafts = rows.length;
   }
-  return NextResponse.json({ ok: true, processed, reviews, drafts });
+  // WhatsApp ref kayıtları 12 ay sonra silinir (gizlilik politikasında belirtildiği gibi)
+  let waRefs = 0;
+  if (dbReady) {
+    try {
+      const r = (await sql`DELETE FROM wa_refs WHERE last_click_at < now() - interval '12 months' RETURNING ref`) as unknown as { ref: string }[];
+      waRefs = r.length;
+    } catch { /* tablo henüz yoksa */ }
+  }
+  return NextResponse.json({ ok: true, processed, reviews, drafts, waRefs });
 }

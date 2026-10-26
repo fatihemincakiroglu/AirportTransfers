@@ -7,7 +7,7 @@ import DestinationClient from "./destination-client";
 import { findDestination } from "../../destinations";
 import { resolveSlug, slugAlternates, canonicalSlugParams } from "../../slugs";
 import { tx } from "../../i18nX";
-import { routeMeta } from "../../routeMeta";
+import { getRouteMeta } from "../../routeMeta";
 import type { Lang } from "../../i18n";
 import { LANGS, DEFAULT_LANG } from "../../paths";
 import { postsForRoute, teaserOf } from "../../blogTaxonomy";
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const safe: Lang = (LANGS as readonly string[]).includes(lang) ? (lang as Lang) : DEFAULT_LANG;
   const X = tx[safe];
   // SEO meta: rota başına elle yazılmış başlık/açıklama (routeMeta.ts); yoksa şablon
-  const rm = routeMeta[slug]?.[safe];
+  const rm = getRouteMeta(slug, safe);
   return {
     title: rm?.title ?? `${X.dest.hero(n)} | Zürich Airport Taxi`,
     description: rm?.description ?? `${X.dest.routeKnown(n)} ${X.dest.heroSub(n)}`,

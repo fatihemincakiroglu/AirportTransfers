@@ -53,7 +53,7 @@ export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
       title: "Strecken & Ziele",
       list: [
         ["Fahren Sie überall hin – auch nach Deutschland, Frankreich, Österreich oder Italien?", "Ja. Geben Sie jede Adresse in der Schweiz oder im Ausland ein; der Preis wird nach Kilometertarif berechnet. Grenzübertritte sind ohne Umsteigen möglich; halten Sie Ausweis oder Reisepass bereit."],
-        ["Wie lange dauert die Fahrt nach Luzern, Basel oder Bern?", "Bei normalem Verkehr: Luzern rund 75 Minuten, Basel rund 1 Stunde 45, Bern rund 2 Stunden 20. Davos rund 3 Stunden 15, St. Moritz rund 4 Stunden 15, Zermatt (bis Täsch) rund 4 Stunden 45."],
+        ["Wie lange dauert die Fahrt nach Luzern, Basel oder Bern?", "Bei normalem Verkehr: Luzern rund 55 Minuten, Basel rund 1 Stunde 10 Minuten, Bern rund 1 Stunde 25 Minuten. Davos rund 2 Stunden 5 Minuten, St. Moritz rund 2 Stunden 55 Minuten, Zermatt (bis Täsch) rund 3 Stunden 30 Minuten."],
         ["Zermatt und Wengen sind autofrei – wie funktioniert der Transfer?", "Der Transfer endet an der Talstation: für Zermatt in Täsch (Shuttle-Zug in wenigen Minuten), für Wengen in Lauterbrunnen (Zahnradbahn). Der Fahrer hilft mit dem Gepäck bis zum Zug."],
         ["Kann ich Zwischenstopps einbauen?", "Ja, bis zu drei Zwischenstopps im Buchungsformular; die Distanz und damit der Preis werden entsprechend berechnet. Für längere Aufenthalte unterwegs ist die Stundenbuchung die passende Form."],
         ["Bieten Sie Stundenbuchungen an?", `Ja: erste Stunde CHF ${HOURLY.firstHour}, jede weitere CHF ${HOURLY.extraHour}, inklusive ${HOURLY.kmPerHour} km pro Stunde; bei längeren Strecken gilt der Kilometerpreis der Klasse. Ideal für Stadttouren, Termine, Events und Ausflüge mit Wartezeit.`],
@@ -111,7 +111,7 @@ export const faqGroups: Record<"de" | "en", FaqGroup[]> = {
       title: "Routes & destinations",
       list: [
         ["Do you go anywhere – including Germany, France, Austria or Italy?", "Yes. Enter any address in Switzerland or abroad; the price is calculated by kilometre tariff. Border crossings are possible without changing vehicles; keep your ID card or passport ready."],
-        ["How long does the drive to Lucerne, Basel or Bern take?", "In normal traffic: Lucerne around 75 minutes, Basel around 1 hour 45, Bern around 2 hours 20. Davos around 3 hours 15, St. Moritz around 4 hours 15, Zermatt (to Täsch) around 4 hours 45."],
+        ["How long does the drive to Lucerne, Basel or Bern take?", "In normal traffic: Lucerne around 55 minutes, Basel around 1 hour 10 minutes, Bern around 1 hour 25 minutes. Davos around 2 hours 5 minutes, St. Moritz around 2 hours 55 minutes, Zermatt (to Täsch) around 3 hours 30 minutes."],
         ["Zermatt and Wengen are car-free – how does the transfer work?", "The transfer ends at the valley station: for Zermatt in Täsch (shuttle train in a few minutes), for Wengen in Lauterbrunnen (cog railway). The driver helps with the luggage to the train."],
         ["Can I add stops on the way?", "Yes, up to three stops in the booking form; distance and therefore price are calculated accordingly. For longer stays on the way, the hourly booking is the right format."],
         ["Do you offer hourly bookings?", `Yes: first hour CHF ${HOURLY.firstHour}, each additional hour CHF ${HOURLY.extraHour}, including ${HOURLY.kmPerHour} km per hour; for longer distances the class kilometre rate applies. Ideal for city tours, appointments, events and excursions with waiting time.`],

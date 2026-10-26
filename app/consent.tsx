@@ -67,6 +67,7 @@ const TEXT = {
     analytics: "Statistik",
     marketing: "Marketing",
     more: "Cookie-Richtlinie",
+    short: "Statistik- & Marketing-Cookies nur mit Ihrer Zustimmung.",
   },
   en: {
     title: "Cookies & privacy",
@@ -79,6 +80,7 @@ const TEXT = {
     analytics: "Statistics",
     marketing: "Marketing",
     more: "Cookie policy",
+    short: "Statistics & marketing cookies only with your consent.",
   },
 } as const;
 
@@ -110,13 +112,54 @@ export function ConsentBanner() {
   };
 
   const primary = "rounded-full px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider transition-transform hover:-translate-y-0.5";
+  const btns = (compact: boolean) => (
+    <>
+      <button type="button" onClick={() => decide({ analytics: true, marketing: true })}
+        className={compact ? "min-h-[40px] flex-1 rounded-full px-3 text-[11px] font-extrabold uppercase tracking-wide" : primary}
+        style={{ background: C.gold, color: C.pine }}>
+        {T.all}
+      </button>
+      <button type="button" onClick={() => decide({ analytics: false, marketing: false })}
+        className={compact ? "min-h-[40px] flex-1 rounded-full border px-3 text-[11px] font-extrabold uppercase tracking-wide" : `${primary} border`}
+        style={{ borderColor: C.pine, color: C.pine }}>
+        {T.necessary}
+      </button>
+    </>
+  );
 
-  return (
+  // Mobil (ayrıntı kapalı): ince alt şerit — tek satır metin + iki buton yan yana; alttaki sabit
+  // eylem çubuğunun ÜSTÜNDE durur, onu ve formu kapatmaz (T3). Ayrıntı açılınca tam kart gösterilir.
+  if (!detail) {
+    return (
+      <>
+        <div
+          role="dialog"
+          aria-modal="false"
+          aria-label={T.title}
+          className="fixed inset-x-0 z-[60] border-t bg-white/97 px-3 pb-2 pt-2 text-stone-800 shadow-[0_-6px_20px_rgba(0,0,0,0.08)] backdrop-blur md:hidden"
+          style={{ bottom: "calc(76px + env(safe-area-inset-bottom))", borderColor: `${C.gold}66` }}
+        >
+          <p className="text-[11.5px] leading-snug text-stone-600">
+            🍪 {T.short}{" "}
+            <button type="button" onClick={() => setDetail(true)} className="font-semibold underline underline-offset-2" style={{ color: C.pine }}>{T.customize}</button>
+            {" · "}
+            <a href={P("/cookies")} className="underline underline-offset-2">{T.more}</a>
+          </p>
+          <div className="mt-1.5 flex gap-2">{btns(true)}</div>
+        </div>
+        {fullCard("hidden md:block")}
+      </>
+    );
+  }
+  return fullCard("");
+
+  function fullCard(extra: string) {
+    return (
     <div
       role="dialog"
       aria-modal="false"
       aria-label={T.title}
-      className="fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-white p-5 text-stone-800 shadow-2xl ring-1 ring-black/10 md:inset-x-auto md:bottom-5 md:right-5"
+      className={`fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-white p-5 text-stone-800 shadow-2xl ring-1 ring-black/10 md:inset-x-auto md:bottom-5 md:right-5 ${extra}`}
     >
       <span className="absolute inset-x-0 top-0 h-1 rounded-t-2xl" style={{ background: C.gold }} />
       <p className="font-display text-lg font-semibold" style={{ color: C.pine }}>{T.title}</p>
@@ -143,12 +186,7 @@ export function ConsentBanner() {
       )}
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
-        <button type="button" onClick={() => decide({ analytics: true, marketing: true })} className={primary} style={{ background: C.gold, color: C.pine }}>
-          {T.all}
-        </button>
-        <button type="button" onClick={() => decide({ analytics: false, marketing: false })} className={`${primary} border`} style={{ borderColor: C.pine, color: C.pine }}>
-          {T.necessary}
-        </button>
+        {btns(false)}
         {detail ? (
           <button type="button" onClick={() => decide(choice)} className="ml-auto min-h-[44px] px-3 text-xs font-bold underline-offset-2 hover:underline" style={{ color: C.pine }}>
             {T.save}
@@ -160,5 +198,6 @@ export function ConsentBanner() {
         )}
       </div>
     </div>
-  );
+    );
+  }
 }

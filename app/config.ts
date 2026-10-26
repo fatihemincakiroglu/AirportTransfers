@@ -29,6 +29,13 @@ export const COMPANY_ADDRESS = "Ifangstrasse 12, Stock 2, 8302 Kloten, Switzerla
 export const COMPANY_MAPS_URL = "https://maps.app.goo.gl/NbtdxkVoerMpN7hF6";
 /** Google Business Profile (İşletme Profili) — iletişim sayfası, footer ve yapısal veri sameAs */
 export const GOOGLE_BUSINESS_URL = "https://share.google/lgVZZl2iY9Y65RCpb";
+/**
+ * Google İşletme Profili puanı — ilk ekranlarda güven sinyali (T16). Elle güncellenir:
+ * Google'daki puan/yorum sayısı değişince buradaki iki rakamı değiştirin (son kontrol: 23.10.2026).
+ */
+export const GOOGLE_RATING = { value: 5.0, count: 15 };
+/** Şehir merkezi (Zürich HB / Altstadt) sabit fiyat örneği için mesafe ve süre */
+export const CITY_CENTER = { km: 12, min: 20 };
 /** Google Maps gömme (API anahtarı gerektirmez) */
 export const COMPANY_MAPS_EMBED = "https://www.google.com/maps?q=Ifangstrasse+12,+8302+Kloten,+Switzerland&output=embed&z=16";
 
@@ -118,32 +125,35 @@ export function hourlyPrice(hours: number, vehicle: VehicleId, time?: string | n
 /** Sabit rotanın gündüz Business Class fiyatı ("ab CHF …") */
 export const routeBasePrice = (km: number) => transferPrice(km, "business_class_e");
 
+// Süreler (min): normal trafikte sürüş süresi + küçük tampon (10/2026 güncellemesi — eski değerler ~50 km/s ile
+// hesaplanmıştı ve gerçekten %40–80 uzundu). Zermatt: Täsch'a kadar (Lötschberg araç treni dahil); Wengen: Lauterbrunnen'e kadar.
+// Google Maps ile ara ara doğrulanmalı. Sayfa metinleri ve meta açıklamalar bu değerden üretilir ({DUR}).
 const ROUTE_DATA: { slug: string; to: LocalName; km: number; min: number; img: string }[] = [
-  { slug: "zurich-airport-to-zug", to: "Zug", km: 46.2, min: 55, img: "/gallery/2.jpg" },
-  { slug: "zurich-airport-to-luzern", to: { de: "Luzern", en: "Lucerne" }, km: 63.3, min: 76, img: "/gallery/17.jpg" },
-  { slug: "zurich-airport-to-basel", to: "Basel", km: 86.2, min: 103, img: "/gallery/20.jpg" },
-  { slug: "zurich-airport-to-geneva", to: { de: "Genf", en: "Geneva" }, km: 266.2, min: 319, img: "/gallery/13.jpg" },
-  { slug: "zurich-airport-to-bern", to: "Bern", km: 117.5, min: 141, img: "/gallery/18.jpg" },
-  { slug: "zurich-airport-to-interlaken", to: "Interlaken", km: 125.2, min: 150, img: "/gallery/11.jpg" },
-  { slug: "zurich-airport-to-st-moritz", to: "St. Moritz", km: 212.7, min: 255, img: "/gallery/3.jpg" },
-  { slug: "zurich-airport-to-zermatt", to: "Zermatt", km: 237.0, min: 284, img: "/gallery/4.jpg" },
-  { slug: "zurich-airport-to-davos", to: "Davos", km: 161.5, min: 194, img: "/gallery/10.jpg" },
-  { slug: "zurich-airport-to-lausanne", to: "Lausanne", km: 215.5, min: 259, img: "/gallery/15.jpg" },
-  { slug: "zurich-airport-to-montreux", to: "Montreux", km: 243.5, min: 292, img: "/gallery/7.jpg" },
-  { slug: "zurich-airport-to-lugano", to: "Lugano", km: 210.2, min: 252, img: "/gallery/3.jpg" },
-  { slug: "zurich-airport-to-grindelwald", to: "Grindelwald", km: 141.7, min: 170, img: "/gallery/8.jpg" },
-  { slug: "zurich-airport-to-verbier", to: "Verbier", km: 269.8, min: 324, img: "/gallery/16.jpg" },
-  { slug: "zurich-airport-to-wengen", to: "Wengen", km: 133.5, min: 160, img: "/gallery/6.jpg" },
-  { slug: "zurich-airport-to-st-gallen", to: "St. Gallen", km: 81.2, min: 97, img: "/gallery/14.jpg" },
-  { slug: "zurich-airport-to-chur", to: "Chur", km: 135.5, min: 163, img: "/gallery/9.jpg" },
-  { slug: "zurich-airport-to-winterthur", to: "Winterthur", km: 29.6, min: 36, img: "/gallery/1.jpg" },
-  { slug: "zurich-airport-to-locarno", to: "Locarno", km: 201.3, min: 242, img: "/gallery/13.jpg" },
-  { slug: "zurich-airport-to-thun", to: "Thun", km: 141.7, min: 170, img: "/gallery/12.jpg" },
-  { slug: "zurich-airport-to-sion", to: "Sion", km: 270.7, min: 325, img: "/gallery/16.jpg" },
-  { slug: "zurich-airport-to-bellinzona", to: "Bellinzona", km: 182.7, min: 219, img: "/gallery/15.jpg" },
-  { slug: "zurich-airport-to-fribourg", to: "Fribourg", km: 154.7, min: 186, img: "/gallery/18.jpg" },
-  { slug: "zurich-airport-to-schaffhausen", to: "Schaffhausen", km: 49.5, min: 59, img: "/gallery/5.jpg" },
-  { slug: "zurich-airport-to-engelberg", to: "Engelberg", km: 94.2, min: 113, img: "/gallery/19.jpg" },
+  { slug: "zurich-airport-to-zug", to: "Zug", km: 46.2, min: 35, img: "/gallery/2.jpg" },
+  { slug: "zurich-airport-to-luzern", to: { de: "Luzern", en: "Lucerne" }, km: 63.3, min: 55, img: "/gallery/17.jpg" },
+  { slug: "zurich-airport-to-basel", to: "Basel", km: 86.2, min: 70, img: "/gallery/20.jpg" },
+  { slug: "zurich-airport-to-geneva", to: { de: "Genf", en: "Geneva" }, km: 266.2, min: 185, img: "/gallery/13.jpg" },
+  { slug: "zurich-airport-to-bern", to: "Bern", km: 117.5, min: 85, img: "/gallery/18.jpg" },
+  { slug: "zurich-airport-to-interlaken", to: "Interlaken", km: 125.2, min: 105, img: "/gallery/11.jpg" },
+  { slug: "zurich-airport-to-st-moritz", to: "St. Moritz", km: 212.7, min: 175, img: "/gallery/3.jpg" },
+  { slug: "zurich-airport-to-zermatt", to: "Zermatt", km: 237.0, min: 210, img: "/gallery/4.jpg" },
+  { slug: "zurich-airport-to-davos", to: "Davos", km: 161.5, min: 125, img: "/gallery/10.jpg" },
+  { slug: "zurich-airport-to-lausanne", to: "Lausanne", km: 215.5, min: 145, img: "/gallery/15.jpg" },
+  { slug: "zurich-airport-to-montreux", to: "Montreux", km: 243.5, min: 160, img: "/gallery/7.jpg" },
+  { slug: "zurich-airport-to-lugano", to: "Lugano", km: 210.2, min: 150, img: "/gallery/3.jpg" },
+  { slug: "zurich-airport-to-grindelwald", to: "Grindelwald", km: 141.7, min: 130, img: "/gallery/8.jpg" },
+  { slug: "zurich-airport-to-verbier", to: "Verbier", km: 269.8, min: 190, img: "/gallery/16.jpg" },
+  { slug: "zurich-airport-to-wengen", to: "Wengen", km: 133.5, min: 120, img: "/gallery/6.jpg" },
+  { slug: "zurich-airport-to-st-gallen", to: "St. Gallen", km: 81.2, min: 55, img: "/gallery/14.jpg" },
+  { slug: "zurich-airport-to-chur", to: "Chur", km: 135.5, min: 85, img: "/gallery/9.jpg" },
+  { slug: "zurich-airport-to-winterthur", to: "Winterthur", km: 29.6, min: 25, img: "/gallery/1.jpg" },
+  { slug: "zurich-airport-to-locarno", to: "Locarno", km: 201.3, min: 150, img: "/gallery/13.jpg" },
+  { slug: "zurich-airport-to-thun", to: "Thun", km: 141.7, min: 100, img: "/gallery/12.jpg" },
+  { slug: "zurich-airport-to-sion", to: "Sion", km: 270.7, min: 180, img: "/gallery/16.jpg" },
+  { slug: "zurich-airport-to-bellinzona", to: "Bellinzona", km: 182.7, min: 125, img: "/gallery/15.jpg" },
+  { slug: "zurich-airport-to-fribourg", to: "Fribourg", km: 154.7, min: 105, img: "/gallery/18.jpg" },
+  { slug: "zurich-airport-to-schaffhausen", to: "Schaffhausen", km: 49.5, min: 35, img: "/gallery/5.jpg" },
+  { slug: "zurich-airport-to-engelberg", to: "Engelberg", km: 94.2, min: 75, img: "/gallery/19.jpg" },
 ];
 /** Sabit rotalar — price = gündüz Business Class fiyatı, km'den türer (transferPrice) */
 export const routes: { slug: string; to: LocalName; km: number; min: number; price: number; img: string }[] =

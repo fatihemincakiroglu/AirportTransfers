@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import {
   C, WHATSAPP_NUMBER, PHONE_DISPLAY, CONTACT_EMAIL, MAX_PAX,
   COMPANY_ADDRESS, LocalName, FOOTER_IMAGE, routes, SWISS_PLACES, NEARBY_PLACES, GOOGLE_BUSINESS_URL,
-  airportName,
+  airportName, GOOGLE_RATING,
 } from "./config";
 import { t, Lang, pickL } from "./i18n";
 import { tx } from "./i18nX";
@@ -54,6 +54,50 @@ export function ExtrasCounter({ title, desc, freeLabel, value, onBump }: {
         <b className="w-4 text-center">{value}</b>
         <button onClick={() => onBump(1)} className="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 font-bold hover:border-stone-900">+</button>
       </div>
+    </div>
+  );
+}
+
+// ── İlk ekran güven sinyalleri (iş listesi T2/T8/T16) ─────────
+const TRUST = {
+  en: ["Fixed price · No extras", "Meet & greet + 60 min free waiting", "Pay in the car (cash, card, TWINT) or online"],
+  de: ["Festpreis · Keine Zuschläge", "Meet & Greet + 60 Min. gratis Wartezeit", "Bezahlen im Fahrzeug (bar, Karte, TWINT) oder online"],
+};
+export function TrustLine({ dark = false, className = "" }: { dark?: boolean; className?: string }) {
+  const { lang } = useLang();
+  return (
+    <ul className={`flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] font-semibold ${dark ? "text-white/85" : "text-stone-600"} ${className}`}>
+      {TRUST[lang].map((x) => (
+        <li key={x} className="flex items-center gap-1.5"><span style={{ color: C.gold }}>✓</span>{x}</li>
+      ))}
+    </ul>
+  );
+}
+
+/** Google puanı rozeti — İşletme Profili'ne bağlanır */
+export function GoogleRatingBadge({ dark = false }: { dark?: boolean }) {
+  const { lang } = useLang();
+  return (
+    <a
+      href={GOOGLE_BUSINESS_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${dark ? "bg-white/10 text-white ring-1 ring-white/20" : "bg-white text-stone-700 ring-1 ring-black/10"}`}
+    >
+      <span style={{ color: C.gold }}>★★★★★</span>
+      {GOOGLE_RATING.value.toFixed(1)} · {GOOGLE_RATING.count} {lang === "de" ? "Google-Bewertungen" : "Google reviews"}
+    </a>
+  );
+}
+
+/** Kabul edilen ödeme yöntemleri (metin rozetleri — marka logosu kullanılmaz) */
+export function PayBadges({ dark = false }: { dark?: boolean }) {
+  const { lang } = useLang();
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {["Visa", "Mastercard", "TWINT", "Apple Pay", "Google Pay", lang === "de" ? "Bar" : "Cash"].map((m) => (
+        <span key={m} className={`rounded-md px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide ${dark ? "bg-white/10 text-white/80" : "bg-stone-100 text-stone-600"}`}>{m}</span>
+      ))}
     </div>
   );
 }
@@ -226,16 +270,20 @@ export function BookingBar() {
       {/* Tarih / Saat / Kişi / Çocuk / Ara */}
       <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-5">
         <div>
-          <label className={labelCls}>📅 {L.form.date}</label>
-          <div className={fieldWrap}>
+          <label className="block">
+          <span className={labelCls}>📅 {L.form.date}</span>
+          <span className={fieldWrap}>
             <input type="date" aria-label={L.form.date} min={todayISO()} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
-          </div>
+          </span>
+          </label>
         </div>
         <div>
-          <label className={labelCls}>🕐 {L.form.time}</label>
-          <div className={fieldWrap}>
+          <label className="block">
+          <span className={labelCls}>🕐 {L.form.time}</span>
+          <span className={fieldWrap}>
             <input type="time" aria-label={L.form.time} min={minTimeFor(f.date)} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
-          </div>
+          </span>
+          </label>
         </div>
         <SelectField
           label={L.form.pax}
@@ -312,6 +360,9 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
   label: string; icon: string; value: string; placeholder: string; onChange: (v: string) => void;
 }) {
   const { lang } = useLang();
+  const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const inList = useRef(false); // öneri listesine dokunuluyor: blur listeyi kapatmasın (mobil ölü tıklama)
   const [open, setOpen] = useState(false);
   const [remote, setRemote] = useState<PlaceSuggestion[]>([]);
   const [searchedFor, setSearchedFor] = useState(""); // uzak araması tamamlanan sorgu
@@ -369,15 +420,17 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
 
   return (
     <div className="relative">
-      <label className={labelCls}>{icon} {label}</label>
-      <div className={fieldWrap}>
+      <label htmlFor={id} className={labelCls}>{icon} {label}</label>
+      <div className={`${fieldWrap} cursor-text`} onClick={() => inputRef.current?.focus()}>
         <input
+          id={id}
+          ref={inputRef}
           className={fieldInput}
           placeholder={placeholder}
           value={value}
           onChange={(e) => { onChange(e.target.value); setOpen(true); }}
           onFocus={() => setOpen(true)}
-          onBlur={() => setTimeout(() => setOpen(false), 120)}
+          onBlur={() => setTimeout(() => { if (!inList.current) setOpen(false); }, 200)}
           onKeyDown={(e) => { if (e.key === "Enter" && open && merged[0]) { e.preventDefault(); pick(merged[0]); } }}
           autoComplete="off"
           title={value}
@@ -392,12 +445,18 @@ export function PlaceField({ label, icon, value, placeholder, onChange }: {
         )}
       </div>
       {show && (
-        <ul className="absolute z-30 mt-2 max-h-80 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
+        <ul
+          className="absolute z-[70] mt-2 max-h-80 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5"
+          onPointerDown={() => { inList.current = true; }}
+          onPointerUp={() => { setTimeout(() => { inList.current = false; }, 300); }}
+          onPointerCancel={() => { inList.current = false; }}
+        >
           {merged.map((p) => (
             <li key={p.value}>
               <button
                 type="button"
-                onMouseDown={(e) => { e.preventDefault(); pick(p); }}
+                onMouseDown={(e) => e.preventDefault() /* masaüstü: alan odağını korur */}
+                onClick={() => { inList.current = false; pick(p); }}
                 className="flex w-full items-start gap-2.5 px-3.5 py-2.5 text-left transition-colors hover:bg-[#FBF7EE]"
               >
                 <span className="mt-0.5 shrink-0 text-sm" aria-hidden="true">{KIND_ICON[p.kind]}</span>
@@ -425,10 +484,12 @@ export function SelectField({ label, icon, value, options, onChange, suffix }: {
   label: string; icon: string; value: string; options: (string | number)[]; onChange: (v: string) => void; suffix?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const id = useId();
   return (
     <div className="relative">
-      <label className={labelCls}>{icon} {label}</label>
+      <label htmlFor={id} className={`${labelCls} cursor-pointer`}>{icon} {label}</label>
       <button
+        id={id}
         type="button"
         onClick={() => setOpen((o) => !o)}
         onBlur={() => setTimeout(() => setOpen(false), 120)}
@@ -440,7 +501,7 @@ export function SelectField({ label, icon, value, options, onChange, suffix }: {
         >▾</span>
       </button>
       {open && (
-        <ul className="absolute z-30 mt-2 max-h-56 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
+        <ul className="absolute z-[70] mt-2 max-h-56 w-full overflow-auto rounded-xl bg-white py-1.5 shadow-xl ring-1 ring-black/5">
           {options.map((o) => {
             const v = String(o);
             const active = v === value;
@@ -510,16 +571,20 @@ export function BookingCard() {
           />
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className={labelCls}>📅 {L.form.date}</label>
-              <div className={fieldWrap}>
+              <label className="block">
+              <span className={labelCls}>📅 {L.form.date}</span>
+              <span className={fieldWrap}>
                 <input type="date" aria-label={L.form.date} min={todayISO()} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
-              </div>
+              </span>
+              </label>
             </div>
             <div>
-              <label className={labelCls}>🕐 {L.form.time}</label>
-              <div className={fieldWrap}>
+              <label className="block">
+              <span className={labelCls}>🕐 {L.form.time}</span>
+              <span className={fieldWrap}>
                 <input type="time" aria-label={L.form.time} min={minTimeFor(f.date)} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
-              </div>
+              </span>
+              </label>
             </div>
           </div>
           <SelectField
@@ -583,16 +648,20 @@ export function BookingCard() {
         {/* Tarih / Saat */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={labelCls}>📅 {L.form.date}</label>
-            <div className={fieldWrap}>
+            <label className="block">
+            <span className={labelCls}>📅 {L.form.date}</span>
+            <span className={fieldWrap}>
               <input type="date" aria-label={L.form.date} min={todayISO()} className={fieldInput} value={f.date} onChange={(e) => set("date", e.target.value)} />
-            </div>
+            </span>
+            </label>
           </div>
           <div>
-            <label className={labelCls}>🕐 {L.form.time}</label>
-            <div className={fieldWrap}>
+            <label className="block">
+            <span className={labelCls}>🕐 {L.form.time}</span>
+            <span className={fieldWrap}>
               <input type="time" aria-label={L.form.time} min={minTimeFor(f.date)} className={fieldInput} value={f.time} onChange={(e) => set("time", e.target.value)} />
-            </div>
+            </span>
+            </label>
           </div>
         </div>
 
@@ -903,7 +972,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
 }
 
 // ── Yüzen butonlar: masaüstünde yan dock, mobilde alt çubuk ───
-export function FloatingButtons() {
+export function FloatingButtons({ hideBook = false }: { hideBook?: boolean } = {}) {
   const { lang, P } = useLang();
   const btn =
     "group relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300 hover:scale-110 hover:bg-stone-100";
@@ -929,11 +998,13 @@ export function FloatingButtons() {
           <img src="/icons/phone.png" alt="" className={icon} />
           <span className={tip} style={{ background: C.pine }}>{labels.call}</span>
         </a>
-        <a href={P("/buchung")} aria-label={labels.book} className={btn}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/icons/booking.png" alt="" className={icon} />
-          <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
-        </a>
+        {!hideBook && (
+          <a href={P("/buchung")} aria-label={labels.book} className={btn}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/booking.png" alt="" className={icon} />
+            <span className={tip} style={{ background: C.pine }}>{labels.book}</span>
+          </a>
+        )}
       </div>
 
       {/* Mobil: içerik alt çubuğun arkasında kalmasın diye boşluk */}
@@ -945,7 +1016,8 @@ export function FloatingButtons() {
         className="fixed inset-x-0 bottom-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur md:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <div className="grid grid-cols-3 gap-2 p-2.5">
+        {/* Rezervasyon sayfasında "Book" yok: aynı sayfayı yeniden yükleyip formu sıfırlıyordu (T4) */}
+        <div className={`grid gap-2 p-2.5 ${hideBook ? "grid-cols-2" : "grid-cols-3"}`}>
           <a
             href={waHref()}
             target="_blank"
@@ -965,15 +1037,17 @@ export function FloatingButtons() {
             <img src="/icons/phone.png" alt="" className="h-5 w-5 object-contain" />
             {labels.call}
           </a>
-          <a
-            href={P("/buchung")}
-            className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
-            style={{ borderColor: C.pine, color: C.pine }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icons/booking.png" alt="" className="h-5 w-5 object-contain" />
-            {labels.book}
-          </a>
+          {!hideBook && (
+            <a
+              href={P("/buchung")}
+              className="flex min-h-[44px] items-center justify-center gap-2 rounded-xl border bg-white px-2 py-3 text-sm font-bold active:scale-95"
+              style={{ borderColor: C.pine, color: C.pine }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icons/booking.png" alt="" className="h-5 w-5 object-contain" />
+              {labels.book}
+            </a>
+          )}
         </div>
       </div>
     </>

@@ -7,8 +7,30 @@ import { internalizePath, LANGS } from "./paths";
 import { resolveSlug } from "./slugs";
 import {
   pushPageContext, sanitizeBrowserUrl, safeReferrer, pageLocation,
-  trackContactClick, trackLanguageChange, routeId, type PageType, type PageContext,
+  trackContactClick, trackLanguageChange, routeId, waRef, getAttribution, type PageType, type PageContext,
 } from "./lib/analytics";
+
+/**
+ * WhatsApp bağlantısını tıklama anında süsler: ön dolu mesaj (yoksa) + "Ref: XXXXXX".
+ * Bağlantı varsayılan davranışıyla açılmadan önce (yakalama aşaması) href değiştirilir.
+ */
+function decorateWhatsApp(a: HTMLAnchorElement, lang: string): string {
+  const ref = waRef();
+  try {
+    const u = new URL(a.href);
+    const fallback = lang === "de" ? "Hallo, ich möchte einen Transfer buchen." : "Hello, I'd like to book a transfer.";
+    const text = u.searchParams.get("text") || fallback;
+    if (!/Ref: [A-Z2-9]{6}/.test(text)) u.searchParams.set("text", `${text}\n\nRef: ${ref}`);
+    a.href = u.toString();
+  } catch { /* bozuk href: dokunma */ }
+  // Kod ↔ reklam kaynağı eşlemesi (gclid/gbraid/wbraid/UTM) sunucuda saklanır
+  try {
+    const body = JSON.stringify({ ref, lang, page: window.location.pathname, ...getAttribution() });
+    if (navigator.sendBeacon) navigator.sendBeacon("/api/wa-ref", new Blob([body], { type: "application/json" }));
+    else fetch("/api/wa-ref", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true });
+  } catch { /* ölçüm akışı bozmaz */ }
+  return ref;
+}
 
 /** İç anahtar → page_type (spec §7.2) */
 const PAGE_TYPES: Record<string, PageType> = {
@@ -82,6 +104,8 @@ export default function AnalyticsPage() {
   const { lang } = useLang();
   const prevLang = useRef<string | null>(null);
   const pageTypeRef = useRef<PageType>("other");
+  const langRef = useRef(lang);
+  useEffect(() => { langRef.current = lang; }, [lang]);
 
   useEffect(() => {
     // Alt bileşenlerin efektleri (ör. rezervasyon sayfasının URL okuması) bundan önce çalışır.
@@ -101,7 +125,10 @@ export default function AnalyticsPage() {
       const loc = contactLocation(a, pageTypeRef.current);
       if (href.startsWith("tel:")) trackContactClick("phone", loc);
       else if (href.startsWith("mailto:")) trackContactClick("email", loc);
-      else if (/wa\.me|api\.whatsapp\.com|whatsapp:/.test(href)) trackContactClick("whatsapp", loc);
+      else if (/wa\.me|api\.whatsapp\.com|whatsapp:/.test(href)) {
+        const ref = /wa\.me|api\.whatsapp\.com/.test(href) ? decorateWhatsApp(a, langRef.current) : undefined;
+        trackContactClick("whatsapp", loc, {}, ref ? { ref } : {});
+      }
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);

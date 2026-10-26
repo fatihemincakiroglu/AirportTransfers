@@ -35,7 +35,7 @@ let schemaPromise: Promise<void> | null = null;
  * Şema sürümü. Tablo/kolon eklediğinde BU SAYIYI ARTIR; aksi hâlde yeni DDL çalışmaz.
  * Sürüm veritabanındaki `schema_meta` ile eşleşiyorsa hiçbir DDL çalışmaz (tek SELECT).
  */
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 
 /**
  * Tabloları oluşturur (varsa dokunmaz).
@@ -230,6 +230,21 @@ async function createTables(tx: TransactionSql) {
   await tx`CREATE INDEX IF NOT EXISTS analytics_delivery_due_idx ON analytics_delivery (status, next_attempt_at)`;
   // Yolculuk sonrası değerlendirme e-postası gönderim zamanı (cron)
   await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS review_mail_at TIMESTAMPTZ`;
+  // WhatsApp ref kodu ↔ reklam kaynağı (T6): satış WhatsApp'tan kapanınca koddan gclid bulunur
+  await tx`
+    CREATE TABLE IF NOT EXISTS wa_refs (
+      ref           TEXT PRIMARY KEY,
+      gclid         TEXT, gbraid TEXT, wbraid TEXT,
+      utm_source    TEXT, utm_medium TEXT, utm_campaign TEXT, utm_id TEXT, utm_term TEXT, utm_content TEXT,
+      landing_page  TEXT,
+      last_page     TEXT,
+      lang          TEXT,
+      captured_at   TIMESTAMPTZ,
+      clicks        INT NOT NULL DEFAULT 1,
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+      last_click_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )`;
+  await tx`CREATE INDEX IF NOT EXISTS wa_refs_created_idx ON wa_refs (created_at DESC)`;
 }
 
 /**

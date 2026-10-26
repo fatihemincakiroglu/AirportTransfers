@@ -372,7 +372,7 @@ export const longformPosts: BlogPost[] = [
           "Eigene Sitze dürfen Sie selbstverständlich mitbringen; sagen Sie es uns kurz, damit wir keinen zweiten montieren. Welche Sitze für welches Alter passen und wie der Familien-Transfer sonst abläuft, steht in [Mit Kindern unterwegs](/blog/mit-kindern-reisen-kindersitze-schweiz).",
         ]},
         { h: "Fehler 6: Zu wenig Zeit für den Rückweg einplanen", p: [
-          "Der gefährlichste Fehler passiert nicht bei der Ankunft, sondern bei der Abreise. Reisende rechnen mit der Fahrzeit, die sie auf dem Hinweg hatten, und vergessen den Puffer: Berufsverkehr rund um Zürich am Morgen, Schneefall auf der Bergstrecke, Wechselsamstag in den Sportferien. Aus 3 Stunden 15 Minuten von Davos werden dann vier – und der Check-in ist geschlossen.",
+          "Der gefährlichste Fehler passiert nicht bei der Ankunft, sondern bei der Abreise. Reisende rechnen mit der Fahrzeit, die sie auf dem Hinweg hatten, und vergessen den Puffer: Berufsverkehr rund um Zürich am Morgen, Schneefall auf der Bergstrecke, Wechselsamstag in den Sportferien. Aus gut 2 Stunden von Davos werden dann drei – und der Check-in ist geschlossen.",
           "Die Formel ist einfach: Abflug minus Check-in-Frist minus Fahrzeit minus Puffer. Für europäische Flüge rechnen Sie rund zwei Stunden Check-in, für Langstrecke eher drei. Im Winter kommen auf Bergstrecken 45 bis 60 Minuten Puffer dazu. Ein früher Start kostet Sie einen Kaffee am Flughafen; ein später kostet unter Umständen den Flug.",
           "Wenn Sie unsicher sind, welche Abholzeit für Ihren Flug sinnvoll ist, schreiben Sie uns Flugnummer und Adresse – wir schlagen eine Zeit vor. Die vollständige Rechnung mit Fahrzeiten für alle Strecken steht in [Wann losfahren zum Flughafen Zürich?](/blog/wann-losfahren-zum-flughafen-zuerich-abholzeit-berechnen).",
         ], table: {
@@ -381,7 +381,7 @@ export const longformPosts: BlogPost[] = [
             ["Zürich Stadt", "rund 20 Minuten", "20 Minuten (Berufsverkehr)"],
             ["Luzern", "rund 1 h 15", "30 Minuten"],
             ["Basel / Bern", "rund 1 h 45 – 2 h 20", "30 Minuten"],
-            ["Davos / Engadin (Winter)", "3 h 15 – 4 h 15", "45–60 Minuten"],
+            ["Davos / Engadin (Winter)", "2 h 05 – 3 h 15", "45–60 Minuten"],
             ["Zermatt (ab Täsch, Winter)", "rund 4 h 45", "60 Minuten"],
           ],
         }},
@@ -446,7 +446,7 @@ export const longformPosts: BlogPost[] = [
           "You are of course welcome to bring your own seats; just tell us so we do not fit a second one. Which seats suit which age and how the family transfer works otherwise is in [Travelling with children](/blog/mit-kindern-reisen-kindersitze-schweiz).",
         ]},
         { h: "Mistake 6: Allowing too little time for the way back", p: [
-          "The most dangerous mistake happens not on arrival but on departure. Travellers count on the driving time they had on the way out and forget the buffer: rush hour around Zurich in the morning, snowfall on the mountain route, changeover Saturday during the sports holidays. 3 hours 15 minutes from Davos become four – and check-in is closed.",
+          "The most dangerous mistake happens not on arrival but on departure. Travellers count on the driving time they had on the way out and forget the buffer: rush hour around Zurich in the morning, snowfall on the mountain route, changeover Saturday during the sports holidays. Just over 2 hours from Davos become three – and check-in is closed.",
           "The formula is simple: departure minus check-in deadline minus driving time minus buffer. For European flights count around two hours for check-in, for long-haul closer to three. In winter add 45 to 60 minutes of buffer on mountain routes. An early start costs you a coffee at the airport; a late one may cost the flight.",
           "If you are unsure which pickup time makes sense for your flight, send us flight number and address – we suggest a time. The full calculation with driving times for all routes is in [When to leave for Zurich Airport?](/blog/wann-losfahren-zum-flughafen-zuerich-abholzeit-berechnen).",
         ], table: {
@@ -455,7 +455,7 @@ export const longformPosts: BlogPost[] = [
             ["Zurich city", "around 20 minutes", "20 minutes (rush hour)"],
             ["Lucerne", "around 1 h 15", "30 minutes"],
             ["Basel / Bern", "around 1 h 45 – 2 h 20", "30 minutes"],
-            ["Davos / Engadin (winter)", "3 h 15 – 4 h 15", "45–60 minutes"],
+            ["Davos / Engadin (winter)", "2 h 05 – 3 h 15", "45–60 minutes"],
             ["Zermatt (from Täsch, winter)", "around 4 h 45", "60 minutes"],
           ],
         }},

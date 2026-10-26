@@ -31,6 +31,19 @@ const dl = (): DL[] | null => {
 /** Unix epoch saniye (olayın gerçekleştiği an) */
 export const nowSec = () => Math.floor(Date.now() / 1000);
 
+/**
+ * dataLayer'daki rezervasyon kimliği: GTM yalnızca harf, rakam, "_" ve "-" kabul eder.
+ * Panel/e-posta referansı "#AB12CD34" → dataLayer'da "AB12CD34".
+ */
+export const dlBookingId = (ref: string) => ref.replace(/[^A-Za-z0-9_-]/g, "").slice(0, 100);
+
+/** Kayıtlı çerez seçimi: pazarlama (ad_user_data) onayı verilmiş mi? */
+export function hasMarketingConsent(): boolean {
+  if (typeof document === "undefined") return false;
+  const m = document.cookie.match(/(?:^|; )zrh_consent=([^;]*)/);
+  try { return !!(m && JSON.parse(decodeURIComponent(m[1]))?.marketing); } catch { return false; }
+}
+
 /** Kısa rastgele kimlik: prefix_XXXXXXXXXXXX (base36) */
 export function newId(prefix: string): string {
   let rnd = "";
@@ -53,7 +66,7 @@ export function resetBusinessDataLayerState() {
     booking: null, route: null, destination: null, vehicle: null,
     service: null, results: null, ecommerce: null, contact: null,
     lead: null, error: null, cta: null, payment: null, refund: null,
-    adjustment: null, call: null, mirror: null, source: null, language: null,
+    adjustment: null, call: null, mirror: null, source: null, language: null, user_data: null,
   });
 }
 export function resetPageDataLayerState() {
@@ -123,13 +136,66 @@ export function pushEvent(event: string, payload: DL, opts: { id?: string; idPre
 // okuduktan SONRA adres çubuğundan silinir. Yalnızca onaylı reklam parametreleri kalır.
 const KEEP_QUERY_KEYS = new Set([
   "gclid", "gbraid", "wbraid", "fbclid",
-  "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_term", "utm_content",
+  // utm_term BİLİNÇLİ OLARAK yok: GTM, adreste utm_term görürse Satın Alma'yı reddeder (iş listesi 5.2)
+  "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_content",
 ]);
 const TOKEN = /^[A-Za-z0-9._~-]{1,1024}$/;
+
+// ── Reklam kaynağı + WhatsApp ref kodu (iş listesi T6) ─────────
+// gclid yalnızca reklamdan gelinen ilk sayfanın adresinde vardır ve URL temizliği utm_term vb. siler; bu yüzden
+// ilk açılışta (temizlikten ÖNCE) oturum deposuna yazılır. WhatsApp mesajına eklenen kısa ref kodu sunucuda bu
+// kaynakla eşlenir (/api/wa-ref) → satış kapanınca Google Ads'e offline dönüşüm olarak yüklenebilir.
+const ATTR_KEYS = ["gclid", "gbraid", "wbraid", "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_term", "utm_content"] as const;
+export type Attribution = Partial<Record<(typeof ATTR_KEYS)[number], string>> & { landing_page?: string; captured_at?: number };
+const ATTR_STORE = "zrh_attr", REF_STORE = "zrh_wa_ref";
+const ss = {
+  get: (k: string) => { try { return sessionStorage.getItem(k); } catch { return null; } },
+  set: (k: string, v: string) => { try { sessionStorage.setItem(k, v); } catch { /* özel mod: bellek yedeği */ } },
+};
+let memAttr: Attribution | null = null, memRef: string | null = null;
+
+export function captureAttribution(url: URL) {
+  const found: Attribution = {};
+  for (const k of ATTR_KEYS) {
+    const v = url.searchParams.get(k);
+    if (v && v.length <= 500) found[k] = v;
+  }
+  if (!Object.keys(found).length) return;
+  // Yeni bir reklam tıklaması (yeni gclid/kampanya) öncekinin yerini alır
+  const next: Attribution = { ...found, landing_page: url.pathname, captured_at: Math.floor(Date.now() / 1000) };
+  memAttr = next;
+  ss.set(ATTR_STORE, JSON.stringify(next));
+}
+
+/** Oturumdaki reklam kaynağı; gclid yoksa _gcl_aw çerezinden (GCL.<zaman>.<gclid>) okunur */
+export function getAttribution(): Attribution {
+  let a: Attribution = memAttr ?? {};
+  const raw = ss.get(ATTR_STORE);
+  if (raw) { try { a = JSON.parse(raw) as Attribution; } catch { /* yok say */ } }
+  if (!a.gclid && typeof document !== "undefined") {
+    const m = document.cookie.match(/(?:^|; )_gcl_aw=GCL\.\d+\.([^;]+)/);
+    if (m) a = { ...a, gclid: decodeURIComponent(m[1]) };
+  }
+  return a;
+}
+
+/** Ziyaretçi (oturum) başına sabit 6 karakterlik kod — karışan harfler (0/O, 1/I/L) yok */
+export function waRef(): string {
+  const stored = ss.get(REF_STORE) ?? memRef;
+  if (stored && /^[A-Z2-9]{6}$/.test(stored)) return stored;
+  const abc = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  const buf = new Uint8Array(6);
+  crypto.getRandomValues(buf);
+  const ref = Array.from(buf, (b) => abc[b % abc.length]).join("");
+  memRef = ref;
+  ss.set(REF_STORE, ref);
+  return ref;
+}
 
 export function sanitizeBrowserUrl() {
   if (typeof window === "undefined") return;
   const url = new URL(window.location.href);
+  captureAttribution(url); // temizlikten ÖNCE
   if (!url.search && !url.hash) return;
   const kept = new URLSearchParams();
   for (const key of KEEP_QUERY_KEYS) {
@@ -196,8 +262,8 @@ export function splitVat(gross: number) {
 
 // ── Sık kullanılan kısayollar ────────────────────────────────
 export type ContactMethod = "whatsapp" | "phone" | "email";
-export function trackContactClick(method: ContactMethod, location: string, extra: DL = {}) {
-  pushEvent(`${method}_click`, { contact: { method, location }, ...extra }, { idPrefix: "contact" });
+export function trackContactClick(method: ContactMethod, location: string, extra: DL = {}, contactExtra: DL = {}) {
+  pushEvent(`${method}_click`, { contact: { method, location, ...contactExtra }, ...extra }, { idPrefix: "contact" });
 }
 
 export function trackCta(id: string, name: string, location: string) {

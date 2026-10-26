@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
 
     // Satın Alma aynası: gerçek talep kaydedildiyse ve fiyat biliniyorsa imzalı makbuz (tarayıcı booking_complete basar)
     const receipt = !isDraft && price && price > 0
-      ? issueReceipt({ ref, price, vehicle: str(b.vehicle, 120), dropoff: str(b.dropoff) })
+      ? issueReceipt({ ref, price, vehicle: str(b.vehicle, 120), dropoff: str(b.dropoff), email: str(b.email, 160), phone: str(b.phone, 40) })
       : undefined;
     return NextResponse.json({ ok: true, ...(receipt ? { receipt } : {}) });
   } catch (e) {

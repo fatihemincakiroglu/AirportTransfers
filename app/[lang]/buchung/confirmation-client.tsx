@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { C, WHATSAPP_NUMBER, PHONE_DISPLAY } from "../../config";
 import { useLang } from "../../providers";
 import { TopBar, SiteHeader, SiteFooter } from "../../components";
-import { mirrorPurchase, type Receipt } from "../../lib/purchase-mirror";
+import { mirrorPurchase, submitOnce, type Receipt } from "../../lib/purchase-mirror";
 
 type Status = { ok: boolean; ref?: string; status?: "pending" | "confirmed" | "declined" | "cancelled" | "not_found"; payment_status?: string; receipt?: Receipt };
 
@@ -45,7 +45,8 @@ export default function ConfirmationClient({ mode }: { mode: "pending" | "confir
   const { lang, P } = useLang();
   const t = T[lang];
   const params = useSearchParams();
-  const ref = (params.get("ref") ?? "").trim();
+  // URL temizliği ?ref= parametresini adres çubuğundan siler; referans ilk okumada sabitlenir
+  const [ref] = useState(() => (params.get("ref") ?? "").trim());
   const [st, setSt] = useState<Status | null>(null);
   useEffect(() => {
     if (!ref) return;
@@ -57,14 +58,22 @@ export default function ConfirmationClient({ mode }: { mode: "pending" | "confir
         const d = (await r.json()) as Status;
         if (!alive) return;
         setSt(d);
-        // Makbuz: Stripe ödemesi alındığında veya rezervasyon onaylandığında gelir → Satın Alma (bir kez)
-        if (d.receipt) mirrorPurchase(d.receipt);
-        if (d.status === "confirmed") {
-          if (mode === "pending") { window.location.replace(`${P("/buchung/confirmation")}?ref=${encodeURIComponent(ref)}`); return; }
+        // Bekleme sayfası (/booking/pending-confirmation) GTM'in izinli yollarında DEĞİL: Satın Alma burada basılmaz.
+        // Ödeme alınınca veya onaylanınca onay sayfasına geçilir; orada taze makbuzla basılır.
+        if (mode === "pending") {
+          if (d.receipt || d.status === "confirmed") { window.location.replace(`${P("/buchung/confirmation")}?ref=${encodeURIComponent(ref)}`); return; }
+          if (d.status === "pending" || !d.ok) timer = setTimeout(tick, 4000);
+          return;
         }
-        if (mode === "pending" && (d.status === "pending" || !d.ok)) timer = setTimeout(tick, 4000);
+        // Onay sayfası: online ödendiyse önce booking_submit (ödemeden sonra, bir kez — T12), sonra Satın Alma (bir kez)
+        if (d.receipt) {
+          if (d.payment_status === "paid") submitOnce(d.receipt);
+          mirrorPurchase(d.receipt);
+        }
+        // Henüz karar yoksa sayfa kendini güncel tutar
+        if (d.status === "pending") timer = setTimeout(tick, 10000);
       } catch {
-        if (alive && mode === "pending") timer = setTimeout(tick, 6000);
+        if (alive) timer = setTimeout(tick, mode === "pending" ? 6000 : 15000);
       }
     };
     tick();

@@ -41,9 +41,27 @@ export const SEGMENTS: Record<string, Seg> = {
 
 type L = LangCode;
 
+/**
+ * İkinci seviye segmentler (iç ad → dile göre görünen ad). GTM Satın Alma doğrulaması
+ * DE onay sayfasını /de/buchung/bestaetigung olarak bekler.
+ */
+export const SUB_SEGMENTS: Record<string, Record<string, Seg>> = {
+  buchung: { confirmation: seg("bestaetigung", "confirmation") },
+};
+const subPublic = (key: string, sub: string, lang: L) => SUB_SEGMENTS[key]?.[sub]?.[lang] ?? sub;
+/** Görünen alt segment → iç ad (yoksa null) */
+export function findInternalSub(key: string, publicSub: string): string | null {
+  const m = SUB_SEGMENTS[key];
+  if (!m) return null;
+  for (const k of Object.keys(m)) if (k === publicSub || LANGS.some((l) => m[k][l] === publicSub)) return k;
+  return null;
+}
+export const localizeSub = subPublic;
+
 /** İç yol → dile göre görünen yol.  localizePath("/strecken", "en") → "/routes" */
 export function localizePath(internalPath: string, lang: L): string {
   const parts = internalPath.split("/").filter(Boolean);
+  if (parts.length > 1 && SUB_SEGMENTS[parts[0]]) parts[1] = subPublic(parts[0], parts[1], lang);
   if (parts.length && SEGMENTS[parts[0]]) parts[0] = SEGMENTS[parts[0]][lang];
   return "/" + parts.join("/");
 }
@@ -53,7 +71,10 @@ export function internalizePath(publicPath: string, lang: L): string {
   const parts = publicPath.split("/").filter(Boolean);
   if (parts.length) {
     const key = Object.keys(SEGMENTS).find((k) => SEGMENTS[k][lang] === parts[0]);
-    if (key) parts[0] = key;
+    if (key) {
+      parts[0] = key;
+      if (parts.length > 1) parts[1] = findInternalSub(key, parts[1]) ?? parts[1];
+    }
   }
   return "/" + parts.join("/");
 }
