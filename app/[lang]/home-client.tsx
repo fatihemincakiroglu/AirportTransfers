@@ -125,11 +125,11 @@ export default function Home() {
             <BookingCard />
           </div>
 
-          <div className="md:col-start-1 md:row-start-2 md:mt-7">
+          <div className="md:col-start-1 md:row-start-2 md:mt-6">
             <HeroPrice />
           </div>
 
-          <div className="flex flex-col md:col-start-1 md:row-start-3">
+          <div className="flex flex-col md:col-start-1 md:row-start-3 md:pt-2">
             {/* Güven rozetleri — 2x2 + puan kartı */}
             <div className="mt-6 grid grid-cols-2 gap-2 md:gap-3">
               {X.heroBadges.map((b, i) => (
@@ -348,29 +348,29 @@ function HeroPrice() {
     </p>
   );
   const route = (
-    <p className="font-display mt-1 whitespace-nowrap text-[1.3rem] font-medium leading-tight md:mt-1.5 md:text-[1.8rem]" style={{ color: ink }}>
+    <p className="mt-1 whitespace-nowrap text-[1.05rem] font-bold leading-tight tracking-tight md:text-[1.15rem]" style={{ color: ink }}>
       {de ? "Flughafen" : "Airport"} <span style={{ color: C.gold }}>→</span> {de ? "Zürich Stadt" : "Zurich City"}
     </p>
   );
   const meta = (
-    <p className="mt-0.5 text-[11.5px] tracking-wide md:mt-1 md:text-[12px]" style={{ color: sub }}>
+    <p className="mt-0.5 text-[11.5px]" style={{ color: sub }}>
       ~{CITY_CENTER.min} {de ? "Min." : "min"} · {de ? "pro Fahrzeug, alles inklusive" : "per vehicle, all-inclusive"}
     </p>
   );
   const price = (
-    <p className="font-display shrink-0 text-right leading-none" style={{ color: priceColor }}>
-      <span className="mr-1 align-top text-xs font-medium tracking-[0.18em] md:text-sm" style={{ color: light ? C.goldText : "rgba(255,255,255,0.6)" }}>CHF</span>
-      <span className="text-[2.6rem] font-semibold tabular-nums md:text-[3.75rem]">{city}</span>
+    <p className="shrink-0 text-right leading-none" style={{ color: priceColor }}>
+      <span className="mr-1 align-top text-[11px] font-bold tracking-[0.12em]" style={{ color: light ? C.goldText : "rgba(255,255,255,0.6)" }}>CHF</span>
+      <span className="text-[2rem] font-extrabold tracking-tight tabular-nums md:text-[2.25rem]">{city}</span>
     </p>
   );
   const list = (
-    <ul className="space-y-1 md:space-y-1.5">
+    <ul className="grid gap-y-1 md:grid-cols-2 md:gap-x-6">
       {popular.map((r) => (
         <li key={r.slug}>
-          <a href={P(`/${r.slug}`)} className="group flex items-baseline gap-2 text-[13.5px] transition-opacity hover:opacity-100" style={{ color: ink, opacity: 0.9 }}>
+          <a href={P(`/${r.slug}`)} className="group flex items-baseline gap-2 text-[13px] transition-opacity hover:opacity-100" style={{ color: ink, opacity: 0.9 }}>
             <span className="font-medium">{localName(r.to, lang)}</span>
             <span aria-hidden className="flex-1 translate-y-[-3px] border-b border-dotted" style={{ borderColor: light ? "rgba(12,46,37,0.25)" : "rgba(255,255,255,0.25)" }} />
-            <span className="font-display text-[1.05rem] font-semibold tabular-nums" style={{ color: light ? C.pine : C.gold }}>CHF {chfText(r.price)}</span>
+            <span className="text-[13px] font-bold tabular-nums" style={{ color: light ? C.pine : C.gold }}>CHF {chfText(r.price)}</span>
             <span aria-hidden className="transition-transform group-hover:translate-x-0.5" style={{ color: sub }}>›</span>
           </a>
         </li>
@@ -382,25 +382,27 @@ function HeroPrice() {
     <img src="/icons/whatsapp.png" alt="" className="h-[18px] w-[18px] rounded-full bg-white object-contain p-[1px]" />
   );
   const waLabel = de ? "Per WhatsApp anfragen" : "Ask via WhatsApp";
-  const waBase = "mt-4 flex min-h-[44px] items-center justify-center gap-2.5 rounded-full px-5 text-[12.5px] font-semibold uppercase tracking-[0.14em] transition-all hover:-translate-y-0.5 active:scale-[0.98] md:mt-5 md:min-h-[46px] md:text-[13px]";
+  const waBase = "mt-3.5 flex min-h-[42px] items-center justify-center gap-2.5 rounded-full px-5 text-[12px] font-bold uppercase tracking-[0.12em] transition-all hover:-translate-y-0.5 active:scale-[0.98]";
   // Puan + ödeme satırı. B'de kartın içinde alt bölüm (krem zemin, koyu yazı — fotoğraf üzerinde şeffaf kalmaz);
   // A/C'de kartın altında, koyu dolu zemin üzerinde.
   const rating = (inCard: boolean) => (
     <div
       className={inCard
-        ? "mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 border-t pt-3.5"
+        ? "mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t pt-2.5"
         : "mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-xl px-4 py-2.5 md:mt-4 md:max-w-[34rem]"}
       style={inCard ? { borderColor: `${C.gold}55` } : { background: "rgba(8,33,27,0.88)", boxShadow: `inset 0 0 0 1px ${C.gold}40` }}
     >
       <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2">
-        <span className="text-[14px] tracking-[0.1em]" style={{ color: inCard ? "#B8860B" : C.gold }}>★★★★★</span>
-        <span className="font-display text-xl font-semibold leading-none" style={{ color: inCard ? C.pine : "#fff" }}>{GOOGLE_RATING.value.toFixed(1)}</span>
-        <span className="text-[12.5px] font-medium underline-offset-4 group-hover:underline" style={{ color: inCard ? "rgba(12,46,37,0.8)" : "rgba(255,255,255,0.9)" }}>
+        <span className="text-[12px] tracking-[0.08em]" style={{ color: inCard ? "#B8860B" : C.gold }}>★★★★★</span>
+        <span className="text-[13px] font-extrabold leading-none" style={{ color: inCard ? C.pine : "#fff" }}>{GOOGLE_RATING.value.toFixed(1)}</span>
+        <span className="text-[12px] font-medium underline-offset-4 group-hover:underline" style={{ color: inCard ? "rgba(12,46,37,0.8)" : "rgba(255,255,255,0.9)" }}>
           {GOOGLE_RATING.count} {de ? "Google-Bewertungen" : "Google reviews"}
         </span>
       </a>
-      <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em]" style={{ color: inCard ? "rgba(12,46,37,0.7)" : "rgba(255,255,255,0.8)" }}>
-        Visa · Mastercard · TWINT · Apple Pay · Google Pay · {de ? "Bar" : "Cash"}
+      <p className="text-[10px] font-semibold uppercase tracking-[0.1em]" style={{ color: inCard ? "rgba(12,46,37,0.7)" : "rgba(255,255,255,0.8)" }}>
+        {["Visa", "Mastercard", "TWINT", "Apple Pay", "Google Pay", de ? "Bar" : "Cash"].map((m, i) => (
+          <span key={m} className="whitespace-nowrap">{i > 0 && " · "}{m}</span>
+        ))}
       </p>
     </div>
   );
@@ -418,7 +420,7 @@ function HeroPrice() {
           {popular.map((r) => (
             <a key={r.slug} href={P(`/${r.slug}`)} className="group flex items-baseline justify-between py-2 text-[13.5px] text-white/85 hover:text-white">
               <span className="font-medium tracking-wide">{localName(r.to, lang)}</span>
-              <span className="font-display text-[1.1rem] font-semibold tabular-nums" style={{ color: C.gold }}>CHF {chfText(r.price)} <span className="text-white/40 group-hover:text-white/80">›</span></span>
+              <span className="text-[13px] font-bold tabular-nums" style={{ color: C.gold }}>CHF {chfText(r.price)} <span className="text-white/40 group-hover:text-white/80">›</span></span>
             </a>
           ))}
         </div>
@@ -435,7 +437,7 @@ function HeroPrice() {
   return (
     <>
       <div
-        className="relative overflow-hidden rounded-[20px] p-4 md:max-w-[34rem] md:p-6"
+        className="relative overflow-hidden rounded-[18px] px-4 py-3.5 md:max-w-[30rem] md:px-5 md:py-4"
         style={light
           ? { background: "linear-gradient(170deg, #FBF8F1 0%, #F3EDDF 100%)", boxShadow: `0 24px 60px -24px rgba(0,0,0,0.7), inset 0 0 0 1px ${C.gold}66` }
           : { background: "linear-gradient(160deg, rgba(8,33,27,0.82) 0%, rgba(12,46,37,0.66) 100%)", boxShadow: `0 24px 60px -24px rgba(0,0,0,0.75), inset 0 0 0 1px ${C.gold}40`, backdropFilter: "blur(12px)" }}
@@ -445,7 +447,7 @@ function HeroPrice() {
           <div className="min-w-0">{eyebrow}{route}{meta}</div>
           {price}
         </div>
-        <div aria-hidden className="my-3 h-px md:my-4" style={{ background: `linear-gradient(90deg, ${C.gold}66, ${C.gold}10)` }} />
+        <div aria-hidden className="my-2.5 h-px" style={{ background: `linear-gradient(90deg, ${C.gold}66, ${C.gold}10)` }} />
         {list}
         <a href={waLink} target="_blank" rel="noopener noreferrer" data-track-location="home_hero"
           className={`${waBase} ${light ? "" : "text-white shadow-[0_8px_24px_-10px_rgba(18,140,74,0.9)] hover:brightness-110"}`}
