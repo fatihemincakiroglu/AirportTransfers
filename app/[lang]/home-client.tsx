@@ -333,8 +333,10 @@ function HeroPrice() {
   const { lang, P } = useLang();
   const de = lang === "de";
   const city = chfText(transferPrice(CITY_CENTER.km, "business_class_e"));
-  // Listede 5 şehir (rotalar dizisindeki sırayla: fiyata göre artan)
-  const popular = routes.filter((r) => ["zurich-airport-to-zug", "zurich-airport-to-luzern", "zurich-airport-to-basel", "zurich-airport-to-st-moritz", "zurich-airport-to-zermatt"].includes(r.slug));
+  // Listede 6 şehir, fiyata göre artan
+  const popular = routes
+    .filter((r) => ["zurich-airport-to-zug", "zurich-airport-to-luzern", "zurich-airport-to-basel", "zurich-airport-to-grindelwald", "zurich-airport-to-st-moritz", "zurich-airport-to-zermatt"].includes(r.slug))
+    .sort((a, b) => a.price - b.price);
   const waLink = waHref(de ? "Hallo, ich möchte einen Transfer ab Flughafen Zürich." : "Hello, I'd like a transfer from Zurich Airport.");
   const v = HERO_VARIANT;
   const light = v === "B";
