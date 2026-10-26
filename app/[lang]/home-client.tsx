@@ -3,13 +3,13 @@
 import Image from "next/image";
 
 import { useEffect, useState } from "react";
-import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor, CITY_CENTER, transferPrice, chfText } from "../config";
+import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor, CITY_CENTER, transferPrice, chfText, GOOGLE_BUSINESS_URL, GOOGLE_RATING } from "../config";
 import { t } from "../i18n";
 import { tx } from "../i18nX";
 import { useLang } from "../providers";
 import {
   TopBar, SiteHeader, SiteFooter, FloatingButtons,
-  BookingCard, RouteCard, FleetCard, Eyebrow, GoogleRatingBadge, PayBadges, localName, waHref,
+  BookingCard, RouteCard, FleetCard, Eyebrow, localName, waHref,
 } from "../components";
 
 // ── Yorum marquee'si — modül seviyesinde tanımlı (her render'da yeniden oluşmaz) ──
@@ -109,49 +109,27 @@ export default function Home() {
           </div>
         ))}
 
-        {/* Mobilde sıra: başlık + şehir fiyatı → form → güven rozetleri. Masaüstünde sol sütun üst/alt, form sağda (T7) */}
-        <div className="relative mx-auto grid max-w-7xl gap-6 px-5 pb-16 pt-5 text-white md:grid-cols-[1.15fr_0.85fr] md:grid-rows-[auto_1fr] md:gap-x-12 md:gap-y-8 md:pb-24 md:pt-24">
-          <div className="md:col-start-1 md:row-start-1 md:self-end">
+        {/* Mobilde sıra: başlık → rezervasyon formu → fiyat kartı → güven rozetleri.
+            Masaüstünde sol sütun: başlık / fiyat kartı / rozetler; form sağda (T7) */}
+        <div className="relative mx-auto grid max-w-7xl gap-6 px-5 pb-16 pt-5 text-white md:grid-cols-[1.15fr_0.85fr] md:grid-rows-[auto_auto_1fr] md:gap-x-12 md:gap-y-0 md:pb-24 md:pt-24">
+          <div className="md:col-start-1 md:row-start-1">
             <h1 className="font-display text-[2rem] font-semibold leading-[1.08] md:text-6xl">
               {lang === "de" ? "Flughafentaxi Zürich" : "Zurich Airport Taxi"}
               <span className="mt-1 block text-[1.35rem] md:text-4xl" style={{ color: C.gold }}>
                 {lang === "de" ? "Privattransfer zum Festpreis" : "Fixed-Price Private Transfer"}
               </span>
             </h1>
-            {/* Fiyat kartı: en çok aranan rota (şehir merkezi) + 2 popüler rota */}
-            <div className="mt-4 rounded-2xl bg-white/10 p-3.5 ring-1 ring-white/15 backdrop-blur md:max-w-xl">
-              <div className="flex items-center justify-between gap-3">
-                <p className="text-sm font-semibold leading-tight">
-                  {lang === "de" ? "Flughafen → Zürich Stadt" : "Airport → Zurich City"}
-                  <span className="block text-xs font-normal text-white/70">~{CITY_CENTER.min} {lang === "de" ? "Min." : "min"} · {lang === "de" ? "Festpreis pro Fahrzeug" : "fixed price per vehicle"}</span>
-                </p>
-                <p className="font-display text-3xl font-semibold" style={{ color: C.gold }}>CHF {chfText(transferPrice(CITY_CENTER.km, "business_class_e"))}</p>
-              </div>
-              <div className="mt-2.5 flex flex-wrap gap-1.5">
-                {routes.filter((r) => ["zurich-airport-to-zug", "zurich-airport-to-luzern", "zurich-airport-to-zermatt"].includes(r.slug)).map((r) => (
-                  <a key={r.slug} href={P(`/${r.slug}`)} className="rounded-full bg-white/10 px-2.5 py-1 text-xs font-bold ring-1 ring-white/20 hover:bg-white/20">
-                    {localName(r.to, lang)} · CHF {chfText(r.price)}
-                  </a>
-                ))}
-              </div>
-              <a
-                href={waHref(lang === "de" ? "Hallo, ich möchte einen Transfer ab Flughafen Zürich." : "Hello, I'd like a transfer from Zurich Airport.")}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-track-location="home_hero"
-                className="mt-3 flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-[#128C4A] px-4 text-sm font-extrabold text-white active:scale-95"
-              >
-                💬 {lang === "de" ? "Preis per WhatsApp anfragen" : "Ask via WhatsApp"}
-              </a>
-            </div>
           </div>
 
-          <div className="md:col-start-2 md:row-span-2 md:row-start-1">
+          <div className="md:col-start-2 md:row-span-3 md:row-start-1">
             <BookingCard />
           </div>
 
-          <div className="flex flex-col md:col-start-1 md:row-start-2">
-            <div className="mb-4 flex flex-wrap items-center gap-2"><GoogleRatingBadge dark /><PayBadges dark /></div>
+          <div className="md:col-start-1 md:row-start-2 md:mt-7">
+            <HeroPrice />
+          </div>
+
+          <div className="flex flex-col md:col-start-1 md:row-start-3">
             {/* Güven rozetleri — 2x2 + puan kartı */}
             <div className="mt-6 grid grid-cols-2 gap-2 md:gap-3">
               {X.heroBadges.map((b, i) => (
@@ -345,5 +323,130 @@ export default function Home() {
       <SiteFooter />
       <FloatingButtons />
     </div>
+  );
+}
+
+// ── Ana sayfa fiyat kartı — tasarım seçenekleri (A: koyu cam · B: fildişi · C: editoryal) ──
+const HERO_VARIANT: "A" | "B" | "C" = "B"; // seçilen: B (fildişi kart) — 26.10.2026
+
+function HeroPrice() {
+  const { lang, P } = useLang();
+  const de = lang === "de";
+  const city = chfText(transferPrice(CITY_CENTER.km, "business_class_e"));
+  const popular = routes.filter((r) => ["zurich-airport-to-zug", "zurich-airport-to-luzern", "zurich-airport-to-zermatt"].includes(r.slug));
+  const waLink = waHref(de ? "Hallo, ich möchte einen Transfer ab Flughafen Zürich." : "Hello, I'd like a transfer from Zurich Airport.");
+  const v = HERO_VARIANT;
+  const light = v === "B";
+  const ink = light ? C.pine : "#fff";
+  const sub = light ? "rgba(12,46,37,0.6)" : "rgba(255,255,255,0.55)";
+  const priceColor = light ? C.pine : C.gold;
+
+  const eyebrow = (
+    <p className="whitespace-nowrap text-[9.5px] font-semibold uppercase tracking-[0.22em] md:text-[10px] md:tracking-[0.32em]" style={{ color: light ? C.goldText : C.gold }}>
+      {de ? "Meistgebucht · Festpreis" : "Most booked · Fixed fare"}
+    </p>
+  );
+  const route = (
+    <p className="font-display mt-1 whitespace-nowrap text-[1.3rem] font-medium leading-tight md:mt-1.5 md:text-[1.8rem]" style={{ color: ink }}>
+      {de ? "Flughafen" : "Airport"} <span style={{ color: C.gold }}>→</span> {de ? "Zürich Stadt" : "Zurich City"}
+    </p>
+  );
+  const meta = (
+    <p className="mt-0.5 text-[11.5px] tracking-wide md:mt-1 md:text-[12px]" style={{ color: sub }}>
+      ~{CITY_CENTER.min} {de ? "Min." : "min"} · {de ? "pro Fahrzeug, alles inklusive" : "per vehicle, all-inclusive"}
+    </p>
+  );
+  const price = (
+    <p className="font-display shrink-0 text-right leading-none" style={{ color: priceColor }}>
+      <span className="mr-1 align-top text-xs font-medium tracking-[0.18em] md:text-sm" style={{ color: light ? C.goldText : "rgba(255,255,255,0.6)" }}>CHF</span>
+      <span className="text-[2.6rem] font-semibold tabular-nums md:text-[3.75rem]">{city}</span>
+    </p>
+  );
+  const list = (
+    <ul className="space-y-1 md:space-y-1.5">
+      {popular.map((r) => (
+        <li key={r.slug}>
+          <a href={P(`/${r.slug}`)} className="group flex items-baseline gap-2 text-[13.5px] transition-opacity hover:opacity-100" style={{ color: ink, opacity: 0.9 }}>
+            <span className="font-medium">{localName(r.to, lang)}</span>
+            <span aria-hidden className="flex-1 translate-y-[-3px] border-b border-dotted" style={{ borderColor: light ? "rgba(12,46,37,0.25)" : "rgba(255,255,255,0.25)" }} />
+            <span className="font-display text-[1.05rem] font-semibold tabular-nums" style={{ color: light ? C.pine : C.gold }}>CHF {chfText(r.price)}</span>
+            <span aria-hidden className="transition-transform group-hover:translate-x-0.5" style={{ color: sub }}>›</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+  const waIcon = (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src="/icons/whatsapp.png" alt="" className="h-[18px] w-[18px] rounded-full bg-white object-contain p-[1px]" />
+  );
+  const waLabel = de ? "Per WhatsApp anfragen" : "Ask via WhatsApp";
+  const waBase = "mt-4 flex min-h-[44px] items-center justify-center gap-2.5 rounded-full px-5 text-[12.5px] font-semibold uppercase tracking-[0.14em] transition-all hover:-translate-y-0.5 active:scale-[0.98] md:mt-5 md:min-h-[46px] md:text-[13px]";
+  const rating = (
+    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 md:mt-4 md:max-w-[34rem]">
+      <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2">
+        <span className="text-[13px] tracking-[0.12em]" style={{ color: C.gold }}>★★★★★</span>
+        <span className="font-display text-lg font-semibold leading-none text-white">{GOOGLE_RATING.value.toFixed(1)}</span>
+        <span className="text-[12px] text-white/60 underline-offset-4 group-hover:text-white group-hover:underline">
+          {GOOGLE_RATING.count} {de ? "Google-Bewertungen" : "Google reviews"}
+        </span>
+      </a>
+      <span aria-hidden className="hidden h-4 w-px bg-white/20 md:block" />
+      <p className="hidden text-[11px] uppercase tracking-[0.16em] text-white/50 md:block">
+        Visa · Mastercard · TWINT · Apple Pay · Google Pay · {de ? "Bar" : "Cash"}
+      </p>
+    </div>
+  );
+
+  // C — editoryal: kutu yok; altın dikey çizgi, büyük serif fiyat, ince çizgili liste, çerçeveli buton
+  if (v === "C") return (
+    <>
+      <div className="relative md:max-w-[34rem]" style={{ paddingLeft: 18, borderLeft: `1px solid ${C.gold}` }}>
+        {eyebrow}
+        <div className="mt-1 flex items-end justify-between gap-4">
+          <div className="min-w-0">{route}{meta}</div>
+          {price}
+        </div>
+        <div className="mt-4 divide-y divide-white/10 border-y border-white/10">
+          {popular.map((r) => (
+            <a key={r.slug} href={P(`/${r.slug}`)} className="group flex items-baseline justify-between py-2 text-[13.5px] text-white/85 hover:text-white">
+              <span className="font-medium tracking-wide">{localName(r.to, lang)}</span>
+              <span className="font-display text-[1.1rem] font-semibold tabular-nums" style={{ color: C.gold }}>CHF {chfText(r.price)} <span className="text-white/40 group-hover:text-white/80">›</span></span>
+            </a>
+          ))}
+        </div>
+        <a href={waLink} target="_blank" rel="noopener noreferrer" data-track-location="home_hero"
+          className={`${waBase} border text-white hover:bg-white/10`} style={{ borderColor: `${C.gold}99` }}>
+          {waIcon}{waLabel}
+        </a>
+      </div>
+      {rating}
+    </>
+  );
+
+  // A — koyu cam panel / B — fildişi kart
+  return (
+    <>
+      <div
+        className="relative overflow-hidden rounded-[20px] p-4 md:max-w-[34rem] md:p-6"
+        style={light
+          ? { background: "linear-gradient(170deg, #FBF8F1 0%, #F3EDDF 100%)", boxShadow: `0 24px 60px -24px rgba(0,0,0,0.7), inset 0 0 0 1px ${C.gold}66` }
+          : { background: "linear-gradient(160deg, rgba(8,33,27,0.82) 0%, rgba(12,46,37,0.66) 100%)", boxShadow: `0 24px 60px -24px rgba(0,0,0,0.75), inset 0 0 0 1px ${C.gold}40`, backdropFilter: "blur(12px)" }}
+      >
+        <span aria-hidden className="absolute inset-x-6 top-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${C.gold}, transparent)` }} />
+        <div className="flex items-end justify-between gap-4">
+          <div className="min-w-0">{eyebrow}{route}{meta}</div>
+          {price}
+        </div>
+        <div aria-hidden className="my-3 h-px md:my-4" style={{ background: `linear-gradient(90deg, ${C.gold}66, ${C.gold}10)` }} />
+        {list}
+        <a href={waLink} target="_blank" rel="noopener noreferrer" data-track-location="home_hero"
+          className={`${waBase} ${light ? "" : "text-white shadow-[0_8px_24px_-10px_rgba(18,140,74,0.9)] hover:brightness-110"}`}
+          style={light ? { background: C.pine, color: "#fff" } : { background: "linear-gradient(180deg, #17a058 0%, #0f7a40 100%)" }}>
+          {waIcon}{waLabel}
+        </a>
+      </div>
+      {rating}
+    </>
   );
 }
