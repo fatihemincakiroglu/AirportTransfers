@@ -60,8 +60,8 @@ export function ExtrasCounter({ title, desc, freeLabel, value, onBump }: {
 
 // ── İlk ekran güven sinyalleri (iş listesi T2/T8/T16) ─────────
 const TRUST = {
-  en: ["Fixed price · No extras", "Meet & greet + 60 min free waiting", "Pay in the car (cash, card, TWINT) or online"],
-  de: ["Festpreis · Keine Zuschläge", "Meet & Greet + 60 Min. gratis Wartezeit", "Bezahlen im Fahrzeug (bar, Karte, TWINT) oder online"],
+  en: ["Fixed price · No extras", "Pay in the car (cash, card, TWINT) or online"],
+  de: ["Festpreis · Keine Zuschläge", "Bezahlen im Fahrzeug (bar, Karte, TWINT) oder online"],
 };
 export function TrustLine({ dark = false, className = "" }: { dark?: boolean; className?: string }) {
   const { lang } = useLang();
