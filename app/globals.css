@@ -77,3 +77,26 @@ html, body {
   aside, header, nav { display: none !important; }
   main { padding: 0 !important; margin: 0 !important; }
 }
+
+
+/* Mobil: tarih/saat alanında takvim/saat ikonu metnin üstüne binmesin */
+input[type="date"],
+input[type="time"] {
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  margin: 0 0 0 2px;
+  padding: 0;
+  width: 14px;
+  height: 14px;
+  opacity: 0.6;
+}
+/* iOS Safari: boş tarih/saat alanı yüksekliğini kaybetmesin, metin sola hizalı kalsın */
+input[type="date"]::-webkit-date-and-time-value,
+input[type="time"]::-webkit-date-and-time-value {
+  text-align: left;
+  min-height: 1.25rem;
+}

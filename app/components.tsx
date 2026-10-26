@@ -118,14 +118,14 @@ export function TopBar() {
     <div style={{ background: C.pine }} className="text-white/80" data-track-location="header">
       <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-2 px-3 py-2 sm:gap-3 sm:px-5 sm:py-2.5">
         <span
-          className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
+          className="min-w-0 truncate text-[10px] font-semibold uppercase tracking-[0.1em] sm:text-[11px] sm:tracking-[0.2em]"
           style={{ color: C.gold }}
         >
           ✈ {lang === "de" ? "Flughafen Zürich Transfer" : "Zurich Airport Private Transfer"}
         </span>
 
         {/* Dil geçişi — DE | EN */}
-        <div className="flex items-center gap-1 rounded-full p-0.5" style={{ background: "rgba(255,255,255,0.08)" }}>
+        <div className="flex shrink-0 items-center gap-1 rounded-full p-0.5" style={{ background: "rgba(255,255,255,0.08)" }}>
           {LANGS.map((c) => {
             const active = lang === c;
             return (
@@ -332,9 +332,9 @@ export const isPastDateTime = (date: string, time: string) => isPastZurich(date,
 export const isTooSoonDateTime = (date: string, time: string) => !isPastZurich(date, time) && isTooSoonZurich(date, time);
 
 export const fieldWrap =
-  "group relative flex h-12 items-center gap-2.5 rounded-xl border border-stone-200 bg-[#FAF9F4] px-3.5 transition-all focus-within:border-[#C9A24B] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#C9A24B]/15";
+  "group relative flex h-12 min-w-0 items-center gap-2 rounded-xl border border-stone-200 bg-[#FAF9F4] px-3 transition-all sm:gap-2.5 sm:px-3.5 focus-within:border-[#C9A24B] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#C9A24B]/15";
 export const fieldInput =
-  "w-full bg-transparent text-sm font-semibold text-stone-800 outline-none placeholder:font-normal placeholder:text-stone-400";
+  "w-full min-w-0 bg-transparent text-sm font-semibold text-stone-800 outline-none placeholder:font-normal placeholder:text-stone-400";
 
 /** Aksan/harf duyarsız arama: "zurich" → "Zürich" bulur */
 export const norm = (s: string) =>
@@ -569,7 +569,7 @@ export function BookingCard() {
             suffix={X.hourly.hoursShort}
             onChange={setHours}
           />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-3 sm:gap-4">
             <div>
               <label className="block">
               <span className={labelCls}>📅 {L.form.date}</span>
@@ -646,7 +646,7 @@ export function BookingCard() {
         )}
 
         {/* Tarih / Saat */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-3 sm:gap-4">
           <div>
             <label className="block">
             <span className={labelCls}>📅 {L.form.date}</span>
@@ -666,7 +666,7 @@ export function BookingCard() {
         </div>
 
         {/* Yolcu / Çocuk */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           <SelectField
             label={L.form.pax}
             icon="👥"
@@ -910,7 +910,7 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             <li><a href={P("/impressum")} className="hover:text-white">{lang === "de" ? "Impressum" : "Imprint"}</a></li>
           </ul>
         </div>
-        <div>
+        <div className="col-span-2 min-w-0 md:col-span-1">
           <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.2em] text-white">{L.footer.support}</h2>
           <ul className="space-y-4 text-sm">
             <li className="flex items-center gap-3">
@@ -922,9 +922,9 @@ export function SiteFooter({ compact }: { compact?: boolean }) {
             </li>
             <li className="flex items-center gap-3">
               <span className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: "rgba(201,162,75,0.15)", color: C.gold }}>✉️</span>
-              <span>
+              <span className="min-w-0">
                 <span className="block text-[10px] uppercase tracking-[0.15em] text-white/45">{L.footer.writeUs}</span>
-                <a href={`mailto:${CONTACT_EMAIL}`} className="font-bold text-white hover:underline">{CONTACT_EMAIL}</a>
+                <a href={`mailto:${CONTACT_EMAIL}`} className="break-words font-bold text-white hover:underline">{CONTACT_EMAIL}</a>
               </span>
             </li>
             <li className="flex items-center gap-3">
@@ -986,8 +986,8 @@ export function FloatingButtons({ hideBook = false }: { hideBook?: boolean } = {
 
   return (
     <>
-      {/* Masaüstü: sağda buzlu cam dock */}
-      <div data-track-location="floating_button" className="fixed right-4 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur md:flex">
+      {/* Geniş ekran (≥1400 px): sağda buzlu cam dock — daha dar ekranlarda içeriğin (rezervasyon formu) üstüne biniyordu */}
+      <div data-track-location="floating_button" className="fixed right-4 top-1/2 z-50 hidden -translate-y-1/2 flex-col gap-1 rounded-2xl bg-white/90 p-1.5 shadow-xl ring-1 ring-black/10 backdrop-blur min-[1400px]:flex">
         <a href={waHref()} target="_blank" rel="noopener noreferrer" aria-label={labels.wa} className={btn}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/icons/whatsapp.png" alt="" className={icon} />
@@ -1008,16 +1008,16 @@ export function FloatingButtons({ hideBook = false }: { hideBook?: boolean } = {
       </div>
 
       {/* Mobil: içerik alt çubuğun arkasında kalmasın diye boşluk */}
-      <div aria-hidden className="h-[76px] md:hidden" />
+      <div aria-hidden className="h-[76px] min-[1400px]:hidden" />
 
-      {/* Mobil: altta sabit eylem çubuğu */}
+      {/* Mobil + tablet + küçük dizüstü (<1400 px): altta sabit eylem çubuğu */}
       <div
         data-track-location="mobile_sticky"
-        className="fixed inset-x-0 bottom-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur md:hidden"
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-stone-200 bg-white/95 backdrop-blur min-[1400px]:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         {/* Rezervasyon sayfasında "Book" yok: aynı sayfayı yeniden yükleyip formu sıfırlıyordu (T4) */}
-        <div className={`grid gap-2 p-2.5 ${hideBook ? "grid-cols-2" : "grid-cols-3"}`}>
+        <div className={`mx-auto grid max-w-xl gap-2 p-2.5 ${hideBook ? "grid-cols-2" : "grid-cols-3"}`}>
           <a
             href={waHref()}
             target="_blank"

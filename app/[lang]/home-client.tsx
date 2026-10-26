@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { C, HERO_IMAGES, SLIDE_MS, routes, fleet, gallery, altFor, CITY_CENTER, transferPrice, chfText, GOOGLE_BUSINESS_URL, GOOGLE_RATING } from "../config";
 import { t } from "../i18n";
 import { tx } from "../i18nX";
@@ -111,7 +111,7 @@ export default function Home() {
 
         {/* Mobilde sıra: başlık → rezervasyon formu → fiyat kartı → güven rozetleri.
             Masaüstünde sol sütun: başlık / fiyat kartı / rozetler; form sağda (T7) */}
-        <div className="relative mx-auto grid max-w-7xl gap-6 px-5 pb-16 pt-5 text-white md:grid-cols-[1.15fr_0.85fr] md:grid-rows-[auto_auto_1fr] md:gap-x-12 md:gap-y-0 md:pb-24 md:pt-24">
+        <div className="relative mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)] gap-6 px-5 pb-16 pt-5 text-white md:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] md:grid-rows-[auto_auto_1fr] md:gap-x-12 md:gap-y-0 md:pb-24 md:pt-24">
           <div className="md:col-start-1 md:row-start-1">
             <h1 className="font-display text-[2rem] font-semibold leading-[1.08] md:text-6xl">
               {lang === "de" ? "Flughafentaxi Zürich" : "Zurich Airport Taxi"}
@@ -345,12 +345,12 @@ function HeroPrice() {
   const priceColor = light ? C.pine : C.gold;
 
   const eyebrow = (
-    <p className="whitespace-nowrap text-[9.5px] font-semibold uppercase tracking-[0.22em] md:text-[10px] md:tracking-[0.32em]" style={{ color: light ? C.goldText : C.gold }}>
+    <p className="text-[9.5px] font-semibold uppercase tracking-[0.2em] md:text-[10px] md:tracking-[0.32em]" style={{ color: light ? C.goldText : C.gold }}>
       {de ? "Meistgebucht · Festpreis" : "Most booked · Fixed fare"}
     </p>
   );
   const route = (
-    <p className="mt-1 whitespace-nowrap text-[1.05rem] font-bold leading-tight tracking-tight md:text-[1.15rem]" style={{ color: ink }}>
+    <p className="mt-1 text-[1.05rem] font-bold leading-tight tracking-tight md:text-[1.15rem]" style={{ color: ink }}>
       {de ? "Flughafen" : "Airport"} <span style={{ color: C.gold }}>→</span> {de ? "Zürich Stadt" : "Zurich City"}
     </p>
   );
@@ -401,9 +401,9 @@ function HeroPrice() {
           {GOOGLE_RATING.count} {de ? "Google-Bewertungen" : "Google reviews"}
         </span>
       </a>
-      <p className="text-[10px] font-semibold uppercase tracking-[0.1em]" style={{ color: inCard ? "rgba(12,46,37,0.7)" : "rgba(255,255,255,0.8)" }}>
+      <p className="w-full min-w-0 text-[10px] font-semibold uppercase tracking-[0.1em] md:w-auto" style={{ color: inCard ? "rgba(12,46,37,0.7)" : "rgba(255,255,255,0.8)" }}>
         {["Visa", "Mastercard", "TWINT", "Apple Pay", "Google Pay", de ? "Bar" : "Cash"].map((m, i) => (
-          <span key={m} className="whitespace-nowrap">{i > 0 && " · "}{m}</span>
+          <Fragment key={m}>{i > 0 && " · "}<span className="whitespace-nowrap">{m}</span></Fragment>
         ))}
       </p>
     </div>

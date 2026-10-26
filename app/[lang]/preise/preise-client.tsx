@@ -14,7 +14,7 @@ const SAMPLE_KM = [10, 25, 50, 100, 150, 250];
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-baseline gap-4">
-      <h2 className="shrink-0 text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: C.pine }}>
+      <h2 className="min-w-0 text-[11px] font-bold uppercase tracking-[0.22em] sm:shrink-0" style={{ color: C.pine }}>
         {children}
       </h2>
       <span aria-hidden className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${C.gold}66, transparent 70%)` }} />

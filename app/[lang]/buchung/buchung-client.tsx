@@ -707,7 +707,7 @@ export default function Buchung() {
               )}
 
               {/* Tarih / Saat */}
-              <div className="mt-4 grid grid-cols-2 gap-4">
+              <div className="mt-4 grid grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-3 sm:gap-4">
                 <div>
                   <label className="block">
                   <span className={labelCls}>📅 {L.form.date}</span>

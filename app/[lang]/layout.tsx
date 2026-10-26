@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { LangProvider } from "../providers";
 import VisitTracker from "../visit-tracker";
@@ -29,6 +29,18 @@ type Params = { params: Promise<{ lang: string }> };
 export function generateStaticParams() {
   return LANGS.map((lang) => ({ lang }));
 }
+
+/**
+ * Mobil: iPhone Safari, 16 px'ten küçük yazılı bir alana dokunulunca sayfayı otomatik yakınlaştırıp
+ * kaydırıyordu (form alanları 14 px). maximumScale: 1 bu otomatik yakınlaştırmayı engeller;
+ * iOS'ta iki parmakla yakınlaştırma çalışmaya devam eder.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#0C2E25",
+};
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { lang: rawLang } = await params;

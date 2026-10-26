@@ -159,7 +159,7 @@ export function ConsentBanner() {
       role="dialog"
       aria-modal="false"
       aria-label={T.title}
-      className={`fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-white p-5 text-stone-800 shadow-2xl ring-1 ring-black/10 md:inset-x-auto md:bottom-5 md:right-5 ${extra}`}
+      className={`fixed inset-x-3 bottom-3 z-[60] mx-auto max-w-xl rounded-2xl bg-white p-5 text-stone-800 shadow-2xl ring-1 ring-black/10 md:inset-x-auto md:bottom-[92px] md:right-5 min-[1400px]:bottom-5 ${extra}`}
     >
       <span className="absolute inset-x-0 top-0 h-1 rounded-t-2xl" style={{ background: C.gold }} />
       <p className="font-display text-lg font-semibold" style={{ color: C.pine }}>{T.title}</p>
