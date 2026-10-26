@@ -383,17 +383,23 @@ function HeroPrice() {
   );
   const waLabel = de ? "Per WhatsApp anfragen" : "Ask via WhatsApp";
   const waBase = "mt-4 flex min-h-[44px] items-center justify-center gap-2.5 rounded-full px-5 text-[12.5px] font-semibold uppercase tracking-[0.14em] transition-all hover:-translate-y-0.5 active:scale-[0.98] md:mt-5 md:min-h-[46px] md:text-[13px]";
-  const rating = (
-    <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 md:mt-4 md:max-w-[34rem]">
+  // Puan + ödeme satırı. B'de kartın içinde alt bölüm (krem zemin, koyu yazı — fotoğraf üzerinde şeffaf kalmaz);
+  // A/C'de kartın altında, koyu dolu zemin üzerinde.
+  const rating = (inCard: boolean) => (
+    <div
+      className={inCard
+        ? "mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 border-t pt-3.5"
+        : "mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 rounded-xl px-4 py-2.5 md:mt-4 md:max-w-[34rem]"}
+      style={inCard ? { borderColor: `${C.gold}55` } : { background: "rgba(8,33,27,0.88)", boxShadow: `inset 0 0 0 1px ${C.gold}40` }}
+    >
       <a href={GOOGLE_BUSINESS_URL} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-2">
-        <span className="text-[13px] tracking-[0.12em]" style={{ color: C.gold }}>★★★★★</span>
-        <span className="font-display text-lg font-semibold leading-none text-white">{GOOGLE_RATING.value.toFixed(1)}</span>
-        <span className="text-[12px] text-white/60 underline-offset-4 group-hover:text-white group-hover:underline">
+        <span className="text-[14px] tracking-[0.1em]" style={{ color: inCard ? "#B8860B" : C.gold }}>★★★★★</span>
+        <span className="font-display text-xl font-semibold leading-none" style={{ color: inCard ? C.pine : "#fff" }}>{GOOGLE_RATING.value.toFixed(1)}</span>
+        <span className="text-[12.5px] font-medium underline-offset-4 group-hover:underline" style={{ color: inCard ? "rgba(12,46,37,0.8)" : "rgba(255,255,255,0.9)" }}>
           {GOOGLE_RATING.count} {de ? "Google-Bewertungen" : "Google reviews"}
         </span>
       </a>
-      <span aria-hidden className="hidden h-4 w-px bg-white/20 md:block" />
-      <p className="hidden text-[11px] uppercase tracking-[0.16em] text-white/50 md:block">
+      <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em]" style={{ color: inCard ? "rgba(12,46,37,0.7)" : "rgba(255,255,255,0.8)" }}>
         Visa · Mastercard · TWINT · Apple Pay · Google Pay · {de ? "Bar" : "Cash"}
       </p>
     </div>
@@ -421,7 +427,7 @@ function HeroPrice() {
           {waIcon}{waLabel}
         </a>
       </div>
-      {rating}
+      {rating(false)}
     </>
   );
 
@@ -446,8 +452,9 @@ function HeroPrice() {
           style={light ? { background: C.pine, color: "#fff" } : { background: "linear-gradient(180deg, #17a058 0%, #0f7a40 100%)" }}>
           {waIcon}{waLabel}
         </a>
+        {light && rating(true)}
       </div>
-      {rating}
+      {!light && rating(false)}
     </>
   );
 }
