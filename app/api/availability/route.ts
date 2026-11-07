@@ -12,10 +12,10 @@ import { NextRequest, NextResponse } from "next/server";
 export const runtime = "nodejs";
 
 /** Gece kuralının geçerli olduğu saat aralığı (İsviçre saati) */
-export const NIGHT_START = 23; // 23:00'ten itibaren
-export const NIGHT_END = 6;    // 06:00'ya kadar
+const NIGHT_START = 23; // 23:00'ten itibaren
+const NIGHT_END = 6;    // 06:00'ya kadar
 /** Gece saatlerinde istenen asgari ön süre */
-export const NIGHT_LEAD_HOURS = 2;
+const NIGHT_LEAD_HOURS = 2;
 
 const toMinutes = (t: string) => {
   const [h, m] = t.split(":").map(Number);
