@@ -16,7 +16,7 @@
     "ios_saf >= 16.4"
   ],
   "dependencies": {
-    "next": "16.2.12",
+    "next": "^16.4.5",
     "nodemailer": "^10.0.1",
     "pdf-lib": "^1.17.1",
     "postgres": "^3.4.5",
@@ -30,7 +30,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.12",
+    "eslint-config-next": "^16.4.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
