@@ -7,7 +7,7 @@ import { internalizePath, LANGS } from "./paths";
 import { resolveSlug } from "./slugs";
 import {
   pushPageContext, sanitizeBrowserUrl, safeReferrer, pageLocation,
-  trackContactClick, trackLanguageChange, routeId, waRef, getAttribution, type PageType, type PageContext,
+  trackContactClick, trackLanguageChange, routeId, waRef, getAttribution, hasMarketingConsent, type PageType, type PageContext,
 } from "./lib/analytics";
 
 /**
@@ -25,7 +25,7 @@ function decorateWhatsApp(a: HTMLAnchorElement, lang: string): string {
   } catch { /* bozuk href: dokunma */ }
   // Kod ↔ reklam kaynağı eşlemesi (gclid/gbraid/wbraid/UTM) sunucuda saklanır
   try {
-    const body = JSON.stringify({ ref, lang, page: window.location.pathname, ...getAttribution() });
+    const body = JSON.stringify({ ref, lang, page: window.location.pathname, marketing_consent: hasMarketingConsent(), ...getAttribution() });
     if (navigator.sendBeacon) navigator.sendBeacon("/api/wa-ref", new Blob([body], { type: "application/json" }));
     else fetch("/api/wa-ref", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true });
   } catch { /* ölçüm akışı bozmaz */ }

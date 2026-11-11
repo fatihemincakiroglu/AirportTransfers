@@ -2,6 +2,7 @@
 // reklam tıklama kimliği (gclid/gbraid/wbraid) ve kampanya bulunur → satış Google Ads'e offline dönüşüm olarak yüklenir.
 import { sql, ensureSchemaSafe as ensureSchema, dbReady } from "../../../lib/db";
 import { PageTitle, NoDb } from "../../ui";
+import SaleForm from "./sale-form";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,10 @@ type Row = {
   utm_source: string | null; utm_campaign: string | null; utm_term: string | null;
   landing_page: string | null; last_page: string | null; lang: string | null; clicks: number;
   created_at: Date; last_click_at: Date;
+  sale_status: string | null; sale_value_chf: string | null; sale_at: Date | null; is_test: boolean; marketing_consent: boolean | null;
 };
+/** Satış anı input değerleri için İsviçre saatiyle "YYYY-MM-DD HH:MM" */
+const zurichLocal = (d: Date) => new Date(d).toLocaleString("sv-SE", { timeZone: "Europe/Zurich" }).slice(0, 16);
 
 const fmt = (d: Date) => new Date(d).toLocaleString("tr-TR", { timeZone: "Europe/Zurich", dateStyle: "short", timeStyle: "short" });
 
@@ -22,34 +26,41 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ q
     ? await sql`SELECT * FROM wa_refs WHERE ref LIKE ${q + "%"} ORDER BY last_click_at DESC LIMIT 50`
     : await sql`SELECT * FROM wa_refs ORDER BY last_click_at DESC LIMIT 300`) as unknown as Row[];
   const ads = rows.filter((r) => r.gclid || r.gbraid || r.wbraid).length;
+  const sales = rows.filter((r) => r.sale_status === "sale").length;
 
   return (
     <>
-      <PageTitle title="WhatsApp Ref" sub={`${rows.length} kod · ${ads} tanesi Google Ads tıklamasından`} />
+      <PageTitle title="WhatsApp Ref" sub={`${rows.length} kod · ${ads} tanesi Google Ads tıklamasından · ${sales} satış girildi`} />
       <div className="mb-4 flex flex-wrap items-center gap-3">
         <form className="flex gap-2">
           <input name="q" defaultValue={q} placeholder="Ref kodu (ör. G7K2QX)" className="h-10 rounded-lg border border-stone-300 px-3 font-mono text-sm uppercase" />
           <button className="h-10 rounded-lg bg-stone-900 px-4 text-sm font-bold text-white">Ara</button>
         </form>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- dosya indirme (API) */}
-        <a href="/api/admin/export?type=wa_refs" className="text-sm font-bold underline">CSV indir (Google Ads offline dönüşüm için)</a>
+        <a href="/api/admin/export?type=ads_conversions" className="rounded-lg bg-emerald-800 px-3 py-2 text-sm font-bold text-white">Google Ads dışa aktarma (CSV)</a>
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- dosya indirme (API) */}
+        <a href="/api/admin/export?type=wa_refs" className="text-sm font-bold underline">Ham Ref listesi (CSV)</a>
       </div>
       <p className="mb-4 max-w-3xl text-sm text-stone-600">
-        Müşterinin WhatsApp mesajının sonundaki <b>Ref</b> kodunu arayın. GCLID / GBRAID / WBRAID doluysa müşteri reklamdan gelmiştir;
-        satış kapanınca bu kimlik, tarih ve tutarla Google Ads&apos;e offline dönüşüm olarak yüklenir.
+        Müşterinin WhatsApp mesajının sonundaki <b>Ref</b> kodunu arayın ve <b>Düzenle</b> ile sonucu girin:
+        <b> Satış oldu</b> (tahsil edilen tutar + yolculuk/ödeme tarihi) ya da <b>Satış olmadı</b>. Haftalık
+        <b> Google Ads dışa aktarma</b> dosyası bu kayıtları web rezervasyonlarıyla birlikte verir; reklamcı yüklemeyi oradan yapar.
       </p>
       <div className="overflow-x-auto rounded-xl bg-white shadow-sm ring-1 ring-black/5">
         <table className="w-full text-left text-xs">
           <thead className="bg-stone-50 text-[11px] uppercase tracking-wider text-stone-500">
             <tr>
-              <th className="px-3 py-2">Ref</th><th className="px-3 py-2">Son tıklama</th><th className="px-3 py-2">Kaynak</th>
+              <th className="px-3 py-2">Ref</th><th className="px-3 py-2">Satış</th><th className="px-3 py-2">Son tıklama</th><th className="px-3 py-2">Kaynak</th>
               <th className="px-3 py-2">Kampanya / terim</th><th className="px-3 py-2">Tıklama kimliği</th><th className="px-3 py-2">Sayfa</th><th className="px-3 py-2">Tık</th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.ref} className="border-t border-stone-100 align-top">
-                <td className="px-3 py-2 font-mono font-bold">{r.ref}</td>
+                <td className="px-3 py-2 font-mono font-bold">{r.ref}{r.marketing_consent === false && <span title="Çerez izni yok" className="ml-1 text-[10px] font-normal text-stone-400">izinsiz</span>}</td>
+                <td className="px-3 py-2">
+                  <SaleForm ref_={r.ref} status={r.sale_status} value={r.sale_value_chf} saleAt={r.sale_at ? zurichLocal(r.sale_at).replace(" ", "T") : null} isTest={r.is_test} />
+                </td>
                 <td className="whitespace-nowrap px-3 py-2">{fmt(r.last_click_at)}</td>
                 <td className="px-3 py-2">{r.utm_source ?? (r.gclid || r.gbraid || r.wbraid ? "google (ads)" : "—")}</td>
                 <td className="px-3 py-2">{[r.utm_campaign, r.utm_term].filter(Boolean).join(" · ") || "—"}</td>

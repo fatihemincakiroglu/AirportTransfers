@@ -148,6 +148,8 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ ok: false }, { status: 400 });
     }
     await sql`UPDATE bookings SET status = ${status}, updated_at = now() WHERE id = ${id}`;
+    // Offline dönüşüm: satışın gerçekleştiği an = ilk "Tamamlandı" işareti
+    if (status === "done") await sql`UPDATE bookings SET completed_at = COALESCE(completed_at, now()) WHERE id = ${id}`;
     const TR: Record<string, string> = { new: "Yeni", confirmed: "Onaylandı", done: "Tamamlandı", cancelled: "İptal edildi", no_show: "Gelmedi" };
     if (status === "done") after(() => emitBookingEvent("booking_completed", id));
     if (status === "no_show") after(() => emitBookingEvent("booking_no_show", id));
@@ -161,14 +163,14 @@ export async function PATCH(req: NextRequest) {
   if (fields && typeof fields === "object") {
     const EDITABLE = ["pickup","dropoff","stops","ride_date","ride_time","pax","luggage",
       "vehicle","price","payment","first_name","last_name","email","phone","flight",
-      "nameboard","extras","notes"] as const;
+      "nameboard","extras","notes","collected_chf"] as const;
     const num = (v: unknown) => (v === "" || v === null || v === undefined ? null : Number(v));
     const changed: string[] = [];
 
     for (const key of EDITABLE) {
       if (!(key in fields)) continue;
       const raw = fields[key];
-      const val = ["pax","luggage","price"].includes(key) ? num(raw) : (raw === "" ? null : String(raw));
+      const val = ["pax","luggage","price","collected_chf"].includes(key) ? num(raw) : (raw === "" ? null : String(raw));
       await sql`UPDATE bookings SET ${sql(key)} = ${val as never}, updated_at = now() WHERE id = ${id}`;
       changed.push(key);
     }

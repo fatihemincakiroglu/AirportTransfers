@@ -25,13 +25,17 @@ export async function GET(req: NextRequest) {
       RETURNING id`) as unknown as { id: number }[];
     drafts = rows.length;
   }
-  // WhatsApp ref kayıtları 12 ay sonra silinir (gizlilik politikasında belirtildiği gibi)
+  // Reklam ölçüm verisi 120 gün saklanır (gizlilik politikası; Google Ads tıklama yüklemesi 90 gün içinde):
+  // WhatsApp Ref kayıtları silinir; rezervasyonlarda yalnızca tıklama kimlikleri boşaltılır (rezervasyon kalır)
   let waRefs = 0;
   if (dbReady) {
     try {
-      const r = (await sql`DELETE FROM wa_refs WHERE last_click_at < now() - interval '12 months' RETURNING ref`) as unknown as { ref: string }[];
+      const r = (await sql`DELETE FROM wa_refs WHERE coalesce(sale_at, last_click_at) < now() - interval '120 days' RETURNING ref`) as unknown as { ref: string }[];
       waRefs = r.length;
-    } catch { /* tablo henüz yoksa */ }
+      await sql`
+        UPDATE bookings SET gclid = NULL, gbraid = NULL, wbraid = NULL, click_landing_at = NULL
+        WHERE created_at < now() - interval '120 days' AND (gclid IS NOT NULL OR gbraid IS NOT NULL OR wbraid IS NOT NULL)`;
+    } catch { /* tablo/sütun henüz yoksa */ }
   }
   return NextResponse.json({ ok: true, processed, reviews, drafts, waRefs });
 }

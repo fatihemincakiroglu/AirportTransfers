@@ -5,6 +5,7 @@ import { sendBookingMail } from "../../lib/mail";
 import { captureMeasurement } from "../../lib/measurement";
 import { serverPriceAsync } from "../../lib/pricing";
 import { issueReceipt } from "../../lib/receipt";
+import { saveClickIds } from "../../lib/ads-click";
 import { contactProblems } from "../../lib/validation";
 import { isPastZurich, isTooSoonZurich, MIN_LEAD_MINUTES } from "../../lib/zurichTime";
 
@@ -96,6 +97,8 @@ export async function POST(req: NextRequest) {
         notes     = COALESCE(EXCLUDED.notes, bookings.notes),
         updated_at= now()`;
 
+    // Reklam tıklama kimliği (gclid/gbraid/wbraid) — offline dönüşüm yüklemesi için (taslakta da: ilk değer korunur)
+    await saveClickIds(ref, b);
     const isDraft = str(b.channel, 20) === "taslak";
     if (!isDraft) await logEvent(
       "booking_new",

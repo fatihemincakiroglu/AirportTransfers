@@ -127,3 +127,18 @@ GA4 Purchase yalnızca sunucudan gelir; GTM'de `booking_complete` için GA4 etik
 - **whatsapp_click:** `contact.ref` = mesaja eklenen 6 karakterlik ref kodu. Kod ↔ gclid/gbraid/wbraid/UTM eşlemesi sunucuda (`wa_refs`, Admin → WhatsApp Ref, CSV).
 - **Gelişmiş dönüşümler:** `booking_complete` içinde `user_data.sha256_email_address` / `user_data.sha256_phone_number` (SHA-256; e-posta küçük harf/boşluksuz, telefon E.164) — yalnızca pazarlama onayı varsa. Ham kişisel veri dataLayer'a konmaz.
 - **items[]:** her kalemde `price`, `tax_unit_value`, `gross_unit_value`, `quantity`.
+
+
+## 11/2026 — Offline dönüşüm altyapısı (Seoroas talebi 08.11.2026)
+- **Tıklama kimliği yakalama:** ilk girişte URL'deki `gclid`, `gbraid`, `wbraid`, `utm_*` URL temizliğinden önce `sessionStorage` (`zrh_attr`) içine yazılır; sayfa geçişleri ve Stripe dönüşünde korunur (`lib/analytics.ts → captureAttribution / getAttribution`). Çerez izninden bağımsızdır.
+- **Web rezervasyonu:** `/api/bookings` ve `/api/checkout` isteğindeki `attribution` → `bookings.gclid, gbraid, wbraid, click_landing_at, utm_campaign, landing_page` (`lib/ads-click.ts`). Yalnızca boş alanlar doldurulur (ilk tıklama korunur).
+- **Durum ve tutar:** panelde "Tamamlandı" yapılınca `completed_at` yazılır; "Tahsil edilen (CHF)" alanı `collected_chf`.
+- **WhatsApp Ref:** `/api/wa-ref` kaydına `marketing_consent` ve `is_test` (tıklama kimliği `TEST` ile başlıyorsa) eklendi. Panel → WhatsApp Ref → Düzenle: Satış oldu (tutar + İsviçre saatiyle tarih/saat) / Satış olmadı / Geri al / Test kaydı (`/api/admin/wa-refs`). Satış anı tıklamadan önce olamaz.
+- **Dışa aktarma:** Panel → WhatsApp Ref → "Google Ads dışa aktarma (CSV)" = `/api/admin/export?type=ads_conversions` (oturum gerekli). Standart CSV (virgül, UTF-8, BOM yok), son 120 gün. Sütunlar: `record_type, order_id, gclid, gbraid, wbraid, click_landing_at, conversion_at, status, value_chf, email_sha256, phone_sha256, marketing_consent, test, record_created_at`.
+  - `order_id`: rezervasyonda `#` olmadan (`AB12CD34`, tarayıcıdaki `transaction_id` ile aynı — iptal geri çekme bununla eşleşir); WhatsApp'ta Ref kodu.
+  - `status`: done→completed, cancelled/rejected→cancelled, no_show→no_show, confirmed→confirmed, new→pending; WhatsApp: sale→completed, no_sale→cancelled, girilmemiş→pending.
+  - `conversion_at` yalnızca completed satırlarda: rezervasyonda "Tamamlandı" anı → yoksa ödeme anı → yoksa yolculuk saati; WhatsApp'ta girilen satış anı. Tüm zamanlar ISO 8601 + Europe/Zurich ofseti.
+  - `value_chf`: completed rezervasyonda tahsil edilen tutar (yoksa rezervasyon fiyatı), KDV dahil.
+  - Hash'ler yalnızca `marketing_consent=true` satırlarda (e-posta küçük harf/boşluksuz, telefon E.164, SHA-256). Ham e-posta/telefon yok.
+  - `test=true`: ad/soyad TEST ile başlayan, test@ e-postalı ya da tıklama kimliği TEST ile başlayan kayıtlar veya panelde test işaretlenen Ref'ler — Ads'e yüklenmemeli.
+- **Saklama:** 120 gün (cron `/api/cron/analytics`): WhatsApp Ref kayıtları silinir, rezervasyonlarda tıklama kimlikleri boşaltılır. Gizlilik politikası (DE/EN) buna göre güncellendi.

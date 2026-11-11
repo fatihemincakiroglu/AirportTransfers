@@ -35,7 +35,7 @@ let schemaPromise: Promise<void> | null = null;
  * Şema sürümü. Tablo/kolon eklediğinde BU SAYIYI ARTIR; aksi hâlde yeni DDL çalışmaz.
  * Sürüm veritabanındaki `schema_meta` ile eşleşiyorsa hiçbir DDL çalışmaz (tek SELECT).
  */
-const SCHEMA_VERSION = 5;
+const SCHEMA_VERSION = 6;
 
 /**
  * Tabloları oluşturur (varsa dokunmaz).
@@ -245,6 +245,23 @@ async function createTables(tx: TransactionSql) {
       last_click_at TIMESTAMPTZ NOT NULL DEFAULT now()
     )`;
   await tx`CREATE INDEX IF NOT EXISTS wa_refs_created_idx ON wa_refs (created_at DESC)`;
+  // Offline dönüşüm (Seoroas talebi 08.11.2026): WhatsApp Ref'e satış girişi + izin durumu
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS marketing_consent BOOLEAN`;
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS sale_status    TEXT`;        // sale | no_sale | NULL (açık)
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS sale_value_chf NUMERIC(10,2)`;
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS sale_at        TIMESTAMPTZ`; // satışın gerçekleştiği an
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS sale_note      TEXT`;
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS sale_marked_at TIMESTAMPTZ`;
+  await tx`ALTER TABLE wa_refs ADD COLUMN IF NOT EXISTS is_test        BOOLEAN NOT NULL DEFAULT false`;
+  // Web rezervasyonu: reklam tıklama kimliği (ilk giriş) + gerçek tahsilat
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS gclid            TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS gbraid           TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS wbraid           TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS click_landing_at TIMESTAMPTZ`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS utm_campaign     TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS landing_page     TEXT`;
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS collected_chf    NUMERIC(10,2)`; // tahsil edilen gerçek tutar
+  await tx`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS completed_at     TIMESTAMPTZ`;   // "Tamamlandı" yapıldığı an
 }
 
 /**

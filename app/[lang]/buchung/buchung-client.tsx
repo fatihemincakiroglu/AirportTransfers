@@ -11,7 +11,7 @@ import {
   waHref, PlaceField, SelectField, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime, isTooSoonDateTime, TrustLine,
 } from "../../components";
 import { mirrorPurchase, markSubmitted, type Receipt } from "../../lib/purchase-mirror";
-import { dlBookingId, pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
+import { dlBookingId, getAttribution, pushEvent, newId, safeLocation, AIRPORT_LOCATION, splitVat, routeId, captureIdentity } from "../../lib/analytics";
 import { clientRouteKm } from "../../lib/distance-client";
 import { resolveTrip } from "../../lib/trip";
 import { coordHints } from "../../lib/placeCoords";
@@ -175,6 +175,8 @@ export default function Buchung() {
         ].filter(Boolean).join(", "),
     // Tam adres / otel adı ayrı alandan gelir; panel, e-posta ve takvimde görünsün diye notun başına eklenir
     notes: [f.address.trim() ? `${ADDR.prefix}: ${f.address.trim()}` : "", f.notes.trim()].filter(Boolean).join("\n"),
+    // Reklam kaynağı (ilk giriş: gclid/gbraid/wbraid, kampanya, açılış sayfası) — offline dönüşüm için sunucuda saklanır
+    attribution: typeof window !== "undefined" ? getAttribution() : {},
     };
   };
 

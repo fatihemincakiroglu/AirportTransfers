@@ -1,6 +1,7 @@
 // Rezervasyonu kaydeder ve Stripe ödeme sayfasını hazırlar
 import { NextRequest, NextResponse } from "next/server";
 import { sql, ensureSchemaSafe as ensureSchema, dbReady, logEvent } from "../../lib/db";
+import { saveClickIds } from "../../lib/ads-click";
 import { createCheckout, stripeReady } from "../../lib/stripe";
 import { SITE_URL } from "../../config";
 import { captureMeasurement } from "../../lib/measurement";
@@ -105,6 +106,7 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ ok: false, reason: "stripe-error" }, { status: 200 });
 
     await sql`UPDATE bookings SET stripe_session = ${session.id} WHERE ref = ${ref}`;
+    await saveClickIds(ref, b); // reklam tıklama kimliği (offline dönüşüm)
     await logEvent("payment_start", `${ref} için ödeme sayfası açıldı (CHF ${amount.toFixed(2)})${isTestPayment ? " — TEST ÖDEMESİ (CHECKOUT_TEST_EMAIL)" : ""}`, { actor: "site", ref });
 
     return NextResponse.json({ ok: true, url: session.url });

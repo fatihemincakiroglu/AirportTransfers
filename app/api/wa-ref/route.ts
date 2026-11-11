@@ -20,15 +20,18 @@ export async function POST(req: NextRequest) {
   }
   const ref = typeof b.ref === "string" && /^[A-Z2-9]{6}$/.test(b.ref) ? b.ref : null;
   if (!ref) return NextResponse.json({ ok: false }, { status: 400 });
+  // Test tıklaması (ör. ?gclid=TEST_NOCONSENT) dışa aktarmada test=true işaretlenir, Ads'e yüklenmez
+  const isTest = [b.gclid, b.gbraid, b.wbraid].some((x) => typeof x === "string" && /^TEST/i.test(x));
   const capturedAt = typeof b.captured_at === "number" && b.captured_at > 1.6e9 ? new Date(b.captured_at * 1000) : null;
   try {
     await ensureSchema();
     await sql`
       INSERT INTO wa_refs (ref, gclid, gbraid, wbraid, utm_source, utm_medium, utm_campaign, utm_id, utm_term, utm_content,
-                           landing_page, last_page, lang, captured_at)
+                           landing_page, last_page, lang, captured_at, marketing_consent, is_test)
       VALUES (${ref}, ${str(b.gclid)}, ${str(b.gbraid)}, ${str(b.wbraid)}, ${str(b.utm_source, 100)}, ${str(b.utm_medium, 100)},
               ${str(b.utm_campaign, 150)}, ${str(b.utm_id, 50)}, ${str(b.utm_term, 200)}, ${str(b.utm_content, 100)},
-              ${str(b.landing_page, 300)}, ${str(b.page, 300)}, ${str(b.lang, 5)}, ${capturedAt})
+              ${str(b.landing_page, 300)}, ${str(b.page, 300)}, ${str(b.lang, 5)}, ${capturedAt},
+              ${typeof b.marketing_consent === "boolean" ? b.marketing_consent : null}, ${isTest})
       ON CONFLICT (ref) DO UPDATE SET
         clicks = wa_refs.clicks + 1,
         last_click_at = now(),
@@ -43,7 +46,10 @@ export async function POST(req: NextRequest) {
         utm_term = COALESCE(EXCLUDED.utm_term, wa_refs.utm_term),
         utm_content = COALESCE(EXCLUDED.utm_content, wa_refs.utm_content),
         landing_page = COALESCE(wa_refs.landing_page, EXCLUDED.landing_page),
-        captured_at = COALESCE(EXCLUDED.captured_at, wa_refs.captured_at)`;
+        captured_at = COALESCE(EXCLUDED.captured_at, wa_refs.captured_at),
+        -- izin durumu: son tıklamadaki seçim geçerli
+        marketing_consent = COALESCE(EXCLUDED.marketing_consent, wa_refs.marketing_consent),
+        is_test = wa_refs.is_test OR EXCLUDED.is_test`;
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("[api/wa-ref]", e);

@@ -12,6 +12,7 @@ export type Booking = {
   pickup: string | null; dropoff: string | null; stops: string | null;
   ride_date: string | null; ride_time: string | null; pax: number | null; luggage: number | null;
   vehicle: string | null; price: string | null; payment: string | null;
+  collected_chf?: string | null; gclid?: string | null; gbraid?: string | null; wbraid?: string | null; utm_campaign?: string | null;
   first_name: string | null; last_name: string | null; email: string | null; phone: string | null;
   flight: string | null; nameboard: string | null; extras: string | null;
   notes: string | null; admin_note: string | null; created_at: string;
@@ -33,7 +34,7 @@ const EDIT_FIELDS: [keyof Booking, string, string][] = [
   ["pickup", "Alınış", "text"], ["dropoff", "Varış", "text"], ["stops", "Ara duraklar", "text"],
   ["ride_date", "Yolculuk tarihi", "date"], ["ride_time", "Saat", "time"],
   ["pax", "Yolcu", "number"], ["luggage", "Bagaj", "number"],
-  ["vehicle", "Araç", "text"], ["price", "Tutar (CHF)", "number"], ["payment", "Ödeme", "text"],
+  ["vehicle", "Araç", "text"], ["price", "Tutar (CHF)", "number"], ["collected_chf", "Tahsil edilen (CHF)", "number"], ["payment", "Ödeme", "text"],
   ["first_name", "Ad", "text"], ["last_name", "Soyad", "text"],
   ["phone", "Telefon", "text"], ["email", "E-posta", "text"],
   ["flight", "Uçuş no", "text"], ["extras", "Ekstralar", "text"], ["notes", "Müşteri notu", "text"],
@@ -321,6 +322,8 @@ export default function BookingsClient({
                 ["Yolcu / bagaj", `${open.pax ?? "—"} / ${open.luggage ?? "—"}`],
                 ["Araç", open.vehicle],
                 ["Tutar", open.price ? `CHF ${Number(open.price).toFixed(2)}` : null],
+                ["Tahsil edilen", open.collected_chf ? `CHF ${Number(open.collected_chf).toFixed(2)}` : null],
+                ["Reklam kaynağı", open.gclid || open.gbraid || open.wbraid ? `Google Ads${open.utm_campaign ? ` · ${open.utm_campaign}` : ""}` : null],
                 ["Ödeme", open.payment],
                 ["Ödeme durumu", open.payment_status && open.payment_status !== "none" ? PAY_LABEL[open.payment_status] : (/stripe|online/i.test(open.payment ?? "") ? "Ödeme başlatılmadı / tamamlanmadı" : "Araçta ödenecek")],
                 ["Ödeme tarihi", open.paid_at ? fmtDate(open.paid_at) : null],

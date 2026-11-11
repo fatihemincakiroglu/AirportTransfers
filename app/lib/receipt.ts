@@ -29,7 +29,7 @@ export const dlBookingId = (ref: string) => ref.replace(/[^A-Za-z0-9_-]/g, "").s
 const sha256 = (v: string) => crypto.createHash("sha256").update(v).digest("hex");
 
 /** E-posta: küçük harf, boşluksuz. Telefon: E.164 (+ ve rakamlar; 00 → +). Geçersizse undefined */
-function hashedUserData(email?: string | null, phone?: string | null): Receipt["user_data"] {
+export function hashedUserData(email?: string | null, phone?: string | null): Receipt["user_data"] {
   const out: NonNullable<Receipt["user_data"]> = {};
   const e = (email ?? "").trim().toLowerCase().replace(/\s+/g, "");
   if (/^[^@]+@[^@]+\.[a-z]{2,}$/.test(e)) out.sha256_email_address = sha256(e);
