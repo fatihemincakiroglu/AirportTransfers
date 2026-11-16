@@ -13,16 +13,20 @@ const EMPTY = {
   first_name: "", last_name: "", email: "", phone: "", payment: "", price: "",
   vehicle: "", pickup: "", dropoff: "", ride_date: "", ride_time: "",
 };
+/** İsteğe bağlı alanlar: boş bırakılabilir (Referans No boşsa F… otomatik verilir) */
+const OPTIONAL = { ref: "" };
+type Form = typeof EMPTY & typeof OPTIONAL;
 
 export default function ManualInvoice() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [f, setF] = useState(EMPTY);
+  const [f, setF] = useState<Form>({ ...EMPTY, ...OPTIONAL });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const set = (k: keyof typeof EMPTY, v: string) => setF((s) => ({ ...s, [k]: v }));
+  const set = (k: keyof Form, v: string) => setF((s) => ({ ...s, [k]: v }));
 
-  const ready = Object.entries(f).every(([, v]) => v.trim()) && Number(f.price) > 0;
+  const refOk = !f.ref.trim() || /^[A-Za-z0-9#/_.-]{2,32}$/.test(f.ref.trim());
+  const ready = (Object.keys(EMPTY) as (keyof typeof EMPTY)[]).every((k) => f[k].trim()) && Number(f.price) > 0 && refOk;
 
   const submit = async () => {
     if (!ready || busy) return;
@@ -33,7 +37,7 @@ export default function ManualInvoice() {
     const d = await res.json().catch(() => ({}));
     setBusy(false);
     if (!res.ok || !d.ok) { setErr(d.error ?? "Fatura oluşturulamadı"); return; }
-    setF(EMPTY); setOpen(false);
+    setF({ ...EMPTY, ...OPTIONAL }); setOpen(false);
     router.push(`/admin/faturalar/${d.id}`);
   };
 
@@ -82,6 +86,10 @@ export default function ManualInvoice() {
 
             <div className="space-y-5">
               <p className="border-b border-stone-100 pb-2 text-xs font-bold uppercase tracking-[0.15em]" style={{ color: C.gold }}>Transfer bilgileri</p>
+              <label className={field}><span className={label}>Referans No</span>
+                <input className={input} value={f.ref} onChange={(e) => set("ref", e.target.value)} placeholder="Boş bırakılırsa otomatik (F…)" autoCapitalize="characters" spellCheck={false} />
+                {!refOk && <span className="mt-1.5 block text-[11px] font-semibold text-red-700">Yalnızca harf, rakam ve # / _ . - (2–32 karakter)</span>}
+              </label>
               <label className={field}><span className={label}>Araç *</span>
                 <select className={input} value={f.vehicle} onChange={(e) => set("vehicle", e.target.value)}>
                   <option value="">Araç seçin</option>
@@ -100,7 +108,7 @@ export default function ManualInvoice() {
           {err && <p className="mt-4 rounded-xl px-4 py-3 text-sm" style={{ background: "#FEF2F2", color: "#B91C1C" }}>{err}</p>}
 
           <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-stone-100 pt-4">
-            <p className="text-[11px] text-stone-400">Kayıt «tamamlandı» durumunda, F referansıyla açılır; takvime yazılmaz ve müşteriye e-posta gitmez.</p>
+            <p className="text-[11px] text-stone-400">Kayıt «tamamlandı» durumunda, girilen referansla (boşsa F… otomatik) açılır; takvime yazılmaz ve müşteriye e-posta gitmez.</p>
             <button type="button" onClick={submit} disabled={!ready || busy}
               className="rounded-full px-6 py-3 text-xs font-extrabold uppercase tracking-wide shadow-sm transition-opacity disabled:opacity-40"
               style={{ background: C.pine, color: "#fff" }}>

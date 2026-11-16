@@ -26,8 +26,17 @@ export async function POST(req: NextRequest) {
   if (!Number.isFinite(price) || price <= 0) missing.push("Toplam tutar");
   if (missing.length) return NextResponse.json({ ok: false, error: `Eksik: ${missing.join(", ")}` }, { status: 400 });
 
+  // Referans No: elle girildiyse o kullanılır (faturada "Buchungsnummer"), boşsa F… otomatik
+  const manualRef = str(b.ref, 32);
+  if (manualRef && !/^[A-Za-z0-9#/_.-]{2,32}$/.test(manualRef))
+    return NextResponse.json({ ok: false, error: "Referans No yalnızca harf, rakam ve # / _ . - içerebilir (2–32 karakter)" }, { status: 400 });
+
   await ensureSchema();
-  const ref = "F" + Math.random().toString(16).slice(2, 9).toUpperCase();
+  const ref = manualRef ?? "F" + Math.random().toString(16).slice(2, 9).toUpperCase();
+  if (manualRef) {
+    const [dup] = (await sql`SELECT id FROM bookings WHERE ref = ${ref}`) as unknown as { id: number }[];
+    if (dup) return NextResponse.json({ ok: false, error: `Bu referans zaten kullanılıyor: ${ref}` }, { status: 409 });
+  }
   await sql`
     INSERT INTO bookings (ref, status, source, channel, lang, pickup, dropoff,
       ride_date, ride_time, vehicle, price, payment, payment_status,
