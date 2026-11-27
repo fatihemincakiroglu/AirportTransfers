@@ -1,7 +1,7 @@
 // Sunucu tarafı fiyat doğrulaması: tarayıcıdan gelen tutara güvenilmez.
 // Sabit rota ve saatlik rezervasyonlarda fiyat tarifeden yeniden hesaplanır;
 // özel güzergâhta (mesafe bilinmiyor) tarayıcının tahmini tutarı kullanılır.
-import { routes, transferPrice, hourlyPrice, type VehicleId } from "../config";
+import { routes, transferPrice, hourlyPrice, fixedPrice, fixedTripPrice, type VehicleId } from "../config";
 import { routeDistanceKm, cleanHints } from "./distance";
 
 const VEHICLES: VehicleId[] = ["business_class_e", "business_family_v", "premium_s"];
@@ -13,6 +13,11 @@ export function serverPrice(b: Record<string, unknown>): number | null {
   if (!p || !vehicle) return null;
   if (p.hours && p.hours > 0) return hourlyPrice(p.hours, vehicle, time);
   const r = p.routeKey ? routes.find((x) => x.slug === p.routeKey) : null;
+  // Tek fiyat tablosu: hedef sabit fiyatlıysa adres ve saatten bağımsız bu tutar geçerlidir
+  const fixed = r
+    ? fixedPrice(typeof r.to === "string" ? r.to : `${r.to.de} ${r.to.en}`, vehicle)
+    : fixedTripPrice(typeof b.pickup === "string" ? b.pickup : null, typeof b.dropoff === "string" ? b.dropoff : null, vehicle);
+  if (fixed !== null) return fixed;
   if (r) return transferPrice(r.km, vehicle, time);
   return null; // özel güzergâh → serverPriceAsync
 }

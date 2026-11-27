@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, airportName, CITY_CENTER, chfText } from "../../config";
+import { C, routes, fleet, MAX_PAX, KM_RATE, transferPrice, hourlyPrice, fixedPrice, fixedTripPrice, isNightTime, NIGHT_SURCHARGE_TRANSFER, NIGHT_SURCHARGE_HOURLY, airportName, CITY_CENTER, chfText } from "../../config";
 import { t } from "../../i18n";
 import { tx } from "../../i18nX";
 import { useLang } from "../../providers";
@@ -378,20 +378,27 @@ export default function Buchung() {
    * Araç fiyatı (KDV dahil, yolculuk saatine göre gece zammıyla):
    *  sabit rota → km tarifesi · saatlik → saatlik tarife · özel güzergâh → tahmini taban × araç oranı
    */
+  // Tek fiyat tablosu: hedef sabit fiyatlıysa (ör. Interlaken, Lenzerheide) adres ve saatten bağımsız tutar
+  const routeName = route ? (typeof route.to === "string" ? route.to : `${route.to.de} ${route.to.en}`) : "";
+  const fixedFor = (v: (typeof fleet)[number]): number | null =>
+    route ? fixedPrice(routeName, v.id) : showCustom ? fixedTripPrice(cFrom, cTo, v.id) : null;
+  const fixedCustom = showCustom && fixedFor(chosen ?? sorted[0]) !== null;
   const priceFor = (v: (typeof fleet)[number]): number => {
     if (!hasTrip) return 0;
     if (hourly) return hourlyPrice(hourlyHours ?? 1, v.id, time);
+    const fx = fixedFor(v);
+    if (fx !== null) return fx;
     if (route) return transferPrice(route.km, v.id, time);
     if (quote?.prices[v.id] !== undefined) return quote.prices[v.id]; // gerçek yol mesafesi tarifesi
     return 0; // mesafe (henüz) yok → fiyat gösterilmez, kabulde tarifeye göre hesaplanır
   };
-  const priceUnknown = hasTrip && !hourly && !route && quote === null;
+  const priceUnknown = hasTrip && !hourly && !route && quote === null && !fixedCustom;
   const basePrice = chosen ? priceFor(chosen) : hasTrip ? priceFor(sorted[0]) : 0; // ölçüm: tahmini değer için
   const total = hasTrip && chosen ? priceFor(chosen) : 0;
 
   // ── Ölçüm yardımcıları (kişisel veri yok; özel adres yalnızca type:"address") ──
   const bookingType = hourly ? "hourly" : "transfer";
-  const priceFinal = route !== null || hourly || quote !== null; // sabit rota, saatlik ve mesafesi bulunan özel güzergâh = kesin
+  const priceFinal = route !== null || hourly || quote !== null || fixedCustom; // sabit rota, tek fiyat, saatlik ve mesafesi bulunan özel güzergâh = kesin
   const tripLocations = () => {
     if (hourly) return { pickup: AIRPORT_LOCATION };
     if (route) return reversed
@@ -786,7 +793,7 @@ export default function Buchung() {
                     </div>
                     <div className="text-center sm:text-right">
                       <p className="font-mono text-2xl font-extrabold" style={{ color: C.pine }}>
-                        {priceUnknown ? <span className="text-sm font-bold text-stone-500">{lang === "de" ? "Preis bei Bestätigung" : "Price on confirmation"}</span> : `CHF ${priceFor(v).toFixed(2)}`}
+                        {priceUnknown || priceFor(v) <= 0 ? <span className="text-sm font-bold text-stone-500">{lang === "de" ? "Preis bei Bestätigung" : "Price on confirmation"}</span> : `CHF ${priceFor(v).toFixed(2)}`}
                       </p>
                       <p className="mb-3 text-[11px] text-stone-500">{D.priceNote}</p>
                       <button
