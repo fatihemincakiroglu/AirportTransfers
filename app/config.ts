@@ -125,6 +125,58 @@ export function hourlyPrice(hours: number, vehicle: VehicleId, time?: string | n
 /** Sabit rotanın gündüz Business Class fiyatı ("ab CHF …") */
 export const routeBasePrice = (km: number) => transferPrice(km, "business_class_e");
 
+// ─────────────────────────────────────────────────────────────
+//  TEK FİYAT TABLOSU (Zürich Flughafen çıkışı, araç başına, CHF, KDV dahil)
+//  Bu hedeflerde fiyat mesafeye bağlı değildir: adres ve saatten bağımsız sabit tutar.
+//  Yeni hedef eklemek için bir satır ekleyin; "names" alanı hedef adının
+//  (veya alternatif adlarının) herhangi bir parçasıyla eşleşir.
+//  S-Class bu tabloda yoktur → mesafe tarifesi aynen uygulanır.
+// ─────────────────────────────────────────────────────────────
+export const FIXED_PRICES: { names: string[]; business_class_e: number; business_family_v: number }[] = [
+  { names: ["Interlaken"], business_class_e: 410, business_family_v: 450 },
+  { names: ["Grindelwald"], business_class_e: 440, business_family_v: 510 },
+  { names: ["St. Moritz"], business_class_e: 599, business_family_v: 665 },
+  { names: ["Davos"], business_class_e: 420, business_family_v: 495 },
+  { names: ["Zermatt", "Täsch"], business_class_e: 779, business_family_v: 869 },
+  { names: ["Verbier"], business_class_e: 849, business_family_v: 949 },
+  { names: ["Genf", "Geneva", "Genève", "Cenevre"], business_class_e: 799, business_family_v: 899 },
+  { names: ["Lausanne", "Lozan"], business_class_e: 599, business_family_v: 669 },
+  { names: ["Lugano"], business_class_e: 545, business_family_v: 609 },
+  { names: ["Engelberg"], business_class_e: 329, business_family_v: 369 },
+  { names: ["Laax"], business_class_e: 449, business_family_v: 499 },
+  { names: ["Saas-Fee"], business_class_e: 749, business_family_v: 839 },
+  { names: ["Lenzerheide"], business_class_e: 429, business_family_v: 479 },
+  { names: ["Andermatt"], business_class_e: 339, business_family_v: 373 },
+  { names: ["St. Anton am Arlberg", "St. Anton"], business_class_e: 549, business_family_v: 599 },
+  { names: ["Lech am Arlberg", "Lech"], business_class_e: 549, business_family_v: 599 },
+  { names: ["Ischgl"], business_class_e: 699, business_family_v: 789 },
+];
+
+/** Metni karşılaştırma için sadeleştirir: küçük harf, aksan yok, boşluk/tire/nokta yok */
+const foldPlace = (s: string) =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[\s\-\/.,()]/g, "");
+
+/** Zürich havalimanı metni mi? (diğer havalimanlarını — ör. Basel — kapsamaz) */
+export const isZrhAirportText = (s: string) =>
+  /zrh|flughafen\s*z|zurich\s*airport|zürich\s*airport|zurich-airport/i.test(s.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+
+/** Tek fiyat tablosunda bir hedef varsa araç fiyatı (CHF); yoksa null (mesafe tarifesi geçerli) */
+export function fixedPrice(place: string | null | undefined, vehicle: VehicleId): number | null {
+  if (!place || vehicle === "premium_s") return null;
+  const p = foldPlace(place);
+  const hit = FIXED_PRICES.find((f) => f.names.some((n) => p.includes(foldPlace(n))));
+  return hit ? hit[vehicle] : null;
+}
+
+/** Pickup / dropoff metinlerinden sabit fiyat: yalnızca bir uç Zürich havalimanıysa geçerli */
+export function fixedTripPrice(pickup: string | null | undefined, dropoff: string | null | undefined, vehicle: VehicleId): number | null {
+  const a = pickup ?? "", d = dropoff ?? "";
+  if (!a || !d) return null;
+  const aAir = isZrhAirportText(a), dAir = isZrhAirportText(d);
+  if (aAir === dAir) return null;
+  return fixedPrice(aAir ? d : a, vehicle);
+}
+
 // Süreler (min): normal trafikte sürüş süresi + küçük tampon (10/2026 güncellemesi — eski değerler ~50 km/s ile
 // hesaplanmıştı ve gerçekten %40–80 uzundu). Zermatt: Täsch'a kadar (Lötschberg araç treni dahil); Wengen: Lauterbrunnen'e kadar.
 // Google Maps ile ara ara doğrulanmalı. Sayfa metinleri ve meta açıklamalar bu değerden üretilir ({DUR}).
@@ -157,7 +209,11 @@ const ROUTE_DATA: { slug: string; to: LocalName; km: number; min: number; img: s
 ];
 /** Sabit rotalar — price = gündüz Business Class fiyatı, km'den türer (transferPrice) */
 export const routes: { slug: string; to: LocalName; km: number; min: number; price: number; img: string }[] =
-  ROUTE_DATA.map((r) => ({ ...r, price: routeBasePrice(r.km) }));
+  ROUTE_DATA.map((r) => ({
+    ...r,
+    // Tek fiyat tablosunda varsa sabit Business Class fiyatı, yoksa mesafe tarifesi
+    price: fixedPrice(typeof r.to === "string" ? r.to : `${r.to.de} ${r.to.en}`, "business_class_e") ?? routeBasePrice(r.km),
+  }));
 
 
 // Filo — gerçek araçlar. Görseller opsiyonel: public/fleet/. Fiyatlar BASE_FARE + KM_RATE'ten.

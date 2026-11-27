@@ -8,7 +8,7 @@
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useState } from "react";
 
-import { C, routes, fleet, KM_RATE, MAX_PAX, transferPrice, isNightTime, airportName } from "./config";
+import { C, routes, fleet, KM_RATE, MAX_PAX, transferPrice, fixedTripPrice, isNightTime, airportName } from "./config";
 import { t } from "./i18n";
 import { useLang } from "./providers";
 import { PlaceField, SelectField, labelCls, fieldWrap, fieldInput, todayISO, minTimeFor, isPastDateTime, localName } from "./components";
@@ -73,7 +73,11 @@ export default function PriceCalc({ defaultTo = "", toCoords, title, source = "i
   }, [custom?.from, custom?.to]);
 
   const km = route ? route.km : quote?.km ?? null;
-  const night = isNightTime(time);
+  // Tek fiyat tablosu: hedef sabit fiyatlıysa adres ve saatten bağımsız; S-Class mesafe tarifesiyle
+  const fixedAny = fixedTripPrice(from, to, "business_class_e") !== null;
+  const amountFor = (id: (typeof fleet)[number]["id"]): number | null =>
+    fixedTripPrice(from, to, id) ?? (km !== null ? transferPrice(km, id, time || null) : null);
+  const night = isNightTime(time) && !fixedAny;
   const past = isPastDateTime(date, time);
   const chf = (n: number) => `CHF ${n.toFixed(2)}`;
   const paxN = Number(pax);
@@ -143,7 +147,7 @@ export default function PriceCalc({ defaultTo = "", toCoords, title, source = "i
       <div className="mt-5 rounded-2xl bg-[#FAF9F4] p-3 ring-1 ring-black/5 md:p-4" aria-live="polite">
         {status ? (
           <p className="px-1 py-2 text-sm text-stone-600">{status}</p>
-        ) : km !== null ? (
+        ) : km !== null || fixedAny ? (
           <>
             <ul className="divide-y divide-stone-200/70">
               {sorted.map((v) => {
@@ -157,7 +161,7 @@ export default function PriceCalc({ defaultTo = "", toCoords, title, source = "i
                       </span>
                     </span>
                     <span className="shrink-0 text-right">
-                      <span className="font-mono text-lg font-extrabold" style={{ color: C.pine }}>{chf(transferPrice(km, v.id, time || null))}</span>
+                      <span className="font-mono text-lg font-extrabold" style={{ color: C.pine }}>{(() => { const a = amountFor(v.id); return a === null ? "—" : chf(a); })()}</span>
                       {!fits && <span className="block text-[11px] text-stone-500">{de ? "zu klein" : "too small"}</span>}
                     </span>
                   </li>
@@ -165,9 +169,11 @@ export default function PriceCalc({ defaultTo = "", toCoords, title, source = "i
               })}
             </ul>
             <p className="mt-2 px-1 text-[11px] leading-snug text-stone-500">
-              {route
-                ? (de ? `Festpreis-Strecke ZRH → ${localName(route.to, lang)} (${route.km} km).` : `Fixed-price route ZRH → ${localName(route.to, lang)} (${route.km} km).`)
-                : (de ? `Berechnet für ca. ${km} km Fahrstrecke.` : `Calculated for approx. ${km} km by road.`)}
+              {fixedAny
+                ? (de ? "Festpreis pro Fahrzeug, unabhängig von Adresse und Uhrzeit." : "Fixed price per vehicle, regardless of address and time.")
+                : route
+                  ? (de ? `Festpreis-Strecke ZRH → ${localName(route.to, lang)} (${route.km} km).` : `Fixed-price route ZRH → ${localName(route.to, lang)} (${route.km} km).`)
+                  : (de ? `Berechnet für ca. ${km} km Fahrstrecke.` : `Calculated for approx. ${km} km by road.`)}
               {" "}
               {night
                 ? (de ? "Inkl. Nachtzuschlag (00–06 Uhr)." : "Incl. night surcharge (midnight–6 am).")
